@@ -70,6 +70,39 @@
       ],
       "defaultTier": 2,
       "maxSimcards": 5
+    },
+    "tv": {
+      "title": "TV",
+      "tooltip": "Welke snelheid heb ik nodig?",
+      "summary": "90+ kanalen, 7 dagen terugkijk TV, Inclusief tot 200 uur opnames in the cloud",
+      "price": 14.00,
+      "discountPrice": 10.00,
+      "discountInfo": "gedurende 6 maanden",
+      "entertainmentBox": {
+        "title": "Wil je een Entertainment Box?",
+        "tooltip": "Ontdek onze Entertainment Box met Entertainment Services",
+        "tiers": [
+          {
+            "id": 1,
+            "title": "Nee bedankt"
+          },
+          {
+            "id": 2,
+            "title": "Ja, dat wil ik",
+            "summary": "Al je zenders en streamingdiensten op één plek, Een handige TV-gids en afstands-bediening, Gepersonaliseerde aanbevelingen over al jouw entertainment",
+            "price": 5.00,
+            "discountPrice": 0.00,
+            "discountInfo": "gedurende 6 maanden"
+          }
+        ],
+        "defaultTier": 1
+      }
+    },
+    "fixedPhone": {
+      "title": "Vaste lijn",
+      "tooltip": "",
+      "summary": "Gratis vaste lijn voor thuis, Huidig vast nummer behouden of een nieuw nummer aanvragen",
+      "price": 0.00
     }
   },
   "discounts": {
