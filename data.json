@@ -1,4 +1,3 @@
-
 {
   "products": {
     "internet": {
@@ -95,7 +94,7 @@
             "discountInfo": "gedurende 6 maanden"
           }
         ],
-        "defaultTier": 1
+        "defaultTier": 2
       }
     },
     "fixedPhone": {
