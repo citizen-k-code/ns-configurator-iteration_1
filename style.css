@@ -221,6 +221,30 @@ input:checked + .slider:before {
     font-size: 16px;
 }
 
+.tier-price-container {
+    text-align: right;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #717D96;
+    text-decoration: line-through;
+    margin-bottom: 2px;
+}
+
+.discount-price {
+    font-weight: 600;
+    color: #F134F7;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.discount-info {
+    font-size: 12px;
+    color: #717D96;
+    font-style: italic;
+}
+
 /* Simcard specific styles */
 .simcard {
     margin-bottom: 20px;

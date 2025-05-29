@@ -103,11 +103,24 @@ class TelecomConfigurator {
         
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
         
+        let priceHtml;
+        if (tier.discountPrice) {
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                    <div class="discount-price">€ ${tier.discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="discount-info">${tier.discountInfo}</div>
+                </div>
+            `;
+        } else {
+            priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
+        }
+        
         infoContainer.innerHTML = `
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
-            <div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>
+            ${priceHtml}
         `;
     }
 
@@ -131,7 +144,7 @@ class TelecomConfigurator {
                     `).join('')}
                 </div>
                 <div class="tier-info">
-                    ${this.getMobileTierInfo(simcard.selectedTier)}
+                    ${this.getMobileTierInfo(simcard.selectedTier, index)}
                 </div>
             </div>
         `).join('');
@@ -148,15 +161,29 @@ class TelecomConfigurator {
         }
     }
 
-    getMobileTierInfo(tierId) {
+    getMobileTierInfo(tierId, simcardIndex = 0) {
         const tier = this.data.products.mobile.tiers.find(t => t.id === tierId);
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        
+        let priceHtml;
+        // Only apply mobile discount to simcard 2 and beyond (simcardIndex >= 1)
+        if (tier.discountPrice && simcardIndex >= 1) {
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                    <div class="discount-price">€ ${tier.discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="discount-info">${tier.discountInfo}</div>
+                </div>
+            `;
+        } else {
+            priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
+        }
         
         return `
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
-            <div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>
+            ${priceHtml}
         `;
     }
 
@@ -189,39 +216,49 @@ class TelecomConfigurator {
 
     calculateTotal() {
         let total = 0;
+        let totalDiscount = 0;
         
         // Internet cost
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
-            total += internetTier.price;
+            if (internetTier.discountPrice) {
+                total += internetTier.discountPrice;
+                totalDiscount += internetTier.price - internetTier.discountPrice;
+            } else {
+                total += internetTier.price;
+            }
         }
         
         // Mobile costs
         if (this.state.mobile.enabled) {
-            this.state.mobile.simcards.forEach(simcard => {
+            this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                total += mobileTier.price;
+                // Only apply mobile discount to simcard 2 and beyond (index >= 1)
+                if (mobileTier.discountPrice && index >= 1) {
+                    total += mobileTier.discountPrice;
+                    totalDiscount += mobileTier.price - mobileTier.discountPrice;
+                } else {
+                    total += mobileTier.price;
+                }
             });
         }
         
-        return total;
+        return { total, totalDiscount };
     }
 
     updateCostSummary() {
-        const total = this.calculateTotal();
-        const discounts = this.data.discounts;
-        const totalDiscounts = discounts.permanent.amount + discounts.temporary.amount;
-        const finalTotal = Math.max(0, total - totalDiscounts);
-        const hasDiscounts = totalDiscounts > 0 && total > 0;
+        const { total, totalDiscount } = this.calculateTotal();
+        const hasDiscounts = totalDiscount > 0;
+        const originalTotal = total + totalDiscount;
         
         // Update the monthly total
-        document.getElementById('monthly-total').textContent = finalTotal.toFixed(2).replace('.', ',');
+        document.getElementById('monthly-total').textContent = total.toFixed(2).replace('.', ',');
         
         // Update strikethrough price
         const strikethroughElement = document.getElementById('strikethrough-cost');
         if (hasDiscounts) {
             strikethroughElement.style.display = 'block';
-            strikethroughElement.textContent = `€ ${total.toFixed(2).replace('.', ',')}`;
+            strikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
         } else {
             strikethroughElement.style.display = 'none';
         }
@@ -230,28 +267,23 @@ class TelecomConfigurator {
         const advantageElement = document.getElementById('advantage-block');
         if (hasDiscounts) {
             advantageElement.style.display = 'block';
-            document.getElementById('advantage-amount').textContent = totalDiscounts.toFixed(2).replace('.', ',');
+            document.getElementById('advantage-amount').textContent = totalDiscount.toFixed(2).replace('.', ',');
         } else {
             advantageElement.style.display = 'none';
         }
         
-        // Update permanent promotion
-        const permanentElement = document.getElementById('permanent-promotion');
-        if (hasDiscounts && discounts.permanent.amount > 0) {
-            permanentElement.style.display = 'flex';
-            document.getElementById('permanent-amount').textContent = `- € ${discounts.permanent.amount.toFixed(2).replace('.', ',')}`;
-        } else {
-            permanentElement.style.display = 'none';
-        }
-        
-        // Update temporary promotion
+        // Calculate temporary promotions (all current discounts are temporary)
         const temporaryElement = document.getElementById('temporary-promotion');
-        if (hasDiscounts && discounts.temporary.amount > 0) {
+        if (hasDiscounts) {
             temporaryElement.style.display = 'flex';
-            document.getElementById('temporary-amount').textContent = `- € ${discounts.temporary.amount.toFixed(2).replace('.', ',')}`;
+            document.getElementById('temporary-amount').textContent = `- € ${totalDiscount.toFixed(2).replace('.', ',')}`;
         } else {
             temporaryElement.style.display = 'none';
         }
+        
+        // Hide permanent promotion (no permanent discounts in current setup)
+        const permanentElement = document.getElementById('permanent-promotion');
+        permanentElement.style.display = 'none';
     }
 }
 

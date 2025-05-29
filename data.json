@@ -17,14 +17,18 @@
           "title": "1 Gb",
           "subtitle": "Snel",
           "summary": "1 Gbps downloadsnelheid, 100 Mbps uploadsnelheid, Onbeperkt downloadvolume",
-          "price": 65.00
+          "price": 65.00,
+          "discountPrice": 50.00,
+          "discountInfo": "gedurende 6 maanden"
         },
         {
           "id": 3,
           "title": "2,5 Gb",
           "subtitle": "Supersnel",
           "summary": "2,5 Gbps downloadsnelheid, 250 Mbps uploadsnelheid, Onbeperkt downloadvolume",
-          "price": 75.00
+          "price": 75.00,
+          "discountPrice": 60.00,
+          "discountInfo": "gedurende 6 maanden"
         },
         {
           "id": 4,
@@ -52,7 +56,9 @@
           "title": "10 GB",
           "subtitle": "",
           "summary": "10 GB mobiele data, 250 Mbps max downloadsnelheid, Onbeperkt bellen en sms'en",
-          "price": 11.45
+          "price": 11.45,
+          "discountPrice": 8.00,
+          "discountInfo": "gedurende 3 maanden"
         },
         {
           "id": 3,
