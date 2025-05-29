@@ -1,0 +1,79 @@
+
+{
+  "products": {
+    "internet": {
+      "title": "Internet",
+      "tooltip": "Welke snelheid heb ik nodig?",
+      "tiers": [
+        {
+          "id": 1,
+          "title": "500 Mb",
+          "subtitle": "Basis",
+          "summary": "500 Mbps downloadsnelheid, 50 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "price": 45.00
+        },
+        {
+          "id": 2,
+          "title": "1 Gb",
+          "subtitle": "Snel",
+          "summary": "1 Gbps downloadsnelheid, 100 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "price": 65.00
+        },
+        {
+          "id": 3,
+          "title": "2,5 Gb",
+          "subtitle": "Supersnel",
+          "summary": "2,5 Gbps downloadsnelheid, 250 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "price": 75.00
+        },
+        {
+          "id": 4,
+          "title": "8,5 Gb",
+          "subtitle": "Gigasnel",
+          "summary": "8,5 Gbps downloadsnelheid, 500 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "price": 90.00
+        }
+      ],
+      "defaultTier": 1
+    },
+    "mobile": {
+      "title": "Mobiel",
+      "tooltip": "Hoeveel mobiele data heb ik nodig?",
+      "tiers": [
+        {
+          "id": 1,
+          "title": "Kids sim",
+          "subtitle": "5GB Data",
+          "summary": "5 GB mobiele data, 120 belminuten + onbeperkt sms'en, Parental control",
+          "price": 5.00
+        },
+        {
+          "id": 2,
+          "title": "10 GB",
+          "subtitle": "",
+          "summary": "10 GB mobiele data, 250 Mbps max downloadsnelheid, Onbeperkt bellen en sms'en",
+          "price": 11.45
+        },
+        {
+          "id": 3,
+          "title": "Unlimited",
+          "subtitle": "",
+          "summary": "Onbeperkt mobiele data, 1 Gbps max downloadsnelheid, Onbeperkt bellen en sms'en",
+          "price": 18.95
+        }
+      ],
+      "defaultTier": 2,
+      "maxSimcards": 5
+    }
+  },
+  "discounts": {
+    "permanent": {
+      "amount": 10.00,
+      "description": "Voordeel deze maand"
+    },
+    "temporary": {
+      "amount": 20.00,
+      "description": "Temporary promotions"
+    }
+  }
+}

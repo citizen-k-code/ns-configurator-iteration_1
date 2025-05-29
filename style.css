@@ -1,4 +1,383 @@
-html {
-  height: 100%;
-  width: 100%;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+    color: #2D3648;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+@media (min-width: 1024px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+    .app-container {
+        flex-direction: row;
+    }
+}
+
+/* Part 1 - Product Configuration */
+.part1 {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+}
+
+@media (min-width: 1024px) {
+    .part1 {
+        overflow-y: auto;
+        height: 100vh;
+        padding: 30px;
+    }
+}
+
+.part1 h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #2D3648;
+}
+
+@media (min-width: 1024px) {
+    .part1 h1 {
+        font-size: 28px;
+    }
+}
+
+/* Product Blocks */
+.product-block {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+}
+
+.product-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.product-icon {
+    font-size: 20px;
+}
+
+.product-content {
+    padding: 0 20px 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.tooltip-link {
+    color: #717D96;
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2D3648;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Tier Selector */
+.tier-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tier-option {
+    flex: 1;
+    min-width: 80px;
+    padding: 12px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.tier-option.active {
+    background-color: #2D3648;
+    color: white;
+    border-color: #2D3648;
+}
+
+.tier-title {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.tier-subtitle {
+    font-size: 11px;
+    color: #717D96;
+    margin-top: 2px;
+}
+
+.tier-option.active .tier-subtitle {
+    color: #CBD2E0;
+}
+
+/* Tier Info */
+.tier-info {
+    background-color: #f8f9fa;
+    padding: 16px;
+    border-radius: 6px;
+}
+
+.tier-details {
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+.tier-details li {
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #717D96;
+    position: relative;
+    padding-left: 15px;
+}
+
+.tier-details li:before {
+    content: "»";
+    position: absolute;
+    left: 0;
+    color: #2D3648;
+}
+
+.tier-price {
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+    font-size: 16px;
+}
+
+/* Simcard specific styles */
+.simcard {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.simcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.simcard-title {
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.delete-simcard {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #717D96;
+    padding: 5px;
+}
+
+.delete-simcard:hover {
+    color: #ff4444;
+}
+
+.add-simcard-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px dashed #717D96;
+    background-color: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #717D96;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.add-simcard-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.add-simcard-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Part 2 - Cost Summary */
+.part2 {
+    background-color: #CBD2E0;
+    padding: 20px;
+}
+
+@media (min-width: 1024px) {
+    .part2 {
+        width: 300px;
+        min-height: 100vh;
+        position: fixed;
+        right: 0;
+        top: 0;
+        padding: 30px 20px;
+    }
+}
+
+.cost-summary {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: sticky;
+    top: 20px;
+}
+
+.cost-summary h3 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2D3648;
+}
+
+.total-cost {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cost-label {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2D3648;
+    display: block;
+}
+
+.cost-period {
+    font-size: 12px;
+    color: #717D96;
+    margin-top: 5px;
+}
+
+.cost-breakdown {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 15px;
+    margin-bottom: 20px;
+}
+
+.discount-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #717D96;
+}
+
+.order-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #2D3648;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.order-btn:hover {
+    background-color: #1a2332;
+}
+
+/* Responsive adjustments */
+@media (min-width: 1024px) {
+    .part1 {
+        margin-right: 300px;
+    }
+}
+
+/* Hide scrollbar but keep functionality */
+.part1::-webkit-scrollbar {
+    width: 6px;
+}
+
+.part1::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.part1::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.part1::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
 }

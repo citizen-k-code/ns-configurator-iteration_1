@@ -1,16 +1,86 @@
+
 <!DOCTYPE html>
-<html>
-
+<html lang="nl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configureer je product</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
-  Hello world
-  <script src="script.js"></script>
-</body>
+    <div class="app-container">
+        <!-- Part 1: Product Configuration -->
+        <div class="part1" id="part1">
+            <h1>Configureer je product</h1>
+            
+            <!-- Internet Product Block -->
+            <div class="product-block" id="internet-block">
+                <div class="product-header">
+                    <div class="product-title">
+                        <span class="product-icon">📡</span>
+                        <span>Internet</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="internet-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="product-content" id="internet-content" style="display: none;">
+                    <div class="tooltip-link">Welke snelheid heb ik nodig?</div>
+                    <div class="tier-selector" id="internet-tiers"></div>
+                    <div class="tier-info" id="internet-info"></div>
+                </div>
+            </div>
 
+            <!-- Mobile Product Block -->
+            <div class="product-block" id="mobile-block">
+                <div class="product-header">
+                    <div class="product-title">
+                        <span class="product-icon">📱</span>
+                        <span>Mobiel</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="mobile-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="product-content" id="mobile-content" style="display: none;">
+                    <div class="tooltip-link">Hoeveel mobiele data heb ik nodig?</div>
+                    <div class="simcards-container" id="simcards-container"></div>
+                    <button class="add-simcard-btn" id="add-simcard-btn">
+                        ➕ Voeg 3e simkaart toe
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 2: Cost Summary -->
+        <div class="part2" id="part2">
+            <div class="cost-summary">
+                <h3>Maandelijkse kost</h3>
+                <div class="total-cost">
+                    <span class="cost-label">€ <span id="monthly-total">0,00</span></span>
+                    <span class="cost-period">Voor 3 maanden</span>
+                </div>
+                <div class="cost-breakdown">
+                    <div class="discount-line">
+                        <span>Voordeel deze maand: € 30,00</span>
+                    </div>
+                    <div class="discount-line">
+                        <span>Permanent promotion</span>
+                        <span>- € 10,00</span>
+                    </div>
+                    <div class="discount-line">
+                        <span>Temporary promotions</span>
+                        <span>- € 20,00</span>
+                    </div>
+                </div>
+                <button class="order-btn">Bestellen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
