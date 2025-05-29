@@ -71,7 +71,8 @@ class TelecomConfigurator {
 
     toggleProduct(productType, enabled) {
         this.state[productType].enabled = enabled;
-        const content = document.getElementById(`${productType}-content`);
+        const contentId = productType === 'fixedPhone' ? 'fixed-phone-content' : `${productType}-content`;
+        const content = document.getElementById(contentId);
         
         if (enabled) {
             content.style.display = 'block';
@@ -380,6 +381,11 @@ class TelecomConfigurator {
     updateFixedPhoneInfo() {
         const phoneData = this.data.products.fixedPhone;
         const infoContainer = document.getElementById('fixed-phone-info');
+        
+        if (!infoContainer) {
+            console.error('Fixed phone info container not found');
+            return;
+        }
         
         const summaryItems = phoneData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
         
