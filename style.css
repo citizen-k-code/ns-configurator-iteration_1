@@ -308,6 +308,24 @@ input:checked + .slider:before {
     color: #2D3648;
 }
 
+.strikethrough-cost {
+    text-align: center;
+    font-size: 16px;
+    color: #717D96;
+    text-decoration: line-through;
+    margin-bottom: 5px;
+}
+
+.advantage-block {
+    text-align: center;
+    background-color: #e8f5e8;
+    color: #2d5f2d;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
 .total-cost {
     text-align: center;
     margin-bottom: 20px;

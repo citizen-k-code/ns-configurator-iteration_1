@@ -68,11 +68,11 @@
   },
   "discounts": {
     "permanent": {
-      "amount": 10.00,
-      "description": "Voordeel deze maand"
+      "amount": 0.00,
+      "description": "Permanent promotion"
     },
     "temporary": {
-      "amount": 20.00,
+      "amount": 0.00,
       "description": "Temporary promotions"
     }
   }

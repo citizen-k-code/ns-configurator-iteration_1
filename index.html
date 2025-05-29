@@ -59,21 +59,22 @@
         <div class="part2" id="part2">
             <div class="cost-summary">
                 <h3>Maandelijkse kost</h3>
+                <div class="strikethrough-cost" id="strikethrough-cost" style="display: none;"></div>
                 <div class="total-cost">
                     <span class="cost-label">€ <span id="monthly-total">0,00</span></span>
                     <span class="cost-period">Voor 3 maanden</span>
                 </div>
+                <div class="advantage-block" id="advantage-block" style="display: none;">
+                    <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
+                </div>
                 <div class="cost-breakdown">
-                    <div class="discount-line">
-                        <span>Voordeel deze maand: € 30,00</span>
-                    </div>
-                    <div class="discount-line">
+                    <div class="discount-line" id="permanent-promotion" style="display: none;">
                         <span>Permanent promotion</span>
-                        <span>- € 10,00</span>
+                        <span id="permanent-amount">- € 0,00</span>
                     </div>
-                    <div class="discount-line">
+                    <div class="discount-line" id="temporary-promotion" style="display: none;">
                         <span>Temporary promotions</span>
-                        <span>- € 20,00</span>
+                        <span id="temporary-amount">- € 0,00</span>
                     </div>
                 </div>
                 <button class="order-btn">Bestellen</button>

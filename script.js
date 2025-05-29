@@ -119,7 +119,7 @@ class TelecomConfigurator {
             <div class="simcard">
                 <div class="simcard-header">
                     <div class="simcard-title">Simkaart ${index + 1}</div>
-                    ${index > 0 ? `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : ''}
+                    ${this.state.mobile.simcards.length > 1 && index > 0 ? `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : ''}
                 </div>
                 <div class="tier-selector">
                     ${this.data.products.mobile.tiers.map(tier => `
@@ -210,9 +210,48 @@ class TelecomConfigurator {
     updateCostSummary() {
         const total = this.calculateTotal();
         const discounts = this.data.discounts;
-        const finalTotal = Math.max(0, total - discounts.permanent.amount - discounts.temporary.amount);
+        const totalDiscounts = discounts.permanent.amount + discounts.temporary.amount;
+        const finalTotal = Math.max(0, total - totalDiscounts);
+        const hasDiscounts = totalDiscounts > 0 && total > 0;
         
+        // Update the monthly total
         document.getElementById('monthly-total').textContent = finalTotal.toFixed(2).replace('.', ',');
+        
+        // Update strikethrough price
+        const strikethroughElement = document.getElementById('strikethrough-cost');
+        if (hasDiscounts) {
+            strikethroughElement.style.display = 'block';
+            strikethroughElement.textContent = `€ ${total.toFixed(2).replace('.', ',')}`;
+        } else {
+            strikethroughElement.style.display = 'none';
+        }
+        
+        // Update advantage block
+        const advantageElement = document.getElementById('advantage-block');
+        if (hasDiscounts) {
+            advantageElement.style.display = 'block';
+            document.getElementById('advantage-amount').textContent = totalDiscounts.toFixed(2).replace('.', ',');
+        } else {
+            advantageElement.style.display = 'none';
+        }
+        
+        // Update permanent promotion
+        const permanentElement = document.getElementById('permanent-promotion');
+        if (hasDiscounts && discounts.permanent.amount > 0) {
+            permanentElement.style.display = 'flex';
+            document.getElementById('permanent-amount').textContent = `- € ${discounts.permanent.amount.toFixed(2).replace('.', ',')}`;
+        } else {
+            permanentElement.style.display = 'none';
+        }
+        
+        // Update temporary promotion
+        const temporaryElement = document.getElementById('temporary-promotion');
+        if (hasDiscounts && discounts.temporary.amount > 0) {
+            temporaryElement.style.display = 'flex';
+            document.getElementById('temporary-amount').textContent = `- € ${discounts.temporary.amount.toFixed(2).replace('.', ',')}`;
+        } else {
+            temporaryElement.style.display = 'none';
+        }
     }
 }
 
