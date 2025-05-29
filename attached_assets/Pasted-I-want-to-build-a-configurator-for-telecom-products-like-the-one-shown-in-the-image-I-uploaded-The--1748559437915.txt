@@ -1,0 +1,65 @@
+I want to build a configurator for telecom products like the one shown in the image I uploaded. The app consists of 2 big parts. Part 1 at the top is where a user can select the tier they would like for each product. Part 2 at the bottom is where we show the total monthly cost, including the calculation of all discounts. On mobile devices (in case the screewidth is smaller than 1024px) Part 1 is vertically stacked on top of Part 2. On desktop devices (screenwidth is wider or equal to 1024px) part 1 and part 2 are horizontally stacked, where part 2 has a fixed positioning and part 1 scrolls.
+
+Please help design the structure and make the app functional, including both front-end and back-end development. Here is some more information on the app, shown in the image:
+
+In part 1 we get an overview of all products: Internet and Mobile.
+
+Each product has its own block which can be turned on and off with a switch pattern. If turned off, we only show the title of the block, if turned on, the content of the block is shown.
+
+The content and functionality of each product block depends on the product. 
+
+For the internet product, these are the elements we need to show:
+
+- tooltip link showing more information about the Internet product, shown right below the product block title
+- a tab selector block with the 4 tiers a user can choose from. For each tier we show a title and a subtitle
+    - For tier 1: title = “500 Mb”, subtitle = “Basis”
+    - For tier 2: Title = “1 Gb”, subtitle = “Snel”
+    - For tier 3: Title = “2,5 Gb”, subtitle = “Supersnel”
+    - For tier 4: Title = “8,5 Gb”, subtitle = “Gigasnel”
+- by default tier 1 is selected
+- underneath the tab selector block we show extra information on the selceted the tier: a summary and a price. The price of the selected tier should be added to the total momthly cost which is shown in part 2
+- here is an overview of the summary and price for each tier of the internet block:
+    - Tier 1:
+        - summary: “500 Mbps downloadsnelheid, 50 Mbps uploadsnelheid, Onbeperkt downloadvolume”
+        - Price: € 45,00/maand
+    - Tier 2:
+        - summary: “1 Gbps downloadsnelheid, 100 Mbps uploadsnelheid, Onbeperkt downloadvolume”
+        - Price: € 65,00/maand
+    - Tier 3:
+        - summary: “2,5 Gbps downloadsnelheid, 250 Mbps uploadsnelheid, Onbeperkt downloadvolume”
+        - Price: € 75,00/maand
+    - Tier 4:
+        - summary: “8,5 Gbps downloadsnelheid, 500 Mbps uploadsnelheid, Onbeperkt downloadvolume”
+        - Price: € 90,00/maand
+
+For the mobile product, the structure but there are some differences:
+
+- within the mobile product, a user can add multiple simcards (up to 5). By default 1 simcard is shown from the moment the mobile product block is turned on. At the bottom of the mobile product block there is a button to add another simcard. Any simcard that has been added through this button can be deleted as well using the trashcan icon
+- For each simcard there is a tab selector block with the 3 tiers a user can choose from. For each tier we show a title and sometimes a subtitle:
+    - For tier 1: title = “Kids sim”, subtitle = “5GB Data”
+    - For tier 2: Title = “10 GB”, subtitle = “”
+    - For tier 3: Title = “Unlimited”, subtitle = “”
+- by default tier 2 is selected
+- underneath the tab selector block we show extra information on the selceted the tier: a summary and a price. The price of the selected tier should be added to the total momthly cost which is shown in part 2
+- here is an overview of the summary and price for each tier for the simcard block:
+    - Tier 1:
+        - summary: “5 GB mobiele data, 120 belminuten + onbeperkt sms'en, Parental control”
+        - Price: € 5,00/maand
+    - Tier 2:
+        - summary: “10 GB mobiele data, 250 Mbps max downloadsnelheid,Onbeperkt bellen en sms’en”
+        - Price: € 11,45/maand
+    - Tier 3:
+        - summary: “Onbeperkt mobiele data, 1 Gbps max downloadsnelheid, Onbeperkt bellen en sms’en”
+        - Price: € 18,95/maand
+
+From a styling perspective, we keep it very simple:
+
+- the dark blue colour mainly used is #2D3648
+- the grey colour is #717D96
+- the light grey colour, used as background for Part 2 is #CBD2E0
+- Teh font-used is Inter
+- Default font-size for mobile is 14px, for desktop it is 16px
+
+Make sure that all copy and prices for the tiers are stored in a separate JSON file so I can easily adapt it. Keep in mind that more Product blocks will be added to part 1 in the future.
+
+Please provide the code and instructions to integrate these features.
