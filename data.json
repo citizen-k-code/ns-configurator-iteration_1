@@ -169,6 +169,10 @@
       "description": "Temporary promotions"
     }
   },
+  "highlightBlock": {
+    "title": "Extra voordeel met Internet + Mobiel",
+    "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+  },
   "tooltips": {
     "internet": {
       "title": "Internet tooltip",

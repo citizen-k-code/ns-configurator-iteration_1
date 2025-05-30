@@ -24,6 +24,7 @@ class TelecomConfigurator {
     async init() {
         await this.loadData();
         this.setupEventListeners();
+        this.updateHighlightBlocks();
         this.updateCostSummary();
     }
 
@@ -108,6 +109,8 @@ class TelecomConfigurator {
             }
         }
 
+        // Update highlight blocks after any product toggle
+        this.updateHighlightBlocks();
         this.updateCostSummary();
     }
 
@@ -586,6 +589,37 @@ class TelecomConfigurator {
 
         // Restore body scroll
         document.body.style.overflow = '';
+    }
+
+    updateHighlightBlocks() {
+        const mobileContent = document.getElementById('mobile-content');
+        const mobileBlock = document.getElementById('mobile-block');
+        
+        // Remove existing highlight blocks
+        const existingHighlights = document.querySelectorAll('.highlight-block');
+        existingHighlights.forEach(block => block.remove());
+
+        // Check if permanent discount is not applied (no Internet + Mobile combination)
+        const shouldShowHighlight = !(this.state.internet.enabled && this.state.mobile.enabled);
+        
+        if (shouldShowHighlight) {
+            const highlightHtml = `
+                <div class="highlight-block">
+                    <div class="highlight-block-title">${this.data.highlightBlock.title}</div>
+                    <div class="highlight-block-content">${this.data.highlightBlock.content}</div>
+                </div>
+            `;
+
+            if (!this.state.mobile.enabled && !this.state.internet.enabled) {
+                // Mobile off, Internet off: Add to mobile block after header
+                const mobileHeader = mobileBlock.querySelector('.product-header');
+                mobileHeader.insertAdjacentHTML('afterend', highlightHtml);
+            } else if (this.state.mobile.enabled && !this.state.internet.enabled) {
+                // Mobile on, Internet off: Add to mobile content after tooltip link
+                const tooltipLink = mobileContent.querySelector('.tooltip-link');
+                tooltipLink.insertAdjacentHTML('afterend', highlightHtml);
+            }
+        }
     }
 }
 

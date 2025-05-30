@@ -433,6 +433,27 @@ input:checked + .slider:before {
     font-size: 16px;
 }
 
+/* Highlight Block */
+.highlight-block {
+    background-color: #EDF0F7;
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.highlight-block-title {
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.highlight-block-content {
+    color: #717D96;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
 /* Hide scrollbar but keep functionality */
 .part1::-webkit-scrollbar {
     width: 6px;
