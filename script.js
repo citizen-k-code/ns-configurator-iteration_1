@@ -27,6 +27,7 @@ class TelecomConfigurator {
         this.setupEventListeners();
         this.setupMobileSummaryObserver();
         this.updateHighlightBlocks();
+        this.updateProductHeaderStates();
         this.updateCostSummary();
     }
 
@@ -129,6 +130,63 @@ class TelecomConfigurator {
         fixedPhoneToggle.addEventListener('change', (e) => {
             this.toggleProduct('fixedPhone', e.target.checked);
         });
+
+        // Product header click listeners
+        this.setupProductHeaderListeners();
+    }
+
+    setupProductHeaderListeners() {
+        const products = [
+            { id: 'internet', headerSelector: '#internet-block .product-header', toggleSelector: '#internet-toggle' },
+            { id: 'mobile', headerSelector: '#mobile-block .product-header', toggleSelector: '#mobile-toggle' },
+            { id: 'tv', headerSelector: '#tv-block .product-header', toggleSelector: '#tv-toggle' },
+            { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' }
+        ];
+
+        products.forEach(product => {
+            const header = document.querySelector(product.headerSelector);
+            const toggle = document.querySelector(product.toggleSelector);
+            
+            if (header && toggle) {
+                header.addEventListener('click', (e) => {
+                    // Only handle header clicks if the product is disabled and click wasn't on the switch
+                    if (!this.state[product.id].enabled && !e.target.closest('.switch')) {
+                        toggle.checked = true;
+                        this.toggleProduct(product.id, true);
+                    }
+                });
+
+                // Prevent switch clicks from bubbling to header when product is enabled
+                const switchElement = header.querySelector('.switch');
+                if (switchElement) {
+                    switchElement.addEventListener('click', (e) => {
+                        if (this.state[product.id].enabled) {
+                            e.stopPropagation();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    updateProductHeaderStates() {
+        const products = [
+            { id: 'internet', headerSelector: '#internet-block .product-header' },
+            { id: 'mobile', headerSelector: '#mobile-block .product-header' },
+            { id: 'tv', headerSelector: '#tv-block .product-header' },
+            { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header' }
+        ];
+
+        products.forEach(product => {
+            const header = document.querySelector(product.headerSelector);
+            if (header) {
+                if (this.state[product.id].enabled) {
+                    header.classList.remove('clickable');
+                } else {
+                    header.classList.add('clickable');
+                }
+            }
+        });
     }
 
     toggleProduct(productType, enabled) {
@@ -173,6 +231,7 @@ class TelecomConfigurator {
 
         // Update highlight blocks after any product toggle
         this.updateHighlightBlocks();
+        this.updateProductHeaderStates();
         this.updateCostSummary();
     }
 
