@@ -8,7 +8,7 @@
           "id": 1,
           "title": "500 Mb",
           "subtitle": "Basis",
-          "summary": "500 Mbps downloadsnelheid, 50 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "summary": "<strong>500 Mbps</strong> downloadsnelheid, <strong>50 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 45.00,
           "discountCopy": {
             "temporaryOnly": "",
@@ -20,7 +20,7 @@
           "id": 2,
           "title": "1 Gb",
           "subtitle": "Snel",
-          "summary": "1 Gbps downloadsnelheid, 100 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "summary": "<strong>1 Gbps</strong> downloadsnelheid, <strong>100 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 65.00,
           "discountValue": 15.00,
           "discountPeriod": 6,
@@ -34,7 +34,7 @@
           "id": 3,
           "title": "2,5 Gb",
           "subtitle": "Supersnel",
-          "summary": "2,5 Gbps downloadsnelheid, 250 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "summary": "<strong>2,5 Gbps</strong> downloadsnelheid, <strong>250 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 75.00,
           "discountValue": 15.00,
           "discountPeriod": 6,
@@ -48,7 +48,7 @@
           "id": 4,
           "title": "8,5 Gb",
           "subtitle": "Gigasnel",
-          "summary": "8,5 Gbps downloadsnelheid, 500 Mbps uploadsnelheid, Onbeperkt downloadvolume",
+          "summary": "<strong>8,5 Gbps</strong> downloadsnelheid, <strong>500 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 90.00,
           "discountCopy": {
             "temporaryOnly": "",
@@ -67,7 +67,7 @@
           "id": 1,
           "title": "Kids sim",
           "subtitle": "5GB Data",
-          "summary": "5 GB mobiele data, 120 belminuten + onbeperkt sms'en, Parental control",
+          "summary": "<strong>5 GB</strong> mobiele data, <strong>120</strong> belminuten + onbeperkt sms'en, <strong>Parental</strong> control",
           "price": 5.00,
           "discountCopy": {
             "temporaryOnly": "Introductietarief",
@@ -79,7 +79,7 @@
           "id": 2,
           "title": "10 GB",
           "subtitle": "",
-          "summary": "10 GB mobiele data, 250 Mbps max downloadsnelheid, Onbeperkt bellen en sms'en",
+          "summary": "<strong>10 GB</strong> mobiele data, <strong>250 Mbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
           "price": 11.45,
           "discountValue": 3.45,
           "discountPeriod": 3,
@@ -93,7 +93,7 @@
           "id": 3,
           "title": "Unlimited",
           "subtitle": "",
-          "summary": "Onbeperkt mobiele data, 1 Gbps max downloadsnelheid, Onbeperkt bellen en sms'en",
+          "summary": "<strong>Onbeperkt</strong> mobiele data, <strong>1 Gbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
           "price": 18.95,
           "discountCopy": {
             "temporaryOnly": "",
@@ -108,7 +108,7 @@
     "tv": {
       "title": "TV",
       "tooltip": "Welke snelheid heb ik nodig?",
-      "summary": "<strong>90+</strong> kanalen, 7 dagen terugkijk TV, Inclusief tot 200 uur opnames in the cloud",
+      "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> terugkijk TV, Inclusief tot <strong>200 uur opnames</strong> in the cloud",
       "price": 14.00,
       "discountValue": 4.00,
       "discountPeriod": 6,
@@ -128,7 +128,7 @@
           {
             "id": 2,
             "title": "Ja, dat wil ik",
-            "summary": "Al je zenders en streamingdiensten op één plek, Een handige TV-gids en afstands-bediening, Gepersonaliseerde aanbevelingen over al jouw entertainment",
+            "summary": "Al je zenders en streamingdiensten <strong>op één plek</strong>, Een handige <strong>TV-gids</strong> en <strong>afstands-bediening</strong>, <strong>Gepersonaliseerde aanbevelingen</strong> over al jouw <strong>entertainment</strong>",
             "price": 5.00,
             "discountValue": 5.00,
             "discountPeriod": 3,
@@ -145,7 +145,7 @@
     "fixedPhone": {
       "title": "Vaste lijn",
       "tooltip": "",
-      "summary": "Gratis vaste lijn voor thuis, Huidig vast nummer behouden of een nieuw nummer aanvragen",
+      "summary": "<strong>Gratis</strong> vaste lijn voor thuis, Huidig <strong>vast nummer behouden</strong> of een nieuw nummer aanvragen",
       "price": 0.00,
       "discountCopy": {
         "temporaryOnly": "",
