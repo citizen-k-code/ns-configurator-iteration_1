@@ -17,7 +17,7 @@
           "subtitle": "Snel",
           "summary": "1 Gbps downloadsnelheid, 100 Mbps uploadsnelheid, Onbeperkt downloadvolume",
           "price": 65.00,
-          "discountPrice": 50.00,
+          "discountValue": 15.00,
           "discountInfo": "gedurende 6 maanden"
         },
         {
@@ -26,7 +26,7 @@
           "subtitle": "Supersnel",
           "summary": "2,5 Gbps downloadsnelheid, 250 Mbps uploadsnelheid, Onbeperkt downloadvolume",
           "price": 75.00,
-          "discountPrice": 60.00,
+          "discountValue": 15.00,
           "discountInfo": "gedurende 6 maanden"
         },
         {
@@ -56,7 +56,7 @@
           "subtitle": "",
           "summary": "10 GB mobiele data, 250 Mbps max downloadsnelheid, Onbeperkt bellen en sms'en",
           "price": 11.45,
-          "discountPrice": 8.00,
+          "discountValue": 3.45,
           "discountInfo": "gedurende 3 maanden"
         },
         {
@@ -75,7 +75,7 @@
       "tooltip": "Welke snelheid heb ik nodig?",
       "summary": "90+ kanalen, 7 dagen terugkijk TV, Inclusief tot 200 uur opnames in the cloud",
       "price": 14.00,
-      "discountPrice": 10.00,
+      "discountValue": 4.00,
       "discountInfo": "gedurende 6 maanden",
       "entertainmentBox": {
         "title": "Wil je een Entertainment Box?",
@@ -90,7 +90,7 @@
             "title": "Ja, dat wil ik",
             "summary": "Al je zenders en streamingdiensten op één plek, Een handige TV-gids en afstands-bediening, Gepersonaliseerde aanbevelingen over al jouw entertainment",
             "price": 5.00,
-            "discountPrice": 0.00,
+            "discountValue": 5.00,
             "discountInfo": "gedurende 6 maanden"
           }
         ],
@@ -106,8 +106,13 @@
   },
   "discounts": {
     "permanent": {
-      "amount": 0.00,
-      "description": "Permanent promotion"
+      "enabled": true,
+      "percentage": 50,
+      "description": "Permanent promotion",
+      "conditions": {
+        "requiresInternet": true,
+        "applicableToTiers": [2, 3]
+      }
     },
     "temporary": {
       "amount": 0.00,
