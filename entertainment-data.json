@@ -1,0 +1,76 @@
+
+{
+  "entertainment": {
+    "netflix": {
+      "title": "Netflix",
+      "tiers": [
+        {
+          "id": 1,
+          "title": "Basic",
+          "summary": "Max. 1 scherm, Kijk in HD-kwaliteit, Download op 1 apparaat",
+          "price": 9.99
+        },
+        {
+          "id": 2,
+          "title": "Standaard",
+          "summary": "Max. 2 schermen, Kijk in Full HD-kwaliteit, Download op 2 apparaten",
+          "price": 14.99
+        },
+        {
+          "id": 3,
+          "title": "Premium",
+          "summary": "Max. 4 schermen, Kijk in Ultra HD-kwaliteit, Download op 6 apparaten",
+          "price": 19.99
+        }
+      ],
+      "defaultTier": 1
+    },
+    "streamz": {
+      "title": "Streamz",
+      "tiers": [
+        {
+          "id": 1,
+          "title": "Basic",
+          "summary": "Max. 1 scherm, Max. 2 kijkprofielen, Met reclame, Geen downloads",
+          "price": 8.99
+        },
+        {
+          "id": 2,
+          "title": "Premium",
+          "summary": "Max. 4 schermen, Max. 5 kijkprofielen, Zonder reclame, Downloaden en offline kijken",
+          "price": 13.99
+        },
+        {
+          "id": 3,
+          "title": "Premium+",
+          "summary": "Alles van Streamz Premium, Toegang tot recente blockbusters, Zonder reclame, Downloaden en offline kijken",
+          "price": 21.99
+        }
+      ],
+      "defaultTier": 1
+    },
+    "disney": {
+      "title": "Disney+",
+      "summary": "Info line 1, Info line 2",
+      "price": 13.99
+    },
+    "sport": {
+      "title": "Sport",
+      "summary": "Volg alle populaire sporten live, zowel uit België als internationaal, Voetbal - NBA - Tennis",
+      "price": 15.99
+    },
+    "cinema": {
+      "title": "Cinema",
+      "summary": "De laatste kaskrakers, 3 extra filmkanalen met non-stop film",
+      "price": 26.99
+    }
+  },
+  "discounts": {
+    "entertainment_combo": {
+      "enabled": true,
+      "percentage": 5,
+      "description": "5% discount on entertainment products when 2 or more are selected",
+      "minProducts": 2
+    }
+  }
+}

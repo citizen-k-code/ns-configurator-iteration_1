@@ -1,0 +1,158 @@
+
+/* Entertainment page specific styles */
+.intro-text {
+    font-size: 16px;
+    color: #717D96;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.discount-info-block {
+    background-color: #e8f5e8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.discount-info-title {
+    font-weight: 600;
+    color: #2d5f2d;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.discount-info-content {
+    font-size: 13px;
+    color: #2d5f2d;
+    line-height: 1.4;
+}
+
+/* Entertainment card specific styles */
+.entertainment-card .product-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.product-icon-square {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.netflix-icon {
+    background-color: #E50914;
+}
+
+.streamz-icon {
+    background-color: #00D4FF;
+    color: #000;
+}
+
+.disney-icon {
+    background-color: #113CCF;
+}
+
+.sport-icon {
+    background-color: #FF6B35;
+}
+
+.cinema-icon {
+    background-color: #8B5CF6;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+.product-subtitle {
+    font-size: 14px;
+    color: #717D96;
+    margin-top: 2px;
+    line-height: 1.2;
+}
+
+/* Update tier selector for entertainment */
+.entertainment-card .tier-selector {
+    margin-bottom: 16px;
+}
+
+.entertainment-card .tier-option {
+    min-width: 100px;
+    padding: 10px 12px;
+}
+
+.entertainment-card .tier-title {
+    font-size: 14px;
+}
+
+/* Cost summary updates */
+.cost-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0 15px;
+}
+
+.final-cost-section {
+    margin-bottom: 20px;
+}
+
+.final-cost-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.final-cost-label {
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.final-cost-value {
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.activation-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #717D96;
+}
+
+/* Mobile responsive adjustments for entertainment cards */
+@media (max-width: 1023px) {
+    .entertainment-card .product-header {
+        padding: 16px 20px;
+    }
+    
+    .product-icon-square {
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
+    }
+    
+    .product-name {
+        font-size: 16px;
+    }
+    
+    .product-subtitle {
+        font-size: 13px;
+    }
+}
