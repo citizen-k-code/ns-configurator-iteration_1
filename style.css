@@ -21,6 +21,8 @@ body {
 @media (min-width: 1024px) {
     .app-container {
         flex-direction: row;
+        max-width: 1460px;
+        margin: 0 auto;
     }
 }
 
@@ -36,6 +38,8 @@ body {
         overflow-y: auto;
         height: 100vh;
         padding: 30px;
+        max-width: 1140px;
+        flex: 1;
     }
 }
 
@@ -335,12 +339,10 @@ input:checked+.slider:before {
 
 @media (min-width: 1024px) {
     .part2 {
-        width: 300px;
+        width: 320px;
         min-height: 100vh;
-        position: fixed;
-        right: 0;
-        top: 0;
         padding: 30px 20px;
+        flex-shrink: 0;
     }
 }
 
@@ -435,11 +437,6 @@ input:checked+.slider:before {
 }
 
 /* Responsive adjustments */
-@media (min-width: 1024px) {
-    .part1 {
-        margin-right: 300px;
-    }
-}
 
 /* Entertainment Box Section */
 .section-divider {
