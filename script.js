@@ -216,7 +216,11 @@ class TelecomConfigurator {
             let discountCopy = '';
             
             if (permanentDiscountAmount > 0 && temporaryDiscountAmount > 0) {
-                discountCopy = tier.discountCopy.both;
+                // Calculate price after temporary discount ends (only permanent discount applied)
+                const priceAfterTemp = tier.price - permanentDiscountAmount;
+                discountCopy = tier.discountCopy.both
+                    .replace('##MONTHS##', tier.discountPeriod)
+                    .replace('##NEWPRICE##', `€ ${priceAfterTemp.toFixed(2).replace('.', ',')}`);
             } else if (permanentDiscountAmount > 0) {
                 discountCopy = tier.discountCopy.permanentOnly;
             } else if (temporaryDiscountAmount > 0) {
