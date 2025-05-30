@@ -164,6 +164,14 @@ input:checked+.slider:before {
     overflow-x: auto;
 }
 
+.simcard .tier-selector {
+    padding: 0 20px;
+}
+
+.simcard .tier-info {
+    margin: 0 20px 20px;
+}
+
 .tier-option {
     flex: 1;
     min-width: 80px;
@@ -263,7 +271,7 @@ input:checked+.slider:before {
 /* Simcard specific styles */
 .simcard {
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 0;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     background-color: #f8f9fa;
@@ -275,6 +283,7 @@ input:checked+.slider:before {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    padding: 20px 20px 0;
 }
 
 .simcard-title {
