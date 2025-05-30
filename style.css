@@ -169,7 +169,7 @@ input:checked+.slider:before {
 }
 
 .simcard .tier-info {
-    margin: 0 20px 20px;
+    padding: 0 20px 20px
 }
 
 .tier-option {
@@ -212,9 +212,11 @@ input:checked+.slider:before {
 
 /* Tier Info */
 .tier-info {
+    /*
     background-color: #f8f9fa;
     padding: 16px;
     border-radius: 6px;
+    */
 }
 
 .tier-details {
