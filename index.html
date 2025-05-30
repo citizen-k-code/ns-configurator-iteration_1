@@ -124,6 +124,23 @@
         </div>
     </div>
 
+    <!-- Fixed Bottom Mobile Summary -->
+    <div class="mobile-bottom-summary" id="mobile-bottom-summary">
+        <div class="mobile-summary-content">
+            <div class="mobile-cost-section" onclick="app.scrollToMainSummary()">
+                <div class="mobile-strikethrough" id="mobile-strikethrough" style="display: none;"></div>
+                <div class="mobile-monthly-cost">
+                    <span>€ <span id="mobile-monthly-total">0,00</span></span>
+                    <span class="mobile-cost-label">mnd</span>
+                </div>
+                <div class="mobile-advantage" id="mobile-advantage" style="display: none;">
+                    <span>je bespaart € <span id="mobile-advantage-amount">0,00</span></span>
+                </div>
+            </div>
+            <button class="mobile-order-btn">Bestellen</button>
+        </div>
+    </div>
+
     <!-- Tooltip Sheet Overlay -->
     <div class="sheet-overlay" id="sheet-overlay" style="display: none;" onclick="app.closeTooltipSheet()">
         <div class="tooltip-sheet" id="tooltip-sheet" onclick="event.stopPropagation()">

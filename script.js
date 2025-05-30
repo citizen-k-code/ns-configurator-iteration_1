@@ -24,6 +24,7 @@ class TelecomConfigurator {
     async init() {
         await this.loadData();
         this.setupEventListeners();
+        this.setupMobileSummaryObserver();
         this.updateHighlightBlocks();
         this.updateCostSummary();
     }
@@ -513,6 +514,70 @@ class TelecomConfigurator {
             document.getElementById('temporary-amount').textContent = `- € ${totalTemporaryDiscount.toFixed(2).replace('.', ',')}`;
         } else {
             temporaryElement.style.display = 'none';
+        }
+
+        // Update mobile summary
+        this.updateMobileSummary();
+    }
+
+    updateMobileSummary() {
+        const { total, totalDiscount } = this.calculateTotal();
+        const hasDiscounts = totalDiscount > 0;
+        const originalTotal = total + totalDiscount;
+
+        // Update mobile monthly total
+        document.getElementById('mobile-monthly-total').textContent = total.toFixed(2).replace('.', ',');
+
+        // Update mobile strikethrough price
+        const mobileStrikethroughElement = document.getElementById('mobile-strikethrough');
+        if (hasDiscounts) {
+            mobileStrikethroughElement.style.display = 'block';
+            mobileStrikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
+        } else {
+            mobileStrikethroughElement.style.display = 'none';
+        }
+
+        // Update mobile advantage
+        const mobileAdvantageElement = document.getElementById('mobile-advantage');
+        if (hasDiscounts) {
+            mobileAdvantageElement.style.display = 'block';
+            document.getElementById('mobile-advantage-amount').textContent = totalDiscount.toFixed(2).replace('.', ',');
+        } else {
+            mobileAdvantageElement.style.display = 'none';
+        }
+    }
+
+    setupMobileSummaryObserver() {
+        const mainSummary = document.getElementById('part2');
+        const mobileSummary = document.getElementById('mobile-bottom-summary');
+
+        if (!mainSummary || !mobileSummary) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Main summary is visible, hide mobile summary
+                    mobileSummary.classList.add('hidden');
+                } else {
+                    // Main summary is not visible, show mobile summary
+                    mobileSummary.classList.remove('hidden');
+                }
+            });
+        }, {
+            threshold: 0.1, // Trigger when 10% of the element is visible
+            rootMargin: '0px 0px -50px 0px' // Account for some margin
+        });
+
+        observer.observe(mainSummary);
+    }
+
+    scrollToMainSummary() {
+        const mainSummary = document.getElementById('part2');
+        if (mainSummary) {
+            mainSummary.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
     }
 
