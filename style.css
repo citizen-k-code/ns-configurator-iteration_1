@@ -441,3 +441,131 @@ input:checked + .slider:before {
 .part1::-webkit-scrollbar-thumb:hover {
     background: #a1a1a1;
 }
+
+/* Tooltip Sheet Styles */
+.sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.tooltip-sheet {
+    background-color: white;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease-out;
+}
+
+.sheet-header {
+    padding: 16px 20px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sheet-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #717D96;
+    cursor: pointer;
+    padding: 8px;
+    line-height: 1;
+}
+
+.sheet-close-btn:hover {
+    color: #2D3648;
+}
+
+.sheet-content {
+    flex: 1;
+    padding: 0 20px;
+    overflow-y: auto;
+}
+
+.sheet-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 16px;
+}
+
+.sheet-body {
+    color: #717D96;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.sheet-footer {
+    padding: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.sheet-close-footer-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #2D3648;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sheet-close-footer-btn:hover {
+    background-color: #1a2332;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+    .sheet-overlay {
+        align-items: center;
+        justify-content: flex-end;
+    }
+    
+    .tooltip-sheet {
+        width: 540px;
+        max-width: 540px;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        animation: slideLeft 0.3s ease-out;
+    }
+    
+    .sheet-content {
+        padding: 0 30px;
+    }
+    
+    .sheet-footer {
+        padding: 30px;
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}

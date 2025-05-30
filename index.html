@@ -27,7 +27,7 @@
                     </label>
                 </div>
                 <div class="product-content" id="internet-content" style="display: none;">
-                    <div class="tooltip-link">Welke snelheid heb ik nodig?</div>
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('internet')">Welke snelheid heb ik nodig?</div>
                     <div class="tier-selector" id="internet-tiers"></div>
                     <div class="tier-info" id="internet-info"></div>
                 </div>
@@ -46,7 +46,7 @@
                     </label>
                 </div>
                 <div class="product-content" id="mobile-content" style="display: none;">
-                    <div class="tooltip-link">Hoeveel mobiele data heb ik nodig?</div>
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik nodig?</div>
                     <div class="simcards-container" id="simcards-container"></div>
                     <button class="add-simcard-btn" id="add-simcard-btn">
                         ➕ Voeg 3e simkaart toe
@@ -67,12 +67,12 @@
                     </label>
                 </div>
                 <div class="product-content" id="tv-content" style="display: none;">
-                    <div class="tooltip-link">Welke snelheid heb ik nodig?</div>
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?</div>
                     <div class="tier-info" id="tv-info"></div>
                     <div class="entertainment-box-section" id="entertainment-box-section">
                         <hr class="section-divider">
                         <div class="entertainment-box-title">Wil je een Entertainment Box?</div>
-                        <div class="tooltip-link">Ontdek onze Entertainment Box met Entertainment Services</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Ontdek onze Entertainment Box met Entertainment Services</div>
                         <div class="tier-selector" id="entertainment-box-tiers"></div>
                         <div class="tier-info" id="entertainment-box-info"></div>
                     </div>
@@ -120,6 +120,22 @@
                     </div>
                 </div>
                 <button class="order-btn">Bestellen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip Sheet Overlay -->
+    <div class="sheet-overlay" id="sheet-overlay" style="display: none;" onclick="app.closeTooltipSheet()">
+        <div class="tooltip-sheet" id="tooltip-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeTooltipSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title" id="sheet-title"></h3>
+                <div class="sheet-body" id="sheet-body"></div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.closeTooltipSheet()">Sluiten</button>
             </div>
         </div>
     </div>

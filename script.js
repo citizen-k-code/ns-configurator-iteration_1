@@ -1,4 +1,3 @@
-
 class TelecomConfigurator {
     constructor() {
         this.data = null;
@@ -73,7 +72,7 @@ class TelecomConfigurator {
         this.state[productType].enabled = enabled;
         const contentId = productType === 'fixedPhone' ? 'fixed-phone-content' : `${productType}-content`;
         const content = document.getElementById(contentId);
-        
+
         if (enabled) {
             content.style.display = 'block';
             if (productType === 'internet') {
@@ -108,14 +107,14 @@ class TelecomConfigurator {
                 }
             }
         }
-        
+
         this.updateCostSummary();
     }
 
     renderInternetTiers() {
         const tiersContainer = document.getElementById('internet-tiers');
         const tiers = this.data.products.internet.tiers;
-        
+
         tiersContainer.innerHTML = tiers.map(tier => `
             <div class="tier-option ${tier.id === this.state.internet.selectedTier ? 'active' : ''}" 
                  onclick="app.selectInternetTier(${tier.id})">
@@ -139,9 +138,9 @@ class TelecomConfigurator {
     updateInternetInfo() {
         const tier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
         const infoContainer = document.getElementById('internet-info');
-        
+
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-        
+
         let priceHtml;
         if (tier.discountValue) {
             const discountPrice = tier.price - tier.discountValue;
@@ -155,7 +154,7 @@ class TelecomConfigurator {
         } else {
             priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
-        
+
         infoContainer.innerHTML = `
             <ul class="tier-details">
                 ${summaryItems}
@@ -167,7 +166,7 @@ class TelecomConfigurator {
     renderMobileSimcards() {
         const container = document.getElementById('simcards-container');
         const addBtn = document.getElementById('add-simcard-btn');
-        
+
         container.innerHTML = this.state.mobile.simcards.map((simcard, index) => `
             <div class="simcard">
                 <div class="simcard-header">
@@ -188,11 +187,11 @@ class TelecomConfigurator {
                 </div>
             </div>
         `).join('');
-        
+
         // Update add button text and state
         const simcardCount = this.state.mobile.simcards.length;
         const maxSimcards = this.data.products.mobile.maxSimcards;
-        
+
         if (simcardCount >= maxSimcards) {
             addBtn.style.display = 'none';
         } else {
@@ -204,10 +203,10 @@ class TelecomConfigurator {
     getMobileTierInfo(tierId, simcardIndex = 0) {
         const tier = this.data.products.mobile.tiers.find(t => t.id === tierId);
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-        
+
         let priceHtml;
         const hasDiscount = this.calculateMobileDiscount(tier, simcardIndex).hasDiscount;
-        
+
         if (hasDiscount) {
             const { finalPrice } = this.calculateMobileDiscount(tier, simcardIndex);
             priceHtml = `
@@ -220,7 +219,7 @@ class TelecomConfigurator {
         } else {
             priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
-        
+
         return `
             <ul class="tier-details">
                 ${summaryItems}
@@ -263,23 +262,23 @@ class TelecomConfigurator {
                                     isInternetEnabled && 
                                     permanentDiscount.conditions.applicableToTiers.includes(tier.id);
         const hasTemporaryDiscount = tier.discountValue && simcardIndex >= 1;
-        
+
         let finalPrice = tier.price;
         let permanentDiscountAmount = 0;
         let temporaryDiscountAmount = 0;
-        
+
         // Apply permanent discount first
         if (isPermanentApplicable) {
             permanentDiscountAmount = tier.price * (permanentDiscount.percentage / 100);
             finalPrice = tier.price - permanentDiscountAmount;
         }
-        
+
         // Apply temporary discount to the price after permanent discount
         if (hasTemporaryDiscount) {
             temporaryDiscountAmount = tier.discountValue;
             finalPrice = finalPrice - temporaryDiscountAmount;
         }
-        
+
         return {
             hasDiscount: isPermanentApplicable || hasTemporaryDiscount,
             finalPrice: Math.max(0, finalPrice),
@@ -293,7 +292,7 @@ class TelecomConfigurator {
         let total = 0;
         let totalPermanentDiscount = 0;
         let totalTemporaryDiscount = 0;
-        
+
         // Internet cost
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
@@ -304,19 +303,19 @@ class TelecomConfigurator {
                 total += internetTier.price;
             }
         }
-        
+
         // Mobile costs
         if (this.state.mobile.enabled) {
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 const discountCalc = this.calculateMobileDiscount(mobileTier, index);
-                
+
                 total += discountCalc.finalPrice;
                 totalPermanentDiscount += discountCalc.permanentDiscountAmount;
                 totalTemporaryDiscount += discountCalc.temporaryDiscountAmount;
             });
         }
-        
+
         // TV cost
         if (this.state.tv.enabled) {
             const tvData = this.data.products.tv;
@@ -326,7 +325,7 @@ class TelecomConfigurator {
             } else {
                 total += tvData.price;
             }
-            
+
             // Entertainment Box cost
             const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
             if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
@@ -338,15 +337,15 @@ class TelecomConfigurator {
                 }
             }
         }
-        
+
         // Fixed Phone cost
         if (this.state.fixedPhone.enabled) {
             const phoneData = this.data.products.fixedPhone;
             total += phoneData.price;
         }
-        
+
         const totalDiscount = totalPermanentDiscount + totalTemporaryDiscount;
-        
+
         return { 
             total, 
             totalDiscount, 
@@ -358,9 +357,9 @@ class TelecomConfigurator {
     updateTvInfo() {
         const tvData = this.data.products.tv;
         const infoContainer = document.getElementById('tv-info');
-        
+
         const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-        
+
         let priceHtml;
         if (tvData.discountValue) {
             const discountPrice = tvData.price - tvData.discountValue;
@@ -374,7 +373,7 @@ class TelecomConfigurator {
         } else {
             priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
-        
+
         infoContainer.innerHTML = `
             <ul class="tier-details">
                 ${summaryItems}
@@ -386,14 +385,14 @@ class TelecomConfigurator {
     renderEntertainmentBoxTiers() {
         const tiersContainer = document.getElementById('entertainment-box-tiers');
         const tiers = this.data.products.tv.entertainmentBox.tiers;
-        
+
         tiersContainer.innerHTML = tiers.map(tier => `
             <div class="tier-option ${tier.id === this.state.tv.entertainmentBoxTier ? 'active' : ''}" 
                  onclick="app.selectEntertainmentBoxTier(${tier.id})">
                 <div class="tier-title">${tier.title}</div>
             </div>
         `).join('');
-        
+
         this.updateEntertainmentBoxInfo();
     }
 
@@ -406,10 +405,10 @@ class TelecomConfigurator {
     updateEntertainmentBoxInfo() {
         const tier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
         const infoContainer = document.getElementById('entertainment-box-info');
-        
+
         if (tier.summary) {
             const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-            
+
             let priceHtml;
             if (tier.discountValue !== undefined) {
                 const discountPrice = tier.price - tier.discountValue;
@@ -423,7 +422,7 @@ class TelecomConfigurator {
             } else {
                 priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
             }
-            
+
             infoContainer.innerHTML = `
                 <ul class="tier-details">
                     ${summaryItems}
@@ -438,14 +437,14 @@ class TelecomConfigurator {
     updateFixedPhoneInfo() {
         const phoneData = this.data.products.fixedPhone;
         const infoContainer = document.getElementById('fixed-phone-info');
-        
+
         if (!infoContainer) {
             console.error('Fixed phone info container not found');
             return;
         }
-        
+
         const summaryItems = phoneData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-        
+
         infoContainer.innerHTML = `
             <ul class="tier-details">
                 ${summaryItems}
@@ -458,10 +457,10 @@ class TelecomConfigurator {
         const { total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount } = this.calculateTotal();
         const hasDiscounts = totalDiscount > 0;
         const originalTotal = total + totalDiscount;
-        
+
         // Update the monthly total
         document.getElementById('monthly-total').textContent = total.toFixed(2).replace('.', ',');
-        
+
         // Update strikethrough price
         const strikethroughElement = document.getElementById('strikethrough-cost');
         if (hasDiscounts) {
@@ -470,7 +469,7 @@ class TelecomConfigurator {
         } else {
             strikethroughElement.style.display = 'none';
         }
-        
+
         // Update advantage block
         const advantageElement = document.getElementById('advantage-block');
         if (hasDiscounts) {
@@ -479,7 +478,7 @@ class TelecomConfigurator {
         } else {
             advantageElement.style.display = 'none';
         }
-        
+
         // Show permanent promotion if applicable
         const permanentElement = document.getElementById('permanent-promotion');
         if (totalPermanentDiscount > 0) {
@@ -488,7 +487,7 @@ class TelecomConfigurator {
         } else {
             permanentElement.style.display = 'none';
         }
-        
+
         // Show temporary promotions if applicable
         const temporaryElement = document.getElementById('temporary-promotion');
         if (totalTemporaryDiscount > 0) {
@@ -497,6 +496,31 @@ class TelecomConfigurator {
         } else {
             temporaryElement.style.display = 'none';
         }
+    }
+
+    openTooltipSheet(tooltipKey) {
+        const tooltipData = this.data.tooltips[tooltipKey];
+        if (!tooltipData) return;
+
+        const overlay = document.getElementById('sheet-overlay');
+        const title = document.getElementById('sheet-title');
+        const body = document.getElementById('sheet-body');
+
+        title.innerHTML = tooltipData.title;
+        body.innerHTML = tooltipData.content;
+
+        overlay.style.display = 'flex';
+
+        // Prevent body scroll when sheet is open
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeTooltipSheet() {
+        const overlay = document.getElementById('sheet-overlay');
+        overlay.style.display = 'none';
+
+        // Restore body scroll
+        document.body.style.overflow = '';
     }
 }
 

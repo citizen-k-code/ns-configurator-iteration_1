@@ -118,5 +118,23 @@
       "amount": 0.00,
       "description": "Temporary promotions"
     }
+  },
+  "tooltips": {
+    "internet": {
+      "title": "Internet tooltip",
+      "content": "Internet content"
+    },
+    "mobile": {
+      "title": "Hoeveel mobiele data heb ik nodig",
+      "content": "Meer informatie ivm hoeveel mobiele data een gebruiker nodig heeft"
+    },
+    "tv_main": {
+      "title": "Meer over TV",
+      "content": "Meer informatie over hoe je naar TV kan kijken en welke zenders inbegrepen zijn"
+    },
+    "tv_entertainment": {
+      "title": "Meer over onze Entertainment Box",
+      "content": "Meer informatie over onze Entertainment box, en wat je er allemaal mee kan doen."
+    }
   }
 }
