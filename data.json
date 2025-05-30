@@ -11,9 +11,9 @@
           "summary": "500 Mbps downloadsnelheid, 50 Mbps uploadsnelheid, Onbeperkt downloadvolume",
           "price": 45.00,
           "discountCopy": {
-            "temporaryOnly": "Introductietarief",
-            "permanentOnly": "Permanente korting",
-            "both": "Permanente korting + introductietarief"
+            "temporaryOnly": "",
+            "permanentOnly": "",
+            "both": ""
           }
         },
         {
@@ -25,9 +25,9 @@
           "discountValue": 15.00,
           "discountPeriod": 6,
           "discountCopy": {
-            "temporaryOnly": "Introductietarief gedurende 6 maanden",
-            "permanentOnly": "Permanente korting",
-            "both": "Permanente korting + introductietarief gedurende 6 maanden"
+            "temporaryOnly": "gedurende 6 maanden",
+            "permanentOnly": "",
+            "both": ""
           }
         },
         {
@@ -39,9 +39,9 @@
           "discountValue": 15.00,
           "discountPeriod": 6,
           "discountCopy": {
-            "temporaryOnly": "Introductietarief gedurende 6 maanden",
-            "permanentOnly": "Permanente korting",
-            "both": "Permanente korting + introductietarief gedurende 6 maanden"
+            "temporaryOnly": "gedurende 6 maanden",
+            "permanentOnly": "",
+            "both": ""
           }
         },
         {
@@ -51,9 +51,9 @@
           "summary": "8,5 Gbps downloadsnelheid, 500 Mbps uploadsnelheid, Onbeperkt downloadvolume",
           "price": 90.00,
           "discountCopy": {
-            "temporaryOnly": "Introductietarief",
-            "permanentOnly": "Permanente korting",
-            "both": "Permanente korting + introductietarief"
+            "temporaryOnly": "",
+            "permanentOnly": "",
+            "both": ""
           }
         }
       ],
@@ -84,9 +84,9 @@
           "discountValue": 3.45,
           "discountPeriod": 3,
           "discountCopy": {
-            "temporaryOnly": "Introductietarief gedurende 3 maanden",
-            "permanentOnly": "Permanente korting",
-            "both": "Permanente korting + introductietarief gedurende 3 maanden"
+            "temporaryOnly": "gedurende 3 maanden",
+            "permanentOnly": "50% combovoordeel",
+            "both": "gedurende ##MONTHS## maanden<br />Daarna ##NEWPRICE## met 50% combovoordeel"
           }
         },
         {
@@ -96,9 +96,9 @@
           "summary": "Onbeperkt mobiele data, 1 Gbps max downloadsnelheid, Onbeperkt bellen en sms'en",
           "price": 18.95,
           "discountCopy": {
-            "temporaryOnly": "Introductietarief",
-            "permanentOnly": "Permanente korting",
-            "both": "Permanente korting + introductietarief"
+            "temporaryOnly": "",
+            "permanentOnly": "50% combovoordeel",
+            "both": ""
           }
         }
       ],
@@ -113,9 +113,9 @@
       "discountValue": 4.00,
       "discountPeriod": 6,
       "discountCopy": {
-        "temporaryOnly": "Introductietarief gedurende 6 maanden",
-        "permanentOnly": "Permanente korting",
-        "both": "Permanente korting + introductietarief gedurende 6 maanden"
+        "temporaryOnly": "gedurende 6 maanden",
+        "permanentOnly": "",
+        "both": ""
       },
       "entertainmentBox": {
         "title": "Wil je een Entertainment Box?",
@@ -131,11 +131,11 @@
             "summary": "Al je zenders en streamingdiensten op één plek, Een handige TV-gids en afstands-bediening, Gepersonaliseerde aanbevelingen over al jouw entertainment",
             "price": 5.00,
             "discountValue": 5.00,
-            "discountPeriod": 6,
+            "discountPeriod": 3,
             "discountCopy": {
-              "temporaryOnly": "Introductietarief gedurende 6 maanden",
-              "permanentOnly": "Permanente korting",
-              "both": "Permanente korting + introductietarief gedurende 6 maanden"
+              "temporaryOnly": "gedurende 3 maanden",
+              "permanentOnly": "",
+              "both": ""
             }
           }
         ],
@@ -148,9 +148,9 @@
       "summary": "Gratis vaste lijn voor thuis, Huidig vast nummer behouden of een nieuw nummer aanvragen",
       "price": 0.00,
       "discountCopy": {
-        "temporaryOnly": "Introductietarief",
-        "permanentOnly": "Permanente korting",
-        "both": "Permanente korting + introductietarief"
+        "temporaryOnly": "",
+        "permanentOnly": "",
+        "both": ""
       }
     }
   },
