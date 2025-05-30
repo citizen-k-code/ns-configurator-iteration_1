@@ -80,6 +80,10 @@ class TelecomConfigurator {
                 this.renderInternetTiers();
                 this.state.internet.selectedTier = this.data.products.internet.defaultTier;
                 this.updateInternetInfo();
+                // Re-render mobile simcards to update pricing based on permanent discounts
+                if (this.state.mobile.enabled) {
+                    this.renderMobileSimcards();
+                }
             } else if (productType === 'mobile') {
                 this.state.mobile.simcards = [{
                     id: 1,
@@ -97,6 +101,11 @@ class TelecomConfigurator {
             content.style.display = 'none';
             if (productType === 'mobile') {
                 this.state.mobile.simcards = [];
+            } else if (productType === 'internet') {
+                // Re-render mobile simcards to update pricing when Internet is disabled
+                if (this.state.mobile.enabled) {
+                    this.renderMobileSimcards();
+                }
             }
         }
         
@@ -120,6 +129,10 @@ class TelecomConfigurator {
         this.state.internet.selectedTier = tierId;
         this.renderInternetTiers();
         this.updateInternetInfo();
+        // Re-render mobile simcards to update pricing based on permanent discounts
+        if (this.state.mobile.enabled) {
+            this.renderMobileSimcards();
+        }
         this.updateCostSummary();
     }
 
