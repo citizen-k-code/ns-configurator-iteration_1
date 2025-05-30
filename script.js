@@ -425,32 +425,38 @@ class TelecomConfigurator {
         const tier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
         const infoContainer = document.getElementById('entertainment-box-info');
 
-        if (tier.summary) {
-            const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        // Hide the info container if "Nee bedankt" (tier 1) is selected or if no summary exists
+        if (tier.id === 1 || !tier.summary) {
+            infoContainer.style.display = 'none';
+            infoContainer.innerHTML = '';
+            return;
+        }
 
-            let priceHtml;
-            if (tier.discountValue !== undefined) {
-                const discountPrice = tier.price - tier.discountValue;
-                priceHtml = `
-                    <div class="tier-price-container">
-                        <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
-                        <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                        <div class="discount-info">${tier.discountCopy.temporaryOnly}</div>
-                    </div>
-                `;
-            } else {
-                priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
-            }
+        // Show the info container and populate it
+        infoContainer.style.display = 'block';
+        
+        const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
-            infoContainer.innerHTML = `
-                <ul class="tier-details">
-                    ${summaryItems}
-                </ul>
-                ${priceHtml}
+        let priceHtml;
+        if (tier.discountValue !== undefined) {
+            const discountPrice = tier.price - tier.discountValue;
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                    <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="discount-info">${tier.discountCopy.temporaryOnly}</div>
+                </div>
             `;
         } else {
-            infoContainer.innerHTML = '';
+            priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
+
+        infoContainer.innerHTML = `
+            <ul class="tier-details">
+                ${summaryItems}
+            </ul>
+            ${priceHtml}
+        `;
     }
 
     updateFixedPhoneInfo() {
