@@ -23,6 +23,7 @@ class TelecomConfigurator {
 
     async init() {
         await this.loadData();
+        this.parseUrlParameters();
         this.setupEventListeners();
         this.setupMobileSummaryObserver();
         this.updateHighlightBlocks();
@@ -35,6 +36,66 @@ class TelecomConfigurator {
             this.data = await response.json();
         } catch (error) {
             console.error('Error loading data:', error);
+        }
+    }
+
+    parseUrlParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Internet: ?internet=2 (tier ID)
+        const internetTier = urlParams.get('internet');
+        if (internetTier) {
+            const tierId = parseInt(internetTier);
+            if (tierId >= 1 && tierId <= 4) {
+                this.state.internet.enabled = true;
+                this.state.internet.selectedTier = tierId;
+                document.getElementById('internet-toggle').checked = true;
+                document.getElementById('internet-content').style.display = 'block';
+                this.renderInternetTiers();
+                this.updateInternetInfo();
+            }
+        }
+
+        // Mobile: ?mobile=2,3,1 (comma-separated tier IDs for each simcard)
+        const mobileParams = urlParams.get('mobile');
+        if (mobileParams) {
+            const tierIds = mobileParams.split(',').map(id => parseInt(id.trim())).filter(id => id >= 1 && id <= 3);
+            if (tierIds.length > 0 && tierIds.length <= this.data.products.mobile.maxSimcards) {
+                this.state.mobile.enabled = true;
+                this.state.mobile.simcards = tierIds.map((tierId, index) => ({
+                    id: index + 1,
+                    selectedTier: tierId
+                }));
+                document.getElementById('mobile-toggle').checked = true;
+                document.getElementById('mobile-content').style.display = 'block';
+                this.renderMobileSimcards();
+            }
+        }
+
+        // TV: ?tv=1&box=2 (tv=1 enables TV, box=tier ID for entertainment box)
+        const tvEnabled = urlParams.get('tv');
+        const entertainmentBoxTier = urlParams.get('box');
+        if (tvEnabled === '1') {
+            this.state.tv.enabled = true;
+            if (entertainmentBoxTier) {
+                const boxTierId = parseInt(entertainmentBoxTier);
+                if (boxTierId >= 1 && boxTierId <= 2) {
+                    this.state.tv.entertainmentBoxTier = boxTierId;
+                }
+            }
+            document.getElementById('tv-toggle').checked = true;
+            document.getElementById('tv-content').style.display = 'block';
+            this.updateTvInfo();
+            this.renderEntertainmentBoxTiers();
+        }
+
+        // Fixed Phone: ?phone=1 (1 enables fixed phone)
+        const phoneEnabled = urlParams.get('phone');
+        if (phoneEnabled === '1') {
+            this.state.fixedPhone.enabled = true;
+            document.getElementById('fixed-phone-toggle').checked = true;
+            document.getElementById('fixed-phone-content').style.display = 'block';
+            this.updateFixedPhoneInfo();
         }
     }
 
