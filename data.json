@@ -86,7 +86,7 @@
           "discountCopy": {
             "temporaryOnly": "gedurende 3 maanden",
             "permanentOnly": "50% combovoordeel",
-            "both": "gedurende ##MONTHS## maanden<br />Daarna ##NEWPRICE## met 50% combovoordeel"
+            "both": "gedurende ##MONTHS## maanden<br />Daarna <strong>##NEWPRICE##</strong> met 50% combovoordeel"
           }
         },
         {
@@ -95,10 +95,12 @@
           "subtitle": "",
           "summary": "<strong>Onbeperkt</strong> mobiele data, <strong>1 Gbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
           "price": 18.95,
+          "discountValue": 5.95,
+          "discountPeriod": 6,
           "discountCopy": {
-            "temporaryOnly": "",
+            "temporaryOnly": "gedurende 6 maanden",
             "permanentOnly": "50% combovoordeel",
-            "both": ""
+            "both": "gedurende ##MONTHS## maanden<br />Daarna <strong>##NEWPRICE##</strong> met 50% combovoordeel"
           }
         }
       ],
