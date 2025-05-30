@@ -60,6 +60,16 @@ body {
     background-color: white;
 }
 
+@media (max-width: 1023px) {
+    .product-block {
+        margin-left: -20px;
+        margin-right: -20px;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+}
+
 .product-header {
     display: flex;
     justify-content: space-between;
