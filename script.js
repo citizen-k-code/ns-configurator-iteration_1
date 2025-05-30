@@ -148,7 +148,7 @@ class TelecomConfigurator {
                 <div class="tier-price-container">
                     <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
                     <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">${tier.discountInfo}</div>
+                    <div class="discount-info">${tier.discountCopy.temporaryOnly}</div>
                 </div>
             `;
         } else {
@@ -205,15 +205,26 @@ class TelecomConfigurator {
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         let priceHtml;
-        const hasDiscount = this.calculateMobileDiscount(tier, simcardIndex).hasDiscount;
+        const discountCalc = this.calculateMobileDiscount(tier, simcardIndex);
+        const hasDiscount = discountCalc.hasDiscount;
 
         if (hasDiscount) {
-            const { finalPrice } = this.calculateMobileDiscount(tier, simcardIndex);
+            const { finalPrice, permanentDiscountAmount, temporaryDiscountAmount } = discountCalc;
+            let discountCopy = '';
+            
+            if (permanentDiscountAmount > 0 && temporaryDiscountAmount > 0) {
+                discountCopy = tier.discountCopy.both;
+            } else if (permanentDiscountAmount > 0) {
+                discountCopy = tier.discountCopy.permanentOnly;
+            } else if (temporaryDiscountAmount > 0) {
+                discountCopy = tier.discountCopy.temporaryOnly;
+            }
+
             priceHtml = `
                 <div class="tier-price-container">
                     <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
                     <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">${tier.discountInfo || 'Permanente korting'}</div>
+                    <div class="discount-info">${discountCopy}</div>
                 </div>
             `;
         } else {
@@ -367,7 +378,7 @@ class TelecomConfigurator {
                 <div class="tier-price-container">
                     <div class="original-price">€ ${tvData.price.toFixed(2).replace('.', ',')}</div>
                     <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">${tvData.discountInfo}</div>
+                    <div class="discount-info">${tvData.discountCopy.temporaryOnly}</div>
                 </div>
             `;
         } else {
@@ -416,7 +427,7 @@ class TelecomConfigurator {
                     <div class="tier-price-container">
                         <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
                         <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                        <div class="discount-info">${tier.discountInfo}</div>
+                        <div class="discount-info">${tier.discountCopy.temporaryOnly}</div>
                     </div>
                 `;
             } else {
@@ -498,6 +509,49 @@ class TelecomConfigurator {
         }
     }
 
+    calculateTotalPermanentDiscount() {
+        const { totalPermanentDiscount } = this.calculateTotal();
+        return totalPermanentDiscount * 12; // Convert to yearly amount
+    }
+
+    calculateTotalTemporaryDiscount() {
+        let totalTemporaryDiscount = 0;
+
+        // Internet temporary discount
+        if (this.state.internet.enabled) {
+            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            if (internetTier.discountValue && internetTier.discountPeriod) {
+                totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
+            }
+        }
+
+        // Mobile temporary discounts
+        if (this.state.mobile.enabled) {
+            this.state.mobile.simcards.forEach((simcard, index) => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (mobileTier.discountValue && mobileTier.discountPeriod && index >= 1) {
+                    totalTemporaryDiscount += mobileTier.discountValue * mobileTier.discountPeriod;
+                }
+            });
+        }
+
+        // TV temporary discount
+        if (this.state.tv.enabled) {
+            const tvData = this.data.products.tv;
+            if (tvData.discountValue && tvData.discountPeriod) {
+                totalTemporaryDiscount += tvData.discountValue * tvData.discountPeriod;
+            }
+
+            // Entertainment Box temporary discount
+            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+            if (entertainmentBoxTier && entertainmentBoxTier.discountValue && entertainmentBoxTier.discountPeriod) {
+                totalTemporaryDiscount += entertainmentBoxTier.discountValue * entertainmentBoxTier.discountPeriod;
+            }
+        }
+
+        return totalTemporaryDiscount;
+    }
+
     openTooltipSheet(tooltipKey) {
         const tooltipData = this.data.tooltips[tooltipKey];
         if (!tooltipData) return;
@@ -506,8 +560,19 @@ class TelecomConfigurator {
         const title = document.getElementById('sheet-title');
         const body = document.getElementById('sheet-body');
 
+        let content = tooltipData.content;
+
+        // Dynamic content calculation for promotion sheets
+        if (tooltipKey === 'permanent_promotion') {
+            const totalPermanentYearly = this.calculateTotalPermanentDiscount();
+            content = content.replace('##NUMBER##', `€ ${totalPermanentYearly.toFixed(2).replace('.', ',')}`);
+        } else if (tooltipKey === 'temporary_promotion') {
+            const totalTemporary = this.calculateTotalTemporaryDiscount();
+            content = content.replace('##NUMBER##', `€ ${totalTemporary.toFixed(2).replace('.', ',')}`);
+        }
+
         title.innerHTML = tooltipData.title;
-        body.innerHTML = tooltipData.content;
+        body.innerHTML = content;
 
         overlay.style.display = 'flex';
 

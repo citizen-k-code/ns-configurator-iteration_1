@@ -9,7 +9,12 @@
           "title": "500 Mb",
           "subtitle": "Basis",
           "summary": "500 Mbps downloadsnelheid, 50 Mbps uploadsnelheid, Onbeperkt downloadvolume",
-          "price": 45.00
+          "price": 45.00,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief"
+          }
         },
         {
           "id": 2,
@@ -18,7 +23,12 @@
           "summary": "1 Gbps downloadsnelheid, 100 Mbps uploadsnelheid, Onbeperkt downloadvolume",
           "price": 65.00,
           "discountValue": 15.00,
-          "discountInfo": "gedurende 6 maanden"
+          "discountPeriod": 6,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief gedurende 6 maanden",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief gedurende 6 maanden"
+          }
         },
         {
           "id": 3,
@@ -27,14 +37,24 @@
           "summary": "2,5 Gbps downloadsnelheid, 250 Mbps uploadsnelheid, Onbeperkt downloadvolume",
           "price": 75.00,
           "discountValue": 15.00,
-          "discountInfo": "gedurende 6 maanden"
+          "discountPeriod": 6,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief gedurende 6 maanden",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief gedurende 6 maanden"
+          }
         },
         {
           "id": 4,
           "title": "8,5 Gb",
           "subtitle": "Gigasnel",
           "summary": "8,5 Gbps downloadsnelheid, 500 Mbps uploadsnelheid, Onbeperkt downloadvolume",
-          "price": 90.00
+          "price": 90.00,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief"
+          }
         }
       ],
       "defaultTier": 1
@@ -48,7 +68,12 @@
           "title": "Kids sim",
           "subtitle": "5GB Data",
           "summary": "5 GB mobiele data, 120 belminuten + onbeperkt sms'en, Parental control",
-          "price": 5.00
+          "price": 5.00,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief"
+          }
         },
         {
           "id": 2,
@@ -57,14 +82,24 @@
           "summary": "10 GB mobiele data, 250 Mbps max downloadsnelheid, Onbeperkt bellen en sms'en",
           "price": 11.45,
           "discountValue": 3.45,
-          "discountInfo": "gedurende 3 maanden"
+          "discountPeriod": 3,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief gedurende 3 maanden",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief gedurende 3 maanden"
+          }
         },
         {
           "id": 3,
           "title": "Unlimited",
           "subtitle": "",
           "summary": "Onbeperkt mobiele data, 1 Gbps max downloadsnelheid, Onbeperkt bellen en sms'en",
-          "price": 18.95
+          "price": 18.95,
+          "discountCopy": {
+            "temporaryOnly": "Introductietarief",
+            "permanentOnly": "Permanente korting",
+            "both": "Permanente korting + introductietarief"
+          }
         }
       ],
       "defaultTier": 2,
@@ -76,7 +111,12 @@
       "summary": "90+ kanalen, 7 dagen terugkijk TV, Inclusief tot 200 uur opnames in the cloud",
       "price": 14.00,
       "discountValue": 4.00,
-      "discountInfo": "gedurende 6 maanden",
+      "discountPeriod": 6,
+      "discountCopy": {
+        "temporaryOnly": "Introductietarief gedurende 6 maanden",
+        "permanentOnly": "Permanente korting",
+        "both": "Permanente korting + introductietarief gedurende 6 maanden"
+      },
       "entertainmentBox": {
         "title": "Wil je een Entertainment Box?",
         "tooltip": "Ontdek onze Entertainment Box met Entertainment Services",
@@ -91,7 +131,12 @@
             "summary": "Al je zenders en streamingdiensten op één plek, Een handige TV-gids en afstands-bediening, Gepersonaliseerde aanbevelingen over al jouw entertainment",
             "price": 5.00,
             "discountValue": 5.00,
-            "discountInfo": "gedurende 6 maanden"
+            "discountPeriod": 6,
+            "discountCopy": {
+              "temporaryOnly": "Introductietarief gedurende 6 maanden",
+              "permanentOnly": "Permanente korting",
+              "both": "Permanente korting + introductietarief gedurende 6 maanden"
+            }
           }
         ],
         "defaultTier": 2
@@ -101,7 +146,12 @@
       "title": "Vaste lijn",
       "tooltip": "",
       "summary": "Gratis vaste lijn voor thuis, Huidig vast nummer behouden of een nieuw nummer aanvragen",
-      "price": 0.00
+      "price": 0.00,
+      "discountCopy": {
+        "temporaryOnly": "Introductietarief",
+        "permanentOnly": "Permanente korting",
+        "both": "Permanente korting + introductietarief"
+      }
     }
   },
   "discounts": {
@@ -135,6 +185,14 @@
     "tv_entertainment": {
       "title": "Meer over onze Entertainment Box",
       "content": "Meer informatie over onze Entertainment box, en wat je er allemaal mee kan doen."
+    },
+    "permanent_promotion": {
+      "title": "Permanent promotion",
+      "content": "Totale korting voor 1 jaar: ##NUMBER##"
+    },
+    "temporary_promotion": {
+      "title": "Temporary promotions",
+      "content": "Totale tijdelijke korting: ##NUMBER##"
     }
   }
 }

@@ -382,6 +382,15 @@ input:checked + .slider:before {
     color: #717D96;
 }
 
+.discount-line.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.discount-line.clickable:hover {
+    color: #2D3648;
+}
+
 .order-btn {
     width: 100%;
     padding: 15px;
