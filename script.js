@@ -330,6 +330,7 @@ class UnifiedConfigurator {
                 content.style.display = 'none';
             }
             this.updateAllEntertainmentSubtitles();
+            this.refreshAllEntertainmentProductInfo();
         }
 
         this.updateProductHeaderStates();
@@ -731,6 +732,20 @@ class UnifiedConfigurator {
 
         products.forEach(productId => {
             this.updateEntertainmentSubtitle(productId);
+        });
+    }
+
+    refreshAllEntertainmentProductInfo() {
+        const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema'];
+
+        products.forEach(productId => {
+            if (this.state[productId].enabled) {
+                if (productId === 'netflix' || productId === 'streamz') {
+                    this.updateEntertainmentTierInfo(productId);
+                } else {
+                    this.updateEntertainmentProductInfo(productId);
+                }
+            }
         });
     }
 
