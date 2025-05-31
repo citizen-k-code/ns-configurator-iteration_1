@@ -807,7 +807,7 @@ class UnifiedConfigurator {
         // Entertainment costs
         const entertainmentTotal = this.calculateEntertainmentTotal();
         total += entertainmentTotal.total;
-        totalTemporaryDiscount += entertainmentTotal.totalDiscount;
+        totalPermanentDiscount += entertainmentTotal.totalDiscount;
 
         const totalDiscount = totalPermanentDiscount + totalTemporaryDiscount;
 
@@ -1005,7 +1005,79 @@ class UnifiedConfigurator {
             });
         }
 
-        totalPermanentDiscount = totalPermanentDiscount * 12;
+        // Entertainment permanent discounts (5% combo discount)
+        const entertainmentTotal = this.calculateEntertainmentTotal();
+        if (entertainmentTotal.totalDiscount > 0) {
+            // Add individual entertainment product discounts
+            if (this.state.netflix.enabled) {
+                const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                if (discountedPrice < tier.price) {
+                    const discountAmount = (tier.price - discountedPrice) * 12;
+                    totalPermanentDiscount += discountAmount;
+                    discountsInfo.push({
+                        product: 'Netflix',
+                        percentage: 5,
+                        productName: 'Netflix'
+                    });
+                }
+            }
+
+            if (this.state.streamz.enabled) {
+                const tier = this.entertainmentData.entertainment.streamz.tiers.find(t => t.id === this.state.streamz.selectedTier);
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                if (discountedPrice < tier.price) {
+                    const discountAmount = (tier.price - discountedPrice) * 12;
+                    totalPermanentDiscount += discountAmount;
+                    discountsInfo.push({
+                        product: 'Streamz',
+                        percentage: 5,
+                        productName: 'Streamz'
+                    });
+                }
+            }
+
+            if (this.state.disney.enabled) {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.disney.price);
+                if (discountedPrice < this.entertainmentData.entertainment.disney.price) {
+                    const discountAmount = (this.entertainmentData.entertainment.disney.price - discountedPrice) * 12;
+                    totalPermanentDiscount += discountAmount;
+                    discountsInfo.push({
+                        product: 'Disney+',
+                        percentage: 5,
+                        productName: 'Disney+'
+                    });
+                }
+            }
+
+            if (this.state.sport.enabled) {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.sport.price);
+                if (discountedPrice < this.entertainmentData.entertainment.sport.price) {
+                    const discountAmount = (this.entertainmentData.entertainment.sport.price - discountedPrice) * 12;
+                    totalPermanentDiscount += discountAmount;
+                    discountsInfo.push({
+                        product: 'Sport',
+                        percentage: 5,
+                        productName: 'Sport'
+                    });
+                }
+            }
+
+            if (this.state.cinema.enabled) {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.cinema.price);
+                if (discountedPrice < this.entertainmentData.entertainment.cinema.price) {
+                    const discountAmount = (this.entertainmentData.entertainment.cinema.price - discountedPrice) * 12;
+                    totalPermanentDiscount += discountAmount;
+                    discountsInfo.push({
+                        product: 'Cinema',
+                        percentage: 5,
+                        productName: 'Cinema'
+                    });
+                }
+            }
+        } else {
+            totalPermanentDiscount = totalPermanentDiscount * 12;
+        }
 
         return {
             total: totalPermanentDiscount,
@@ -1069,16 +1141,7 @@ class UnifiedConfigurator {
             }
         }
 
-        // Entertainment temporary discounts (5% combo discount calculated monthly)
-        const entertainmentTotal = this.calculateEntertainmentTotal();
-        if (entertainmentTotal.totalDiscount > 0) {
-            totalTemporaryDiscount += entertainmentTotal.totalDiscount * 12;
-            discountsInfo.push({
-                product: 'Entertainment Combo',
-                discountValue: entertainmentTotal.totalDiscount,
-                discountPeriod: 12 // Represents a year
-            });
-        }
+        // Entertainment permanent discounts are handled separately in calculateTotalPermanentDiscount
 
         return {
             total: totalTemporaryDiscount,
