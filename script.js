@@ -42,7 +42,7 @@ class TelecomConfigurator {
 
     parseUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
-        
+
         // Internet: ?internet=2 (tier ID)
         const internetTier = urlParams.get('internet');
         if (internetTier) {
@@ -146,7 +146,7 @@ class TelecomConfigurator {
         products.forEach(product => {
             const header = document.querySelector(product.headerSelector);
             const toggle = document.querySelector(product.toggleSelector);
-            
+
             if (header && toggle) {
                 header.addEventListener('click', (e) => {
                     // Only handle header clicks if the product is disabled and click wasn't on the switch
@@ -335,7 +335,7 @@ class TelecomConfigurator {
         if (hasDiscount) {
             const { finalPrice, permanentDiscountAmount, temporaryDiscountAmount } = discountCalc;
             let discountCopy = '';
-            
+
             if (permanentDiscountAmount > 0 && temporaryDiscountAmount > 0) {
                 // Calculate price after temporary discount ends (only permanent discount applied)
                 const priceAfterTemp = tier.price - permanentDiscountAmount;
@@ -554,7 +554,7 @@ class TelecomConfigurator {
 
         // Show the info container and populate it
         infoContainer.style.display = 'block';
-        
+
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         let priceHtml;
@@ -789,7 +789,7 @@ class TelecomConfigurator {
     updateHighlightBlocks() {
         const mobileContent = document.getElementById('mobile-content');
         const mobileBlock = document.getElementById('mobile-block');
-        
+
         // Remove existing highlight blocks
         const existingHighlights = document.querySelectorAll('.highlight-block');
         existingHighlights.forEach(block => block.remove());
@@ -810,6 +810,11 @@ class TelecomConfigurator {
             const tooltipLink = mobileContent.querySelector('.tooltip-link');
             tooltipLink.insertAdjacentHTML('afterend', highlightHtml);
         }
+    }
+
+    navigateToEntertainment() {
+        localStorage.setItem('telecomConfiguratorState', JSON.stringify(this.state));
+        window.location.href = 'entertainment.html';
     }
 }
 

@@ -2,6 +2,8 @@
 class EntertainmentConfigurator {
     constructor() {
         this.data = null;
+        this.mainData = null;
+        this.mainState = null;
         this.state = {
             netflix: {
                 enabled: false,
@@ -26,6 +28,7 @@ class EntertainmentConfigurator {
 
     async init() {
         await this.loadData();
+        this.loadMainConfiguratorState();
         this.setupEventListeners();
         this.updateAllSubtitles();
         this.updateProductHeaderStates();
@@ -36,8 +39,74 @@ class EntertainmentConfigurator {
         try {
             const response = await fetch('./entertainment-data.json');
             this.data = await response.json();
+            
+            const mainResponse = await fetch('./data.json');
+            this.mainData = await mainResponse.json();
         } catch (error) {
             console.error('Error loading data:', error);
+        }
+    }
+
+    loadMainConfiguratorState() {
+        // Load state from localStorage if available, or parse URL parameters
+        const savedState = localStorage.getItem('telecomConfiguratorState');
+        if (savedState) {
+            this.mainState = JSON.parse(savedState);
+        } else {
+            // Fallback to URL parameters
+            this.mainState = {
+                internet: { enabled: false, selectedTier: 1 },
+                mobile: { enabled: false, simcards: [] },
+                tv: { enabled: false, entertainmentBoxTier: 1 },
+                fixedPhone: { enabled: false }
+            };
+            this.parseMainUrlParameters();
+        }
+    }
+
+    parseMainUrlParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Internet
+        const internetTier = urlParams.get('internet');
+        if (internetTier) {
+            const tierId = parseInt(internetTier);
+            if (tierId >= 1 && tierId <= 4) {
+                this.mainState.internet.enabled = true;
+                this.mainState.internet.selectedTier = tierId;
+            }
+        }
+
+        // Mobile
+        const mobileParams = urlParams.get('mobile');
+        if (mobileParams) {
+            const tierIds = mobileParams.split(',').map(id => parseInt(id.trim())).filter(id => id >= 1 && id <= 3);
+            if (tierIds.length > 0 && tierIds.length <= this.mainData.products.mobile.maxSimcards) {
+                this.mainState.mobile.enabled = true;
+                this.mainState.mobile.simcards = tierIds.map((tierId, index) => ({
+                    id: index + 1,
+                    selectedTier: tierId
+                }));
+            }
+        }
+
+        // TV
+        const tvEnabled = urlParams.get('tv');
+        const entertainmentBoxTier = urlParams.get('box');
+        if (tvEnabled === '1') {
+            this.mainState.tv.enabled = true;
+            if (entertainmentBoxTier) {
+                const boxTierId = parseInt(entertainmentBoxTier);
+                if (boxTierId >= 1 && boxTierId <= 2) {
+                    this.mainState.tv.entertainmentBoxTier = boxTierId;
+                }
+            }
+        }
+
+        // Fixed Phone
+        const phoneEnabled = urlParams.get('phone');
+        if (phoneEnabled === '1') {
+            this.mainState.fixedPhone.enabled = true;
         }
     }
 
@@ -261,7 +330,101 @@ class EntertainmentConfigurator {
         }
     }
 
-    calculateTotal() {
+    calculateMobileDiscount(tier, simcardIndex) {
+        const permanentDiscount = this.mainData.discounts.permanent;
+        const isInternetEnabled = this.mainState.internet.enabled;
+        const isPermanentApplicable = permanentDiscount.enabled && 
+                                    isInternetEnabled && 
+                                    permanentDiscount.conditions.applicableToTiers.includes(tier.id);
+        const hasTemporaryDiscount = tier.discountValue && simcardIndex >= 1;
+
+        let finalPrice = tier.price;
+        let permanentDiscountAmount = 0;
+        let temporaryDiscountAmount = 0;
+
+        if (isPermanentApplicable) {
+            permanentDiscountAmount = tier.price * (permanentDiscount.percentage / 100);
+            finalPrice = tier.price - permanentDiscountAmount;
+        }
+
+        if (hasTemporaryDiscount) {
+            temporaryDiscountAmount = tier.discountValue;
+            finalPrice = finalPrice - temporaryDiscountAmount;
+        }
+
+        return {
+            hasDiscount: isPermanentApplicable || hasTemporaryDiscount,
+            finalPrice: Math.max(0, finalPrice),
+            permanentDiscountAmount,
+            temporaryDiscountAmount,
+            originalPrice: tier.price
+        };
+    }
+
+    calculateMainConfiguratorTotal() {
+        let total = 0;
+        let totalPermanentDiscount = 0;
+        let totalTemporaryDiscount = 0;
+
+        // Internet cost
+        if (this.mainState.internet.enabled) {
+            const internetTier = this.mainData.products.internet.tiers.find(t => t.id === this.mainState.internet.selectedTier);
+            if (internetTier.discountValue) {
+                total += internetTier.price - internetTier.discountValue;
+                totalTemporaryDiscount += internetTier.discountValue;
+            } else {
+                total += internetTier.price;
+            }
+        }
+
+        // Mobile costs
+        if (this.mainState.mobile.enabled) {
+            this.mainState.mobile.simcards.forEach((simcard, index) => {
+                const mobileTier = this.mainData.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                const discountCalc = this.calculateMobileDiscount(mobileTier, index);
+
+                total += discountCalc.finalPrice;
+                totalPermanentDiscount += discountCalc.permanentDiscountAmount;
+                totalTemporaryDiscount += discountCalc.temporaryDiscountAmount;
+            });
+        }
+
+        // TV cost
+        if (this.mainState.tv.enabled) {
+            const tvData = this.mainData.products.tv;
+            if (tvData.discountValue) {
+                total += tvData.price - tvData.discountValue;
+                totalTemporaryDiscount += tvData.discountValue;
+            } else {
+                total += tvData.price;
+            }
+
+            // Entertainment Box cost
+            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.mainState.tv.entertainmentBoxTier);
+            if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
+                if (entertainmentBoxTier.discountValue !== undefined) {
+                    total += entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
+                    totalTemporaryDiscount += entertainmentBoxTier.discountValue;
+                } else {
+                    total += entertainmentBoxTier.price;
+                }
+            }
+        }
+
+        // Fixed Phone cost
+        if (this.mainState.fixedPhone.enabled) {
+            const phoneData = this.mainData.products.fixedPhone;
+            total += phoneData.price;
+        }
+
+        return { 
+            total, 
+            totalPermanentDiscount, 
+            totalTemporaryDiscount 
+        };
+    }
+
+    calculateEntertainmentTotal() {
         let total = 0;
         let totalDiscount = 0;
         const enabledProducts = this.getEnabledProductsCount();
@@ -317,8 +480,20 @@ class EntertainmentConfigurator {
         return { total, totalDiscount };
     }
 
+    calculateTotal() {
+        const mainTotal = this.calculateMainConfiguratorTotal();
+        const entertainmentTotal = this.calculateEntertainmentTotal();
+
+        return {
+            total: mainTotal.total + entertainmentTotal.total,
+            totalDiscount: mainTotal.totalPermanentDiscount + mainTotal.totalTemporaryDiscount + entertainmentTotal.totalDiscount,
+            totalPermanentDiscount: mainTotal.totalPermanentDiscount,
+            totalTemporaryDiscount: mainTotal.totalTemporaryDiscount + entertainmentTotal.totalDiscount
+        };
+    }
+
     updateCostSummary() {
-        const { total, totalDiscount } = this.calculateTotal();
+        const { total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount } = this.calculateTotal();
         const hasDiscounts = totalDiscount > 0;
         const originalTotal = total + totalDiscount;
 
@@ -345,11 +520,20 @@ class EntertainmentConfigurator {
 
         // Show permanent promotion if applicable
         const permanentElement = document.getElementById('permanent-promotion');
-        if (hasDiscounts) {
+        if (totalPermanentDiscount > 0) {
             permanentElement.style.display = 'flex';
-            document.getElementById('permanent-amount').textContent = `- € ${totalDiscount.toFixed(2).replace('.', ',')}`;
+            document.getElementById('permanent-amount').textContent = `- € ${totalPermanentDiscount.toFixed(2).replace('.', ',')}`;
         } else {
             permanentElement.style.display = 'none';
+        }
+
+        // Show temporary promotions if applicable
+        const temporaryElement = document.getElementById('temporary-promotion');
+        if (totalTemporaryDiscount > 0) {
+            temporaryElement.style.display = 'flex';
+            document.getElementById('temporary-amount').textContent = `- € ${totalTemporaryDiscount.toFixed(2).replace('.', ',')}`;
+        } else {
+            temporaryElement.style.display = 'none';
         }
 
         // Update final cost (same as monthly total for now)
