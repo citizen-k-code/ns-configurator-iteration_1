@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
     <div class="app-container">
         <!-- Part 1: Product Configuration -->
         <div class="part1" id="part1">
             <h1>Configureer je product</h1>
-            
+
             <!-- Internet Product Block -->
             <div class="product-block" id="internet-block">
                 <div class="product-header">
@@ -27,7 +28,8 @@
                     </label>
                 </div>
                 <div class="product-content" id="internet-content" style="display: none;">
-                    <div class="tooltip-link" onclick="app.openTooltipSheet('internet')">Welke snelheid heb ik nodig?</div>
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('internet')">Welke snelheid heb ik nodig?
+                    </div>
                     <div class="tier-selector" id="internet-tiers"></div>
                     <div class="tier-info" id="internet-info"></div>
                 </div>
@@ -46,7 +48,8 @@
                     </label>
                 </div>
                 <div class="product-content" id="mobile-content" style="display: none;">
-                    <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik nodig?</div>
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik
+                        nodig?</div>
                     <div class="simcards-container" id="simcards-container"></div>
                     <button class="add-simcard-btn" id="add-simcard-btn">
                         ➕ Voeg 3e simkaart toe
@@ -67,12 +70,14 @@
                     </label>
                 </div>
                 <div class="product-content" id="tv-content" style="display: none;">
-                    <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?</div>
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?
+                    </div>
                     <div class="tier-info" id="tv-info"></div>
                     <div class="entertainment-box-section" id="entertainment-box-section">
                         <hr class="section-divider">
                         <div class="entertainment-box-title">Wil je een Entertainment Box?</div>
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Ontdek onze Entertainment Box met Entertainment Services</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Ontdek onze
+                            Entertainment Box met Entertainment Services</div>
                         <div class="tier-selector" id="entertainment-box-tiers"></div>
                         <div class="tier-info" id="entertainment-box-info"></div>
                     </div>
@@ -109,10 +114,11 @@
                 <h1>Voeg entertainment toe</h1>
             </div>
             <p class="intro-text">Intro waarom je entertainment zou moeten nemen bij deze provider</p>
-            
+
             <div class="discount-info-block">
                 <div class="discount-info-title">Krijg 5% combinatiekorting</div>
-                <div class="discount-info-content">Combineer Disney+ met Streamz, Sport of Netflix en geniet van minstens 5% korting op beide streamingdiensten.</div>
+                <div class="discount-info-content">Combineer Disney+ met Streamz, Sport of Netflix en geniet van
+                    minstens 5% korting op beide streamingdiensten.</div>
             </div>
 
             <!-- Netflix Product Block -->
@@ -227,9 +233,6 @@
                     <span class="cost-label">€ <span id="monthly-total">0,00</span></span>
                     <span class="cost-period">----</span>
                 </div>
-                <div class="advantage-block" id="advantage-block" style="display: none;">
-                    <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
-                </div>
                 <!-- Product Overview Accordion -->
                 <div class="product-overview-section">
                     <div class="overview-toggle" id="overview-toggle" onclick="app.toggleProductOverview()">
@@ -240,13 +243,17 @@
                         <!-- Content will be populated by JavaScript -->
                     </div>
                 </div>
-
+                <div class="advantage-block" id="advantage-block" style="display: none;">
+                    <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
+                </div>
                 <div class="cost-breakdown">
-                    <div class="discount-line clickable" id="permanent-promotion" style="display: none;" onclick="app.openTooltipSheet('permanent_promotion')">
+                    <div class="discount-line clickable" id="permanent-promotion" style="display: none;"
+                        onclick="app.openTooltipSheet('permanent_promotion')">
                         <span>Permanent promotion</span>
                         <span id="permanent-amount">- € 0,00</span>
                     </div>
-                    <div class="discount-line clickable" id="temporary-promotion" style="display: none;" onclick="app.openTooltipSheet('temporary_promotion')">
+                    <div class="discount-line clickable" id="temporary-promotion" style="display: none;"
+                        onclick="app.openTooltipSheet('temporary_promotion')">
                         <span>Temporary promotions</span>
                         <span id="temporary-amount">- € 0,00</span>
                     </div>
@@ -269,7 +276,8 @@
                     <span>je bespaart € <span id="mobile-advantage-amount">0,00</span></span>
                 </div>
             </div>
-            <button class="mobile-order-btn" id="mobile-order-btn" onclick="app.handleMobileOrderButton()">Verder</button>
+            <button class="mobile-order-btn" id="mobile-order-btn"
+                onclick="app.handleMobileOrderButton()">Verder</button>
         </div>
     </div>
 
@@ -291,4 +299,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
