@@ -230,6 +230,17 @@
                 <div class="advantage-block" id="advantage-block" style="display: none;">
                     <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
                 </div>
+                <!-- Product Overview Accordion -->
+                <div class="product-overview-section">
+                    <div class="overview-toggle" id="overview-toggle" onclick="app.toggleProductOverview()">
+                        <span>Details bekijken</span>
+                        <span class="toggle-arrow" id="toggle-arrow">▼</span>
+                    </div>
+                    <div class="product-overview-content" id="product-overview-content" style="display: none;">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+
                 <div class="cost-breakdown">
                     <div class="discount-line clickable" id="permanent-promotion" style="display: none;" onclick="app.openTooltipSheet('permanent_promotion')">
                         <span>Permanent promotion</span>

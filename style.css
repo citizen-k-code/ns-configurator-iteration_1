@@ -1,4 +1,3 @@
-
 /* Entertainment section styles */
 .entertainment-section {
     display: none;
@@ -141,7 +140,7 @@
         border-right: none;
         border-radius: 0;
     }
-    
+
     .section-header {
         margin-left: -20px;
         margin-right: -20px;
@@ -891,4 +890,111 @@ input:checked+.slider:before {
     to {
         transform: translateX(0);
     }
+}
+
+/* Product Overview Accordion */
+.product-overview-section {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.overview-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #717D96;
+    text-decoration: underline;
+}
+
+.overview-toggle:hover {
+    color: #2D3648;
+}
+
+.toggle-arrow {
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+.toggle-arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.product-overview-content {
+    margin-top: 15px;
+}
+
+.overview-group {
+    margin-bottom: 16px;
+}
+
+.overview-group:last-child {
+    margin-bottom: 0;
+}
+
+.overview-group-title {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.overview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.overview-item:last-child {
+    margin-bottom: 0;
+}
+
+.overview-item-name {
+    color: #2D3648;
+    flex: 1;
+    margin-right: 8px;
+}
+
+.overview-item-price {
+    color: #2D3648;
+    font-weight: 500;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.overview-item-price .original-price {
+    color: #717D96;
+    text-decoration: line-through;
+    font-size: 12px;
+    display: block;
+    line-height: 1.2;
+}
+
+.overview-item-price .discount-price {
+    color: #F134F7;
+    font-weight: 600;
+    display: block;
+    line-height: 1.2;
+}
+
+.overview-item-price .discount-info {
+    color: #717D96;
+    font-size: 11px;
+    font-style: italic;
+    display: block;
+    line-height: 1.2;
+    margin-top: 1px;
+}
+
+/* Cost summary updates */
+.cost-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0 15px;
 }

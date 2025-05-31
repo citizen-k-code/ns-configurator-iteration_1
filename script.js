@@ -919,8 +919,205 @@ class UnifiedConfigurator {
             temporaryElement.style.display = 'none';
         }
 
+        // Update product overview
+        this.updateProductOverview();
+
         // Update mobile summary
         this.updateMobileSummary();
+    }
+
+    toggleProductOverview() {
+        const content = document.getElementById('product-overview-content');
+        const arrow = document.getElementById('toggle-arrow');
+        
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            arrow.classList.add('rotated');
+        } else {
+            content.style.display = 'none';
+            arrow.classList.remove('rotated');
+        }
+    }
+
+    updateProductOverview() {
+        const content = document.getElementById('product-overview-content');
+        let html = '';
+
+        // Internet
+        if (this.state.internet.enabled) {
+            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            let finalPrice = internetTier.price;
+            if (internetTier.discountValue) {
+                finalPrice = internetTier.price - internetTier.discountValue;
+            }
+
+            html += `
+                <div class="overview-group">
+                    <div class="overview-group-title">Internet</div>
+                    <div class="overview-item">
+                        <div class="overview-item-name">${internetTier.title}</div>
+                        <div class="overview-item-price">
+                            ${internetTier.discountValue ? 
+                                `<span class="original-price">€ ${internetTier.price.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-info">- €${internetTier.discountValue.toFixed(2).replace('.', ',')} voor ${internetTier.discountPeriod} maanden</span>` :
+                                `€ ${finalPrice.toFixed(2).replace('.', ',')}`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Mobile numbers
+        if (this.state.mobile.enabled && this.state.mobile.simcards.length > 0) {
+            html += `
+                <div class="overview-group">
+                    <div class="overview-group-title">Mobiele nummers</div>
+            `;
+
+            this.state.mobile.simcards.forEach((simcard, index) => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                const discountCalc = this.calculateMobileDiscount(mobileTier, index);
+
+                html += `
+                    <div class="overview-item">
+                        <div class="overview-item-name">Simkaart ${index + 1} - ${mobileTier.title}</div>
+                        <div class="overview-item-price">
+                            ${discountCalc.hasDiscount ? 
+                                `<span class="original-price">€ ${mobileTier.price.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-price">€ ${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-info">${discountCalc.permanentDiscountAmount > 0 ? 'Combovoordeel 50%' : ''}${discountCalc.temporaryDiscountAmount > 0 ? (discountCalc.permanentDiscountAmount > 0 ? ' + ' : '') + `€${discountCalc.temporaryDiscountAmount.toFixed(2).replace('.', ',')} voor ${mobileTier.discountPeriod} mnd` : ''}</span>` :
+                                `€ ${discountCalc.finalPrice.toFixed(2).replace('.', ',')}`
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+        }
+
+        // Fixed phone
+        if (this.state.fixedPhone.enabled) {
+            const phoneData = this.data.products.fixedPhone;
+            html += `
+                <div class="overview-group">
+                    <div class="overview-group-title">Vaste lijn</div>
+                    <div class="overview-item">
+                        <div class="overview-item-name">Vaste lijn</div>
+                        <div class="overview-item-price">€ ${phoneData.price.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Entertainment (TV + Entertainment Box + Entertainment products)
+        const hasEntertainment = this.state.tv.enabled || 
+                                 this.state.netflix.enabled || 
+                                 this.state.streamz.enabled || 
+                                 this.state.disney.enabled || 
+                                 this.state.sport.enabled || 
+                                 this.state.cinema.enabled;
+
+        if (hasEntertainment) {
+            html += `
+                <div class="overview-group">
+                    <div class="overview-group-title">Entertainment</div>
+            `;
+
+            // TV
+            if (this.state.tv.enabled) {
+                const tvData = this.data.products.tv;
+                let tvFinalPrice = tvData.price;
+                if (tvData.discountValue) {
+                    tvFinalPrice = tvData.price - tvData.discountValue;
+                }
+
+                html += `
+                    <div class="overview-item">
+                        <div class="overview-item-name">TV</div>
+                        <div class="overview-item-price">
+                            ${tvData.discountValue ? 
+                                `<span class="original-price">€ ${tvData.price.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-price">€ ${tvFinalPrice.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-info">- €${tvData.discountValue.toFixed(2).replace('.', ',')} voor ${tvData.discountPeriod} maanden</span>` :
+                                `€ ${tvFinalPrice.toFixed(2).replace('.', ',')}`
+                            }
+                        </div>
+                    </div>
+                `;
+
+                // Entertainment Box
+                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+                if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
+                    let boxFinalPrice = entertainmentBoxTier.price;
+                    if (entertainmentBoxTier.discountValue !== undefined) {
+                        boxFinalPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
+                    }
+
+                    html += `
+                        <div class="overview-item">
+                            <div class="overview-item-name">Entertainment Box</div>
+                            <div class="overview-item-price">
+                                ${entertainmentBoxTier.discountValue !== undefined ? 
+                                    `<span class="original-price">€ ${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>
+                                     <span class="discount-price">€ ${boxFinalPrice.toFixed(2).replace('.', ',')}</span>
+                                     <span class="discount-info">- €${entertainmentBoxTier.discountValue.toFixed(2).replace('.', ',')} voor ${entertainmentBoxTier.discountPeriod} maanden</span>` :
+                                    `€ ${boxFinalPrice.toFixed(2).replace('.', ',')}`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Entertainment products
+            const entertainmentProducts = [
+                { key: 'netflix', name: 'Netflix' },
+                { key: 'streamz', name: 'Streamz' },
+                { key: 'disney', name: 'Disney+' },
+                { key: 'sport', name: 'Sport' },
+                { key: 'cinema', name: 'Cinema' }
+            ];
+
+            entertainmentProducts.forEach(product => {
+                if (this.state[product.key].enabled) {
+                    const productData = this.entertainmentData.entertainment[product.key];
+                    let productName = product.name;
+                    let originalPrice, finalPrice;
+
+                    if (product.key === 'netflix' || product.key === 'streamz') {
+                        const tier = productData.tiers.find(t => t.id === this.state[product.key].selectedTier);
+                        productName += ` - ${tier.title}`;
+                        originalPrice = tier.price;
+                    } else {
+                        originalPrice = productData.price;
+                    }
+
+                    finalPrice = this.getEntertainmentDiscountedPrice(originalPrice);
+                    const hasDiscount = finalPrice < originalPrice;
+
+                    html += `
+                        <div class="overview-item">
+                            <div class="overview-item-name">${productName}</div>
+                            <div class="overview-item-price">
+                                ${hasDiscount ? 
+                                    `<span class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</span>
+                                     <span class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}</span>
+                                     <span class="discount-info">- €${(originalPrice - finalPrice).toFixed(2).replace('.', ',')} voor 6 maanden</span>` :
+                                    `€ ${finalPrice.toFixed(2).replace('.', ',')}`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `</div>`;
+        }
+
+        content.innerHTML = html;
     }
 
     updateMobileSummary() {
