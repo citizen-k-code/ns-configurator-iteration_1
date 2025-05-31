@@ -525,12 +525,12 @@ input:checked+.slider:before {
     padding: 8px 12px;
     border-radius: 4px;
     font-size: 13px;
-    margin-bottom: 15px;
+    margin: 16px 0 8px;
 }
 
 .total-cost {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .cost-label {
@@ -547,8 +547,7 @@ input:checked+.slider:before {
 }
 
 .cost-breakdown {
-    border-top: 1px solid #e0e0e0;
-    padding-top: 15px;
+    /*border-top: 1px solid #e0e0e0;*/
     margin-bottom: 20px;
 }
 
@@ -894,9 +893,11 @@ input:checked+.slider:before {
 
 /* Product Overview Accordion */
 .product-overview-section {
+    /*
     margin-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 15px;
+    */
 }
 
 .overview-toggle {
@@ -925,6 +926,8 @@ input:checked+.slider:before {
 
 .product-overview-content {
     margin-top: 15px;
+    padding: 12px;
+    background-color: #F7F9FC;
 }
 
 .overview-group {
@@ -974,6 +977,8 @@ input:checked+.slider:before {
     font-size: 12px;
     display: block;
     line-height: 1.2;
+
+    display: none;
 }
 
 .overview-item-price .discount-price {
@@ -981,6 +986,7 @@ input:checked+.slider:before {
     font-weight: 600;
     display: block;
     line-height: 1.2;
+    font-size: inherit;
 }
 
 .overview-item-price .discount-info {
@@ -990,6 +996,8 @@ input:checked+.slider:before {
     display: block;
     line-height: 1.2;
     margin-top: 1px;
+
+    display: none;
 }
 
 /* Cost summary updates */
