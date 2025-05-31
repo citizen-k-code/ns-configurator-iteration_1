@@ -1,3 +1,154 @@
+
+/* Entertainment section styles */
+.entertainment-section {
+    display: none;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #2D3648;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.section-navigation {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.nav-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn.primary {
+    background-color: #2D3648;
+    color: white;
+}
+
+.nav-btn.primary:hover {
+    background-color: #1a2332;
+}
+
+.intro-text {
+    color: #717D96;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.discount-info-block {
+    background-color: #e8f5e8;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.discount-info-title {
+    font-weight: 600;
+    color: #2d5f2d;
+    margin-bottom: 8px;
+}
+
+.discount-info-content {
+    color: #2d5f2d;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Entertainment card styles */
+.entertainment-card {
+    margin-bottom: 15px;
+}
+
+.product-icon-square {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+}
+
+.netflix-icon {
+    background-color: #E50914;
+}
+
+.streamz-icon {
+    background-color: #1B1B1B;
+}
+
+.disney-icon {
+    background-color: #113CCF;
+    font-size: 12px;
+}
+
+.sport-icon {
+    background-color: #FF6B35;
+}
+
+.cinema-icon {
+    background-color: #FFD700;
+    color: #2D3648;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 16px;
+}
+
+.product-subtitle {
+    font-size: 14px;
+    color: #717D96;
+    margin-top: 2px;
+}
+
+/* Responsive adjustments for entertainment */
+@media (max-width: 1023px) {
+    .entertainment-card {
+        margin-left: -20px;
+        margin-right: -20px;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+    
+    .section-header {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding: 0 20px;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
