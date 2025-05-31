@@ -3,13 +3,6 @@
     display: none;
 }
 
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
 .back-btn {
     background: none;
     border: none;
@@ -19,6 +12,8 @@
     padding: 8px 12px;
     border-radius: 6px;
     transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+    display: block;
 }
 
 .back-btn:hover {
