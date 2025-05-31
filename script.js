@@ -941,7 +941,27 @@ class UnifiedConfigurator {
 
     updateProductOverview() {
         const content = document.getElementById('product-overview-content');
+        const overviewSection = document.getElementById('product-overview-section');
         let html = '';
+
+        // Check if any products are enabled
+        const hasAnyProducts = this.state.internet.enabled || 
+                              this.state.mobile.enabled || 
+                              this.state.tv.enabled || 
+                              this.state.fixedPhone.enabled ||
+                              this.state.netflix.enabled ||
+                              this.state.streamz.enabled ||
+                              this.state.disney.enabled ||
+                              this.state.sport.enabled ||
+                              this.state.cinema.enabled;
+
+        // Hide the section if no products are enabled
+        if (!hasAnyProducts) {
+            overviewSection.style.display = 'none';
+            return;
+        } else {
+            overviewSection.style.display = 'block';
+        }
 
         // Internet
         if (this.state.internet.enabled) {
