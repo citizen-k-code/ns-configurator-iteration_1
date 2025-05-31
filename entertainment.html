@@ -137,11 +137,11 @@
                     <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
                 </div>
                 <div class="cost-breakdown">
-                    <div class="discount-line clickable" id="permanent-promotion" style="display: none;">
+                    <div class="discount-line clickable" id="permanent-promotion" style="display: none;" onclick="app.openTooltipSheet('permanent_promotion')">
                         <span>Permanent promotion</span>
                         <span id="permanent-amount">- € 0,00</span>
                     </div>
-                    <div class="discount-line clickable" id="temporary-promotion" style="display: none;">
+                    <div class="discount-line clickable" id="temporary-promotion" style="display: none;" onclick="app.openTooltipSheet('temporary_promotion')">
                         <span>Temporary promotions</span>
                         <span id="temporary-amount">- € 0,00</span>
                     </div>
@@ -176,6 +176,22 @@
                 </div>
             </div>
             <button class="mobile-order-btn">Bestellen</button>
+        </div>
+    </div>
+
+    <!-- Tooltip Sheet Overlay -->
+    <div class="sheet-overlay" id="sheet-overlay" style="display: none;" onclick="app.closeTooltipSheet()">
+        <div class="tooltip-sheet" id="tooltip-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeTooltipSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title" id="sheet-title"></h3>
+                <div class="sheet-body" id="sheet-body"></div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.closeTooltipSheet()">Sluiten</button>
+            </div>
         </div>
     </div>
 

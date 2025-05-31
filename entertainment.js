@@ -605,6 +605,95 @@ class EntertainmentConfigurator {
             });
         }
     }
+
+    calculateTotalPermanentDiscount() {
+        const { totalPermanentDiscount } = this.calculateTotal();
+        return totalPermanentDiscount * 12; // Convert to yearly amount
+    }
+
+    calculateTotalTemporaryDiscount() {
+        let totalTemporaryDiscount = 0;
+
+        // Main configurator temporary discounts
+        const mainTotal = this.calculateMainConfiguratorTotal();
+        
+        // Internet temporary discount
+        if (this.mainState.internet.enabled) {
+            const internetTier = this.mainData.products.internet.tiers.find(t => t.id === this.mainState.internet.selectedTier);
+            if (internetTier.discountValue && internetTier.discountPeriod) {
+                totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
+            }
+        }
+
+        // Mobile temporary discounts
+        if (this.mainState.mobile.enabled) {
+            this.mainState.mobile.simcards.forEach((simcard, index) => {
+                const mobileTier = this.mainData.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (mobileTier.discountValue && mobileTier.discountPeriod && index >= 1) {
+                    totalTemporaryDiscount += mobileTier.discountValue * mobileTier.discountPeriod;
+                }
+            });
+        }
+
+        // TV temporary discount
+        if (this.mainState.tv.enabled) {
+            const tvData = this.mainData.products.tv;
+            if (tvData.discountValue && tvData.discountPeriod) {
+                totalTemporaryDiscount += tvData.discountValue * tvData.discountPeriod;
+            }
+
+            // Entertainment Box temporary discount
+            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.mainState.tv.entertainmentBoxTier);
+            if (entertainmentBoxTier && entertainmentBoxTier.discountValue && entertainmentBoxTier.discountPeriod) {
+                totalTemporaryDiscount += entertainmentBoxTier.discountValue * entertainmentBoxTier.discountPeriod;
+            }
+        }
+
+        // Entertainment temporary discounts (5% combo discount calculated monthly)
+        const entertainmentTotal = this.calculateEntertainmentTotal();
+        if (entertainmentTotal.totalDiscount > 0) {
+            // Assume the entertainment combo discount applies for 12 months
+            totalTemporaryDiscount += entertainmentTotal.totalDiscount * 12;
+        }
+
+        return totalTemporaryDiscount;
+    }
+
+    openTooltipSheet(tooltipKey) {
+        const tooltipData = this.mainData.tooltips[tooltipKey];
+        if (!tooltipData) return;
+
+        const overlay = document.getElementById('sheet-overlay');
+        const title = document.getElementById('sheet-title');
+        const body = document.getElementById('sheet-body');
+
+        let content = tooltipData.content;
+
+        // Dynamic content calculation for promotion sheets
+        if (tooltipKey === 'permanent_promotion') {
+            const totalPermanentYearly = this.calculateTotalPermanentDiscount();
+            content = content.replace('##NUMBER##', `€ ${totalPermanentYearly.toFixed(2).replace('.', ',')}`);
+        } else if (tooltipKey === 'temporary_promotion') {
+            const totalTemporary = this.calculateTotalTemporaryDiscount();
+            content = content.replace('##NUMBER##', `€ ${totalTemporary.toFixed(2).replace('.', ',')}`);
+        }
+
+        title.innerHTML = tooltipData.title;
+        body.innerHTML = content;
+
+        overlay.style.display = 'flex';
+
+        // Prevent body scroll when sheet is open
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeTooltipSheet() {
+        const overlay = document.getElementById('sheet-overlay');
+        overlay.style.display = 'none';
+
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
 }
 
 // Initialize the app
