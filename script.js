@@ -235,6 +235,7 @@ class UnifiedConfigurator {
         document.getElementById('entertainment-section').style.display = 'block';
         this.currentSection = 'entertainment';
         this.updateOrderButtons();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     showTelecomSection() {
@@ -242,6 +243,7 @@ class UnifiedConfigurator {
         document.getElementById('entertainment-section').style.display = 'none';
         this.currentSection = 'telecom';
         this.updateOrderButtons();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     updateOrderButtons() {
