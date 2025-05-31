@@ -519,15 +519,6 @@ class EntertainmentConfigurator {
             advantageElement.style.display = 'none';
         }
 
-        // Show permanent promotion if applicable
-        const permanentElement = document.getElementById('permanent-promotion');
-        if (totalPermanentDiscount > 0) {
-            permanentElement.style.display = 'flex';
-            document.getElementById('permanent-amount').textContent = `- € ${totalPermanentDiscount.toFixed(2).replace('.', ',')}`;
-        } else {
-            permanentElement.style.display = 'none';
-        }
-
         // Show temporary promotions if applicable
         const temporaryElement = document.getElementById('temporary-promotion');
         if (totalTemporaryDiscount > 0) {
@@ -536,10 +527,6 @@ class EntertainmentConfigurator {
         } else {
             temporaryElement.style.display = 'none';
         }
-
-        // Update final cost (same as monthly total for now)
-        document.getElementById('final-cost').textContent = total.toFixed(2).replace('.', ',');
-        document.getElementById('activation-cost').textContent = '0,00';
 
         // Update mobile summary
         this.updateMobileSummary();
