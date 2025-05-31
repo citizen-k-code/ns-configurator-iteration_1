@@ -714,6 +714,31 @@ input:checked+.slider:before {
     font-size: 14px;
 }
 
+.sheet-body .highlight {
+    background-color: #e8f5e8;
+    color: #2d5f2d;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+.sheet-body h4 {
+    color: #2D3648;
+    font-weight: 600;
+    margin: 16px 0 12px 0;
+}
+
+.sheet-body ul {
+    margin: 12px 0;
+    padding-left: 20px;
+}
+
+.sheet-body li {
+    margin-bottom: 8px;
+    color: #2D3648;
+}
+
 .sheet-footer {
     padding: 20px;
     border-top: 1px solid #e0e0e0;

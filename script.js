@@ -1,4 +1,3 @@
-
 class UnifiedConfigurator {
     constructor() {
         this.data = null;
@@ -274,7 +273,7 @@ class UnifiedConfigurator {
     // Telecom product methods (same as before)
     toggleProduct(productType, enabled) {
         this.state[productType].enabled = enabled;
-        
+
         // Handle telecom products
         if (['internet', 'mobile', 'tv', 'fixedPhone'].includes(productType)) {
             const contentId = productType === 'fixedPhone' ? 'fixed-phone-content' : `${productType}-content`;
@@ -715,7 +714,7 @@ class UnifiedConfigurator {
     getEntertainmentDiscountedPrice(originalPrice) {
         const enabledProducts = this.getEnabledEntertainmentProductsCount();
         const discount = this.entertainmentData.discounts.entertainment_combo;
-        
+
         if (discount.enabled && enabledProducts >= discount.minProducts) {
             return originalPrice * (1 - discount.percentage / 100);
         }
@@ -729,7 +728,7 @@ class UnifiedConfigurator {
 
     updateAllEntertainmentSubtitles() {
         const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema'];
-        
+
         products.forEach(productId => {
             this.updateEntertainmentSubtitle(productId);
         });
@@ -985,18 +984,49 @@ class UnifiedConfigurator {
 
     // Tooltip methods
     calculateTotalPermanentDiscount() {
-        const { totalPermanentDiscount } = this.calculateTotal();
-        return totalPermanentDiscount * 12;
+        let totalPermanentDiscount = 0;
+        let discountsInfo = [];
+
+        const permanentDiscount = this.data.discounts.permanent;
+
+        // Mobile permanent discount
+        if (this.state.mobile.enabled && this.state.internet.enabled && permanentDiscount.enabled) {
+            this.state.mobile.simcards.forEach(simcard => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
+                    const discountAmount = mobileTier.price * (permanentDiscount.percentage / 100);
+                    totalPermanentDiscount += discountAmount;
+                    discountsInfo.push({
+                        product: `Simkaart ${simcard.id}`,
+                        percentage: permanentDiscount.percentage,
+                        productName: mobileTier.title
+                    });
+                }
+            });
+        }
+
+        totalPermanentDiscount = totalPermanentDiscount * 12;
+
+        return {
+            total: totalPermanentDiscount,
+            discounts: discountsInfo
+        };
     }
 
     calculateTotalTemporaryDiscount() {
         let totalTemporaryDiscount = 0;
+        let discountsInfo = [];
 
         // Internet temporary discount
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountValue && internetTier.discountPeriod) {
                 totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
+                discountsInfo.push({
+                    product: 'Internet',
+                    discountValue: internetTier.discountValue,
+                    discountPeriod: internetTier.discountPeriod
+                });
             }
         }
 
@@ -1006,6 +1036,11 @@ class UnifiedConfigurator {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 if (mobileTier.discountValue && mobileTier.discountPeriod && index >= 1) {
                     totalTemporaryDiscount += mobileTier.discountValue * mobileTier.discountPeriod;
+                    discountsInfo.push({
+                        product: `Simkaart ${simcard.id}`,
+                        discountValue: mobileTier.discountValue,
+                        discountPeriod: mobileTier.discountPeriod
+                    });
                 }
             });
         }
@@ -1015,12 +1050,22 @@ class UnifiedConfigurator {
             const tvData = this.data.products.tv;
             if (tvData.discountValue && tvData.discountPeriod) {
                 totalTemporaryDiscount += tvData.discountValue * tvData.discountPeriod;
+                discountsInfo.push({
+                    product: 'TV',
+                    discountValue: tvData.discountValue,
+                    discountPeriod: tvData.discountPeriod
+                });
             }
 
             // Entertainment Box temporary discount
             const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
             if (entertainmentBoxTier && entertainmentBoxTier.discountValue && entertainmentBoxTier.discountPeriod) {
                 totalTemporaryDiscount += entertainmentBoxTier.discountValue * entertainmentBoxTier.discountPeriod;
+                discountsInfo.push({
+                    product: 'Entertainment Box',
+                    discountValue: entertainmentBoxTier.discountValue,
+                    discountPeriod: entertainmentBoxTier.discountPeriod
+                });
             }
         }
 
@@ -1028,9 +1073,17 @@ class UnifiedConfigurator {
         const entertainmentTotal = this.calculateEntertainmentTotal();
         if (entertainmentTotal.totalDiscount > 0) {
             totalTemporaryDiscount += entertainmentTotal.totalDiscount * 12;
+            discountsInfo.push({
+                product: 'Entertainment Combo',
+                discountValue: entertainmentTotal.totalDiscount,
+                discountPeriod: 12 // Represents a year
+            });
         }
 
-        return totalTemporaryDiscount;
+        return {
+            total: totalTemporaryDiscount,
+            discounts: discountsInfo
+        };
     }
 
     openTooltipSheet(tooltipKey) {
@@ -1044,11 +1097,20 @@ class UnifiedConfigurator {
         let content = tooltipData.content;
 
         if (tooltipKey === 'permanent_promotion') {
-            const totalPermanentYearly = this.calculateTotalPermanentDiscount();
-            content = content.replace('##NUMBER##', `€ ${totalPermanentYearly.toFixed(2).replace('.', ',')}`);
+            const permanentData = this.calculateTotalPermanentDiscount();
+            content = `<p>Een permanente korting blijft geldig zolang je contract duurt en aan de voorwaarden voldaan wordt.</p>
+            <h4>Overzicht kortingen</h4>
+            <ul>
+                ${permanentData.discounts.map(discount => `<li><strong>${discount.percentage}% korting</strong> op <strong>${discount.productName}</strong></li>`).join('')}
+            </ul>
+            <div class="highlight">Totale korting voor 1 jaar: € ${permanentData.total.toFixed(2).replace('.', ',')} </div>`;
         } else if (tooltipKey === 'temporary_promotion') {
-            const totalTemporary = this.calculateTotalTemporaryDiscount();
-            content = content.replace('##NUMBER##', `€ ${totalTemporary.toFixed(2).replace('.', ',')}`);
+            const temporaryData = this.calculateTotalTemporaryDiscount();
+            content = `<h4>Overzicht</h4>
+            <ul>
+                ${temporaryData.discounts.map(discount => `<li><strong>€ ${discount.discountValue} korting</strong> voor <strong>${discount.discountPeriod} maanden</strong></li>`).join('')}
+            </ul>
+            <div class="highlight"> Totale tijdelijke korting: € ${temporaryData.total.toFixed(2).replace('.', ',')}</div>`;
         }
 
         title.innerHTML = tooltipData.title;
