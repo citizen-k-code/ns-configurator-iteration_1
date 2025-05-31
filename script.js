@@ -941,7 +941,7 @@ class UnifiedConfigurator {
 
     updateProductOverview() {
         const content = document.getElementById('product-overview-content');
-        const overviewSection = document.getElementById('product-overview-section');
+        const overviewSection = document.querySelector('.product-overview-section');
         let html = '';
 
         // Check if any products are enabled
