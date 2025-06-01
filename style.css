@@ -972,8 +972,6 @@ input:checked+.slider:before {
     font-size: 12px;
     display: block;
     line-height: 1.2;
-
-    display: none;
 }
 
 .overview-item-price .discount-price {
@@ -991,8 +989,6 @@ input:checked+.slider:before {
     display: block;
     line-height: 1.2;
     margin-top: 1px;
-
-    display: none;
 }
 
 /* Cost summary updates */
@@ -1000,4 +996,11 @@ input:checked+.slider:before {
     border: none;
     border-top: 1px solid #e0e0e0;
     margin: 20px 0 15px;
+}
+
+/* Custom - hide elements */
+.section-navigation,
+.overview-item-price .original-price,
+.overview-item-price .discount-info {
+    display: none;
 }
