@@ -626,6 +626,16 @@ input:checked+.slider:before {
     line-height: 1.4;
 }
 
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom easing for smoother animations */
+* {
+    scroll-behavior: smooth;
+}
+
 /* Hide scrollbar but keep functionality */
 .part1::-webkit-scrollbar {
     width: 6px;

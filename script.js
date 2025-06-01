@@ -229,6 +229,17 @@ class UnifiedConfigurator {
         });
     }
 
+    // Utility method to smoothly scroll element into view
+    scrollToElementSmooth(element) {
+        if (!element) return;
+        
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest'
+        });
+    }
+
     // Navigation methods
     showEntertainmentSection() {
         document.getElementById('part1').style.display = 'none';
@@ -303,6 +314,13 @@ class UnifiedConfigurator {
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
                 }
+                
+                // Smooth scroll to ensure the product block is visible
+                setTimeout(() => {
+                    const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+                    const productBlock = document.getElementById(blockId);
+                    this.scrollToElementSmooth(productBlock);
+                }, 100);
             } else {
                 content.style.display = 'none';
                 if (productType === 'mobile') {
@@ -328,6 +346,12 @@ class UnifiedConfigurator {
                 } else {
                     this.updateEntertainmentProductInfo(productType);
                 }
+                
+                // Smooth scroll to ensure the entertainment product block is visible
+                setTimeout(() => {
+                    const productBlock = document.getElementById(`${productType}-block`);
+                    this.scrollToElementSmooth(productBlock);
+                }, 100);
             } else {
                 content.style.display = 'none';
             }
