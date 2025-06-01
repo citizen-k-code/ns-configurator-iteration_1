@@ -233,11 +233,35 @@ class UnifiedConfigurator {
     scrollToElementSmooth(element) {
         if (!element) return;
         
-        element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest'
-        });
+        // Check if we're on mobile (viewport width < 1024px)
+        const isMobile = window.innerWidth < 1024;
+        const mobileBottomSummary = document.getElementById('mobile-bottom-summary');
+        
+        if (isMobile && mobileBottomSummary) {
+            // Get the height of the mobile bottom summary
+            const bottomSummaryHeight = mobileBottomSummary.offsetHeight;
+            
+            // Calculate the position to scroll to
+            const elementRect = element.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const availableHeight = viewportHeight - bottomSummaryHeight;
+            
+            // Only scroll if the element extends below the available space
+            if (elementRect.bottom > availableHeight) {
+                const scrollOffset = elementRect.bottom - availableHeight + 20; // 20px buffer
+                window.scrollBy({
+                    top: scrollOffset,
+                    behavior: 'smooth'
+                });
+            }
+        } else {
+            // Desktop behavior - use standard scrollIntoView
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest'
+            });
+        }
     }
 
     // Navigation methods
