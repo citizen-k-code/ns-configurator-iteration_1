@@ -74,35 +74,38 @@
                 <p class="search-subtitle">Maak je keuze uit ons het product van jij jouw wensen.</p>
 
                 <div class="search-options">
-                    <a href="product-internet.html" class="search-option">
+                    <div class="search-option" data-product="internet">
+                        <input type="checkbox" class="search-checkbox" id="internet-checkbox">
                         <span class="search-icon">📡</span>
                         <div class="search-content">
                             <div class="search-title">Internet</div>
-                            <div class="search-description">Bekijk details</div>
+                            <a href="product-internet.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
                         <span class="search-arrow">→</span>
-                    </a>
+                    </div>
 
-                    <a href="product-mobile.html" class="search-option">
+                    <div class="search-option" data-product="mobile">
+                        <input type="checkbox" class="search-checkbox" id="mobile-checkbox">
                         <span class="search-icon">📱</span>
                         <div class="search-content">
                             <div class="search-title">Mobiel</div>
-                            <div class="search-description">Bekijk details</div>
+                            <a href="product-mobile.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
                         <span class="search-arrow">→</span>
-                    </a>
+                    </div>
 
-                    <a href="product-entertainment.html" class="search-option">
+                    <div class="search-option" data-product="entertainment">
+                        <input type="checkbox" class="search-checkbox" id="entertainment-checkbox">
                         <span class="search-icon">📺</span>
                         <div class="search-content">
                             <div class="search-title">TV & Streamen</div>
-                            <div class="search-description">Bekijk details</div>
+                            <a href="product-entertainment.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
                         <span class="search-arrow">→</span>
-                    </a>
+                    </div>
                 </div>
 
-                <a href="configurator.html" class="configurator-btn">Bekijk ons aanbod</a>
+                <button class="configurator-btn" onclick="navigateToConfigurator()">Bekijk ons aanbod</button>
             </div>
 
             <div class="discount-banner">
@@ -183,6 +186,51 @@
             </div>
         </footer>
     </div>
+    <script>
+        // Handle search option clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchOptions = document.querySelectorAll('.search-option');
+            
+            searchOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    // Don't toggle if clicking on the "Bekijk details" link
+                    if (e.target.classList.contains('search-description')) {
+                        return;
+                    }
+                    
+                    const checkbox = this.querySelector('.search-checkbox');
+                    checkbox.checked = !checkbox.checked;
+                });
+            });
+        });
+
+        function navigateToConfigurator() {
+            const internetChecked = document.getElementById('internet-checkbox').checked;
+            const mobileChecked = document.getElementById('mobile-checkbox').checked;
+            const entertainmentChecked = document.getElementById('entertainment-checkbox').checked;
+            
+            let url = 'configurator.html';
+            let params = [];
+            
+            if (internetChecked) {
+                params.push('internet=1');
+            }
+            
+            if (mobileChecked) {
+                params.push('mobile=2');
+            }
+            
+            if (entertainmentChecked) {
+                params.push('tv=1');
+            }
+            
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            window.location.href = url;
+        }
+    </script>
     <script src="script.js"></script>
     <script src="header.js"></script>
 </body>

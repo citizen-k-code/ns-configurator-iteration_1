@@ -1048,22 +1048,31 @@ html {
 .search-option {
     display: flex;
     align-items: center;
-    padding: 16px;
+    padding: 12px;
     background-color: white;
-    border-radius: 8px;
-    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
     text-decoration: none;
     color: inherit;
-    border: 1px solid #e0e0e0;
+    margin-bottom: 8px;
+    cursor: pointer;
+    position: relative;
 }
 
 .search-option:hover {
-    background-color: #f8f9fa;
+    background-color: #f9f9f9;
 }
 
-.search-icon {
-    font-size: 20px;
+.search-option.checked {
+    border-color: #2D3648;
+    background-color: #f8f9fb;
+}
+
+.search-checkbox {
     margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
 .search-content {
