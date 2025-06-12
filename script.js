@@ -53,14 +53,18 @@ class UnifiedConfigurator {
     }
 
     async init() {
-        await this.loadData();
-        this.parseUrlParameters();
-        this.setupEventListeners();
-        this.setupMobileSummaryObserver();
-        this.updateHighlightBlocks();
-        this.updateProductHeaderStates();
-        this.updateAllEntertainmentSubtitles();
-        this.updateCostSummary();
+        try {
+            await this.loadData();
+            this.parseUrlParameters();
+            this.setupEventListeners();
+            this.setupMobileSummaryObserver();
+            this.updateHighlightBlocks();
+            this.updateProductHeaderStates();
+            this.updateAllEntertainmentSubtitles();
+            this.updateCostSummary();
+        } catch (error) {
+            console.error('Error initializing configurator:', error);
+        }
     }
 
     async loadData() {
@@ -137,26 +141,41 @@ class UnifiedConfigurator {
     }
 
     setupEventListeners() {
-        // Telecom toggles
-        document.getElementById('internet-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('internet', e.target.checked);
-        });
+        // Telecom toggles - check if elements exist first
+        const internetToggle = document.getElementById('internet-toggle');
+        if (internetToggle) {
+            internetToggle.addEventListener('change', (e) => {
+                this.toggleProduct('internet', e.target.checked);
+            });
+        }
 
-        document.getElementById('mobile-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('mobile', e.target.checked);
-        });
+        const mobileToggle = document.getElementById('mobile-toggle');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('change', (e) => {
+                this.toggleProduct('mobile', e.target.checked);
+            });
+        }
 
-        document.getElementById('add-simcard-btn').addEventListener('click', () => {
-            this.addSimcard();
-        });
+        const addSimcardBtn = document.getElementById('add-simcard-btn');
+        if (addSimcardBtn) {
+            addSimcardBtn.addEventListener('click', () => {
+                this.addSimcard();
+            });
+        }
 
-        document.getElementById('tv-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('tv', e.target.checked);
-        });
+        const tvToggle = document.getElementById('tv-toggle');
+        if (tvToggle) {
+            tvToggle.addEventListener('change', (e) => {
+                this.toggleProduct('tv', e.target.checked);
+            });
+        }
 
-        document.getElementById('fixed-phone-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('fixedPhone', e.target.checked);
-        });
+        const fixedPhoneToggle = document.getElementById('fixed-phone-toggle');
+        if (fixedPhoneToggle) {
+            fixedPhoneToggle.addEventListener('change', (e) => {
+                this.toggleProduct('fixedPhone', e.target.checked);
+            });
+        }
 
         // Entertainment toggles (only if elements exist)
         const netflixToggle = document.getElementById('netflix-toggle');
@@ -806,7 +825,10 @@ class UnifiedConfigurator {
         const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema'];
 
         products.forEach(productId => {
-            this.updateEntertainmentSubtitle(productId);
+            const subtitleElement = document.getElementById(`${productId}-subtitle`);
+            if (subtitleElement && this.entertainmentData) {
+                this.updateEntertainmentSubtitle(productId);
+            }
         });
     }
 
