@@ -75,33 +75,30 @@
 
                 <div class="search-options">
                     <div class="search-option" data-product="internet">
-                        <input type="checkbox" class="search-checkbox" id="internet-checkbox">
                         <span class="search-icon">📡</span>
                         <div class="search-content">
                             <div class="search-title">Internet</div>
                             <a href="product-internet.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
-                        <span class="search-arrow">→</span>
+                        <input type="checkbox" class="search-checkbox" id="internet-checkbox">
                     </div>
 
                     <div class="search-option" data-product="mobile">
-                        <input type="checkbox" class="search-checkbox" id="mobile-checkbox">
                         <span class="search-icon">📱</span>
                         <div class="search-content">
                             <div class="search-title">Mobiel</div>
                             <a href="product-mobile.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
-                        <span class="search-arrow">→</span>
+                        <input type="checkbox" class="search-checkbox" id="mobile-checkbox">
                     </div>
 
                     <div class="search-option" data-product="entertainment">
-                        <input type="checkbox" class="search-checkbox" id="entertainment-checkbox">
                         <span class="search-icon">📺</span>
                         <div class="search-content">
                             <div class="search-title">TV & Streamen</div>
                             <a href="product-entertainment.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
-                        <span class="search-arrow">→</span>
+                        <input type="checkbox" class="search-checkbox" id="entertainment-checkbox">
                     </div>
                 </div>
 
@@ -187,19 +184,62 @@
         </footer>
     </div>
     <script>
+        // Session state management
+        const SESSION_KEY = 'homepage_checkbox_state';
+        
+        // Load state from sessionStorage or set defaults
+        function loadCheckboxState() {
+            const savedState = sessionStorage.getItem(SESSION_KEY);
+            if (savedState) {
+                return JSON.parse(savedState);
+            } else {
+                // Default state: all checkboxes checked
+                return {
+                    internet: true,
+                    mobile: true,
+                    entertainment: true
+                };
+            }
+        }
+        
+        // Save state to sessionStorage
+        function saveCheckboxState() {
+            const state = {
+                internet: document.getElementById('internet-checkbox').checked,
+                mobile: document.getElementById('mobile-checkbox').checked,
+                entertainment: document.getElementById('entertainment-checkbox').checked
+            };
+            sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+        }
+        
         // Handle search option clicks
         document.addEventListener('DOMContentLoaded', function() {
+            // Load and apply saved state
+            const savedState = loadCheckboxState();
+            document.getElementById('internet-checkbox').checked = savedState.internet;
+            document.getElementById('mobile-checkbox').checked = savedState.mobile;
+            document.getElementById('entertainment-checkbox').checked = savedState.entertainment;
+            
             const searchOptions = document.querySelectorAll('.search-option');
             
             searchOptions.forEach(option => {
                 option.addEventListener('click', function(e) {
-                    // Don't toggle if clicking on the "Bekijk details" link
-                    if (e.target.classList.contains('search-description')) {
+                    // Don't toggle if clicking on the "Bekijk details" link or checkbox directly
+                    if (e.target.classList.contains('search-description') || e.target.classList.contains('search-checkbox')) {
                         return;
                     }
                     
                     const checkbox = this.querySelector('.search-checkbox');
                     checkbox.checked = !checkbox.checked;
+                    saveCheckboxState();
+                });
+            });
+            
+            // Handle direct checkbox clicks
+            const checkboxes = document.querySelectorAll('.search-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    saveCheckboxState();
                 });
             });
         });
