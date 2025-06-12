@@ -30,6 +30,13 @@ class UnifiedConfigurator {
             fixedPhone: {
                 enabled: false
             },
+            // Main entertainment toggle state
+            entertainment: {
+                enabled: false
+            },
+            entertainmentBox: {
+                enabled: false
+            },
             // Entertainment state
             netflix: {
                 enabled: false,
@@ -213,6 +220,22 @@ class UnifiedConfigurator {
             });
         }
 
+        // Entertainment toggle (only if element exists)
+        const entertainmentToggle = document.getElementById('entertainment-toggle');
+        if (entertainmentToggle) {
+            entertainmentToggle.addEventListener('change', (e) => {
+                this.toggleProduct('entertainment', e.target.checked);
+            });
+        }
+
+        // Entertainment Box toggle (only if element exists)
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.addEventListener('change', (e) => {
+                this.toggleProduct('entertainmentBox', e.target.checked);
+            });
+        }
+
         // Product header click listeners
         this.setupProductHeaderListeners();
     }
@@ -258,10 +281,17 @@ class UnifiedConfigurator {
     }
 
     updateProductHeaderStates() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'netflix', 'streamz', 'disney', 'sport', 'cinema'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'netflix', 'streamz', 'disney', 'sport', 'cinema'];
 
         allProducts.forEach(productId => {
-            const blockId = productId === 'fixedPhone' ? 'fixed-phone-block' : `${productId}-block`;
+            let blockId;
+            if (productId === 'fixedPhone') {
+                blockId = 'fixed-phone-block';
+            } else if (productId === 'entertainmentBox') {
+                blockId = 'entertainment-box-block';
+            } else {
+                blockId = `${productId}-block`;
+            }
             const header = document.querySelector(`#${blockId} .product-header`);
             if (header && this.state[productId]) {
                 if (this.state[productId].enabled) {
@@ -400,6 +430,26 @@ class UnifiedConfigurator {
                 }
             }
             this.updateHighlightBlocks();
+        }
+        // Handle main entertainment and entertainment box toggles
+        else if (['entertainment', 'entertainmentBox'].includes(productType)) {
+            const content = document.getElementById(`${productType === 'entertainmentBox' ? 'entertainment-box' : productType}-content`);
+            
+            if (enabled) {
+                content.style.display = 'block';
+                if (productType === 'entertainmentBox') {
+                    this.updateEntertainmentBoxStandaloneInfo();
+                }
+                
+                // Smooth scroll to ensure the product block is visible
+                setTimeout(() => {
+                    const blockId = productType === 'entertainmentBox' ? 'entertainment-box-block' : `${productType}-block`;
+                    const productBlock = document.getElementById(blockId);
+                    this.scrollToElementSmooth(productBlock);
+                }, 100);
+            } else {
+                content.style.display = 'none';
+            }
         } 
         // Handle entertainment products
         else if (['netflix', 'streamz', 'disney', 'sport', 'cinema'].includes(productType)) {
@@ -702,6 +752,24 @@ class UnifiedConfigurator {
                 ${summaryItems}
             </ul>
             ${priceHtml}
+        `;
+    }
+
+    updateEntertainmentBoxStandaloneInfo() {
+        const entertainmentBoxData = this.data.products.entertainmentBox;
+        const infoContainer = document.getElementById('entertainment-box-info');
+
+        if (!infoContainer || !entertainmentBoxData) {
+            return;
+        }
+
+        const summaryItems = entertainmentBoxData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+
+        infoContainer.innerHTML = `
+            <ul class="tier-details">
+                ${summaryItems}
+            </ul>
+            <div class="tier-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}/maand</div>
         `;
     }
 
