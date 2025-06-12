@@ -7,7 +7,7 @@
         {
           "id": 1,
           "title": "500 Mb",
-          "subtitle": "Basis",
+          "subtitle": "€45,00",
           "summary": "<strong>500 Mbps</strong> downloadsnelheid, <strong>50 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 45.00,
           "discountCopy": {
@@ -19,7 +19,7 @@
         {
           "id": 2,
           "title": "1 Gb",
-          "subtitle": "Snel",
+          "subtitle": "€65,00",
           "summary": "<strong>1 Gbps</strong> downloadsnelheid, <strong>100 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 65.00,
           "discountValue": 15.00,
@@ -33,7 +33,7 @@
         {
           "id": 3,
           "title": "2,5 Gb",
-          "subtitle": "Supersnel",
+          "subtitle": "€75,00",
           "summary": "<strong>2,5 Gbps</strong> downloadsnelheid, <strong>250 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 75.00,
           "discountValue": 15.00,
@@ -47,7 +47,7 @@
         {
           "id": 4,
           "title": "8,5 Gb",
-          "subtitle": "Gigasnel",
+          "subtitle": "€90,00",
           "summary": "<strong>8,5 Gbps</strong> downloadsnelheid, <strong>500 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 90.00,
           "discountCopy": {
@@ -65,8 +65,8 @@
       "tiers": [
         {
           "id": 1,
-          "title": "Kids sim",
-          "subtitle": "5GB Data",
+          "title": "Junior sim",
+          "subtitle": "€5,00",
           "summary": "<strong>5 GB</strong> mobiele data, <strong>120</strong> belminuten + onbeperkt sms'en, <strong>Parental</strong> control",
           "price": 5.00,
           "discountCopy": {
@@ -78,7 +78,7 @@
         {
           "id": 2,
           "title": "10 GB",
-          "subtitle": "",
+          "subtitle": "€11,45",
           "summary": "<strong>10 GB</strong> mobiele data, <strong>250 Mbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
           "price": 11.45,
           "discountValue": 3.45,
@@ -92,7 +92,7 @@
         {
           "id": 3,
           "title": "Unlimited",
-          "subtitle": "",
+          "subtitle": "€18,95",
           "summary": "<strong>Onbeperkt</strong> mobiele data, <strong>1 Gbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
           "price": 18.95,
           "discountValue": 5.95,
