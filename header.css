@@ -1,0 +1,245 @@
+
+/* Header Navigation Styles */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    z-index: 1000;
+    padding: 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    max-width: 1460px;
+    margin: 0 auto;
+}
+
+.header-logo {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    text-decoration: none;
+}
+
+.hamburger-menu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: #2D3648;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Navigation Menu */
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-menu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100vh;
+    background-color: white;
+    z-index: 1001;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-menu.active {
+    right: 0;
+}
+
+.nav-header {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.nav-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #717D96;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+}
+
+.nav-close:hover {
+    color: #2D3648;
+}
+
+.nav-links {
+    padding: 20px 0;
+}
+
+.nav-section {
+    margin-bottom: 30px;
+}
+
+.nav-section-title {
+    padding: 0 20px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #717D96;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #2D3648;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa;
+}
+
+.nav-link-icon {
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+.nav-link-text {
+    flex: 1;
+}
+
+.nav-link-arrow {
+    color: #717D96;
+    font-size: 14px;
+}
+
+.nav-footer {
+    border-top: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.nav-footer-text {
+    font-size: 12px;
+    color: #717D96;
+    text-align: center;
+}
+
+/* Body padding to account for fixed header */
+body.has-header {
+    padding-top: 60px;
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+    .hamburger-menu {
+        display: none;
+    }
+    
+    .nav-menu {
+        position: static;
+        width: auto;
+        height: auto;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        display: flex;
+        align-items: center;
+    }
+    
+    .nav-header {
+        display: none;
+    }
+    
+    .nav-links {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .nav-section {
+        margin: 0;
+        display: flex;
+        gap: 20px;
+    }
+    
+    .nav-section-title {
+        display: none;
+    }
+    
+    .nav-link {
+        padding: 8px 0;
+        background: none !important;
+        font-size: 14px;
+    }
+    
+    .nav-link-icon {
+        display: none;
+    }
+    
+    .nav-link-arrow {
+        display: none;
+    }
+    
+    .nav-footer {
+        display: none;
+    }
+    
+    .nav-overlay {
+        display: none;
+    }
+}

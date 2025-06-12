@@ -8,9 +8,65 @@
     <title>TV & Streamen</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="header.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
+    <!-- Main Header Navigation -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="index.html" class="header-logo">Logo</a>
+            <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="nav-menu" id="nav-menu">
+                <div class="nav-header">
+                    <span class="nav-title">Menu</span>
+                    <button class="nav-close" id="nav-close" aria-label="Close menu">×</button>
+                </div>
+                <div class="nav-links">
+                    <div class="nav-section">
+                        <div class="nav-section-title">Producten</div>
+                        <a href="product-internet.html" class="nav-link">
+                            <span class="nav-link-icon">📡</span>
+                            <span class="nav-link-text">Internet</span>
+                            <span class="nav-link-arrow">→</span>
+                        </a>
+                        <a href="product-mobile.html" class="nav-link">
+                            <span class="nav-link-icon">📱</span>
+                            <span class="nav-link-text">Mobiel</span>
+                            <span class="nav-link-arrow">→</span>
+                        </a>
+                        <a href="product-entertainment.html" class="nav-link">
+                            <span class="nav-link-icon">📺</span>
+                            <span class="nav-link-text">TV & Streamen</span>
+                            <span class="nav-link-arrow">→</span>
+                        </a>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-section-title">Pakketten</div>
+                        <a href="packs.html" class="nav-link">
+                            <span class="nav-link-icon">📦</span>
+                            <span class="nav-link-text">Onze packs</span>
+                            <span class="nav-link-arrow">→</span>
+                        </a>
+                        <a href="configurator.html" class="nav-link">
+                            <span class="nav-link-icon">⚙️</span>
+                            <span class="nav-link-text">Configurator</span>
+                            <span class="nav-link-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-footer">
+                    <div class="nav-footer-text">© 2024 Company Name</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="nav-overlay" id="nav-overlay"></div>
+
     <div class="page-container">
         <header class="page-header">
             <a href="index.html" class="back-btn">←</a>
@@ -105,6 +161,7 @@
             </div>
         </footer>
     </div>
+<script src="header.js"></script>
 </body>
 
 </html>
