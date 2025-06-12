@@ -17,6 +17,16 @@ class UnifiedConfigurator {
                 enabled: false,
                 entertainmentBoxTier: 1
             },
+            entertainmentBox: {
+                enabled: false
+            },
+            entertainmentServices: {
+                netflix: { enabled: false, selectedTier: 1 },
+                streamz: { enabled: false, selectedTier: 1 },
+                disney: { enabled: false },
+                sport: { enabled: false },
+                cinema: { enabled: false }
+            },
             fixedPhone: {
                 enabled: false
             },
@@ -232,20 +242,20 @@ class UnifiedConfigurator {
     // Utility method to smoothly scroll element into view
     scrollToElementSmooth(element) {
         if (!element) return;
-        
+
         // Check if we're on mobile (viewport width < 1024px)
         const isMobile = window.innerWidth < 1024;
         const mobileBottomSummary = document.getElementById('mobile-bottom-summary');
-        
+
         if (isMobile && mobileBottomSummary) {
             // Get the height of the mobile bottom summary
             const bottomSummaryHeight = mobileBottomSummary.offsetHeight;
-            
+
             // Calculate the position to scroll to
             const elementRect = element.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
             const availableHeight = viewportHeight - bottomSummaryHeight;
-            
+
             // Only scroll if the element extends below the available space
             if (elementRect.bottom > availableHeight) {
                 const scrollOffset = elementRect.bottom - availableHeight + 20; // 20px buffer
@@ -338,7 +348,7 @@ class UnifiedConfigurator {
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
                 }
-                
+
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
                     const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
@@ -370,7 +380,7 @@ class UnifiedConfigurator {
                 } else {
                     this.updateEntertainmentProductInfo(productType);
                 }
-                
+
                 // Smooth scroll to ensure the entertainment product block is visible
                 setTimeout(() => {
                     const productBlock = document.getElementById(`${productType}-block`);
@@ -994,7 +1004,7 @@ class UnifiedConfigurator {
     toggleProductOverview() {
         const content = document.getElementById('product-overview-content');
         const arrow = document.getElementById('toggle-arrow');
-        
+
         if (content.style.display === 'none') {
             content.style.display = 'block';
             arrow.classList.add('rotated');

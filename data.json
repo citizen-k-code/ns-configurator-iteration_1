@@ -154,6 +154,17 @@
         "permanentOnly": "",
         "both": ""
       }
+    },
+    "entertainmentBox": {
+      "title": "Entertainment Box",
+      "tooltip": "",
+      "summary": "Al je zenders en streamingdiensten <strong>op één plek</strong>, Een handige <strong>TV-gids</strong> en <strong>afstands-bediening</strong>, <strong>Gepersonaliseerde aanbevelingen</strong> over al jouw <strong>entertainment</strong>",
+      "price": 5.00,
+      "discountCopy": {
+        "temporaryOnly": "",
+        "permanentOnly": "",
+        "both": ""
+      }
     }
   },
   "discounts": {

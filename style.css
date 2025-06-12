@@ -1,3 +1,228 @@
+/* Entertainment Product Selector */
+.entertainment-products-selector {
+    margin-top: 12px;
+}
+
+.available-products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.product-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #2D3648;
+    transition: all 0.2s ease;
+}
+
+.product-option:hover {
+    background-color: #e9ecef;
+    border-color: #2D3648;
+}
+
+.service-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+}
+
+.selected-products {
+    margin-bottom: 16px;
+}
+
+.selected-product {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.selected-product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.selected-product-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.remove-product {
+    background: none;
+    border: none;
+    color: #717D96;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+}
+
+.remove-product:hover {
+    color: #dc3545;
+}
+
+.combo-discount-info {
+    background-color: #e8f5e8;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+}
+
+.discount-badge {
+    color: #2d5f2d;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.discount-text {
+    color: #2d5f2d;
+    font-size: 12px;
+}
+
+/* Entertainment Box Styles */
+.entertainment-box-highlight {
+    background-color: #fff3cd;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.highlight-badge {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.highlight-text {
+    color: #856404;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.entertainment-box-image {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.tv-box-illustration {
+    font-size: 48px;
+    color: #2D3648;
+}
+
+.entertainment-box-usps ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.entertainment-box-usps li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #2D3648;
+    position: relative;
+    padding-left: 20px;
+}
+
+.entertainment-box-usps li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: 600;
+}
+
+/* Entertainment Box Checkbox in TV */
+.entertainment-box-checkbox {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #2D3648;
+}
+
+.checkbox-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #e0e0e0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.checkbox-option input[type="checkbox"]:checked + .checkmark {
+    background-color: #2D3648;
+    border-color: #2D3648;
+}
+
+.checkbox-option input[type="checkbox"]:checked + .checkmark:after {
+    content: "✓";
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Save for later button */
+.save-for-later {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.save-btn {
+    background: none;
+    border: none;
+    color: #717D96;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 8px;
+}
+
+.save-btn:hover {
+    color: #2D3648;
+}
+
 /* Entertainment section styles */
 .entertainment-section {
     display: none;
@@ -174,49 +399,65 @@ body {
 /* Part 1 - Product Configuration */
 .part1 {
     flex: 1;
-    padding: 20px;
-    background-color: #EDF0F7;
+    padding: 16px;
+    background-color: #E2E7F0;
 }
 
 @media (min-width: 1024px) {
     .part1 {
         overflow-y: auto;
         height: 100vh;
-        padding: 30px;
+        padding: 16px;
         max-width: 800px;
         flex: 1;
     }
 }
 
-.part1 h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 30px;
-    color: #2D3648;
-}
-
-@media (min-width: 1024px) {
-    .part1 h1 {
-        font-size: 28px;
-    }
-}
-
-/* Product Blocks */
-.product-block {
+.page-header {
+    display: flex;
+    align-items: center;
     margin-bottom: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #ffffff;
+    padding: 0;
 }
 
-@media (max-width: 1023px) {
-    .product-block {
-        margin-left: -20px;
-        margin-right: -20px;
-        border-left: none;
-        border-right: none;
-        border-radius: 0;
-    }
+.page-header .back-btn {
+    background: none;
+    border: none;
+    color: #2D3648;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: 12px;
+    text-decoration: none;
+}
+
+.page-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2D3648;
+    margin: 0;
+}
+
+/* Section Groups */
+.section-group {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+/* Product Cards */
+.product-card {
+    margin-bottom: 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .product-header {
