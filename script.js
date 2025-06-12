@@ -158,26 +158,41 @@ class UnifiedConfigurator {
             this.toggleProduct('fixedPhone', e.target.checked);
         });
 
-        // Entertainment toggles
-        document.getElementById('netflix-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('netflix', e.target.checked);
-        });
+        // Entertainment toggles (only if elements exist)
+        const netflixToggle = document.getElementById('netflix-toggle');
+        if (netflixToggle) {
+            netflixToggle.addEventListener('change', (e) => {
+                this.toggleProduct('netflix', e.target.checked);
+            });
+        }
 
-        document.getElementById('streamz-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('streamz', e.target.checked);
-        });
+        const streamzToggle = document.getElementById('streamz-toggle');
+        if (streamzToggle) {
+            streamzToggle.addEventListener('change', (e) => {
+                this.toggleProduct('streamz', e.target.checked);
+            });
+        }
 
-        document.getElementById('disney-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('disney', e.target.checked);
-        });
+        const disneyToggle = document.getElementById('disney-toggle');
+        if (disneyToggle) {
+            disneyToggle.addEventListener('change', (e) => {
+                this.toggleProduct('disney', e.target.checked);
+            });
+        }
 
-        document.getElementById('sport-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('sport', e.target.checked);
-        });
+        const sportToggle = document.getElementById('sport-toggle');
+        if (sportToggle) {
+            sportToggle.addEventListener('change', (e) => {
+                this.toggleProduct('sport', e.target.checked);
+            });
+        }
 
-        document.getElementById('cinema-toggle').addEventListener('change', (e) => {
-            this.toggleProduct('cinema', e.target.checked);
-        });
+        const cinemaToggle = document.getElementById('cinema-toggle');
+        if (cinemaToggle) {
+            cinemaToggle.addEventListener('change', (e) => {
+                this.toggleProduct('cinema', e.target.checked);
+            });
+        }
 
         // Product header click listeners
         this.setupProductHeaderListeners();
@@ -229,7 +244,7 @@ class UnifiedConfigurator {
         allProducts.forEach(productId => {
             const blockId = productId === 'fixedPhone' ? 'fixed-phone-block' : `${productId}-block`;
             const header = document.querySelector(`#${blockId} .product-header`);
-            if (header) {
+            if (header && this.state[productId]) {
                 if (this.state[productId].enabled) {
                     header.classList.remove('clickable');
                 } else {
