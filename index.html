@@ -4,298 +4,129 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configureer je product</title>
+    <title>Wat zoek je?</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Part 1: Product Configuration -->
-        <div class="part1" id="part1">
-            <h1>Configureer je product</h1>
+    <div class="homepage-container">
+        <!-- Header -->
+        <header class="homepage-header">
+            <div class="search-section">
+                <h1>Wat zoek je?</h1>
+                <p class="search-subtitle">Maak je keuze uit ons het product van jij jouw wensen.</p>
 
-            <!-- Internet Product Block -->
-            <div class="product-block" id="internet-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <span class="product-icon">📡</span>
-                        <span>Internet</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="internet-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="internet-content" style="display: none;">
-                    <div class="tooltip-link" onclick="app.openTooltipSheet('internet')">Welke snelheid heb ik nodig?
-                    </div>
-                    <div class="tier-selector" id="internet-tiers"></div>
-                    <div class="tier-info" id="internet-info"></div>
-                </div>
-            </div>
-
-            <!-- Mobile Product Block -->
-            <div class="product-block" id="mobile-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <span class="product-icon">📱</span>
-                        <span>Mobiel</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="mobile-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="mobile-content" style="display: none;">
-                    <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik
-                        nodig?</div>
-                    <div class="simcards-container" id="simcards-container"></div>
-                    <button class="add-simcard-btn" id="add-simcard-btn">
-                        ➕ Voeg 3e simkaart toe
-                    </button>
-                </div>
-            </div>
-
-            <!-- TV Product Block -->
-            <div class="product-block" id="tv-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <span class="product-icon">📺</span>
-                        <span>TV</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="tv-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="tv-content" style="display: none;">
-                    <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?
-                    </div>
-                    <div class="tier-info" id="tv-info"></div>
-                    <div class="entertainment-box-section" id="entertainment-box-section">
-                        <hr class="section-divider">
-                        <div class="entertainment-box-title">Wil je een Entertainment Box?</div>
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Ontdek onze
-                            Entertainment Box met Entertainment Services</div>
-                        <div class="tier-selector" id="entertainment-box-tiers"></div>
-                        <div class="tier-info" id="entertainment-box-info"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fixed Phone Product Block -->
-            <div class="product-block" id="fixed-phone-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <span class="product-icon">📞</span>
-                        <span>Vaste lijn</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="fixed-phone-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="fixed-phone-content" style="display: none;">
-                    <div class="tier-info" id="fixed-phone-info"></div>
-                </div>
-            </div>
-
-            <!-- Navigation to Entertainment -->
-            <div class="section-navigation" id="telecom-navigation">
-                <button class="nav-btn primary" onclick="app.showEntertainmentSection()">Voeg entertainment toe</button>
-            </div>
-        </div>
-
-        <!-- Entertainment Section -->
-        <div class="part1 entertainment-section" id="entertainment-section" style="display: none;">
-            <button class="back-btn" onclick="app.showTelecomSection()">← Terug naar configuratie</button>
-            <h1>Voeg entertainment toe</h1>
-            <p class="intro-text">Intro waarom je entertainment zou moeten nemen bij deze provider</p>
-
-            <div class="discount-info-block">
-                <div class="discount-info-title">Krijg 5% combinatiekorting</div>
-                <div class="discount-info-content">Combineer Disney+ met Streamz, Sport of Netflix en geniet van
-                    minstens 5% korting op beide streamingdiensten.</div>
-            </div>
-
-            <!-- Netflix Product Block -->
-            <div class="product-block entertainment-card" id="netflix-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <div class="product-icon-square netflix-icon">N</div>
-                        <div class="product-info">
-                            <div class="product-name">Netflix</div>
-                            <div class="product-subtitle" id="netflix-subtitle">Vanaf €9,99</div>
+                <div class="search-options">
+                    <a href="product-internet.html" class="search-option">
+                        <span class="search-icon">📡</span>
+                        <div class="search-content">
+                            <div class="search-title">Internet</div>
+                            <div class="search-description">Bekijk details</div>
                         </div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="netflix-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="netflix-content" style="display: none;">
-                    <div class="tier-selector" id="netflix-tiers"></div>
-                    <div class="tier-info" id="netflix-info"></div>
-                </div>
-            </div>
+                        <span class="search-arrow">→</span>
+                    </a>
 
-            <!-- Streamz Product Block -->
-            <div class="product-block entertainment-card" id="streamz-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <div class="product-icon-square streamz-icon">S</div>
-                        <div class="product-info">
-                            <div class="product-name">Streamz</div>
-                            <div class="product-subtitle" id="streamz-subtitle">Vanaf €8,99</div>
+                    <a href="product-mobile.html" class="search-option">
+                        <span class="search-icon">📱</span>
+                        <div class="search-content">
+                            <div class="search-title">Mobiel</div>
+                            <div class="search-description">Bekijk details</div>
                         </div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="streamz-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="streamz-content" style="display: none;">
-                    <div class="tier-selector" id="streamz-tiers"></div>
-                    <div class="tier-info" id="streamz-info"></div>
-                </div>
-            </div>
+                        <span class="search-arrow">→</span>
+                    </a>
 
-            <!-- Disney+ Product Block -->
-            <div class="product-block entertainment-card" id="disney-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <div class="product-icon-square disney-icon">D+</div>
-                        <div class="product-info">
-                            <div class="product-name">Disney+</div>
-                            <div class="product-subtitle" id="disney-subtitle">€13,99</div>
+                    <a href="product-entertainment.html" class="search-option">
+                        <span class="search-icon">📺</span>
+                        <div class="search-content">
+                            <div class="search-title">TV & Streamen</div>
+                            <div class="search-description">Bekijk details</div>
                         </div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="disney-toggle">
-                        <span class="slider"></span>
-                    </label>
+                        <span class="search-arrow">→</span>
+                    </a>
                 </div>
-                <div class="product-content" id="disney-content" style="display: none;">
-                    <div class="tier-info" id="disney-info"></div>
+
+                <a href="configurator.html" class="configurator-btn">Bekijk ons aanbod</a>
+            </div>
+
+            <div class="discount-banner">
+                <span class="discount-text">10% korting bovenstaarkontract</span>
+            </div>
+        </header>
+
+        <!-- Packs Section -->
+        <section class="packs-section">
+            <div class="section-header">
+                <h2>Onze packs</h2>
+                <a href="packs.html" class="see-all-link">Alle packs</a>
+            </div>
+
+            <div class="pack-card">
+                <div class="pack-image">
+                    <img src="attached_assets/00_homepage_1749733292384.png" alt="De starter pack" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                </div>
+                <div class="pack-content">
+                    <h3>De starter</h3>
+                    <ul class="pack-features">
+                        <li>Snel internet voor dagelijkse gebruik</li>
+                        <li>1 of 2 simkaarten met 10 GB data</li>
+                        <li>Toegang tot populaire streamingdiensten</li>
+                    </ul>
+                    <div class="pack-price">
+                        <span class="price-amount">€65,00</span>
+                        <span class="price-period">/maand</span>
+                    </div>
+                    <a href="configurator.html" class="pack-btn">Ga verder met het starter pack</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section">
+            <h2>Hier zit je goed</h2>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🔄</span>
+                <div class="benefit-content">
+                    <h3>Het strafste netwerk</h3>
+                    <p>Met ons hybride 5G+ netwerk geef jij altijd vol gas. Radiant, snel en voelig. Verbinding zo tof! Uhu.</p>
                 </div>
             </div>
 
-            <!-- Sport Product Block -->
-            <div class="product-block entertainment-card" id="sport-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <div class="product-icon-square sport-icon">⚽</div>
-                        <div class="product-info">
-                            <div class="product-name">Sport</div>
-                            <div class="product-subtitle" id="sport-subtitle">€15,99</div>
-                        </div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="sport-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="sport-content" style="display: none;">
-                    <div class="tier-info" id="sport-info"></div>
+            <div class="benefit-item">
+                <span class="benefit-icon">📡</span>
+                <div class="benefit-content">
+                    <h3>De beste 5G-dekking</h3>
+                    <p>We hebben zo'n grootste 5G-netwerk van België. En 5G is ovil de directbewijs verbonden.</p>
                 </div>
             </div>
 
-            <!-- Cinema Product Block -->
-            <div class="product-block entertainment-card" id="cinema-block">
-                <div class="product-header">
-                    <div class="product-title">
-                        <div class="product-icon-square cinema-icon">🎬</div>
-                        <div class="product-info">
-                            <div class="product-name">Cinema</div>
-                            <div class="product-subtitle" id="cinema-subtitle">€26,99</div>
-                        </div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="cinema-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="product-content" id="cinema-content" style="display: none;">
-                    <div class="tier-info" id="cinema-info"></div>
+            <div class="benefit-item">
+                <span class="benefit-icon">📞</span>
+                <div class="benefit-content">
+                    <h3>Productdienesten en support</h3>
+                    <p>Je altijd je bunden Telstream zijn samen... Je bereikt ons ook voor bij je kunt aanbied gebruit.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Part 2: Cost Summary -->
-        <div class="part2" id="part2">
-            <div class="cost-summary">
-                <h3>Maandelijkse kost</h3>
-                <div class="strikethrough-cost" id="strikethrough-cost" style="display: none;"></div>
-                <div class="total-cost">
-                    <span class="cost-label">€ <span id="monthly-total">0,00</span></span>
-                    <span class="cost-period">----</span>
+        <!-- Footer -->
+        <footer class="homepage-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Logo</h4>
                 </div>
-                <!-- Product Overview Accordion -->
-                <div class="product-overview-section">
-                    <div class="overview-toggle" id="overview-toggle" onclick="app.toggleProductOverview()">
-                        <span>Details bekijken</span>
-                        <span class="toggle-arrow" id="toggle-arrow">▼</span>
-                    </div>
-                    <div class="product-overview-content" id="product-overview-content" style="display: none;">
-                        <!-- Content will be populated by JavaScript -->
-                    </div>
+                <div class="footer-section">
+                    <p>Copyright 2024 Company Name.</p>
                 </div>
-                <div class="advantage-block" id="advantage-block" style="display: none;">
-                    <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms & Conditions</a>
+                    <a href="#">Cookie Policy</a>
                 </div>
-                <div class="cost-breakdown">
-                    <div class="discount-line clickable" id="permanent-promotion" style="display: none;"
-                        onclick="app.openTooltipSheet('permanent_promotion')">
-                        <span>Permanent promotion</span>
-                        <span id="permanent-amount">- € 0,00</span>
-                    </div>
-                    <div class="discount-line clickable" id="temporary-promotion" style="display: none;"
-                        onclick="app.openTooltipSheet('temporary_promotion')">
-                        <span>Temporary promotions</span>
-                        <span id="temporary-amount">- € 0,00</span>
-                    </div>
-                </div>
-                <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Verder</button>
             </div>
-        </div>
+        </footer>
     </div>
-
-    <!-- Fixed Bottom Mobile Summary -->
-    <div class="mobile-bottom-summary" id="mobile-bottom-summary">
-        <div class="mobile-summary-content">
-            <div class="mobile-cost-section" onclick="app.scrollToMainSummary()">
-                <div class="mobile-strikethrough" id="mobile-strikethrough" style="display: none;"></div>
-                <div class="mobile-monthly-cost">
-                    <span>€ <span id="mobile-monthly-total">0,00</span></span>
-                    <span class="mobile-cost-label">mnd</span>
-                </div>
-                <div class="mobile-advantage" id="mobile-advantage" style="display: none;">
-                    <span>je bespaart € <span id="mobile-advantage-amount">0,00</span></span>
-                </div>
-            </div>
-            <button class="mobile-order-btn" id="mobile-order-btn"
-                onclick="app.handleMobileOrderButton()">Verder</button>
-        </div>
-    </div>
-
-    <!-- Tooltip Sheet Overlay -->
-    <div class="sheet-overlay" id="sheet-overlay" style="display: none;" onclick="app.closeTooltipSheet()">
-        <div class="tooltip-sheet" id="tooltip-sheet" onclick="event.stopPropagation()">
-            <div class="sheet-header">
-                <button class="sheet-close-btn" onclick="app.closeTooltipSheet()">×</button>
-            </div>
-            <div class="sheet-content">
-                <h3 class="sheet-title" id="sheet-title"></h3>
-                <div class="sheet-body" id="sheet-body"></div>
-            </div>
-            <div class="sheet-footer">
-                <button class="sheet-close-footer-btn" onclick="app.closeTooltipSheet()">Sluiten</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
 </body>
 
 </html>

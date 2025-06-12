@@ -1014,3 +1014,634 @@ html {
 .overview-item-price .discount-info {
     display: none;
 }
+
+/* Homepage Styles */
+.homepage-container {
+    min-height: 100vh;
+    background-color: #EDF0F7;
+    display: flex;
+    flex-direction: column;
+}
+
+.homepage-header {
+    padding: 20px;
+    flex: 1;
+}
+
+.search-section h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 8px;
+}
+
+.search-subtitle {
+    color: #717D96;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.search-options {
+    margin-bottom: 20px;
+}
+
+.search-option {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e0e0e0;
+}
+
+.search-option:hover {
+    background-color: #f8f9fa;
+}
+
+.search-icon {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.search-content {
+    flex: 1;
+}
+
+.search-title {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 16px;
+}
+
+.search-description {
+    color: #717D96;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.search-arrow {
+    color: #717D96;
+    font-size: 16px;
+}
+
+.configurator-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #2D3648;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.configurator-btn:hover {
+    background-color: #1a2332;
+}
+
+.discount-banner {
+    background-color: #2D3648;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.packs-section {
+    background-color: white;
+    padding: 20px;
+    margin: 0 -20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.see-all-link {
+    color: #2D3648;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.pack-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.pack-image img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.pack-content {
+    padding: 16px;
+}
+
+.pack-content h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 12px;
+}
+
+.pack-features {
+    list-style: none;
+    margin-bottom: 16px;
+}
+
+.pack-features li {
+    font-size: 12px;
+    color: #717D96;
+    margin-bottom: 4px;
+    position: relative;
+    padding-left: 12px;
+}
+
+.pack-features li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #2D3648;
+}
+
+.pack-price {
+    margin-bottom: 16px;
+}
+
+.price-amount {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.price-period {
+    font-size: 12px;
+    color: #717D96;
+}
+
+.pack-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #2D3648;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pack-btn:hover {
+    background-color: #1a2332;
+}
+
+.benefits-section {
+    padding: 20px;
+}
+
+.benefits-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 20px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.benefit-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    margin-top: 2px;
+}
+
+.benefit-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.benefit-content p {
+    font-size: 12px;
+    color: #717D96;
+    line-height: 1.4;
+}
+
+.homepage-footer {
+    background-color: #2D3648;
+    color: white;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.footer-section p {
+    font-size: 12px;
+    color: #CBD2E0;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: #CBD2E0;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+/* Page Styles */
+.page-container {
+    min-height: 100vh;
+    background-color: #EDF0F7;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #EDF0F7;
+}
+
+.page-header h1 {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    margin: 0;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #2D3648;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px;
+    text-decoration: none;
+}
+
+.header-spacer {
+    width: 32px;
+}
+
+.page-content {
+    flex: 1;
+    padding: 0 20px 20px;
+}
+
+.page-subtitle {
+    color: #717D96;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.page-description {
+    color: #717D96;
+    font-size: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.info-banner {
+    background-color: #e8f5e8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.info-icon {
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+.info-title {
+    font-weight: 600;
+    color: #2d5f2d;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.info-description {
+    color: #2d5f2d;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.product-option {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.product-option.featured {
+    border-color: #2D3648;
+}
+
+.feature-badge {
+    position: absolute;
+    top: -8px;
+    left: 16px;
+    background-color: #2D3648;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.product-option h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 12px;
+}
+
+.product-features {
+    margin-bottom: 16px;
+}
+
+.feature-item {
+    display: block;
+    font-size: 12px;
+    color: #717D96;
+    margin-bottom: 4px;
+}
+
+.product-price {
+    margin-bottom: 16px;
+}
+
+.product-price .price-amount {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.product-price .price-period {
+    font-size: 12px;
+    color: #717D96;
+}
+
+.product-price-discount {
+    margin-bottom: 16px;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #717D96;
+    text-decoration: line-through;
+    margin-bottom: 2px;
+}
+
+.discount-price .price-amount {
+    font-size: 20px;
+    font-weight: 600;
+    color: #F134F7;
+}
+
+.discount-price .price-period {
+    font-size: 12px;
+    color: #717D96;
+}
+
+.discount-info {
+    font-size: 10px;
+    color: #717D96;
+    margin-top: 2px;
+}
+
+.product-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #2D3648;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-btn:hover {
+    background-color: #1a2332;
+}
+
+.info-section {
+    margin-top: 30px;
+}
+
+.info-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.info-item .info-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    margin-top: 2px;
+}
+
+.info-item h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.info-item p {
+    font-size: 12px;
+    color: #717D96;
+    line-height: 1.4;
+}
+
+.page-footer {
+    background-color: #2D3648;
+    color: white;
+    padding: 20px;
+    margin-top: auto;
+}
+
+/* Pack Cards Full */
+.pack-card-full {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.pack-card-full .pack-content {
+    padding: 20px;
+}
+
+.pack-card-full h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 16px;
+}
+
+.pack-pricing {
+    margin-bottom: 16px;
+}
+
+.price-label {
+    font-size: 12px;
+    color: #717D96;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.pack-btn.primary {
+    background-color: #2D3648;
+}
+
+.pack-btn.primary:hover {
+    background-color: #1a2332;
+}
+
+/* Entertainment Styles */
+.section-description {
+    color: #717D96;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.entertainment-options {
+    margin-bottom: 30px;
+}
+
+.entertainment-option {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.option-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    margin-top: 2px;
+}
+
+.option-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.option-content p {
+    font-size: 12px;
+    color: #717D96;
+    line-height: 1.4;
+}
+
+.streaming-services {
+    margin-bottom: 30px;
+}
+
+.streaming-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.streaming-service {
+    width: 60px;
+    height: 40px;
+    border-radius: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.streaming-service.netflix {
+    background-color: #E50914;
+}
+
+.streaming-service.disney {
+    background-color: #113CCF;
+}
+
+.streaming-service.streamz {
+    background-color: #00D4FF;
+}
+
+.streaming-service.hbo {
+    background-color: #8B5CF6;
+}
+
+.main-cta-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #2D3648;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.main-cta-btn:hover {
+    background-color: #1a2332;
+}
