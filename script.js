@@ -510,6 +510,8 @@ class UnifiedConfigurator {
                 ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'].forEach(service => {
                     this.state[service].enabled = false;
                 });
+                // Render closed state for entertainment
+                this.renderProductClosedState('entertainment');
             }
         }
         // Handle entertainment box toggle
