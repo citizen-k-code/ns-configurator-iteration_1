@@ -1222,10 +1222,10 @@ class UnifiedConfigurator {
         // Entertainment Box cost (standalone)
         if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData.discountValue) {
+            if (entertainmentBoxData && entertainmentBoxData.discountValue) {
                 total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
                 totalTemporaryDiscount += entertainmentBoxData.discountValue;
-            } else {
+            } else if (entertainmentBoxData) {
                 total += entertainmentBoxData.price;
             }
         }
@@ -1487,27 +1487,29 @@ class UnifiedConfigurator {
         // Entertainment Box (standalone)
         if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
-            let boxFinalPrice = entertainmentBoxData.price;
-            if (entertainmentBoxData.discountValue) {
-                boxFinalPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-            }
+            if (entertainmentBoxData) {
+                let boxFinalPrice = entertainmentBoxData.price;
+                if (entertainmentBoxData.discountValue) {
+                    boxFinalPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                }
 
-            html += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Entertainment Box</div>
-                    <div class="overview-item">
-                        <div class="overview-item-name">Entertainment Box</div>
-                        <div class="overview-item-price">
-                            ${entertainmentBoxData.discountValue ? 
-                                `<span class="original-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-price">€ ${boxFinalPrice.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-info">- €${entertainmentBoxData.discountValue.toFixed(2).replace('.', ',')} voor ${entertainmentBoxData.discountPeriod} maanden</span>` :
-                                `€ ${boxFinalPrice.toFixed(2).replace('.', ',')}`
-                            }
+                html += `
+                    <div class="overview-group">
+                        <div class="overview-group-title">Entertainment Box</div>
+                        <div class="overview-item">
+                            <div class="overview-item-name">Entertainment Box</div>
+                            <div class="overview-item-price">
+                                ${entertainmentBoxData.discountValue ? 
+                                    `<span class="original-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
+                                     <span class="discount-price">€ ${boxFinalPrice.toFixed(2).replace('.', ',')}</span>
+                                     <span class="discount-info">- €${entertainmentBoxData.discountValue.toFixed(2).replace('.', ',')} voor ${entertainmentBoxData.discountPeriod} maanden</span>` :
+                                    `€ ${boxFinalPrice.toFixed(2).replace('.', ',')}`
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
         }
 
         // Entertainment (TV + Entertainment Box + Entertainment products)
@@ -1839,7 +1841,7 @@ class UnifiedConfigurator {
         // Entertainment Box temporary discount (standalone)
         if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
+            if (entertainmentBoxData && entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
                 totalTemporaryDiscount += entertainmentBoxData.discountValue * entertainmentBoxData.discountPeriod;
                 discountsInfo.push({
                     product: 'Entertainment Box',
