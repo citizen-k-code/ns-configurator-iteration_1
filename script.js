@@ -97,10 +97,14 @@ class UnifiedConfigurator {
             if (tierId >= 1 && tierId <= 4) {
                 this.state.internet.enabled = true;
                 this.state.internet.selectedTier = tierId;
-                document.getElementById('internet-toggle').checked = true;
-                document.getElementById('internet-content').style.display = 'block';
-                this.renderInternetTiers();
-                this.updateInternetInfo();
+                const internetToggle = document.getElementById('internet-toggle');
+                const internetContent = document.getElementById('internet-content');
+                if (internetToggle && internetContent) {
+                    internetToggle.checked = true;
+                    internetContent.style.display = 'block';
+                    this.renderInternetTiers();
+                    this.updateInternetInfo();
+                }
             }
         }
 
@@ -114,9 +118,13 @@ class UnifiedConfigurator {
                     id: index + 1,
                     selectedTier: tierId
                 }));
-                document.getElementById('mobile-toggle').checked = true;
-                document.getElementById('mobile-content').style.display = 'block';
-                this.renderMobileSimcards();
+                const mobileToggle = document.getElementById('mobile-toggle');
+                const mobileContent = document.getElementById('mobile-content');
+                if (mobileToggle && mobileContent) {
+                    mobileToggle.checked = true;
+                    mobileContent.style.display = 'block';
+                    this.renderMobileSimcards();
+                }
             }
         }
 
@@ -131,19 +139,27 @@ class UnifiedConfigurator {
                     this.state.tv.entertainmentBoxTier = boxTierId;
                 }
             }
-            document.getElementById('tv-toggle').checked = true;
-            document.getElementById('tv-content').style.display = 'block';
-            this.updateTvInfo();
-            this.renderEntertainmentBoxTiers();
+            const tvToggle = document.getElementById('tv-toggle');
+            const tvContent = document.getElementById('tv-content');
+            if (tvToggle && tvContent) {
+                tvToggle.checked = true;
+                tvContent.style.display = 'block';
+                this.updateTvInfo();
+                this.renderEntertainmentBoxTiers();
+            }
         }
 
         // Fixed Phone: ?phone=1 (1 enables fixed phone)
         const phoneEnabled = urlParams.get('phone');
         if (phoneEnabled === '1') {
             this.state.fixedPhone.enabled = true;
-            document.getElementById('fixed-phone-toggle').checked = true;
-            document.getElementById('fixed-phone-content').style.display = 'block';
-            this.updateFixedPhoneInfo();
+            const fixedPhoneToggle = document.getElementById('fixed-phone-toggle');
+            const fixedPhoneContent = document.getElementById('fixed-phone-content');
+            if (fixedPhoneToggle && fixedPhoneContent) {
+                fixedPhoneToggle.checked = true;
+                fixedPhoneContent.style.display = 'block';
+                this.updateFixedPhoneInfo();
+            }
         }
     }
 
@@ -484,6 +500,8 @@ class UnifiedConfigurator {
     // Internet methods
     renderInternetTiers() {
         const tiersContainer = document.getElementById('internet-tiers');
+        if (!tiersContainer || !this.data) return;
+        
         const tiers = this.data.products.internet.tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => `
@@ -506,8 +524,11 @@ class UnifiedConfigurator {
     }
 
     updateInternetInfo() {
-        const tier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
         const infoContainer = document.getElementById('internet-info');
+        if (!infoContainer || !this.data) return;
+        
+        const tier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+        if (!tier) return;
 
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
@@ -537,6 +558,8 @@ class UnifiedConfigurator {
     renderMobileSimcards() {
         const container = document.getElementById('simcards-container');
         const addBtn = document.getElementById('add-simcard-btn');
+        
+        if (!container || !addBtn || !this.data) return;
 
         container.innerHTML = this.state.mobile.simcards.map((simcard, index) => `
             <div class="simcard">
@@ -672,8 +695,10 @@ class UnifiedConfigurator {
 
     // TV methods
     updateTvInfo() {
-        const tvData = this.data.products.tv;
         const infoContainer = document.getElementById('tv-info');
+        if (!infoContainer || !this.data) return;
+        
+        const tvData = this.data.products.tv;
 
         const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
@@ -701,6 +726,8 @@ class UnifiedConfigurator {
 
     renderEntertainmentBoxTiers() {
         const tiersContainer = document.getElementById('entertainment-box-tiers');
+        if (!tiersContainer || !this.data) return;
+        
         const tiers = this.data.products.tv.entertainmentBox.tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => `
