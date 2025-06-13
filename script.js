@@ -889,8 +889,7 @@ class UnifiedConfigurator {
 
         const summaryItems = productData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
-        ```tool_code
-const discountPrice = this.getEntertainmentDiscountedPrice(productData.price);
+        const discountPrice = this.getEntertainmentDiscountedPrice(productData.price);
         const hasDiscount = discountPrice < productData.price;
 
         let priceHtml;
