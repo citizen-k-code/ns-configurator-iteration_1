@@ -2213,6 +2213,12 @@ class UnifiedConfigurator {
         if (existingClosedState) {
             existingClosedState.remove();
         }
+
+        // Remove any highlight blocks that might be inserted
+        const existingHighlight = productBlock.querySelector('.highlight-block');
+        if (existingHighlight) {
+            existingHighlight.remove();
+        }
     }
 
     // Add method to render closed states for all disabled products
@@ -2232,56 +2238,11 @@ class UnifiedConfigurator {
         const productBlock = document.getElementById(blockId);
         if (!productBlock) return;
 
-        const productHeader = productBlock.querySelector('.product-header');
-        if (!productHeader) return;
-
         // Remove existing closed state first
         this.removeProductClosedState(productType);
 
-        // Get product data
-        let productData;
-        if (productType === 'fixedPhone') {
-            productData = this.data.products.fixedPhone;
-        } else if (productType === 'entertainmentBox') {
-            productData = this.data.products.entertainmentBox;
-        } else if (productType === 'entertainment') {
-            productData = this.data.products.entertainment;
-        } else {
-            productData = this.data.products[productType];
-        }
-
-        if (!productData || !productData.closedState) return;
-
-        // Calculate price for ##PRICE## replacement
-        let price = this.calculateClosedStatePrice(productType, productData);
-
-        // Replace ##PRICE## in summary
-        let summary = productData.closedState.summary;
-        if (summary && summary.includes('##PRICE##')) {
-            summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
-        }
-
-        // Build closed state HTML
-        let closedStateHtml = `
-            <div class="product-closed-content">
-                <div class="product-closed-divider"></div>
-                <div class="product-closed-summary">${summary}</div>
-        `;
-
-        // Add highlight block if configured
-        if (productData.closedState.showHighlight && productData.closedState.highlight) {
-            closedStateHtml += `
-                <div class="product-closed-highlight">
-                    <div class="closed-highlight-title">${productData.closedState.highlight.title}</div>
-                    <div class="closed-highlight-description">${productData.closedState.highlight.description}</div>
-                </div>
-            `;
-        }
-
-        closedStateHtml += `</div>`;
-
-        // Insert after header
-        productHeader.insertAdjacentHTML('afterend', closedStateHtml);
+        // For closed state, we only keep the header with title and switch
+        // No additional content is added - the block shows only title and toggle
     }
 
     // Helper method to calculate price for closed state
