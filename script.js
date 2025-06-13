@@ -876,7 +876,6 @@ class UnifiedConfigurator {
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
-            ${```javascript
             ${priceHtml}
         `;
     }
@@ -1712,7 +1711,7 @@ class UnifiedConfigurator {
         // Entertainment permanent discounts (5% combo discount)
         const entertainmentTotal = this.calculateEntertainmentTotal();
         if (entertainmentTotal.totalDiscount > 0) {
-// Add individual entertainment product discounts
+            // Add individual entertainment product discounts
             if (this.state.netflix.enabled) {
                 const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
                 const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
