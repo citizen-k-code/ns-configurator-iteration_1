@@ -595,13 +595,28 @@ class UnifiedConfigurator {
                     ${this.state.mobile.simcards.length > 1 && index > 0 ? `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : ''}
                 </div>
                 <div class="tier-selector">
-                    ${this.data.products.mobile.tiers.map(tier => `
-                        <div class="tier-option ${tier.id === simcard.selectedTier ? 'active' : ''}" 
-                             onclick="app.selectMobileTier(${simcard.id}, ${tier.id})">
-                            <div class="tier-title">${tier.title}</div>
-                            ${tier.subtitle ? `<div class="tier-subtitle">${tier.subtitle}</div>` : ''}
-                        </div>
-                    `).join('')}
+                    ${this.data.products.mobile.tiers.map(tier => {
+                        const discountCalc = this.calculateMobileDiscount(tier, index);
+                        const displayPrice = discountCalc.hasDiscount ? discountCalc.finalPrice : tier.price;
+                        const isSelected = tier.id === simcard.selectedTier;
+                        
+                        let subtitleContent = '';
+                        if (!isSelected) {
+                            if (discountCalc.hasDiscount) {
+                                subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
+                            } else {
+                                subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
+                            }
+                        }
+                        
+                        return `
+                            <div class="tier-option ${isSelected ? 'active' : ''}" 
+                                 onclick="app.selectMobileTier(${simcard.id}, ${tier.id})">
+                                <div class="tier-title">${tier.title}</div>
+                                ${subtitleContent}
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
                 <div class="tier-info">
                     ${this.getMobileTierInfo(simcard.selectedTier, index)}
