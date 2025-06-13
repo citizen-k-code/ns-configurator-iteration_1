@@ -489,7 +489,9 @@ class UnifiedConfigurator {
                 // Remove any existing closed state
                 this.removeProductClosedState(productType);
                 content.style.display = 'block';
-                closedState.style.display = 'none';
+                if (closedState) {
+                    closedState.style.display = 'none';
+                }
                 this.renderAvailableEntertainmentServices();
                 this.renderSelectedEntertainmentServices();
 
@@ -500,7 +502,9 @@ class UnifiedConfigurator {
                 }, 100);
             } else {
                 content.style.display = 'none';
-                closedState.style.display = 'block';
+                if (closedState) {
+                    closedState.style.display = 'block';
+                }
                 // Clear all selected entertainment services
                 this.state.selectedEntertainmentServices.clear();
                 ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'].forEach(service => {

@@ -320,6 +320,31 @@
     gap: 12px;
 }
 
+.available-service-name {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.available-service-price {
+    font-size: 13px;
+    color: #717D96;
+}
+
+.add-service-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #2D3648;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .available-service {
     background-color: white;
     border: 1px solid #e0e0e0;
