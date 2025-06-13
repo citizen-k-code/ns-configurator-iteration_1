@@ -530,13 +530,33 @@ class UnifiedConfigurator {
 
         const tiers = this.data.products.internet.tiers;
 
-        tiersContainer.innerHTML = tiers.map(tier => `
-            <div class="tier-option ${tier.id === this.state.internet.selectedTier ? 'active' : ''}" 
-                 onclick="app.selectInternetTier(${tier.id})">
-                <div class="tier-title">${tier.title}</div>
-                <div class="tier-subtitle">${tier.subtitle}</div>
-            </div>
-        `).join('');
+        tiersContainer.innerHTML = tiers.map(tier => {
+            const isSelected = tier.id === this.state.internet.selectedTier;
+            let finalPrice = tier.price;
+            let hasDiscount = false;
+            
+            if (tier.discountValue) {
+                finalPrice = tier.price - tier.discountValue;
+                hasDiscount = true;
+            }
+
+            let subtitleContent = '';
+            if (!isSelected) {
+                if (hasDiscount) {
+                    subtitleContent = `<div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
+                } else {
+                    subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
+                }
+            }
+
+            return `
+                <div class="tier-option ${isSelected ? 'active' : ''}" 
+                     onclick="app.selectInternetTier(${tier.id})">
+                    <div class="tier-title">${tier.title}</div>
+                    ${subtitleContent}
+                </div>
+            `;
+        }).join('');
     }
 
     selectInternetTier(tierId) {
