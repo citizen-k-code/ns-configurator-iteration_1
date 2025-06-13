@@ -220,10 +220,44 @@
     "title": "Extra voordeel met Internet + Mobiel",
     "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
   },
+  "closedStates": {
+        "internet": {
+            "summary": "Kies voor snelheden tot 8,5 Gbps<br />Vanaf € ##PRICE##/maand",
+            "highlight": null
+        },
+        "mobile": {
+            "summary": "Voeg tot 5 mobiele nummers toe<br />Vanaf € ##PRICE##/maand",
+            "highlight": {
+                "title": "Extra voordeel met Internet + Mobiel",
+                "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+            }
+        },
+        "tv": {
+            "summary": "Voeg een TV-pakket toe<br />€ ##PRICE##/maand",
+            "highlight": null
+        },
+        "entertainment": {
+            "summary": "…en nog veel meer.<br />Vanaf € ##PRICE##/maand",
+            "highlight": {
+                "title": "Krijg 5% korting op streaming",
+                "content": "Combineer 2 of meer services."
+            },
+            "showServiceIcons": true
+        },
+        "entertainmentBox": {
+            "summary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
+            "highlight": null,
+            "showImage": true
+        },
+        "fixedPhone": {
+            "summary": "Voeg gratis een vaste telefoonlijn toe",
+            "highlight": null
+        }
+    },
   "tooltips": {
     "internet": {
-      "title": "Internet tooltip",
-      "content": "Internet content"
+      "title": "Welke snelheid heb ik nodig?",
+      "content": "<p>De internetsnelheid die je nodig hebt, hangt af van je gebruikspatroon:</p><ul><li><strong>500 Mb:</strong> Perfect voor gewoon surfen, e-mailen en streaming op 1-2 apparaten</li><li><strong>1 Gb:</strong> Ideaal voor meerdere apparaten, gaming en 4K streaming</li><li><strong>2,5 Gb:</strong> Voor power users met veel apparaten en intensief gebruik</li><li><strong>10 Gb:</strong> Voor professioneel gebruik en toekomstbestendigheid</li></ul>"
     },
     "mobile": {
       "title": "Hoeveel mobiele data heb ik nodig",

@@ -2227,21 +2227,99 @@ class UnifiedConfigurator {
         // Remove existing closed state first
         this.removeProductClosedState(productType);
 
-        // For closed state, we only keep the header with title and switch
-        // No additional content is added - the block shows only title and toggle
+        // Get closed state data
+        let closedStateData;
+        if (productType === 'entertainment' && this.entertainmentData) {
+            closedStateData = this.entertainmentData.closedStates?.[productType];
+        } else if (productType === 'entertainmentBox' && this.entertainmentData) {
+            closedStateData = this.entertainmentData.closedStates?.[productType];
+        } else {
+            closedStateData = this.data?.closedStates?.[productType];
+        }
+
+        if (!closedStateData) return;
+
+        // Calculate price for summary
+        let price = this.calculateClosedStatePrice(productType, null);
+        let summary = closedStateData.summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
+
+        // Create closed state content
+        let closedStateHtml = `
+            <div class="product-closed-content">
+                <div class="product-closed-divider"></div>
+        `;
+
+        // Add special content for entertainment (service icons)
+        if (productType === 'entertainment' && closedStateData.showServiceIcons) {
+            closedStateHtml += `
+                <div class="entertainment-service-icons">
+                    <div class="entertainment-service-icon netflix">N</div>
+                    <div class="entertainment-service-icon disney">D+</div>
+                    <div class="entertainment-service-icon streamz">S</div>
+                    <div class="entertainment-service-icon hbo">HBO</div>
+                    <div class="entertainment-service-icon sport">⚽</div>
+                    <div class="entertainment-service-icon cinema">🎬</div>
+                </div>
+            `;
+        }
+
+        // Add special container for entertainment box
+        if (productType === 'entertainmentBox' && closedStateData.showImage) {
+            closedStateHtml += `
+                <div class="entertainment-box-container">
+                    <div class="entertainment-box-image"></div>
+                    <div class="entertainment-box-content">
+            `;
+        }
+
+        // Add summary
+        closedStateHtml += `<div class="product-closed-summary">${summary}</div>`;
+
+        // Add highlight if present
+        if (closedStateData.highlight) {
+            closedStateHtml += `
+                <div class="product-closed-highlight">
+                    <div class="product-closed-highlight-title">${closedStateData.highlight.title}</div>
+                    <div class="product-closed-highlight-content">${closedStateData.highlight.content}</div>
+                </div>
+            `;
+        }
+
+        // Close entertainment box container if needed
+        if (productType === 'entertainmentBox' && closedStateData.showImage) {
+            closedStateHtml += `
+                    </div>
+                </div>
+            `;
+        }
+
+        closedStateHtml += `</div>`;
+
+        // Insert the closed state content
+        productBlock.insertAdjacentHTML('beforeend', closedStateHtml);
     }
 
     // Helper method to calculate price for closed state
     calculateClosedStatePrice(productType, productData) {
         let price = 0;
 
-        if (productType === 'internet' && this.data.products.internet.tiers) {
+        if (productType === 'internet' && this.data?.products?.internet?.tiers) {
             const firstTier = this.data.products.internet.tiers[0];
             price = firstTier.discountValue ? firstTier.price - firstTier.discountValue : firstTier.price;
-        } else if (productType === 'mobile' && this.data.products.mobile.tiers) {
+        } else if (productType === 'mobile' && this.data?.products?.mobile?.tiers) {
             const firstTier = this.data.products.mobile.tiers[0];
             const discountCalc = this.calculateMobileDiscount(firstTier, 0);
             price = discountCalc.finalPrice;
+        } else if (productType === 'tv' && this.data?.products?.tv) {
+            const tvData = this.data.products.tv;
+            price = tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
+        } else if (productType === 'fixedPhone' && this.data?.products?.fixedPhone) {
+            price = this.data.products.fixedPhone.price;
+        } else if (productType === 'entertainmentBox') {
+            if (this.data?.products?.entertainmentBox) {
+                const boxData = this.data.products.entertainmentBox;
+                price = boxData.discountValue ? boxData.price - boxData.discountValue : boxData.price;
+            }
         } else if (productType === 'entertainment' && this.entertainmentData) {
             // Find the cheapest entertainment service
             const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
@@ -2251,22 +2329,18 @@ class UnifiedConfigurator {
                 if (serviceData) {
                     if (serviceData.tiers) {
                         serviceData.tiers.forEach(tier => {
-                            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                            if (discountedPrice < minPrice) {
-                                minPrice = discountedPrice;
+                            if (tier.price < minPrice) {
+                                minPrice = tier.price;
                             }
                         });
                     } else {
-                        const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
-                        if (discountedPrice < minPrice) {
-                            minPrice = discountedPrice;
+                        if (serviceData.price < minPrice) {
+                            minPrice = serviceData.price;
                         }
                     }
                 }
             });
             price = minPrice !== Infinity ? minPrice : 0;
-        } else if (productData.price !== undefined) {
-            price = productData.discountValue ? productData.price - productData.discountValue : productData.price;
         }
 
         return price;

@@ -1,4 +1,3 @@
-
 {
   "entertainment": {
     "netflix": {
@@ -90,5 +89,20 @@
       "description": "5% discount on entertainment products when 2 or more are selected",
       "minProducts": 2
     }
-  }
+  },
+    "closedStates": {
+        "entertainment": {
+            "summary": "…en nog veel meer.<br />Vanaf € ##PRICE##/maand",
+            "highlight": {
+                "title": "Krijg 5% korting op streaming",
+                "content": "Combineer 2 of meer services."
+            },
+            "showServiceIcons": true
+        },
+        "entertainmentBox": {
+            "summary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
+            "highlight": null,
+            "showImage": true
+        }
+    }
 }
