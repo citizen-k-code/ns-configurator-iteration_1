@@ -873,6 +873,7 @@ class UnifiedConfigurator {
         const priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
 
         infoContainer.innerHTML = `
+```javascript
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
@@ -2218,7 +2219,7 @@ class UnifiedConfigurator {
     // Add method to render closed states for all disabled products
     renderClosedStatesForDisabledProducts() {
         const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
-        
+
         allProducts.forEach(productType => {
             if (!this.state[productType].enabled) {
                 this.renderProductClosedState(productType);
@@ -2231,7 +2232,7 @@ class UnifiedConfigurator {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
         if (!productBlock) return;
-        
+
         const productHeader = productBlock.querySelector('.product-header');
         if (!productHeader) return;
 
