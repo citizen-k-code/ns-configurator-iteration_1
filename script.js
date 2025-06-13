@@ -152,6 +152,19 @@ class UnifiedConfigurator {
                 tvContent.style.display = 'block';
                 this.updateTvInfo();
                 this.renderEntertainmentBoxTiers();
+                
+                // Enable Entertainment Box by default when TV is enabled via URL
+                this.state.entertainmentBox.enabled = true;
+                const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+                
+                if (entertainmentBoxToggle) {
+                    entertainmentBoxToggle.checked = true;
+                }
+                if (entertainmentBoxContent) {
+                    entertainmentBoxContent.style.display = 'block';
+                    this.updateEntertainmentBoxStandaloneInfo();
+                }
             }
         }
 
