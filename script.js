@@ -1,3 +1,4 @@
+
 class UnifiedConfigurator {
     constructor() {
         this.data = null;
@@ -217,8 +218,6 @@ class UnifiedConfigurator {
                 this.toggleProduct('tv', e.target.checked);
             });
         }
-
-
 
         const fixedPhoneToggle = document.getElementById('fixed-phone-toggle');
         if (fixedPhoneToggle) {
@@ -1329,42 +1328,62 @@ class UnifiedConfigurator {
         const originalTotal = total + totalDiscount;
 
         // Update the monthly total
-        document.getElementById('monthly-total').textContent = total.toFixed(2).replace('.', ',');
+        const monthlyTotalElement = document.getElementById('monthly-total');
+        if (monthlyTotalElement) {
+            monthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
+        }
 
         // Update strikethrough price
         const strikethroughElement = document.getElementById('strikethrough-cost');
-        if (hasDiscounts) {
-            strikethroughElement.style.display = 'block';
-            strikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
-        } else {
-            strikethroughElement.style.display = 'none';
+        if (strikethroughElement) {
+            if (hasDiscounts) {
+                strikethroughElement.style.display = 'block';
+                strikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
+            } else {
+                strikethroughElement.style.display = 'none';
+            }
         }
 
         // Update advantage block
         const advantageElement = document.getElementById('advantage-block');
-        if (hasDiscounts) {
-            advantageElement.style.display = 'block';
-            document.getElementById('advantage-amount').textContent = totalDiscount.toFixed(2).replace('.', ',');
-        } else {
-            advantageElement.style.display = 'none';
+        if (advantageElement) {
+            if (hasDiscounts) {
+                advantageElement.style.display = 'block';
+                const advantageAmountElement = document.getElementById('advantage-amount');
+                if (advantageAmountElement) {
+                    advantageAmountElement.textContent = totalDiscount.toFixed(2).replace('.', ',');
+                }
+            } else {
+                advantageElement.style.display = 'none';
+            }
         }
 
         // Show permanent promotion if applicable
         const permanentElement = document.getElementById('permanent-promotion');
-        if (totalPermanentDiscount > 0) {
-            permanentElement.style.display = 'flex';
-            document.getElementById('permanent-amount').textContent = `- € ${totalPermanentDiscount.toFixed(2).replace('.', ',')}`;
-        } else {
-            permanentElement.style.display = 'none';
+        if (permanentElement) {
+            if (totalPermanentDiscount > 0) {
+                permanentElement.style.display = 'flex';
+                const permanentAmountElement = document.getElementById('permanent-amount');
+                if (permanentAmountElement) {
+                    permanentAmountElement.textContent = `- € ${totalPermanentDiscount.toFixed(2).replace('.', ',')}`;
+                }
+            } else {
+                permanentElement.style.display = 'none';
+            }
         }
 
         // Show temporary promotions if applicable
         const temporaryElement = document.getElementById('temporary-promotion');
-        if (totalTemporaryDiscount > 0) {
-            temporaryElement.style.display = 'flex';
-            document.getElementById('temporary-amount').textContent = `- € ${totalTemporaryDiscount.toFixed(2).replace('.', ',')}`;
-        } else {
-            temporaryElement.style.display = 'none';
+        if (temporaryElement) {
+            if (totalTemporaryDiscount > 0) {
+                temporaryElement.style.display = 'flex';
+                const temporaryAmountElement = document.getElementById('temporary-amount');
+                if (temporaryAmountElement) {
+                    temporaryAmountElement.textContent = `- € ${totalTemporaryDiscount.toFixed(2).replace('.', ',')}`;
+                }
+            } else {
+                temporaryElement.style.display = 'none';
+            }
         }
 
         // Update product overview
@@ -1390,6 +1409,8 @@ class UnifiedConfigurator {
     updateProductOverview() {
         const content = document.getElementById('product-overview-content');
         const overviewSection = document.querySelector('.product-overview-section');
+        if (!content || !overviewSection) return;
+
         let html = '';
 
         // Check if any products are enabled
@@ -1638,24 +1659,34 @@ class UnifiedConfigurator {
         const originalTotal = total + totalDiscount;
 
         // Update mobile monthly total
-        document.getElementById('mobile-monthly-total').textContent = total.toFixed(2).replace('.', ',');
+        const mobileMonthlyTotalElement = document.getElementById('mobile-monthly-total');
+        if (mobileMonthlyTotalElement) {
+            mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
+        }
 
         // Update mobile strikethrough price
         const mobileStrikethroughElement = document.getElementById('mobile-strikethrough');
-        if (hasDiscounts) {
-            mobileStrikethroughElement.style.display = 'block';
-            mobileStrikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
-        } else {
-            mobileStrikethroughElement.style.display = 'none';
+        if (mobileStrikethroughElement) {
+            if (hasDiscounts) {
+                mobileStrikethroughElement.style.display = 'block';
+                mobileStrikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
+            } else {
+                mobileStrikethroughElement.style.display = 'none';
+            }
         }
 
         // Update mobile advantage
         const mobileAdvantageElement = document.getElementById('mobile-advantage');
-        if (hasDiscounts) {
-            mobileAdvantageElement.style.display = 'block';
-            document.getElementById('mobile-advantage-amount').textContent = totalDiscount.toFixed(2).replace('.', ',');
-        } else {
-            mobileAdvantageElement.style.display = 'none';
+        if (mobileAdvantageElement) {
+            if (hasDiscounts) {
+                mobileAdvantageElement.style.display = 'block';
+                const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
+                if (mobileAdvantageAmountElement) {
+                    mobileAdvantageAmountElement.textContent = totalDiscount.toFixed(2).replace('.', ',');
+                }
+            } else {
+                mobileAdvantageElement.style.display = 'none';
+            }
         }
     }
 
@@ -1711,8 +1742,7 @@ class UnifiedConfigurator {
                         productName: mobileTier.title
                     });
                 }
-            });```python
-
+            });
         }
 
         // Entertainment permanent discounts (5% combo discount)
@@ -1876,6 +1906,8 @@ class UnifiedConfigurator {
         const title = document.getElementById('sheet-title');
         const body = document.getElementById('sheet-body');
 
+        if (!overlay || !title || !body) return;
+
         let content = tooltipData.content;
 
         if (tooltipKey === 'permanent_promotion') {
@@ -1904,21 +1936,27 @@ class UnifiedConfigurator {
 
     closeTooltipSheet() {
         const overlay = document.getElementById('sheet-overlay');
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
     }
 
     // Entertainment specific methods
     openEntertainmentBottomSheet() {
         const overlay = document.getElementById('entertainment-sheet-overlay');
-        overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     closeEntertainmentBottomSheet() {
         const overlay = document.getElementById('entertainment-sheet-overlay');
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
     }
 
     renderAvailableEntertainmentServices() {
@@ -1970,10 +2008,12 @@ class UnifiedConfigurator {
         const selectedServices = Array.from(this.state.selectedEntertainmentServices);
 
         // Show/hide combo discount banner
-        if (selectedServices.length >= 2) {
-            comboDiscountBanner.style.display = 'flex';
-        } else {
-            comboDiscountBanner.style.display = 'none';
+        if (comboDiscountBanner) {
+            if (selectedServices.length >= 2) {
+                comboDiscountBanner.style.display = 'flex';
+            } else {
+                comboDiscountBanner.style.display = 'none';
+            }
         }
 
         // Clear existing selected services (but keep the banner)
@@ -2234,8 +2274,8 @@ class UnifiedConfigurator {
         let closedStateData;
         if (productType === 'entertainment' && this.entertainmentData) {
             closedStateData = this.entertainmentData.closedStates?.[productType];
-        } else if (productType === 'entertainmentBox' && this.entertainmentData) {
-            closedStateData = this.entertainmentData.closedStates?.[productType];
+        } else if (productType === 'entertainmentBox' && this.data) {
+            closedStateData = this.data.closedStates?.[productType];
         } else {
             closedStateData = this.data?.closedStates?.[productType];
         }
@@ -2316,11 +2356,11 @@ class UnifiedConfigurator {
         } else if (productType === 'fixedPhone') {
             return this.data.products.fixedPhone.price;
         } else if (productType === 'entertainmentBox') {
-            const defaultTier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.data.products.tv.entertainmentBox.defaultTier);
-            if (defaultTier) {
-                return defaultTier.discountValue ? defaultTier.price - defaultTier.discountValue : defaultTier.price;
+            const standaloneData = this.data.products.entertainmentBox;
+            if (standaloneData) {
+                return standaloneData.discountValue ? standaloneData.price - standaloneData.discountValue : standaloneData.price;
             }
-            return this.data.products.tv.entertainmentBox.tiers[0].price;
+            return 5.00; // fallback
         }
         return 0;
     }
