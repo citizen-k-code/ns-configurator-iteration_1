@@ -199,6 +199,14 @@ class UnifiedConfigurator {
             });
         }
 
+        // TV Entertainment Box checkbox
+        const tvEntertainmentBoxCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+        if (tvEntertainmentBoxCheckbox) {
+            tvEntertainmentBoxCheckbox.addEventListener('change', (e) => {
+                this.handleTvEntertainmentBoxCheckbox(e.target.checked);
+            });
+        }
+
         const fixedPhoneToggle = document.getElementById('fixed-phone-toggle');
         if (fixedPhoneToggle) {
             fixedPhoneToggle.addEventListener('change', (e) => {
@@ -394,6 +402,23 @@ class UnifiedConfigurator {
                     this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
                     this.updateTvInfo();
                     this.renderEntertainmentBoxTiers();
+                    
+                    // Enable Entertainment Box by default when TV is enabled
+                    this.state.entertainmentBox.enabled = true;
+                    const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                    const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+                    const tvEntertainmentBoxCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+                    
+                    if (entertainmentBoxToggle) {
+                        entertainmentBoxToggle.checked = true;
+                    }
+                    if (entertainmentBoxContent) {
+                        entertainmentBoxContent.style.display = 'block';
+                        this.updateEntertainmentBoxStandaloneInfo();
+                    }
+                    if (tvEntertainmentBoxCheckbox) {
+                        tvEntertainmentBoxCheckbox.checked = true;
+                    }
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
                 }
@@ -445,10 +470,20 @@ class UnifiedConfigurator {
         // Handle entertainment box toggle
         else if (productType === 'entertainmentBox') {
             const content = document.getElementById('entertainment-box-content');
+            const tvEntertainmentBoxCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+            const warningBanner = document.getElementById('tv-warning-banner');
             
             if (enabled) {
                 content.style.display = 'block';
                 this.updateEntertainmentBoxStandaloneInfo();
+                
+                // Update TV checkbox if TV is enabled
+                if (this.state.tv.enabled && tvEntertainmentBoxCheckbox) {
+                    tvEntertainmentBoxCheckbox.checked = true;
+                    if (warningBanner) {
+                        warningBanner.style.display = 'none';
+                    }
+                }
                 
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
@@ -457,6 +492,14 @@ class UnifiedConfigurator {
                 }, 100);
             } else {
                 content.style.display = 'none';
+                
+                // Update TV checkbox if TV is enabled
+                if (this.state.tv.enabled && tvEntertainmentBoxCheckbox) {
+                    tvEntertainmentBoxCheckbox.checked = false;
+                    if (warningBanner) {
+                        warningBanner.style.display = 'flex';
+                    }
+                }
             }
         } 
         // Individual entertainment services are handled within the entertainment interface
@@ -1873,6 +1916,59 @@ class UnifiedConfigurator {
             // Mobile on, Internet off: Add to mobile content after tooltip link
             const tooltipLink = mobileContent.querySelector('.tooltip-link');
             tooltipLink.insertAdjacentHTML('afterend', highlightHtml);
+        }
+    }
+
+    handleTvEntertainmentBoxCheckbox(checked) {
+        // Update Entertainment Box state
+        this.state.entertainmentBox.enabled = checked;
+        
+        // Update Entertainment Box toggle
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.checked = checked;
+        }
+
+        // Show/hide Entertainment Box content
+        const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+        if (entertainmentBoxContent) {
+            if (checked) {
+                entertainmentBoxContent.style.display = 'block';
+                this.updateEntertainmentBoxStandaloneInfo();
+            } else {
+                entertainmentBoxContent.style.display = 'none';
+            }
+        }
+
+        // Show/hide warning banner
+        const warningBanner = document.getElementById('tv-warning-banner');
+        if (warningBanner) {
+            if (checked) {
+                warningBanner.style.display = 'none';
+            } else {
+                warningBanner.style.display = 'flex';
+            }
+        }
+
+        this.updateProductHeaderStates();
+        this.updateCostSummary();
+    }
+
+    scrollToEntertainmentBox() {
+        const entertainmentBoxBlock = document.getElementById('entertainment-box-block');
+        if (entertainmentBoxBlock) {
+            entertainmentBoxBlock.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Add a subtle highlight effect
+            entertainmentBoxBlock.style.transition = 'background-color 0.3s ease';
+            entertainmentBoxBlock.style.backgroundColor = '#f8f9fa';
+            
+            setTimeout(() => {
+                entertainmentBoxBlock.style.backgroundColor = '';
+            }, 1000);
         }
     }
 }
