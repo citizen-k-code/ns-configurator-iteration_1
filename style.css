@@ -1,51 +1,123 @@
-/* Entertainment Product Selector */
-.entertainment-products-selector {
-    margin-top: 12px;
+/* Entertainment Closed State */
+.entertainment-closed-state {
+    padding: 16px 0;
 }
 
-.available-products {
+.entertainment-preview {
+    text-align: center;
+}
+
+.service-icons-row {
     display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-
-.product-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background-color: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #2D3648;
-    transition: all 0.2s ease;
-}
-
-.product-option:hover {
-    background-color: #e9ecef;
-    border-color: #2D3648;
 }
 
 .service-icon {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     color: white;
+    flex-shrink: 0;
 }
 
-.selected-products {
+.netflix-icon { background-color: #E50914; }
+.streamz-icon { background-color: #00D4FF; color: #000; }
+.disney-icon { background-color: #113CCF; }
+.sport-icon { background-color: #FF6B35; }
+.cinema-icon { background-color: #8B5CF6; }
+.hbo-icon { background-color: #6730D3; }
+
+.entertainment-preview-text {
+    font-size: 14px;
+    color: #717D96;
+    margin: 12px 0 16px;
+    line-height: 1.4;
+}
+
+.entertainment-discount-banner {
+    background-color: #D1FFD9;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.discount-icon {
+    font-size: 16px;
+}
+
+.discount-content {
+    flex: 1;
+}
+
+.discount-title {
+    font-weight: 600;
+    color: #2d5f2d;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.discount-subtitle {
+    font-size: 13px;
+    color: #2d5f2d;
+}
+
+/* Entertainment Open State */
+.entertainment-info-section {
+    margin-bottom: 20px;
+}
+
+.entertainment-info-link {
+    color: #2D3648;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.entertainment-info-link:hover {
+    color: #0066cc;
+}
+
+/* Selected Entertainment Services */
+.selected-entertainment-services {
+    margin-bottom: 24px;
+}
+
+.combo-discount-banner {
+    background-color: #B0DCFF;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 16px;
 }
 
-.selected-product {
+.combo-discount-icon {
+    font-size: 16px;
+}
+
+.combo-discount-title {
+    font-weight: 600;
+    color: #1a4480;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.combo-discount-subtitle {
+    font-size: 13px;
+    color: #1a4480;
+}
+
+.selected-service {
     background-color: white;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -53,32 +125,254 @@
     margin-bottom: 12px;
 }
 
-.selected-product-header {
+.selected-service-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
-.selected-product-title {
+.selected-service-title {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     font-weight: 600;
     color: #2D3648;
+    font-size: 16px;
 }
 
-.remove-product {
+.remove-service {
     background: none;
     border: none;
     color: #717D96;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     padding: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-.remove-product:hover {
+.remove-service:hover {
     color: #dc3545;
+    background-color: #f8f9fa;
+}
+
+.service-tier-selector {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.service-tier-option {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-size: 14px;
+    color: #717D96;
+    transition: all 0.2s ease;
+    text-align: center;
+    min-width: 80px;
+}
+
+.service-tier-option.active {
+    background-color: #2D3648;
+    color: white;
+    border-color: #2D3648;
+}
+
+.service-tier-option:hover:not(.active) {
+    border-color: #2D3648;
+    color: #2D3648;
+}
+
+.service-details {
+    margin-bottom: 16px;
+}
+
+.service-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-details li {
+    font-size: 14px;
+    color: #2D3648;
+    margin-bottom: 4px;
+    padding-left: 16px;
+    position: relative;
+}
+
+.service-details li:before {
+    content: "•";
+    color: #2D3648;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.service-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+}
+
+.service-price-container {
+    text-align: right;
+}
+
+.service-original-price {
+    text-decoration: line-through;
+    color: #717D96;
+    font-size: 14px;
+}
+
+.service-discount-price {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 16px;
+}
+
+.service-discount-info {
+    font-size: 12px;
+    color: #717D96;
+    margin-top: 2px;
+}
+
+/* Available Entertainment Services */
+.available-entertainment-services {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 24px;
+}
+
+.available-services-header {
+    margin-bottom: 20px;
+}
+
+.available-services-header p {
+    font-size: 14px;
+    color: #2D3648;
+    margin-bottom: 16px;
+}
+
+.services-discount-info {
+    background-color: #D1FFD9;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.services-discount-icon {
+    font-size: 16px;
+}
+
+.services-discount-title {
+    font-weight: 600;
+    color: #2d5f2d;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.services-discount-subtitle {
+    font-size: 13px;
+    color: #2d5f2d;
+}
+
+.services-account-note {
+    font-size: 13px;
+    color: #717D96;
+    margin-bottom: 0;
+}
+
+.available-services-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.available-service {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.available-service:hover {
+    border-color: #2D3648;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.available-service-content {
+    flex: 1;
+}
+
+.available-service-name {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.available-service-price {
+    font-size: 14px;
+    color: #717D96;
+}
+
+.add-service-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #2D3648;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Hide individual entertainment service cards */
+.entertainment-service-card {
+    display: none !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 1023px) {
+    .service-icons-row {
+        gap: 6px;
+    }
+    
+    .service-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+    
+    .service-tier-selector {
+        gap: 3px;
+    }
+    
+    .service-tier-option {
+        padding: 6px 12px;
+        font-size: 13px;
+        min-width: 70px;
+    }
 }
 
 .combo-discount-info {

@@ -54,7 +54,13 @@ class UnifiedConfigurator {
             },
             cinema: {
                 enabled: false
-            }
+            },
+            hbo: {
+                enabled: false,
+                selectedTier: 1
+            },
+            // Track selected entertainment services for the new interface
+            selectedEntertainmentServices: new Set()
         };
         this.init();
     }
@@ -449,20 +455,43 @@ class UnifiedConfigurator {
             }
             this.updateHighlightBlocks();
         }
-        // Handle main entertainment and entertainment box toggles
-        else if (['entertainment', 'entertainmentBox'].includes(productType)) {
-            const content = document.getElementById(`${productType === 'entertainmentBox' ? 'entertainment-box' : productType}-content`);
+        // Handle main entertainment toggle
+        else if (productType === 'entertainment') {
+            const content = document.getElementById('entertainment-content');
+            const closedState = document.getElementById('entertainment-closed-state');
             
             if (enabled) {
                 content.style.display = 'block';
-                if (productType === 'entertainmentBox') {
-                    this.updateEntertainmentBoxStandaloneInfo();
-                }
+                closedState.style.display = 'none';
+                this.renderAvailableEntertainmentServices();
+                this.renderSelectedEntertainmentServices();
                 
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
-                    const blockId = productType === 'entertainmentBox' ? 'entertainment-box-block' : `${productType}-block`;
-                    const productBlock = document.getElementById(blockId);
+                    const productBlock = document.getElementById('entertainment-block');
+                    this.scrollToElementSmooth(productBlock);
+                }, 100);
+            } else {
+                content.style.display = 'none';
+                closedState.style.display = 'block';
+                // Clear all selected entertainment services
+                this.state.selectedEntertainmentServices.clear();
+                ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'].forEach(service => {
+                    this.state[service].enabled = false;
+                });
+            }
+        }
+        // Handle entertainment box toggle
+        else if (productType === 'entertainmentBox') {
+            const content = document.getElementById('entertainment-box-content');
+            
+            if (enabled) {
+                content.style.display = 'block';
+                this.updateEntertainmentBoxStandaloneInfo();
+                
+                // Smooth scroll to ensure the product block is visible
+                setTimeout(() => {
+                    const productBlock = document.getElementById('entertainment-box-block');
                     this.scrollToElementSmooth(productBlock);
                 }, 100);
             } else {
@@ -914,12 +943,12 @@ class UnifiedConfigurator {
     }
 
     getEnabledEntertainmentProductsCount() {
-        return ['netflix', 'streamz', 'disney', 'sport', 'cinema']
+        return ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo']
             .filter(productId => this.state[productId].enabled).length;
     }
 
     updateAllEntertainmentSubtitles() {
-        const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema'];
+        const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
 
         products.forEach(productId => {
             const subtitleElement = document.getElementById(`${productId}-subtitle`);
@@ -930,11 +959,11 @@ class UnifiedConfigurator {
     }
 
     refreshAllEntertainmentProductInfo() {
-        const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema'];
+        const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
 
         products.forEach(productId => {
             if (this.state[productId].enabled) {
-                if (productId === 'netflix' || productId === 'streamz') {
+                if (productId === 'netflix' || productId === 'streamz' || productId === 'hbo') {
                     this.updateEntertainmentTierInfo(productId);
                 } else {
                     this.updateEntertainmentProductInfo(productId);
@@ -1047,6 +1076,16 @@ class UnifiedConfigurator {
         // Streamz
         if (this.state.streamz.enabled) {
             const tier = this.entertainmentData.entertainment.streamz.tiers.find(t => t.id === this.state.streamz.selectedTier);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            total += discountedPrice;
+            if (hasComboDiscount) {
+                totalDiscount += tier.price - discountedPrice;
+            }
+        }
+
+        // HBO
+        if (this.state.hbo.enabled) {
+            const tier = this.entertainmentData.entertainment.hbo.tiers.find(t => t.id === this.state.hbo.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
             total += discountedPrice;
             if (hasComboDiscount) {
@@ -1613,6 +1652,240 @@ class UnifiedConfigurator {
         const overlay = document.getElementById('sheet-overlay');
         overlay.style.display = 'none';
         document.body.style.overflow = '';
+    }
+
+    // Entertainment specific methods
+    openEntertainmentBottomSheet() {
+        const overlay = document.getElementById('entertainment-sheet-overlay');
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeEntertainmentBottomSheet() {
+        const overlay = document.getElementById('entertainment-sheet-overlay');
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    renderAvailableEntertainmentServices() {
+        const container = document.getElementById('available-services-grid');
+        if (!container || !this.entertainmentData) return;
+
+        const services = [
+            { key: 'netflix', name: 'Netflix', icon: 'N', iconClass: 'netflix-icon' },
+            { key: 'disney', name: 'Disney+', icon: 'D+', iconClass: 'disney-icon' },
+            { key: 'hbo', name: 'HBO Max', icon: 'HBO', iconClass: 'hbo-icon' },
+            { key: 'streamz', name: 'Streamz', icon: 'S', iconClass: 'streamz-icon' },
+            { key: 'sport', name: 'Sport', icon: '⚽', iconClass: 'sport-icon' },
+            { key: 'cinema', name: 'Cinema', icon: '🎬', iconClass: 'cinema-icon' }
+        ];
+
+        container.innerHTML = services
+            .filter(service => !this.state.selectedEntertainmentServices.has(service.key))
+            .map(service => {
+                const serviceData = this.entertainmentData.entertainment[service.key];
+                let priceText;
+                
+                if (serviceData.tiers) {
+                    const minPrice = Math.min(...serviceData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price)));
+                    priceText = `Vanaf € ${minPrice.toFixed(2).replace('.', ',')}`;
+                } else {
+                    const discountPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+                    priceText = `€ ${discountPrice.toFixed(2).replace('.', ',')}`;
+                }
+
+                return `
+                    <div class="available-service" onclick="app.addEntertainmentService('${service.key}')">
+                        <div class="service-icon ${service.iconClass}">${service.icon}</div>
+                        <div class="available-service-content">
+                            <div class="available-service-name">${service.name}</div>
+                            <div class="available-service-price">${priceText}</div>
+                        </div>
+                        <div class="add-service-icon">+</div>
+                    </div>
+                `;
+            }).join('');
+    }
+
+    renderSelectedEntertainmentServices() {
+        const container = document.getElementById('selected-entertainment-services');
+        const comboDiscountBanner = document.getElementById('combo-discount-banner');
+        
+        if (!container || !this.entertainmentData) return;
+
+        const selectedServices = Array.from(this.state.selectedEntertainmentServices);
+        
+        // Show/hide combo discount banner
+        if (selectedServices.length >= 2) {
+            comboDiscountBanner.style.display = 'flex';
+        } else {
+            comboDiscountBanner.style.display = 'none';
+        }
+
+        // Clear existing selected services (but keep the banner)
+        const existingServices = container.querySelectorAll('.selected-service');
+        existingServices.forEach(service => service.remove());
+
+        selectedServices.forEach(serviceKey => {
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            const serviceName = this.getServiceDisplayName(serviceKey);
+            const iconClass = this.getServiceIconClass(serviceKey);
+            const icon = this.getServiceIcon(serviceKey);
+
+            const serviceElement = document.createElement('div');
+            serviceElement.className = 'selected-service';
+            serviceElement.innerHTML = `
+                <div class="selected-service-header">
+                    <div class="selected-service-title">
+                        <div class="service-icon ${iconClass}">${icon}</div>
+                        ${serviceName}
+                    </div>
+                    <button class="remove-service" onclick="app.removeEntertainmentService('${serviceKey}')">🗑️</button>
+                </div>
+                ${this.renderServiceTiers(serviceKey)}
+                ${this.renderServiceDetails(serviceKey)}
+                ${this.renderServicePrice(serviceKey)}
+            `;
+            
+            container.appendChild(serviceElement);
+        });
+    }
+
+    getServiceDisplayName(serviceKey) {
+        const names = {
+            'netflix': 'Netflix',
+            'streamz': 'Streamz',
+            'disney': 'Disney+',
+            'sport': 'Sport',
+            'cinema': 'Cinema',
+            'hbo': 'HBO Max'
+        };
+        return names[serviceKey] || serviceKey;
+    }
+
+    getServiceIconClass(serviceKey) {
+        const classes = {
+            'netflix': 'netflix-icon',
+            'streamz': 'streamz-icon',
+            'disney': 'disney-icon',
+            'sport': 'sport-icon',
+            'cinema': 'cinema-icon',
+            'hbo': 'hbo-icon'
+        };
+        return classes[serviceKey] || '';
+    }
+
+    getServiceIcon(serviceKey) {
+        const icons = {
+            'netflix': 'N',
+            'streamz': 'S',
+            'disney': 'D+',
+            'sport': '⚽',
+            'cinema': '🎬',
+            'hbo': 'HBO'
+        };
+        return icons[serviceKey] || '';
+    }
+
+    renderServiceTiers(serviceKey) {
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        
+        if (!serviceData.tiers) return '';
+
+        return `
+            <div class="service-tier-selector">
+                ${serviceData.tiers.map(tier => `
+                    <div class="service-tier-option ${tier.id === this.state[serviceKey].selectedTier ? 'active' : ''}" 
+                         onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
+                        ${tier.title}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    renderServiceDetails(serviceKey) {
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        let summary;
+
+        if (serviceData.tiers) {
+            const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+            summary = tier.summary;
+        } else {
+            summary = serviceData.summary;
+        }
+
+        const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
+
+        return `
+            <div class="service-details">
+                <ul>${summaryItems}</ul>
+            </div>
+        `;
+    }
+
+    renderServicePrice(serviceKey) {
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        let originalPrice;
+
+        if (serviceData.tiers) {
+            const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+            originalPrice = tier.price;
+        } else {
+            originalPrice = serviceData.price;
+        }
+
+        const discountedPrice = this.getEntertainmentDiscountedPrice(originalPrice);
+        const hasDiscount = discountedPrice < originalPrice;
+
+        if (hasDiscount) {
+            return `
+                <div class="service-price-container">
+                    <div class="service-original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="service-discount-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="service-discount-info">5% combinatiekorting</div>
+                </div>
+            `;
+        } else {
+            return `
+                <div class="service-price-container">
+                    <div class="service-price">€ ${originalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                </div>
+            `;
+        }
+    }
+
+    addEntertainmentService(serviceKey) {
+        this.state.selectedEntertainmentServices.add(serviceKey);
+        this.state[serviceKey].enabled = true;
+        
+        // Set default tier for services with tiers
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        if (serviceData.tiers && serviceData.defaultTier) {
+            this.state[serviceKey].selectedTier = serviceData.defaultTier;
+        }
+
+        this.renderAvailableEntertainmentServices();
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
+        this.updateCostSummary();
+    }
+
+    removeEntertainmentService(serviceKey) {
+        this.state.selectedEntertainmentServices.delete(serviceKey);
+        this.state[serviceKey].enabled = false;
+        
+        this.renderAvailableEntertainmentServices();
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
+        this.updateCostSummary();
+    }
+
+    selectEntertainmentServiceTier(serviceKey, tierId) {
+        this.state[serviceKey].selectedTier = tierId;
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
+        this.updateCostSummary();
     }
 
     updateHighlightBlocks() {

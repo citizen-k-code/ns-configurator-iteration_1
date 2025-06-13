@@ -159,10 +159,180 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                    
+                    <!-- ENT-Close: When entertainment is disabled -->
+                    <div class="entertainment-closed-state" id="entertainment-closed-state">
+                        <div class="entertainment-preview">
+                            <div class="service-icons-row">
+                                <div class="service-icon netflix-icon">N</div>
+                                <div class="service-icon streamz-icon">S</div>
+                                <div class="service-icon disney-icon">D+</div>
+                                <div class="service-icon sport-icon">⚽</div>
+                                <div class="service-icon cinema-icon">🎬</div>
+                                <div class="service-icon hbo-icon">HBO</div>
+                            </div>
+                            <p class="entertainment-preview-text">... en nog veel meer.<br>Vanaf € 5,99/maand</p>
+                            <div class="entertainment-discount-banner">
+                                <div class="discount-icon">⚙️</div>
+                                <div class="discount-content">
+                                    <div class="discount-title">Krijg 5% korting op streaming</div>
+                                    <div class="discount-subtitle">Combineer twee of meer services</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ENT-Full: When entertainment is enabled -->
                     <div class="product-content" id="entertainment-content" style="display: none;">
-                        <div class="entertainment-products-selector">
-                            <div class="available-products" id="available-entertainment-products">
-                                <div class="product-option netflix-option" data-service="netflix">
+                        <!-- Top section: Info link -->
+                        <div class="entertainment-info-section">
+                            <a href="#" class="entertainment-info-link" onclick="app.openEntertainmentBottomSheet(); return false;">
+                                Wat als ik al streamingdiensten heb?
+                            </a>
+                        </div>
+
+                        <!-- Mid section: Selected services -->
+                        <div class="selected-entertainment-services" id="selected-entertainment-services">
+                            <!-- Combo discount banner (shown when 2+ services selected) -->
+                            <div class="combo-discount-banner" id="combo-discount-banner" style="display: none;">
+                                <div class="combo-discount-icon">⚙️</div>
+                                <div class="combo-discount-content">
+                                    <div class="combo-discount-title">5% bundelvoordeel op streaming</div>
+                                    <div class="combo-discount-subtitle">Korting op alle streamingdiensten</div>
+                                </div>
+                            </div>
+                            <!-- Selected services will be rendered here -->
+                        </div>
+
+                        <!-- Bottom section: Available services -->
+                        <div class="available-entertainment-services">
+                            <div class="available-services-header">
+                                <p>Duid aan welke services je wil toevoegen aan je pack.</p>
+                                <div class="services-discount-info">
+                                    <div class="services-discount-icon">⚙️</div>
+                                    <div class="services-discount-content">
+                                        <div class="services-discount-title">Krijg 5% korting op streaming</div>
+                                        <div class="services-discount-subtitle">Combineer twee of meer services</div>
+                                    </div>
+                                </div>
+                                <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan je makkelijk overzetten.</p>
+                            </div>
+                            
+                            <div class="available-services-grid" id="available-services-grid">
+                                <!-- Available services will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Entertainment Box Product Card -->
+                <div class="product-card" id="entertainment-box-block">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Entertainment Box</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="entertainment-box-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="entertainment-box-content" style="display: none;">
+                        <div class="tier-info" id="entertainment-box-info"></div>
+                    </div>
+                </div>
+
+                <!-- Individual Entertainment Service Blocks -->
+                <div class="product-card entertainment-service-card" id="netflix-block" style="display: none;">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Netflix</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="netflix-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="netflix-content" style="display: none;">
+                        <div class="tier-selector" id="netflix-tiers"></div>
+                        <div class="tier-info" id="netflix-info"></div>
+                    </div>
+                </div>
+
+                <div class="product-card entertainment-service-card" id="streamz-block" style="display: none;">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Streamz</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="streamz-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="streamz-content" style="display: none;">
+                        <div class="tier-selector" id="streamz-tiers"></div>
+                        <div class="tier-info" id="streamz-info"></div>
+                    </div>
+                </div>
+
+                <div class="product-card entertainment-service-card" id="disney-block" style="display: none;">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Disney+</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="disney-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="disney-content" style="display: none;">
+                        <div class="tier-info" id="disney-info"></div>
+                    </div>
+                </div>
+
+                <div class="product-card entertainment-service-card" id="sport-block" style="display: none;">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Sport</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="sport-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="sport-content" style="display: none;">
+                        <div class="tier-info" id="sport-info"></div>
+                    </div>
+                </div>
+
+                <div class="product-card entertainment-service-card" id="cinema-block" style="display: none;">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Cinema</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="cinema-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="cinema-content" style="display: none;">
+                        <div class="tier-info" id="cinema-info"></div>
+                    </div>
+                </div>
+
+                <div class="product-card entertainment-service-card" id="hbo-block" style="display: none;">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>HBO Max</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="hbo-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="hbo-content" style="display: none;">
+                        <div class="tier-selector" id="hbo-tiers"></div>
+                        <div class="tier-info" id="hbo-info"></div>
+                    </div>-option" data-service="netflix">
                                     <div class="service-icon netflix-icon">N</div>
                                     <span>Netflix</span>
                                 </div>
@@ -329,6 +499,26 @@
             </div>
             <div class="sheet-footer">
                 <button class="sheet-close-footer-btn" onclick="app.closeTooltipSheet()">Sluiten</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Entertainment Info Bottom Sheet -->
+    <div class="sheet-overlay" id="entertainment-sheet-overlay" style="display: none;" onclick="app.closeEntertainmentBottomSheet()">
+        <div class="tooltip-sheet" id="entertainment-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeEntertainmentBottomSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title">Wat als ik al streamingdiensten heb?</h3>
+                <div class="sheet-body">
+                    <p>Als je al een abonnement hebt op een van deze streamingdiensten, kan je dit makkelijk overzetten naar je nieuwe pack.</p>
+                    <p>Je bestaande account en profielen blijven behouden, en je profiteert van de bundelkorting.</p>
+                    <p>Contacteer onze klantenservice voor hulp bij het overzetten van je bestaande abonnementen.</p>
+                </div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.closeEntertainmentBottomSheet()">Sluiten</button>
             </div>
         </div>
     </div>

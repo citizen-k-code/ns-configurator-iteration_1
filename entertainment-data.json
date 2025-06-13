@@ -63,6 +63,24 @@
       "title": "Cinema",
       "summary": "De laatste kaskrakers, 3 extra filmkanalen met non-stop film",
       "price": 26.99
+    },
+    "hbo": {
+      "title": "HBO Max",
+      "tiers": [
+        {
+          "id": 1,
+          "title": "Basic",
+          "summary": "Max. 1 scherm, Kijk in HD-kwaliteit, Download op 1 apparaat",
+          "price": 5.99
+        },
+        {
+          "id": 2,
+          "title": "Premium",
+          "summary": "Max. 3 schermen, Kijk in Ultra HD-kwaliteit, Download op 6 apparaten",
+          "price": 12.99
+        }
+      ],
+      "defaultTier": 1
     }
   },
   "discounts": {
