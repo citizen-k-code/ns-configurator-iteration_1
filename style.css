@@ -1035,9 +1035,47 @@ input:checked+.slider:before {
     color: #F134F7 !important;
 }
 
+/* Promotional price styling */
 .promotional-price {
     color: #F134F7 !important;
-    font-weight: 600 !important;
+    font-weight: bold !important;
+}
+
+/* Promo badge styling */
+.promo-badge {
+    background-color: #F134F7;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Price with badge layout */
+.price-with-badge {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.price-content {
+    flex: 1;
+}
+
+.tier-price-container .price-with-badge .original-price,
+.tier-price-container .price-with-badge .discount-price {
+    margin: 0;
+}
+
+.service-price-container .price-with-badge {
+    align-items: center;
+}
+
+.service-price-container .price-with-badge .service-original-price,
+.service-price-container .price-with-badge .service-discount-price {
+    margin: 0;
 }
 
 .tier-price-container {

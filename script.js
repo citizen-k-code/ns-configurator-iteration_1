@@ -560,12 +560,18 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (tier.discountValue) {
-            // Temporary discount: show strikethrough with caption
+            // Temporary discount: show promo badge and strikethrough with caption
             const discountPrice = tier.price - tier.discountValue;
+            const promoBadge = tier.promoName ? `<span class="promo-badge">${tier.promoName}</span>` : '';
             priceHtml = `
                 <div class="tier-price-container">
-                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
-                    <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="price-with-badge">
+                        ${promoBadge}
+                        <div class="price-content">
+                            <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                            <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        </div>
+                    </div>
                     <div class="discount-info">${tier.discountCopy.temporaryOnly}</div>
                 </div>
             `;
@@ -647,16 +653,20 @@ class UnifiedConfigurator {
             const { finalPrice, permanentDiscountAmount, temporaryDiscountAmount } = discountCalc;
 
             if (permanentDiscountAmount > 0 && temporaryDiscountAmount > 0) {
-                // Both permanent and temporary discount: show strikethrough with permanent discount applied
+                // Both permanent and temporary discount: use permanent discounted price as strikethrough
                 const priceAfterPermanent = tier.price - permanentDiscountAmount;
-                const discountCopy = tier.discountCopy.both
-                    .replace('##MONTHS##', tier.discountPeriod)
-                    .replace('##NEWPRICE##', `€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}`);
+                const promoBadge = tier.promoName ? `<span class="promo-badge">${tier.promoName}</span>` : '';
+                const discountCopy = tier.discountCopy.both;
 
                 priceHtml = `
                     <div class="tier-price-container">
-                        <div class="original-price">€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}</div>
-                        <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        <div class="price-with-badge">
+                            ${promoBadge}
+                            <div class="price-content">
+                                <div class="original-price">€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}</div>
+                                <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                            </div>
+                        </div>
                         <div class="discount-info">${discountCopy}</div>
                     </div>
                 `;
@@ -664,12 +674,18 @@ class UnifiedConfigurator {
                 // Only permanent discount: show only discounted price in pink, no strikethrough
                 priceHtml = `<div class="tier-price permanent-discount">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>`;
             } else if (temporaryDiscountAmount > 0) {
-                // Only temporary discount: show strikethrough with caption
+                // Only temporary discount: show strikethrough with caption and promo badge
+                const promoBadge = tier.promoName ? `<span class="promo-badge">${tier.promoName}</span>` : '';
                 const discountCopy = tier.discountCopy.temporaryOnly;
                 priceHtml = `
                     <div class="tier-price-container">
-                        <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
-                        <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        <div class="price-with-badge">
+                            ${promoBadge}
+                            <div class="price-content">
+                                <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                                <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                            </div>
+                        </div>
                         <div class="discount-info">${discountCopy}</div>
                     </div>
                 `;
@@ -753,20 +769,8 @@ class UnifiedConfigurator {
 
         const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
-        let priceHtml;
-        if (tvData.discountValue) {
-            // Temporary discount: show strikethrough with caption
-            const discountPrice = tvData.price - tvData.discountValue;
-            priceHtml = `
-                <div class="tier-price-container">
-                    <div class="original-price">€ ${tvData.price.toFixed(2).replace('.', ',')}</div>
-                    <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">${tvData.discountCopy.temporaryOnly}</div>
-                </div>
-            `;
-        } else {
-            priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
-        }
+        // No temporary discount for TV anymore
+        const priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
 
         infoContainer.innerHTML = `
             <ul class="tier-details">
@@ -814,12 +818,18 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (tier.discountValue !== undefined) {
-            // Temporary discount: show strikethrough with caption
+            // Temporary discount: show promo badge and strikethrough with caption
             const discountPrice = tier.price - tier.discountValue;
+            const promoBadge = tier.promoName ? `<span class="promo-badge">${tier.promoName}</span>` : '';
             priceHtml = `
                 <div class="tier-price-container">
-                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
-                    <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="price-with-badge">
+                        ${promoBadge}
+                        <div class="price-content">
+                            <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                            <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        </div>
+                    </div>
                     <div class="discount-info">${tier.discountCopy.temporaryOnly}</div>
                 </div>
             `;

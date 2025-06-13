@@ -22,8 +22,11 @@
           "subtitle": "€75,00",
           "summary": "Download snelheid: <strong>500 Mbps</strong>, Upload snelheid: <strong>50 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
           "price": 75.00,
+          "discountValue": 25.00,
+          "discountPeriod": 6,
+          "promoName": "launch discount",
           "discountCopy": {
-            "temporaryOnly": "",
+            "temporaryOnly": "launch discount gedurende 6 maanden",
             "permanentOnly": "",
             "both": ""
           }
@@ -77,10 +80,13 @@
           "subtitle": "€40,00",
           "summary": "Mobiele data: <strong>Onbeperkt</strong>, Downloadsnelheid: <strong>1 Gbps</strong>, <strong>Onbeperkt bellen en SMS'en</strong>",
           "price": 40.00,
+          "discountValue": 10.00,
+          "discountPeriod": 6,
+          "promoName": "launch discount",
           "discountCopy": {
-            "temporaryOnly": "",
+            "temporaryOnly": "launch discount gedurende 6 maanden",
             "permanentOnly": "50% combovoordeel",
-            "both": "50% combovoordeel"
+            "both": "50% combovoordeel + launch discount"
           }
         }
       ],
@@ -92,10 +98,8 @@
       "tooltip": "Welke snelheid heb ik nodig?",
       "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> terugkijk TV, Inclusief tot <strong>200 uur opnames</strong> in the cloud",
       "price": 14.00,
-      "discountValue": 4.00,
-      "discountPeriod": 6,
       "discountCopy": {
-        "temporaryOnly": "gedurende 6 maanden",
+        "temporaryOnly": "",
         "permanentOnly": "",
         "both": ""
       },
@@ -114,8 +118,9 @@
             "price": 5.00,
             "discountValue": 5.00,
             "discountPeriod": 3,
+            "promoName": "try before you buy",
             "discountCopy": {
-              "temporaryOnly": "gedurende 3 maanden",
+              "temporaryOnly": "try before you buy gedurende 3 maanden",
               "permanentOnly": "",
               "both": ""
             }
