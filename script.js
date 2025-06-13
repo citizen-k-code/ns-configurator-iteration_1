@@ -888,8 +888,7 @@ class UnifiedConfigurator {
 
         if (!infoContainer || !productData) return;
 
-        const summaryItems = productData.summary.split(', ').map(item =>```python
-item => `<li>${item}</li>`).join('');
+        const summaryItems = productData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         const discountPrice = this.getEntertainmentDiscountedPrice(productData.price);
         const hasDiscount = discountPrice < productData.price;
