@@ -18,9 +18,6 @@ class UnifiedConfigurator {
                 enabled: false,
                 entertainmentBoxTier: 1
             },
-            entertainmentBox: {
-                enabled: false
-            },
             entertainmentServices: {
                 netflix: { enabled: false, selectedTier: 1 },
                 streamz: { enabled: false, selectedTier: 1 },
