@@ -142,13 +142,13 @@
     },
     "entertainmentBox": {
       "title": "Entertainment Box",
-      "tooltip": "",
       "summary": "Al je zenders en streamingdiensten <strong>op één plek</strong>, Een handige <strong>TV-gids</strong> en <strong>afstands-bediening</strong>, <strong>Gepersonaliseerde aanbevelingen</strong> over al jouw <strong>entertainment</strong>",
       "price": 5.00,
+      "discountValue": 5,
+      "discountPeriod": 3,
+      "promoName": "try before you buy",
       "discountCopy": {
-        "temporaryOnly": "",
-        "permanentOnly": "",
-        "both": ""
+        "temporaryOnly": "- €5,00 voor 3 maanden"
       }
     }
   },

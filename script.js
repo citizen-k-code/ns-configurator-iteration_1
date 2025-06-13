@@ -875,11 +875,32 @@ class UnifiedConfigurator {
 
         const summaryItems = entertainmentBoxData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
+        let priceHtml;
+        if (entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
+            // Temporary discount: show promo badge and strikethrough with caption
+            const discountPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+            const promoBadge = entertainmentBoxData.promoName ? `<span class="promo-badge">${entertainmentBoxData.promoName}</span>` : '';
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="price-with-badge">
+                        ${promoBadge}
+                        <div class="price-content">
+                            <div class="original-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</div>
+                            <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        </div>
+                    </div>
+                    <div class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</div>
+                </div>
+            `;
+        } else {
+            priceHtml = `<div class="tier-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}/maand</div>`;
+        }
+
         infoContainer.innerHTML = `
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
-            <div class="tier-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}/maand</div>
+            ${priceHtml}
         `;
     }
 
@@ -1115,6 +1136,17 @@ class UnifiedConfigurator {
             total += phoneData.price;
         }
 
+        // Entertainment Box cost (standalone)
+        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (entertainmentBoxData.discountValue) {
+                total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                totalTemporaryDiscount += entertainmentBoxData.discountValue;
+            } else {
+                total += entertainmentBoxData.price;
+            }
+        }
+
         // Entertainment costs
         const entertainmentTotal = this.calculateEntertainmentTotal();
         total += entertainmentTotal.total;
@@ -1348,6 +1380,32 @@ class UnifiedConfigurator {
                     <div class="overview-item">
                         <div class="overview-item-name">Vaste lijn</div>
                         <div class="overview-item-price">€ ${phoneData.price.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Entertainment Box (standalone)
+        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            let boxFinalPrice = entertainmentBoxData.price;
+            if (entertainmentBoxData.discountValue) {
+                boxFinalPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+            }
+
+            html += `
+                <div class="overview-group">
+                    <div class="overview-group-title">Entertainment Box</div>
+                    <div class="overview-item">
+                        <div class="overview-item-name">Entertainment Box</div>
+                        <div class="overview-item-price">
+                            ${entertainmentBoxData.discountValue ? 
+                                `<span class="original-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-price">€ ${boxFinalPrice.toFixed(2).replace('.', ',')}</span>
+                                 <span class="discount-info">- €${entertainmentBoxData.discountValue.toFixed(2).replace('.', ',')} voor ${entertainmentBoxData.discountPeriod} maanden</span>` :
+                                `€ ${boxFinalPrice.toFixed(2).replace('.', ',')}`
+                            }
+                        </div>
                     </div>
                 </div>
             `;
@@ -1679,7 +1737,18 @@ class UnifiedConfigurator {
             }
         }
 
-        // Entertainment permanent discounts are handled separately in calculateTotalPermanentDiscount
+        // Entertainment Box temporary discount (standalone)
+        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
+                totalTemporaryDiscount += entertainmentBoxData.discountValue * entertainmentBoxData.discountPeriod;
+                discountsInfo.push({
+                    product: 'Entertainment Box',
+                    discountValue: entertainmentBoxData.discountValue,
+                    discountPeriod: entertainmentBoxData.discountPeriod
+                });
+            }
+        }
 
         return {
             total: totalTemporaryDiscount,
