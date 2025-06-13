@@ -1711,7 +1711,8 @@ class UnifiedConfigurator {
                         productName: mobileTier.title
                     });
                 }
-            });
+            });```python
+
         }
 
         // Entertainment permanent discounts (5% combo discount)
@@ -2302,50 +2303,26 @@ class UnifiedConfigurator {
     }
 
     // Helper method to calculate price for closed state
-    calculateClosedStatePrice(productType, productData) {
-        let price = 0;
-
-        if (productType === 'internet' && this.data?.products?.internet?.tiers) {
-            const firstTier = this.data.products.internet.tiers[0];
-            price = firstTier.discountValue ? firstTier.price - firstTier.discountValue : firstTier.price;
-        } else if (productType === 'mobile' && this.data?.products?.mobile?.tiers) {
-            const firstTier = this.data.products.mobile.tiers[0];
-            const discountCalc = this.calculateMobileDiscount(firstTier, 0);
-            price = discountCalc.finalPrice;
-        } else if (productType === 'tv' && this.data?.products?.tv) {
+    calculateClosedStatePrice(productType, tier) {
+        if (productType === 'internet') {
+            const lowestTier = this.data.products.internet.tiers[0];
+            return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
+        } else if (productType === 'mobile') {
+            const lowestTier = this.data.products.mobile.tiers[0];
+            return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
+        } else if (productType === 'tv') {
             const tvData = this.data.products.tv;
-            price = tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
-        } else if (productType === 'fixedPhone' && this.data?.products?.fixedPhone) {
-            price = this.data.products.fixedPhone.price;
+            return tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
+        } else if (productType === 'fixedPhone') {
+            return this.data.products.fixedPhone.price;
         } else if (productType === 'entertainmentBox') {
-            if (this.data?.products?.entertainmentBox) {
-                const boxData = this.data.products.entertainmentBox;
-                price = boxData.discountValue ? boxData.price - boxData.discountValue : boxData.price;
+            const defaultTier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.data.products.tv.entertainmentBox.defaultTier);
+            if (defaultTier) {
+                return defaultTier.discountValue ? defaultTier.price - defaultTier.discountValue : defaultTier.price;
             }
-        } else if (productType === 'entertainment' && this.entertainmentData) {
-            // Find the cheapest entertainment service
-            const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
-            let minPrice = Infinity;
-            services.forEach(serviceKey => {
-                const serviceData = this.entertainmentData.entertainment[serviceKey];
-                if (serviceData) {
-                    if (serviceData.tiers) {
-                        serviceData.tiers.forEach(tier => {
-                            if (tier.price < minPrice) {
-                                minPrice = tier.price;
-                            }
-                        });
-                    } else {
-                        if (serviceData.price < minPrice) {
-                            minPrice = serviceData.price;
-                        }
-                    }
-                }
-            });
-            price = minPrice !== Infinity ? minPrice : 0;
+            return this.data.products.tv.entertainmentBox.tiers[0].price;
         }
-
-        return price;
+        return 0;
     }
 }
 
