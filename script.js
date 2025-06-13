@@ -1701,8 +1701,7 @@ class UnifiedConfigurator {
                 if (permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
                     const discountAmount = mobileTier.price * (permanentDiscount.percentage / 100);
                     totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: `Simkaart ${simcard.id}`,
+                    discountsInfo.push({                        product: `Simkaart ${simcard.id}`,
                         percentage: permanentDiscount.percentage,
                         productName: mobileTier.title
                     });
@@ -2268,7 +2267,23 @@ class UnifiedConfigurator {
             price = productData.discountValue ? productData.price - productData.discountValue : productData.price;
         }
 
-        // Replace ##PRICE## in summary
+		let simTitle = "";
+		let switchHtml = "";
+
+		if (productType === "mobile"){
+			simTitle = `<div class="simkaart-text">Simkaart</div>`;
+			switchHtml = `<label class="switch">
+							<input type="checkbox" id="${productType}-toggle"  ${this.state[productType].enabled ? 'checked' : ''}>
+							<span class="slider round"></span>
+						</label>`;
+		} else {
+			switchHtml = `<label class="switch">
+							<input type="checkbox" id="${productType}-toggle"  ${this.state[productType].enabled ? 'checked' : ''}>
+							<span class="slider round"></span>
+						</label>`;
+		}
+		
+		// Replace ##PRICE## in summary
         let summary = productData.closedState.summary;
         if (summary && summary.includes('##PRICE##')) {
             summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
@@ -2276,9 +2291,15 @@ class UnifiedConfigurator {
 
         // Create closed state HTML
         let closedStateHtml = `
-            <div class="product-closed-content">
-                <div class="product-closed-divider"></div>
-                <div class="product-closed-summary">${summary}</div>
+			<div class="product-closed-state">
+				<div class="product-closed-header">
+					<div class="product-closed-title">
+						${productData.title}
+					</div>
+					${switchHtml}
+				</div>
+				<div class="product-closed-divider"></div>
+				<div class="product-closed-summary">${summary}</div>
         `;
 
         // Add highlight if it exists
