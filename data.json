@@ -44,7 +44,17 @@
           }
         }
       ],
-      "defaultTier": 1
+      "defaultTier": 1,
+      "wifiPods": {
+        "title": "Versterk je signaal met WiFi-pods",
+        "tooltip": "Wat is een WiFi-pod? Hoeveel heb ik nodig?",
+        "pricePerPod": 3.00,
+        "maxPods": 5,
+        "discountValue": 3.00,
+        "discountPeriod": 3,
+        "promoName": "try before you buy",
+        "freeTrialText": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil."
+      }
     },
     "mobile": {
       "title": "Mobiel",
@@ -195,6 +205,10 @@
     "temporary_promotion": {
       "title": "Temporary promotions",
       "content": "Totale tijdelijke korting: ##NUMBER##"
+    },
+    "wifi_pods": {
+      "title": "Wat is een WiFi-pod? Hoeveel heb ik nodig?",
+      "content": "WiFi-pods zijn kleine apparaatjes die je WiFi-signaal versterken door je huis. Ze zorgen voor een stabiele internetverbinding in elke kamer. <br><br><strong>Hoeveel heb je nodig?</strong><br>• 1-2 pods: Voor een klein appartement<br>• 3-4 pods: Voor een gemiddeld huis<br>• 5+ pods: Voor een groot huis of meerdere verdiepingen"
     }
   }
 }
