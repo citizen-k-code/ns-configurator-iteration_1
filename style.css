@@ -1512,25 +1512,30 @@ input:checked+.slider:before {
     margin-bottom: 16px;
 }
 
+.summary-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
 .summary-title {
     font-size: 16px;
     font-weight: 600;
     color: #2D3648;
-    margin-bottom: 8px;
 }
 
 .summary-total {
     font-size: 24px;
     font-weight: 600;
     color: #2D3648;
-    text-align: right;
-    margin-bottom: 4px;
 }
 
 .summary-period {
     font-size: 12px;
     color: #717D96;
     text-align: right;
+    margin-bottom: 12px;
 }
 
 .advantage-block {
@@ -1540,7 +1545,6 @@ input:checked+.slider:before {
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;

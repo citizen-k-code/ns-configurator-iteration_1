@@ -1335,6 +1335,18 @@ class UnifiedConfigurator {
             monthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
         }
 
+        // Update summary period based on temporary discounts
+        const summaryPeriodElement = document.getElementById('summary-period');
+        const shortestDiscountPeriod = this.getShortestTemporaryDiscountPeriod();
+        if (summaryPeriodElement) {
+            if (shortestDiscountPeriod > 0) {
+                summaryPeriodElement.style.display = 'block';
+                summaryPeriodElement.textContent = `Voor ${shortestDiscountPeriod} maanden`;
+            } else {
+                summaryPeriodElement.style.display = 'none';
+            }
+        }
+
         // Update advantage block
         const advantageElement = document.getElementById('advantage-block');
         if (advantageElement) {
@@ -1847,6 +1859,61 @@ class UnifiedConfigurator {
             total: totalTemporaryDiscount,
             discounts: discountsInfo
         };
+    }
+
+    getShortestTemporaryDiscountPeriod() {
+        let shortestPeriod = 0;
+        const periods = [];
+
+        // Check all temporary discount periods
+        if (this.state.internet.enabled) {
+            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            if (internetTier.discountPeriod) {
+                periods.push(internetTier.discountPeriod);
+            }
+        }
+
+        if (this.state.mobile.enabled) {
+            this.state.mobile.simcards.forEach((simcard) => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (mobileTier.discountPeriod) {
+                    periods.push(mobileTier.discountPeriod);
+                }
+            });
+        }
+
+        if (this.state.tv.enabled) {
+            const tvData = this.data.products.tv;
+            if (tvData.discountPeriod) {
+                periods.push(tvData.discountPeriod);
+            }
+
+            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+            if (entertainmentBoxTier && entertainmentBoxTier.discountPeriod) {
+                periods.push(entertainmentBoxTier.discountPeriod);
+            }
+        }
+
+        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (entertainmentBoxData && entertainmentBoxData.discountPeriod) {
+                periods.push(entertainmentBoxData.discountPeriod);
+            }
+        }
+
+        // Add WiFi pods discount period
+        if (this.state.internet.enabled && this.state.internet.wifiPods > 0) {
+            const wifiPodsData = this.data.products.internet.wifiPods;
+            if (wifiPodsData.discountPeriod) {
+                periods.push(wifiPodsData.discountPeriod);
+            }
+        }
+
+        if (periods.length > 0) {
+            shortestPeriod = Math.min(...periods);
+        }
+
+        return shortestPeriod;
     }
 
     openTooltipSheet(tooltipKey) {
