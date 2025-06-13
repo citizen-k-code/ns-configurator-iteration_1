@@ -379,6 +379,24 @@
         </div>
     </div>
 
+    <!-- Advantage Bottom Sheet -->
+    <div class="sheet-overlay" id="advantage-sheet-overlay" style="display: none;" onclick="app.closeAdvantageBottomSheet()">
+        <div class="tooltip-sheet" id="advantage-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeAdvantageBottomSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title" id="advantage-sheet-title">Jouw voordeel</h3>
+                <div class="sheet-body" id="advantage-sheet-body">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.closeAdvantageBottomSheet()">Sluiten</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="header.js"></script>
 </body>

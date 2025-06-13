@@ -1325,467 +1325,6 @@ class UnifiedConfigurator {
         return { total, totalDiscount };
     }
 
-    updateCostSummary() {
-        const { total, totalDiscount } = this.calculateTotal();
-        const hasDiscounts = totalDiscount > 0;
-
-        // Update the monthly total
-        const monthlyTotalElement = document.getElementById('monthly-total');
-        if (monthlyTotalElement) {
-            monthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
-        }
-
-        // Update summary period based on temporary discounts
-        const summaryPeriodElement = document.getElementById('summary-period');
-        const shortestDiscountPeriod = this.getShortestTemporaryDiscountPeriod();
-        if (summaryPeriodElement) {
-            if (shortestDiscountPeriod > 0) {
-                summaryPeriodElement.style.display = 'block';
-                summaryPeriodElement.textContent = `Voor ${shortestDiscountPeriod} maanden`;
-            } else {
-                summaryPeriodElement.style.display = 'none';
-            }
-        }
-
-        // Update advantage block
-        const advantageElement = document.getElementById('advantage-block');
-        if (advantageElement) {
-            if (hasDiscounts) {
-                advantageElement.style.display = 'block';
-                const advantageAmountElement = document.getElementById('advantage-amount');
-                if (advantageAmountElement) {
-                    advantageAmountElement.textContent = `€${totalDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
-                }
-            } else {
-                advantageElement.style.display = 'none';
-            }
-        }
-
-        // Update product overview
-        this.updateProductOverview();
-
-        // Update mobile summary
-        this.updateMobileSummary();
-    }
-
-    toggleProductOverview() {
-        const content = document.getElementById('product-overview-content');
-        const arrow = document.getElementById('toggle-arrow');
-
-        if (content.style.display === 'none') {
-            content.style.display = 'block';
-            arrow.classList.add('rotated');
-        } else {
-            content.style.display = 'none';
-            arrow.classList.remove('rotated');
-        }
-    }
-
-    updateProductOverview() {
-        const content = document.getElementById('product-overview-content');
-        const overviewSection = document.querySelector('.product-overview-section');
-        if (!content || !overviewSection) return;
-
-        let html = '';
-
-        // Check if any products are enabled
-        const hasAnyProducts = this.state.internet.enabled || 
-                              this.state.mobile.enabled || 
-                              this.state.tv.enabled || 
-                              this.state.fixedPhone.enabled ||
-                              this.state.netflix.enabled ||
-                              this.state.streamz.enabled ||
-                              this.state.disney.enabled ||
-                              this.state.sport.enabled ||
-                              this.state.cinema.enabled;
-
-        // Hide the section if no products are enabled
-        if (!hasAnyProducts) {
-            overviewSection.style.display = 'none';
-            return;
-        } else {
-            overviewSection.style.display = 'block';
-        }
-
-        // Internet
-        if (this.state.internet.enabled) {
-            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
-            let finalPrice = internetTier.price;
-            if (internetTier.discountValue) {
-                finalPrice = internetTier.price - internetTier.discountValue;
-            }
-
-            html += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Internet</div>
-                    <div class="overview-item">
-                        <div class="overview-item-name">${internetTier.title}</div>
-                        <div class="overview-item-price">
-                            ${internetTier.discountValue ? 
-                                `<span class="original-price">€ ${internetTier.price.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-info">- €${internetTier.discountValue.toFixed(2).replace('.', ',')} voor ${internetTier.discountPeriod} maanden</span>` :
-                                `€ ${finalPrice.toFixed(2).replace('.', ',')}`
-                            }
-                        </div>
-                    </div>`;
-
-            // WiFi pods in overview
-            if (this.state.internet.wifiPods > 0) {
-                const wifiPodsData = this.data.products.internet.wifiPods;
-                const podsOriginalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
-
-                html += `
-                    <div class="overview-item">
-                        <div class="overview-item-name">WiFi-pods (${this.state.internet.wifiPods}x)</div>
-                        <div class="overview-item-price">
-                            <span class="original-price">€ ${podsOriginalPrice.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-price">€ 0,00</span>
-                            <span class="discount-info">- €${podsOriginalPrice.toFixed(2).replace('.', ',')} voor ${wifiPodsData.discountPeriod} maanden</span>
-                        </div>
-                    </div>`;
-            }
-
-            html += `</div>`;
-        }
-
-        // Mobile numbers
-        if (this.state.mobile.enabled && this.state.mobile.simcards.length > 0) {
-            html += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Mobiele nummers</div>
-            `;
-
-            this.state.mobile.simcards.forEach((simcard, index) => {
-                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                const discountCalc = this.calculateMobileDiscount(mobileTier, index);
-
-                html += `
-                    <div class="overview-item">
-                        <div class="overview-item-name">Simkaart ${index + 1} - ${mobileTier.title}</div>
-                        <div class="overview-item-price">
-                            ${discountCalc.hasDiscount ? 
-                                `<span class="original-price">€ ${mobileTier.price.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-price">€ ${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-info">${discountCalc.permanentDiscountAmount > 0 ? 'Combovoordeel 50%' : ''}${discountCalc.temporaryDiscountAmount > 0 ? (discountCalc.permanentDiscountAmount > 0 ? ' + ' : '') + `€${discountCalc.temporaryDiscountAmount.toFixed(2).replace('.', ',')} voor ${mobileTier.discountPeriod} mnd` : ''}</span>` :
-                                `€ ${discountCalc.finalPrice.toFixed(2).replace('.', ',')}`
-                            }
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += `</div>`;
-        }
-
-        // Fixed phone
-        if (this.state.fixedPhone.enabled) {
-            const phoneData = this.data.products.fixedPhone;
-            html += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Vaste lijn</div>
-                    <div class="overview-item">
-                        <div class="overview-item-name">Vaste lijn</div>
-                        <div class="overview-item-price">€ ${phoneData.price.toFixed(2).replace('.', ',')}</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Entertainment Box (standalone)
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
-            const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData) {
-                let boxFinalPrice = entertainmentBoxData.price;
-                if (entertainmentBoxData.discountValue) {
-                    boxFinalPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                }
-
-                html += `
-                    <div class="overview-group">
-                        <div class="overview-group-title">Entertainment Box</div>
-                        <div class="overview-item">
-                            <div class="overview-item-name">Entertainment Box</div>
-                            <div class="overview-item-price">
-                                ${entertainmentBoxData.discountValue ? 
-                                    `<span class="original-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
-                                     <span class="discount-price">€ ${boxFinalPrice.toFixed(2).replace('.', ',')}</span>
-                                     <span class="discount-info">- €${entertainmentBoxData.discountValue.toFixed(2).replace('.', ',')} voor ${entertainmentBoxData.discountPeriod} maanden</span>` :
-                                    `€ ${boxFinalPrice.toFixed(2).replace('.', ',')}`
-                                }
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // Entertainment (TV + Entertainment Box + Entertainment products)
-        const hasEntertainment = this.state.tv.enabled || 
-                                 this.state.netflix.enabled || 
-                                 this.state.streamz.enabled || 
-                                 this.state.disney.enabled || 
-                                 this.state.sport.enabled || 
-                                 this.state.cinema.enabled;
-
-        if (hasEntertainment) {
-            html += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Entertainment</div>
-            `;
-
-            // TV
-            if (this.state.tv.enabled) {
-                const tvData = this.data.products.tv;
-                let tvFinalPrice = tvData.price;
-                if (tvData.discountValue) {
-                    tvFinalPrice = tvData.price - tvData.discountValue;
-                }
-
-                html += `
-                    <div class="overview-item">
-                        <div class="overview-item-name">TV</div>
-                        <div class="overview-item-price">
-                            ${tvData.discountValue ? 
-                                `<span class="original-price">€ ${tvData.price.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-price">€ ${tvFinalPrice.toFixed(2).replace('.', ',')}</span>
-                                 <span class="discount-info">- €${tvData.discountValue.toFixed(2).replace('.', ',')} voor ${tvData.discountPeriod} maanden</span>` :
-                                `€ ${tvFinalPrice.toFixed(2).replace('.', ',')}`
-                            }
-                        </div>
-                    </div>
-                `;
-
-                // Entertainment Box
-                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-                if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                    let boxFinalPrice = entertainmentBoxTier.price;
-                    if (entertainmentBoxTier.discountValue !== undefined) {
-                        boxFinalPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
-                    }
-
-                    html += `
-                        <div class="overview-item">
-                            <div class="overview-item-name">Entertainment Box</div>
-                            <div class="overview-item-price">
-                                ${entertainmentBoxTier.discountValue !== undefined ? 
-                                    `<span class="original-price">€ ${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>
-                                     <span class="discount-price">€ ${boxFinalPrice.toFixed(2).replace('.', ',')}</span>
-                                     <span class="discount-info">- €${entertainmentBoxTier.discountValue.toFixed(2).replace('.', ',')} voor ${entertainmentBoxTier.discountPeriod} maanden</span>` :
-                                    `€ ${boxFinalPrice.toFixed(2).replace('.', ',')}`
-                                }
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-
-            // Entertainment products
-            const entertainmentProducts = [
-                { key: 'netflix', name: 'Netflix' },
-                { key: 'streamz', name: 'Streamz' },
-                { key: 'disney', name: 'Disney+' },
-                { key: 'sport', name: 'Sport' },
-                { key: 'cinema', name: 'Cinema' }
-            ];
-
-            entertainmentProducts.forEach(product => {
-                if (this.state[product.key].enabled) {
-                    const productData = this.entertainmentData.entertainment[product.key];
-                    let productName = product.name;
-                    let originalPrice, finalPrice;
-
-                    if (product.key === 'netflix' || product.key === 'streamz') {
-                        const tier = productData.tiers.find(t => t.id === this.state[product.key].selectedTier);
-                        productName += ` - ${tier.title}`;
-                        originalPrice = tier.price;
-                    } else {
-                        originalPrice = productData.price;
-                    }
-
-                    finalPrice = this.getEntertainmentDiscountedPrice(originalPrice);
-                    const hasDiscount = finalPrice < originalPrice;
-
-                    html += `
-                        <div class="overview-item">
-                            <div class="overview-item-name">${productName}</div>
-                            <div class="overview-item-price">
-                                ${hasDiscount ? 
-                                    `<span class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</span>
-                                     <span class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}</span>
-                                     <span class="discount-info">- €${(originalPrice - finalPrice).toFixed(2).replace('.', ',')} voor 6 maanden</span>` :
-                                    `€ ${finalPrice.toFixed(2).replace('.', ',')}`
-                                }
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-            html += `</div>`;
-        }
-
-        content.innerHTML = html;
-    }
-
-    updateMobileSummary() {
-        const { total, totalDiscount } = this.calculateTotal();
-        const hasDiscounts = totalDiscount > 0;
-
-        // Update mobile monthly total
-        const mobileMonthlyTotalElement = document.getElementById('mobile-monthly-total');
-        if (mobileMonthlyTotalElement) {
-            mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
-        }
-
-        // Update mobile advantage
-        const mobileAdvantageElement = document.getElementById('mobile-advantage');
-        if (mobileAdvantageElement) {
-            if (hasDiscounts) {
-                mobileAdvantageElement.style.display = 'block';
-                const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
-                if (mobileAdvantageAmountElement) {
-                    mobileAdvantageAmountElement.textContent = `€${totalDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
-                }
-            } else {
-                mobileAdvantageElement.style.display = 'none';
-            }
-        }
-    }
-
-    setupMobileSummaryObserver() {
-        const mainSummary = document.getElementById('part2');
-        const mobileSummary = document.getElementById('mobile-bottom-summary');
-
-        if (!mainSummary || !mobileSummary) return;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    mobileSummary.classList.add('hidden');
-                } else {
-                    mobileSummary.classList.remove('hidden');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        observer.observe(mainSummary);
-    }
-
-    scrollToMainSummary() {
-        const mainSummary = document.getElementById('part2');
-        if (mainSummary) {
-            mainSummary.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }
-
-    // Tooltip methods
-    calculateTotalPermanentDiscount() {
-        let totalPermanentDiscount = 0;
-        let discountsInfo = [];
-
-        const permanentDiscount = this.data.discounts.permanent;
-
-        // Mobile permanent discount
-        if (this.state.mobile.enabled && this.state.internet.enabled && permanentDiscount.enabled) {
-            this.state.mobile.simcards.forEach(simcard => {
-                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                if (permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
-                    const discountAmount = mobileTier.price * (permanentDiscount.percentage / 100);
-                    totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: `Simkaart ${simcard.id}`,
-                        percentage: permanentDiscount.percentage,
-                        productName: mobileTier.title
-                    });
-                }
-            });
-        }
-
-        // Entertainment permanent discounts (5% combo discount)
-        const entertainmentTotal = this.calculateEntertainmentTotal();
-        if (entertainmentTotal.totalDiscount > 0) {
-            // Add individual entertainment product discounts
-            if (this.state.netflix.enabled) {
-                const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                if (discountedPrice < tier.price) {
-                    const discountAmount = (tier.price - discountedPrice) * 12;
-                    totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: 'Netflix',
-                        percentage: 5,
-                        productName: 'Netflix'
-                    });
-                }
-            }
-
-            if (this.state.streamz.enabled) {
-                const tier = this.entertainmentData.entertainment.streamz.tiers.find(t => t.id === this.state.streamz.selectedTier);
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                if (discountedPrice < tier.price) {
-                    const discountAmount = (tier.price - discountedPrice) * 12;
-                    totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: 'Streamz',
-                        percentage: 5,
-                        productName: 'Streamz'
-                    });
-                }
-            }
-
-            if (this.state.disney.enabled) {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.disney.price);
-                if (discountedPrice < this.entertainmentData.entertainment.disney.price) {
-                    const discountAmount = (this.entertainmentData.entertainment.disney.price - discountedPrice) * 12;
-                    totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: 'Disney+',
-                        percentage: 5,
-                        productName: 'Disney+'
-                    });
-                }
-            }
-
-            if (this.state.sport.enabled) {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.sport.price);
-                if (discountedPrice < this.entertainmentData.entertainment.sport.price) {
-                    const discountAmount = (this.entertainmentData.entertainment.sport.price - discountedPrice) * 12;
-                    totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: 'Sport',
-                        percentage: 5,
-                        productName: 'Sport'
-                    });
-                }
-            }
-
-            if (this.state.cinema.enabled) {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.cinema.price);
-                if (discountedPrice < this.entertainmentData.entertainment.cinema.price) {
-                    const discountAmount = (this.entertainmentData.entertainment.cinema.price - discountedPrice) * 12;
-                    totalPermanentDiscount += discountAmount;
-                    discountsInfo.push({
-                        product: 'Cinema',
-                        percentage: 5,
-                        productName: 'Cinema'
-                    });
-                }
-            }
-        }
-
-        return {
-            total: totalPermanentDiscount * 12,
-            discounts: discountsInfo
-        };
-    }
-
     calculateTotalTemporaryDiscount() {
         let totalTemporaryDiscount = 0;
         let discountsInfo = [];
@@ -1851,6 +1390,20 @@ class UnifiedConfigurator {
                     product: 'Entertainment Box',
                     discountValue: entertainmentBoxData.discountValue,
                     discountPeriod: entertainmentBoxData.discountPeriod
+                });
+            }
+        }
+
+        // Add WiFi pods discount period
+        if (this.state.internet.enabled && this.state.internet.wifiPods > 0) {
+            const wifiPodsData = this.data.products.internet.wifiPods;
+            if (wifiPodsData.discountPeriod) {
+                const podsOriginalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
+                totalTemporaryDiscount += podsOriginalPrice * wifiPodsData.discountPeriod;
+                discountsInfo.push({
+                    product: 'WiFi-pods',
+                    discountValue: podsOriginalPrice,
+                    discountPeriod: wifiPodsData.discountPeriod
                 });
             }
         }
@@ -2422,6 +1975,23 @@ class UnifiedConfigurator {
                     simcardsContainer.insertAdjacentHTML('beforebegin', highlightHtml);
                 }
             }
+        }
+    }
+    
+    // Advantage bottomsheet methods
+    openAdvantageBottomSheet() {
+        const overlay = document.getElementById('advantage-sheet-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeAdvantageBottomSheet() {
+        const overlay = document.getElementById('advantage-sheet-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
         }
     }
 }

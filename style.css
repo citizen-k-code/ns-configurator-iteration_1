@@ -1740,6 +1740,26 @@ html {
     margin-top: 16px;
 }
 
+.advantage-total {
+    background-color: #B0DCFF;
+    color: #1a4480;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin: 16px 0;
+    text-align: center;
+}
+
+.permanent-advantage-total {
+    background-color: #e8f5e8;
+    color: #2d5f2d;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 12px;
+    text-align: center;
+}
+
 .sheet-body h4 {
     color: #2D3648;
     font-weight: 600;
