@@ -477,6 +477,8 @@ class UnifiedConfigurator {
                         this.renderMobileSimcards();
                     }
                 }
+                // Render closed state for telecom products
+                this.renderProductClosedState(productType);
             }
             this.updateHighlightBlocks();
         }
@@ -524,6 +526,7 @@ class UnifiedConfigurator {
                 }, 100);
             } else {
                 content.style.display = 'none';
+                this.renderProductClosedState('entertainmentBox');
             }
         } 
         // Individual entertainment services are handled within the entertainment interface
@@ -880,7 +883,7 @@ class UnifiedConfigurator {
     }
 
     renderEntertainmentBoxTiers() {
-        consttiersContainer = document.getElementById('entertainment-box-tiers');
+        const tiersContainer = document.getElementById('entertainment-box-tiers');
         if (!tiersContainer || !this.data) return;
 
         const tiers = this.data.products.tv.entertainmentBox.tiers;
@@ -2206,6 +2209,92 @@ class UnifiedConfigurator {
         if (closedStateDiv) {
             closedStateDiv.remove();
         }
+    }
+
+    // Add method to render product closed state
+    renderProductClosedState(productType) {
+        const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+        const productBlock = document.getElementById(blockId);
+        const productHeader = productBlock.querySelector('.product-header');
+        
+        // Remove existing closed state
+        this.removeProductClosedState(productType);
+        
+        // Get product data
+        let productData;
+        if (productType === 'fixedPhone') {
+            productData = this.data.products.fixedPhone;
+        } else if (productType === 'entertainmentBox') {
+            productData = this.data.products.entertainmentBox;
+        } else {
+            productData = this.data.products[productType];
+        }
+        
+        if (!productData || !productData.closedState) return;
+        
+        // Calculate price for ##PRICE## replacement
+        let price = 0;
+        if (productType === 'internet' && this.data.products.internet.tiers) {
+            const firstTier = this.data.products.internet.tiers[0];
+            price = firstTier.discountValue ? firstTier.price - firstTier.discountValue : firstTier.price;
+        } else if (productType === 'mobile' && this.data.products.mobile.tiers) {
+            const firstTier = this.data.products.mobile.tiers[0];
+            const discountCalc = this.calculateMobileDiscount(firstTier, 0);
+            price = discountCalc.finalPrice;
+        } else if (productType === 'entertainment' && this.entertainmentData) {
+            // Find the cheapest entertainment service
+            const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
+            let minPrice = Infinity;
+            services.forEach(serviceKey => {
+                const serviceData = this.entertainmentData.entertainment[serviceKey];
+                if (serviceData) {
+                    if (serviceData.tiers) {
+                        serviceData.tiers.forEach(tier => {
+                            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                            if (discountedPrice < minPrice) {
+                                minPrice = discountedPrice;
+                            }
+                        });
+                    } else {
+                        const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+                        if (discountedPrice < minPrice) {
+                            minPrice = discountedPrice;
+                        }
+                    }
+                }
+            });
+            price = minPrice !== Infinity ? minPrice : 0;
+        } else if (productData.price !== undefined) {
+            price = productData.discountValue ? productData.price - productData.discountValue : productData.price;
+        }
+        
+        // Replace ##PRICE## in summary
+        let summary = productData.closedState.summary;
+        if (summary.includes('##PRICE##')) {
+            summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
+        }
+        
+        // Create closed state HTML
+        let closedStateHtml = `
+            <div class="product-closed-content">
+                <div class="product-closed-divider"></div>
+                <div class="product-closed-summary">${summary}</div>
+        `;
+        
+        // Add highlight if it exists
+        if (productData.closedState.highlight) {
+            closedStateHtml += `
+                <div class="product-closed-highlight">
+                    <div class="closed-highlight-title">${productData.closedState.highlight.title}</div>
+                    <div class="closed-highlight-description">${productData.closedState.highlight.description}</div>
+                </div>
+            `;
+        }
+        
+        closedStateHtml += `</div>`;
+        
+        // Insert after header
+        productHeader.insertAdjacentHTML('afterend', closedStateHtml);
     }
 }
 
