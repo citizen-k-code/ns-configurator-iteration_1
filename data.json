@@ -6,10 +6,10 @@
       "tiers": [
         {
           "id": 1,
-          "title": "500 Mb",
-          "subtitle": "€45,00",
-          "summary": "<strong>500 Mbps</strong> downloadsnelheid, <strong>50 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 45.00,
+          "title": "200 Mbps",
+          "subtitle": "€50,00",
+          "summary": "Download snelheid: <strong>200 Mbps</strong>, Upload snelheid: <strong>20 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
+          "price": 50.00,
           "discountCopy": {
             "temporaryOnly": "",
             "permanentOnly": "",
@@ -18,38 +18,22 @@
         },
         {
           "id": 2,
-          "title": "1 Gb",
-          "subtitle": "€65,00",
-          "summary": "<strong>1 Gbps</strong> downloadsnelheid, <strong>100 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 65.00,
-          "discountValue": 15.00,
-          "discountPeriod": 6,
+          "title": "500 Mbps",
+          "subtitle": "€75,00",
+          "summary": "Download snelheid: <strong>500 Mbps</strong>, Upload snelheid: <strong>50 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
+          "price": 75.00,
           "discountCopy": {
-            "temporaryOnly": "gedurende 6 maanden",
+            "temporaryOnly": "",
             "permanentOnly": "",
             "both": ""
           }
         },
         {
           "id": 3,
-          "title": "2,5 Gb",
-          "subtitle": "€75,00",
-          "summary": "<strong>2,5 Gbps</strong> downloadsnelheid, <strong>250 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 75.00,
-          "discountValue": 15.00,
-          "discountPeriod": 6,
-          "discountCopy": {
-            "temporaryOnly": "gedurende 6 maanden",
-            "permanentOnly": "",
-            "both": ""
-          }
-        },
-        {
-          "id": 4,
-          "title": "8,5 Gb",
-          "subtitle": "€90,00",
-          "summary": "<strong>8,5 Gbps</strong> downloadsnelheid, <strong>500 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 90.00,
+          "title": "2,5 Gbps",
+          "subtitle": "€85,00",
+          "summary": "Download snelheid: <strong>2,5 Gbps</strong>, Upload snelheid: <strong>200 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
+          "price": 85.00,
           "discountCopy": {
             "temporaryOnly": "",
             "permanentOnly": "",
@@ -65,9 +49,9 @@
       "tiers": [
         {
           "id": 1,
-          "title": "Junior sim",
+          "title": "Mobile junior",
           "subtitle": "€5,00",
-          "summary": "<strong>5 GB</strong> mobiele data, <strong>120</strong> belminuten + onbeperkt sms'en, <strong>Parental</strong> control",
+          "summary": "Mobiele data: <strong>5 GB</strong>, <strong>60 belminuten</strong> en <strong>200 SMS'en</strong>, <strong>1 jaar ChatLicense cadeau</strong>",
           "price": 5.00,
           "discountCopy": {
             "temporaryOnly": "Introductietarief",
@@ -77,30 +61,26 @@
         },
         {
           "id": 2,
-          "title": "10 GB",
-          "subtitle": "€11,45",
-          "summary": "<strong>10 GB</strong> mobiele data, <strong>250 Mbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
-          "price": 11.45,
-          "discountValue": 3.45,
-          "discountPeriod": 3,
+          "title": "15 GB",
+          "subtitle": "€20,00",
+          "summary": "Mobiele data: <strong>15 GB</strong>, Downloadsnelheid: <strong>250 Mbps</strong>, <strong>Onbeperkt bellen en SMS'en</strong>",
+          "price": 20.00,
           "discountCopy": {
-            "temporaryOnly": "gedurende 3 maanden",
+            "temporaryOnly": "",
             "permanentOnly": "50% combovoordeel",
-            "both": "gedurende ##MONTHS## maanden<br />Daarna <strong>##NEWPRICE##</strong> met 50% combovoordeel"
+            "both": "50% combovoordeel"
           }
         },
         {
           "id": 3,
           "title": "Unlimited",
-          "subtitle": "€18,95",
-          "summary": "<strong>Onbeperkt</strong> mobiele data, <strong>1 Gbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en sms'en",
-          "price": 18.95,
-          "discountValue": 5.95,
-          "discountPeriod": 6,
+          "subtitle": "€40,00",
+          "summary": "Mobiele data: <strong>Onbeperkt</strong>, Downloadsnelheid: <strong>1 Gbps</strong>, <strong>Onbeperkt bellen en SMS'en</strong>",
+          "price": 40.00,
           "discountCopy": {
-            "temporaryOnly": "gedurende 6 maanden",
+            "temporaryOnly": "",
             "permanentOnly": "50% combovoordeel",
-            "both": "gedurende ##MONTHS## maanden<br />Daarna <strong>##NEWPRICE##</strong> met 50% combovoordeel"
+            "both": "50% combovoordeel"
           }
         }
       ],
