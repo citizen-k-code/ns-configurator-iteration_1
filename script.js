@@ -153,10 +153,10 @@ class UnifiedConfigurator {
                 this.updateTvInfo();
                 this.renderEntertainmentBoxTiers();
                 
-                // Sync the TV checkbox card with Entertainment Box state
+                // Auto-check the TV checkbox since Entertainment Box is enabled by default with TV
                 const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
                 if (tvCheckbox) {
-                    tvCheckbox.checked = this.state.tv.entertainmentBoxTier === 2;
+                    tvCheckbox.checked = true;
                 }
                 
                 // Enable Entertainment Box by default when TV is enabled via URL
@@ -427,6 +427,12 @@ class UnifiedConfigurator {
                     this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
                     this.updateTvInfo();
                     this.renderEntertainmentBoxTiers();
+                    
+                    // Auto-check the TV checkbox since Entertainment Box is enabled by default
+                    const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+                    if (tvCheckbox) {
+                        tvCheckbox.checked = true;
+                    }
                     
                     // Enable Entertainment Box by default when TV is enabled
                     this.state.entertainmentBox.enabled = true;
