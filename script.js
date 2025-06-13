@@ -257,14 +257,13 @@ class UnifiedConfigurator {
     }
 
     setupProductHeaderListeners() {
-        const telecomProducts = [
+        const allProducts = [
             { id: 'internet', headerSelector: '#internet-block .product-header', toggleSelector: '#internet-toggle' },
             { id: 'mobile', headerSelector: '#mobile-block .product-header', toggleSelector: '#mobile-toggle' },
             { id: 'tv', headerSelector: '#tv-block .product-header', toggleSelector: '#tv-toggle' },
-            { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' }
-        ];
-
-        const entertainmentProducts = [
+            { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' },
+            { id: 'entertainment', headerSelector: '#entertainment-block .product-header', toggleSelector: '#entertainment-toggle' },
+            { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' },
             { id: 'netflix', headerSelector: '#netflix-block .product-header', toggleSelector: '#netflix-toggle' },
             { id: 'streamz', headerSelector: '#streamz-block .product-header', toggleSelector: '#streamz-toggle' },
             { id: 'disney', headerSelector: '#disney-block .product-header', toggleSelector: '#disney-toggle' },
@@ -272,24 +271,25 @@ class UnifiedConfigurator {
             { id: 'cinema', headerSelector: '#cinema-block .product-header', toggleSelector: '#cinema-toggle' }
         ];
 
-        [...telecomProducts, ...entertainmentProducts].forEach(product => {
+        allProducts.forEach(product => {
             const header = document.querySelector(product.headerSelector);
             const toggle = document.querySelector(product.toggleSelector);
 
+            // Only set up listeners if both elements exist
             if (header && toggle) {
                 header.addEventListener('click', (e) => {
-                    if (!this.state[product.id].enabled && !e.target.closest('.switch')) {
-                        toggle.checked = true;
-                        this.toggleProduct(product.id, true);
+                    // Don't toggle if clicking on the switch itself or if already enabled
+                    if (!e.target.closest('.switch')) {
+                        toggle.checked = !toggle.checked;
+                        this.toggleProduct(product.id, toggle.checked);
                     }
                 });
 
                 const switchElement = header.querySelector('.switch');
                 if (switchElement) {
                     switchElement.addEventListener('click', (e) => {
-                        if (this.state[product.id].enabled) {
-                            e.stopPropagation();
-                        }
+                        // Allow the switch to handle its own click
+                        e.stopPropagation();
                     });
                 }
             }
@@ -309,6 +309,8 @@ class UnifiedConfigurator {
                 blockId = `${productId}-block`;
             }
             const header = document.querySelector(`#${blockId} .product-header`);
+            
+            // Only update if both the header element and state exist
             if (header && this.state[productId]) {
                 if (this.state[productId].enabled) {
                     header.classList.remove('clickable');
