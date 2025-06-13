@@ -372,6 +372,10 @@
 }
 
 /* Product Closed States */
+.product-closed-state {
+    padding: 0 20px 20px;
+}
+
 .product-closed-content {
     padding: 0 20px 20px;
 }
@@ -379,7 +383,7 @@
 .product-closed-divider {
     height: 1px;
     background-color: #CBD2E0;
-    margin-bottom: 24px;
+    margin: 16px 0 24px 0;
 }
 
 .product-closed-summary {

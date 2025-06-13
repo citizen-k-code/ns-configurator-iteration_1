@@ -1709,6 +1709,7 @@ class UnifiedConfigurator {
                 }
             });
         }
+```javascript
 
         // Entertainment permanent discounts (5% combo discount)
         const entertainmentTotal = this.calculateEntertainmentTotal();
@@ -2274,14 +2275,12 @@ class UnifiedConfigurator {
             summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
         }
 
-        // Create closed state HTML
-        let closedStateHtml = `
+         let closedStateHtml = `
             <div class="product-closed-content">
                 <div class="product-closed-divider"></div>
                 <div class="product-closed-summary">${summary}</div>
         `;
 
-        // Add highlight if it exists
         if (productData.closedState.highlight) {
             closedStateHtml += `
                 <div class="product-closed-highlight">
