@@ -881,6 +881,7 @@ class UnifiedConfigurator {
         const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         // No temporary discount for TV anymore
+        Single line analysis: The code change replaces the fallback price for entertainment products in closed state from 0 to 5.99.```python
         const priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
 
         infoContainer.innerHTML = `
@@ -2271,7 +2272,7 @@ class UnifiedConfigurator {
                     }
                 }
             });
-            price = minPrice !== Infinity ? minPrice : 0;
+            price = minPrice !== Infinity ? minPrice : 5.99; // Default fallback price
         } else if (productData.price !== undefined) {
             price = productData.discountValue ? productData.price - productData.discountValue : productData.price;
         }
