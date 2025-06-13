@@ -1,0 +1,27 @@
+When the product card is switched on AND the internet product card is not switched on, we show a highlight block right above the 1st simcard block. the card has a light grey background and says:
+title: “Extra voordeel met Internet + Mobiel”, content:”Minstens 50% korting op je mobiele abonnement in combinatie met internet.”
+
+If mobile and internet are both switched on, this block changes to a blue highlighted block confirming the discount is active
+
+
+
+Update the summary bottom sheet
+
+- the info on this screen contains 3 major parts:
+- Part 1: “Overzicht van je kortingen”:
+    - this is an overview of all temporary discounts that have been applied 
+    - the structure is always “##DURATION## maanden € ##AMOUNT## korting op ##PRODUCT##”, where ##DURATION## is the number of months the temporary discount lasts, ##AMOUNT## is the amount of the discount and ##PRODUCT## is the product you got this discount on
+    - sort the list from short to longer duration
+- Part 2: “Je betaalt”:
+    - here we show you how the price you pay will evolve over time, after temporary discounts have passed
+    - the structure is always:
+        - first line: “€ ##PRICETHISMONTH##/maand gedurende de eerste ##SHORTESTDURATION## maanden” where ##PRICETHISMONTH## is the total price you will pay this month and ##SHORTESTDURATION## is the lowest duration of all temporary discounts apply
+        - next line: “€ ##NEXTPRICE##/maand na ##SHORTESTDURATION## maanden”, where ##NEXTPRICE## is the price after all temporary discounts of the ##SHORTESTDURATION## have passed
+        - we repeat this for every different duration we have in our applied temporary discounts
+- Part 3: “Totaal voordeel: ##AMOUNT##”:
+    - in this block we show an aggregate of all applied temporary discounts over time. So each temporary discount multiplied by its duration. ##AMOUNT## will need to be replaced by the aggregate
+- Part 4: 
+    - this is an overview of all permanent discounts
+    - title: “Daarnaast geniet je nog van een aantal bundelvoordelen:”
+    - we show a list of all applied permanent discounts. For each we show “##DISCOUNTNAME## op ##PRODUCT##” where ##DISCOUNTNAME## is the name of the permanent discount and ##PRODUCT## is the name of the product (f.e. “Simcard 1” or “Netflix”)
+    - at the bottom we show the aggregate of all applied permanent discounts calculated for 1 year.
