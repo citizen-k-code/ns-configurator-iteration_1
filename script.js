@@ -2321,6 +2321,9 @@ class UnifiedConfigurator {
             if (this.data?.products?.entertainmentBox) {
                 const boxData = this.data.products.entertainmentBox;
                 price = boxData.discountValue ? boxData.price - boxData.discountValue : boxData.price;
+            } else {
+                // Fallback to default price if standalone box data not available
+                price = 5.00;
             }
         } else if (productType === 'entertainment' && this.entertainmentData) {
             // Find the cheapest entertainment service
