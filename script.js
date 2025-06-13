@@ -417,6 +417,8 @@ class UnifiedConfigurator {
             const content = document.getElementById(contentId);
 
             if (enabled) {
+                // Remove any existing closed state
+                this.removeProductClosedState(productType);
                 content.style.display = 'block';
                 if (productType === 'internet') {
                     this.renderInternetTiers();
@@ -484,6 +486,8 @@ class UnifiedConfigurator {
             const closedState = document.getElementById('entertainment-closed-state');
 
             if (enabled) {
+                // Remove any existing closed state
+                this.removeProductClosedState(productType);
                 content.style.display = 'block';
                 closedState.style.display = 'none';
                 this.renderAvailableEntertainmentServices();
@@ -509,6 +513,7 @@ class UnifiedConfigurator {
             const content = document.getElementById('entertainment-box-content');
 
             if (enabled) {
+                this.removeProductClosedState('entertainmentBox');
                 content.style.display = 'block';
                 this.updateEntertainmentBoxStandaloneInfo();
 
@@ -538,7 +543,7 @@ class UnifiedConfigurator {
             const isSelected = tier.id === this.state.internet.selectedTier;
             let finalPrice = tier.price;
             let hasDiscount = false;
-            
+
             if (tier.discountValue) {
                 finalPrice = tier.price - tier.discountValue;
                 hasDiscount = true;
@@ -635,7 +640,7 @@ class UnifiedConfigurator {
             const originalPrice = currentPods * wifiPodsData.pricePerPod;
             const discountedPrice = 0; // Free for 3 months
             const promoBadge = `<span class="promo-badge">${wifiPodsData.promoName}</span>`;
-            
+
             contentHtml = `
                 <div class="wifi-pods-pricing">
                     <div class="price-with-badge">
@@ -875,7 +880,7 @@ class UnifiedConfigurator {
     }
 
     renderEntertainmentBoxTiers() {
-        const tiersContainer = document.getElementById('entertainment-box-tiers');
+        consttiersContainer = document.getElementById('entertainment-box-tiers');
         if (!tiersContainer || !this.data) return;
 
         const tiers = this.data.products.tv.entertainmentBox.tiers;
@@ -1426,7 +1431,7 @@ class UnifiedConfigurator {
             if (this.state.internet.wifiPods > 0) {
                 const wifiPodsData = this.data.products.internet.wifiPods;
                 const podsOriginalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
-                
+
                 html += `
                     <div class="overview-item">
                         <div class="overview-item-name">WiFi-pods (${this.state.internet.wifiPods}x)</div>
@@ -2174,8 +2179,6 @@ class UnifiedConfigurator {
         }
     }
 
-
-
     scrollToEntertainmentBox() {
         const entertainmentBoxBlock = document.getElementById('entertainment-box-block');
         if (entertainmentBoxBlock) {
@@ -2191,6 +2194,17 @@ class UnifiedConfigurator {
             setTimeout(() => {
                 entertainmentBoxBlock.style.backgroundColor = '';
             }, 1000);
+        }
+    }
+
+    // Add method to remove product closed state
+    removeProductClosedState(productType) {
+        const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+        const productBlock = document.getElementById(blockId);
+        const closedStateDiv = productBlock.querySelector('.product-closed-state');
+
+        if (closedStateDiv) {
+            closedStateDiv.remove();
         }
     }
 }

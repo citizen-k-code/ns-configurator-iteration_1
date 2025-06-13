@@ -3,6 +3,10 @@
     "internet": {
       "title": "Internet",
       "tooltip": "Welke snelheid heb ik nodig?",
+      "closedState": {
+        "summary": "Kies voor snelheden tot 8,5 Gbps<br>Vanaf € ##PRICE##/maand",
+        "highlight": null
+      },
       "tiers": [
         {
           "id": 1,
@@ -59,6 +63,13 @@
     "mobile": {
       "title": "Mobiel",
       "tooltip": "Hoeveel mobiele data heb ik nodig?",
+      "closedState": {
+        "summary": "Voeg tot 5 mobiele nummers toe<br>Vanaf € ##PRICE##/maand",
+        "highlight": {
+          "title": "Extra voordeel met Internet + Mobiel",
+          "description": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+        }
+      },
       "tiers": [
         {
           "id": 1,
@@ -106,6 +117,10 @@
     "tv": {
       "title": "TV",
       "tooltip": "Welke snelheid heb ik nodig?",
+      "closedState": {
+        "summary": "Voeg een TV-pakket toe<br>€ ##PRICE##/maand",
+        "highlight": null
+      },
       "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> terugkijk TV, Inclusief tot <strong>200 uur opnames</strong> in the cloud",
       "price": 14.00,
       "discountCopy": {
@@ -142,12 +157,26 @@
     "fixedPhone": {
       "title": "Vaste lijn",
       "tooltip": "",
+      "closedState": {
+        "summary": "Voeg gratis een vaste telefonlijn toe",
+        "highlight": null
+      },
       "summary": "<strong>Gratis</strong> vaste lijn voor thuis, Huidig <strong>vast nummer behouden</strong> of een nieuw nummer aanvragen",
       "price": 0.00,
       "discountCopy": {
         "temporaryOnly": "",
         "permanentOnly": "",
         "both": ""
+      }
+    },
+    "entertainment": {
+      "title": "Entertainment",
+      "closedState": {
+        "summary": "... en nog veel meer.<br>Vanaf € ##PRICE##/maand",
+        "highlight": {
+          "title": "Krijg 5% korting op streaming",
+          "description": "Combineer twee of meer services"
+        }
       }
     },
     "entertainmentBox": {
@@ -159,6 +188,10 @@
       "promoName": "try before you buy",
       "discountCopy": {
         "temporaryOnly": "- €5,00 voor 3 maanden"
+      },
+      "closedState": {
+        "summary": "Onze nieuwste TV en streamingbox<br>€ ##PRICE##/maand",
+        "highlight": null
       }
     }
   },
