@@ -1326,25 +1326,13 @@ class UnifiedConfigurator {
     }
 
     updateCostSummary() {
-        const { total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount } = this.calculateTotal();
+        const { total, totalDiscount } = this.calculateTotal();
         const hasDiscounts = totalDiscount > 0;
-        const originalTotal = total + totalDiscount;
 
         // Update the monthly total
         const monthlyTotalElement = document.getElementById('monthly-total');
         if (monthlyTotalElement) {
             monthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
-        }
-
-        // Update strikethrough price
-        const strikethroughElement = document.getElementById('strikethrough-cost');
-        if (strikethroughElement) {
-            if (hasDiscounts) {
-                strikethroughElement.style.display = 'block';
-                strikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
-            } else {
-                strikethroughElement.style.display = 'none';
-            }
         }
 
         // Update advantage block
@@ -1354,38 +1342,10 @@ class UnifiedConfigurator {
                 advantageElement.style.display = 'block';
                 const advantageAmountElement = document.getElementById('advantage-amount');
                 if (advantageAmountElement) {
-                    advantageAmountElement.textContent = totalDiscount.toFixed(2).replace('.', ',');
+                    advantageAmountElement.textContent = `€${totalDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
                 }
             } else {
                 advantageElement.style.display = 'none';
-            }
-        }
-
-        // Show permanent promotion if applicable
-        const permanentElement = document.getElementById('permanent-promotion');
-        if (permanentElement) {
-            if (totalPermanentDiscount > 0) {
-                permanentElement.style.display = 'flex';
-                const permanentAmountElement = document.getElementById('permanent-amount');
-                if (permanentAmountElement) {
-                    permanentAmountElement.textContent = `- € ${totalPermanentDiscount.toFixed(2).replace('.', ',')}`;
-                }
-            } else {
-                permanentElement.style.display = 'none';
-            }
-        }
-
-        // Show temporary promotions if applicable
-        const temporaryElement = document.getElementById('temporary-promotion');
-        if (temporaryElement) {
-            if (totalTemporaryDiscount > 0) {
-                temporaryElement.style.display = 'flex';
-                const temporaryAmountElement = document.getElementById('temporary-amount');
-                if (temporaryAmountElement) {
-                    temporaryAmountElement.textContent = `- € ${totalTemporaryDiscount.toFixed(2).replace('.', ',')}`;
-                }
-            } else {
-                temporaryElement.style.display = 'none';
             }
         }
 
@@ -1659,23 +1619,11 @@ class UnifiedConfigurator {
     updateMobileSummary() {
         const { total, totalDiscount } = this.calculateTotal();
         const hasDiscounts = totalDiscount > 0;
-        const originalTotal = total + totalDiscount;
 
         // Update mobile monthly total
         const mobileMonthlyTotalElement = document.getElementById('mobile-monthly-total');
         if (mobileMonthlyTotalElement) {
             mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
-        }
-
-        // Update mobile strikethrough price
-        const mobileStrikethroughElement = document.getElementById('mobile-strikethrough');
-        if (mobileStrikethroughElement) {
-            if (hasDiscounts) {
-                mobileStrikethroughElement.style.display = 'block';
-                mobileStrikethroughElement.textContent = `€ ${originalTotal.toFixed(2).replace('.', ',')}`;
-            } else {
-                mobileStrikethroughElement.style.display = 'none';
-            }
         }
 
         // Update mobile advantage
@@ -1685,7 +1633,7 @@ class UnifiedConfigurator {
                 mobileAdvantageElement.style.display = 'block';
                 const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
                 if (mobileAdvantageAmountElement) {
-                    mobileAdvantageAmountElement.textContent = totalDiscount.toFixed(2).replace('.', ',');
+                    mobileAdvantageAmountElement.textContent = `€${totalDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
                 }
             } else {
                 mobileAdvantageElement.style.display = 'none';

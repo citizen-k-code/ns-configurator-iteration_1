@@ -294,10 +294,15 @@
         <!-- Part 2: Cost Summary -->
         <div class="part2" id="part2">
             <div class="cost-summary">
-                <h3>Totaal per maand</h3>
-                <div class="strikethrough-cost" id="strikethrough-cost" style="display: none;"></div>
-                <div class="total-cost">
-                    <span class="cost-label">€ <span id="monthly-total">0,00</span></span>
+                <div class="summary-header">
+                    <div class="summary-title">Totaal per maand</div>
+                    <div class="summary-total">€ <span id="monthly-total">0,00</span></div>
+                    <div class="summary-period">Voor 6 maanden</div>
+                </div>
+
+                <div class="advantage-block" id="advantage-block" style="display: none;">
+                    <span id="advantage-amount">€0 voordeel in totaal</span>
+                    <span class="info-icon">ⓘ</span>
                 </div>
 
                 <!-- Product Overview Accordion -->
@@ -308,23 +313,6 @@
                     </div>
                     <div class="product-overview-content" id="product-overview-content" style="display: none;">
                         <!-- Content will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <div class="advantage-block" id="advantage-block" style="display: none;">
-                    <span>Voordeel deze maand: € <span id="advantage-amount">0,00</span></span>
-                </div>
-
-                <div class="cost-breakdown">
-                    <div class="discount-line clickable" id="permanent-promotion" style="display: none;"
-                        onclick="app.openTooltipSheet('permanent_promotion')">
-                        <span>Permanent promotion</span>
-                        <span id="permanent-amount">- € 0,00</span>
-                    </div>
-                    <div class="discount-line clickable" id="temporary-promotion" style="display: none;"
-                        onclick="app.openTooltipSheet('temporary_promotion')">
-                        <span>Temporary promotions</span>
-                        <span id="temporary-amount">- € 0,00</span>
                     </div>
                 </div>
 
@@ -341,13 +329,12 @@
     <div class="mobile-bottom-summary" id="mobile-bottom-summary">
         <div class="mobile-summary-content">
             <div class="mobile-cost-section" onclick="app.scrollToMainSummary()">
-                <div class="mobile-strikethrough" id="mobile-strikethrough" style="display: none;"></div>
                 <div class="mobile-monthly-cost">
-                    <span>€ <span id="mobile-monthly-total">0,00</span></span>
-                    <span class="mobile-cost-label">mnd</span>
+                    €<span id="mobile-monthly-total">0,00</span>
+                    <span class="mobile-cost-label">per maand</span>
                 </div>
                 <div class="mobile-advantage" id="mobile-advantage" style="display: none;">
-                    <span>je bespaart € <span id="mobile-advantage-amount">0,00</span></span>
+                    <span id="mobile-advantage-amount">€0 voordeel in totaal</span>
                 </div>
             </div>
             <button class="mobile-order-btn" id="mobile-order-btn" onclick="app.handleMobileOrderButton()">Bestellen</button>

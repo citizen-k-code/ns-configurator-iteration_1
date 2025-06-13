@@ -1505,46 +1505,50 @@ input:checked+.slider:before {
     top: 20px;
 }
 
-.cost-summary h3 {
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #2D3648;
+.summary-header {
+    background-color: #EDF0F7;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
 }
 
-.strikethrough-cost {
-    text-align: center;
+.summary-title {
     font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 8px;
+}
+
+.summary-total {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+    margin-bottom: 4px;
+}
+
+.summary-period {
+    font-size: 12px;
     color: #717D96;
-    text-decoration: line-through;
-    margin-bottom: 5px;
+    text-align: right;
 }
 
 .advantage-block {
-    text-align: center;
-    background-color: #e8f5e8;
-    color: #2d5f2d;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 13px;
-    margin: 16px 0 8px;
-}
-
-.total-cost {
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-.cost-label {
-    font-size: 28px;
+    background-color: #B0DCFF;
+    color: #1a4480;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 600;
-    color: #2D3648;
-    display: block;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.cost-period {
-    font-size: 12px;
-    color: #717D96;
-    margin-top: 5px;
+.advantage-block .info-icon {
+    font-size: 16px;
+    opacity: 0.7;
 }
 
 .cost-breakdown {
@@ -1838,9 +1842,10 @@ html {
 
 .mobile-advantage {
     font-size: 11px;
-    color: #2d5f2d;
+    color: #1a4480;
     line-height: 1.2;
     margin-top: 2px;
+    font-weight: 600;
 }
 
 .mobile-order-btn {
