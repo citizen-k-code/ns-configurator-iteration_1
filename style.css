@@ -755,7 +755,6 @@ The CSS file is updated with new styles for closed product cards and adjustments
         opacity: 1;
         transform: translateY(0);
     }
-}8;
 }
 
 .checkbox-option input[type="checkbox"]:checked + .checkmark:after {
