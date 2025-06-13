@@ -220,7 +220,39 @@
     "title": "Extra voordeel met Internet + Mobiel",
     "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
   },
-  "tooltips": {
+  "closedProductCards": {
+        "internet": {
+            "summary": "Kies voor snelheden tot 8,5 Gbps<br />Vanaf € ##PRICE##/maand",
+            "highlight": null
+        },
+        "mobile": {
+            "summary": "Voeg tot 5 mobiele nummers toe<br />Vanaf € ##PRICE##/maand",
+            "highlight": {
+                "title": "Extra voordeel met Internet + Mobiel",
+                "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+            }
+        },
+        "tv": {
+            "summary": "Voeg een TV-pakket toe<br />€ ##PRICE##/maand",
+            "highlight": null
+        },
+        "entertainment": {
+            "summary": "…en nog veel meer.<br />Vanaf € ##PRICE##/maand",
+            "highlight": {
+                "title": "Krijg 5% korting op streaming",
+                "content": "Combineer 2 of meer services."
+            }
+        },
+        "entertainmentBox": {
+            "summary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
+            "highlight": null
+        },
+        "fixedPhone": {
+            "summary": "Voeg gratis een vaste telefoonlijn toe",
+            "highlight": null
+        }
+    },
+    "tooltips": {
     "internet": {
       "title": "Internet tooltip",
       "content": "Internet content"
