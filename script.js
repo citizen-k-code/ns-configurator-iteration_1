@@ -75,6 +75,7 @@ class UnifiedConfigurator {
             this.updateHighlightBlocks();
             this.updateProductHeaderStates();
             this.updateAllEntertainmentSubtitles();
+            this.renderClosedStatesForDisabledProducts();
             this.updateCostSummary();
         } catch (error) {
             console.error('Error initializing configurator:', error);
@@ -2208,6 +2209,17 @@ class UnifiedConfigurator {
         if (closedStateDiv) {
             closedStateDiv.remove();
         }
+    }
+
+    // Add method to render closed states for all disabled products
+    renderClosedStatesForDisabledProducts() {
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
+        
+        allProducts.forEach(productType => {
+            if (!this.state[productType].enabled) {
+                this.renderProductClosedState(productType);
+            }
+        });
     }
 
     // Add method to render product closed state
