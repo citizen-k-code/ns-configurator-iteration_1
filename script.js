@@ -735,7 +735,7 @@ class UnifiedConfigurator {
         const isPermanentApplicable = permanentDiscount.enabled && 
                                     isInternetEnabled && 
                                     permanentDiscount.conditions.applicableToTiers.includes(tier.id);
-        const hasTemporaryDiscount = tier.discountValue && simcardIndex >= 1;
+        const hasTemporaryDiscount = tier.discountValue && tier.discountPeriod && simcardIndex >= 1;
 
         let finalPrice = tier.price;
         let permanentDiscountAmount = 0;
@@ -817,7 +817,7 @@ class UnifiedConfigurator {
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         let priceHtml;
-        if (tier.discountValue !== undefined) {
+        if (tier.discountValue !== undefined && tier.discountPeriod) {
             // Temporary discount: show promo badge and strikethrough with caption
             const discountPrice = tier.price - tier.discountValue;
             const promoBadge = tier.promoName ? `<span class="promo-badge">${tier.promoName}</span>` : '';
@@ -1740,7 +1740,7 @@ class UnifiedConfigurator {
             { key: 'hbo', name: 'HBO Max', icon: 'HBO', iconClass: 'hbo-icon' },
             { key: 'streamz', name: 'Streamz', icon: 'S', iconClass: 'streamz-icon' },
             { key: 'sport', name: 'Sport', icon: '⚽', iconClass: 'sport-icon' },
-            { key: 'cinema', name: 'cinema', icon: '🎬', iconClass: 'cinema-icon' }
+            { key: 'cinema', name: 'Cinema', icon: '🎬', iconClass: 'cinema-icon' }
         ];
 
         container.innerHTML = services
