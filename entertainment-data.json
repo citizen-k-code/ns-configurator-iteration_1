@@ -100,7 +100,7 @@
             "showServiceIcons": true
         },
         "entertainmentBox": {
-            "summary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
+            "summary": "Onze nieuwste TV en<br />streamingbox<br />€ ##PRICE##/maand",
             "highlight": null,
             "showImage": true
         }
