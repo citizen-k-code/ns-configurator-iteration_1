@@ -254,6 +254,12 @@ class UnifiedConfigurator {
         if (entertainmentBoxToggle) {
             entertainmentBoxToggle.addEventListener('change', (e) => {
                 this.toggleProduct('entertainmentBox', e.target.checked);
+                
+                // Sync the TV checkbox when Entertainment Box is toggled
+                const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+                if (tvCheckbox && this.state.tv.enabled) {
+                    tvCheckbox.checked = e.target.checked;
+                }
             });
         }
 
