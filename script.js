@@ -153,6 +153,12 @@ class UnifiedConfigurator {
                 this.updateTvInfo();
                 this.renderEntertainmentBoxTiers();
                 
+                // Sync the TV checkbox card with Entertainment Box state
+                const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+                if (tvCheckbox) {
+                    tvCheckbox.checked = this.state.tv.entertainmentBoxTier === 2;
+                }
+                
                 // Enable Entertainment Box by default when TV is enabled via URL
                 this.state.entertainmentBox.enabled = true;
                 const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
@@ -218,6 +224,18 @@ class UnifiedConfigurator {
         if (fixedPhoneToggle) {
             fixedPhoneToggle.addEventListener('change', (e) => {
                 this.toggleProduct('fixedPhone', e.target.checked);
+            });
+        }
+
+        // TV Entertainment Box checkbox
+        const tvEntertainmentBoxCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+        if (tvEntertainmentBoxCheckbox) {
+            tvEntertainmentBoxCheckbox.addEventListener('change', (e) => {
+                const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                if (entertainmentBoxToggle) {
+                    entertainmentBoxToggle.checked = e.target.checked;
+                    this.toggleProduct('entertainmentBox', e.target.checked);
+                }
             });
         }
 
