@@ -376,17 +376,17 @@
     .service-icons-row {
         gap: 6px;
     }
-    
+
     .service-icon {
         width: 28px;
         height: 28px;
         font-size: 11px;
     }
-    
+
     .service-tier-selector {
         gap: 3px;
     }
-    
+
     .service-tier-option {
         padding: 6px 12px;
         font-size: 13px;
@@ -1032,7 +1032,12 @@ input:checked+.slider:before {
 }
 
 .tier-price.permanent-discount {
-    color: #F134F7;
+    color: #F134F7 !important;
+}
+
+.promotional-price {
+    color: #F134F7 !important;
+    font-weight: 600 !important;
 }
 
 .tier-price-container {

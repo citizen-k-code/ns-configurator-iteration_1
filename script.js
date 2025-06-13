@@ -152,18 +152,18 @@ class UnifiedConfigurator {
                 tvContent.style.display = 'block';
                 this.updateTvInfo();
                 this.renderEntertainmentBoxTiers();
-                
+
                 // Auto-check the TV checkbox since Entertainment Box is enabled by default with TV
                 const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
                 if (tvCheckbox) {
                     tvCheckbox.checked = true;
                 }
-                
+
                 // Enable Entertainment Box by default when TV is enabled via URL
                 this.state.entertainmentBox.enabled = true;
                 const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
                 const entertainmentBoxContent = document.getElementById('entertainment-box-content');
-                
+
                 if (entertainmentBoxToggle) {
                     entertainmentBoxToggle.checked = true;
                 }
@@ -218,7 +218,7 @@ class UnifiedConfigurator {
             });
         }
 
-        
+
 
         const fixedPhoneToggle = document.getElementById('fixed-phone-toggle');
         if (fixedPhoneToggle) {
@@ -254,7 +254,7 @@ class UnifiedConfigurator {
         if (entertainmentBoxToggle) {
             entertainmentBoxToggle.addEventListener('change', (e) => {
                 this.toggleProduct('entertainmentBox', e.target.checked);
-                
+
                 // Sync the TV checkbox when Entertainment Box is toggled
                 const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
                 if (tvCheckbox && this.state.tv.enabled) {
@@ -315,7 +315,7 @@ class UnifiedConfigurator {
                 blockId = `${productId}-block`;
             }
             const header = document.querySelector(`#${blockId} .product-header`);
-            
+
             // Only update if both the header element and state exist
             if (header && this.state[productId]) {
                 if (this.state[productId].enabled) {
@@ -433,18 +433,18 @@ class UnifiedConfigurator {
                     this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
                     this.updateTvInfo();
                     this.renderEntertainmentBoxTiers();
-                    
+
                     // Auto-check the TV checkbox since Entertainment Box is enabled by default
                     const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
                     if (tvCheckbox) {
                         tvCheckbox.checked = true;
                     }
-                    
+
                     // Enable Entertainment Box by default when TV is enabled
                     this.state.entertainmentBox.enabled = true;
                     const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
                     const entertainmentBoxContent = document.getElementById('entertainment-box-content');
-                    
+
                     if (entertainmentBoxToggle) {
                         entertainmentBoxToggle.checked = true;
                     }
@@ -478,13 +478,13 @@ class UnifiedConfigurator {
         else if (productType === 'entertainment') {
             const content = document.getElementById('entertainment-content');
             const closedState = document.getElementById('entertainment-closed-state');
-            
+
             if (enabled) {
                 content.style.display = 'block';
                 closedState.style.display = 'none';
                 this.renderAvailableEntertainmentServices();
                 this.renderSelectedEntertainmentServices();
-                
+
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
                     const productBlock = document.getElementById('entertainment-block');
@@ -503,11 +503,11 @@ class UnifiedConfigurator {
         // Handle entertainment box toggle
         else if (productType === 'entertainmentBox') {
             const content = document.getElementById('entertainment-box-content');
-            
+
             if (enabled) {
                 content.style.display = 'block';
                 this.updateEntertainmentBoxStandaloneInfo();
-                
+
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
                     const productBlock = document.getElementById('entertainment-box-block');
@@ -527,7 +527,7 @@ class UnifiedConfigurator {
     renderInternetTiers() {
         const tiersContainer = document.getElementById('internet-tiers');
         if (!tiersContainer || !this.data) return;
-        
+
         const tiers = this.data.products.internet.tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => `
@@ -552,7 +552,7 @@ class UnifiedConfigurator {
     updateInternetInfo() {
         const infoContainer = document.getElementById('internet-info');
         if (!infoContainer || !this.data) return;
-        
+
         const tier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
         if (!tier) return;
 
@@ -585,7 +585,7 @@ class UnifiedConfigurator {
     renderMobileSimcards() {
         const container = document.getElementById('simcards-container');
         const addBtn = document.getElementById('add-simcard-btn');
-        
+
         if (!container || !addBtn || !this.data) return;
 
         container.innerHTML = this.state.mobile.simcards.map((simcard, index) => `
@@ -630,14 +630,14 @@ class UnifiedConfigurator {
 
         if (hasDiscount) {
             const { finalPrice, permanentDiscountAmount, temporaryDiscountAmount } = discountCalc;
-            
+
             if (permanentDiscountAmount > 0 && temporaryDiscountAmount > 0) {
                 // Both permanent and temporary discount: show strikethrough with permanent discount applied
                 const priceAfterPermanent = tier.price - permanentDiscountAmount;
                 const discountCopy = tier.discountCopy.both
                     .replace('##MONTHS##', tier.discountPeriod)
                     .replace('##NEWPRICE##', `€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}`);
-                
+
                 priceHtml = `
                     <div class="tier-price-container">
                         <div class="original-price">€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}</div>
@@ -733,7 +733,7 @@ class UnifiedConfigurator {
     updateTvInfo() {
         const infoContainer = document.getElementById('tv-info');
         if (!infoContainer || !this.data) return;
-        
+
         const tvData = this.data.products.tv;
 
         const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
@@ -764,7 +764,7 @@ class UnifiedConfigurator {
     renderEntertainmentBoxTiers() {
         const tiersContainer = document.getElementById('entertainment-box-tiers');
         if (!tiersContainer || !this.data) return;
-        
+
         const tiers = this.data.products.tv.entertainmentBox.tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => `
@@ -862,18 +862,30 @@ class UnifiedConfigurator {
     renderEntertainmentTiers(productType) {
         const tiersContainer = document.getElementById(`${productType}-tiers`);
         if (!tiersContainer || !this.entertainmentData) return;
-        
+
         const tiers = this.entertainmentData.entertainment[productType].tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-            const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
-            
+            const isSelected = tier.id === this.state[productType].selectedTier;
+            let subtitleContent = '';
+
+            if (!isSelected) {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                const hasDiscount = discountedPrice < tier.price;
+                const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+
+                if (hasDiscount) {
+                    subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
+                } else {
+                    subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
+                }
+            }
+
             return `
-                <div class="tier-option ${tier.id === this.state[productType].selectedTier ? 'active' : ''}" 
+                <div class="tier-option ${isSelected ? 'active' : ''}" 
                      onclick="app.selectEntertainmentTier('${productType}', ${tier.id})">
                     <div class="tier-title">${tier.title}</div>
-                    <div class="tier-subtitle">${priceText}</div>
+                    ${subtitleContent}
                 </div>
             `;
         }).join('');
@@ -889,10 +901,10 @@ class UnifiedConfigurator {
 
     updateEntertainmentTierInfo(productType) {
         if (!this.entertainmentData) return;
-        
+
         const tier = this.entertainmentData.entertainment[productType].tiers.find(t => t.id === this.state[productType].selectedTier);
         const infoContainer = document.getElementById(`${productType}-info`);
-        
+
         if (!infoContainer || !tier) return;
 
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
@@ -923,10 +935,10 @@ class UnifiedConfigurator {
 
     updateEntertainmentProductInfo(productType) {
         if (!this.entertainmentData) return;
-        
+
         const productData = this.entertainmentData.entertainment[productType];
         const infoContainer = document.getElementById(`${productType}-info`);
-        
+
         if (!infoContainer || !productData) return;
 
         const summaryItems = productData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
@@ -998,7 +1010,7 @@ class UnifiedConfigurator {
     updateEntertainmentSubtitle(productType) {
         const subtitleElement = document.getElementById(`${productType}-subtitle`);
         if (!subtitleElement || !this.entertainmentData) return;
-        
+
         const productData = this.entertainmentData.entertainment[productType];
         if (!productData) return;
 
@@ -1703,7 +1715,7 @@ class UnifiedConfigurator {
             { key: 'hbo', name: 'HBO Max', icon: 'HBO', iconClass: 'hbo-icon' },
             { key: 'streamz', name: 'Streamz', icon: 'S', iconClass: 'streamz-icon' },
             { key: 'sport', name: 'Sport', icon: '⚽', iconClass: 'sport-icon' },
-            { key: 'cinema', name: 'Cinema', icon: '🎬', iconClass: 'cinema-icon' }
+            { key: 'cinema', name'cinema', icon: '🎬', iconClass: 'cinema-icon' }
         ];
 
         container.innerHTML = services
@@ -1711,7 +1723,7 @@ class UnifiedConfigurator {
             .map(service => {
                 const serviceData = this.entertainmentData.entertainment[service.key];
                 let priceText;
-                
+
                 if (serviceData.tiers) {
                     const minPrice = Math.min(...serviceData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price)));
                     priceText = `Vanaf € ${minPrice.toFixed(2).replace('.', ',')}`;
@@ -1736,11 +1748,11 @@ class UnifiedConfigurator {
     renderSelectedEntertainmentServices() {
         const container = document.getElementById('selected-entertainment-services');
         const comboDiscountBanner = document.getElementById('combo-discount-banner');
-        
+
         if (!container || !this.entertainmentData) return;
 
         const selectedServices = Array.from(this.state.selectedEntertainmentServices);
-        
+
         // Show/hide combo discount banner
         if (selectedServices.length >= 2) {
             comboDiscountBanner.style.display = 'flex';
@@ -1772,7 +1784,7 @@ class UnifiedConfigurator {
                 ${this.renderServiceDetails(serviceKey)}
                 ${this.renderServicePrice(serviceKey)}
             `;
-            
+
             container.appendChild(serviceElement);
         });
     }
@@ -1815,20 +1827,32 @@ class UnifiedConfigurator {
 
     renderServiceTiers(serviceKey) {
         const serviceData = this.entertainmentData.entertainment[serviceKey];
-        
+
         if (!serviceData.tiers) return '';
 
         return `
             <div class="service-tier-selector">
                 ${serviceData.tiers.map(tier => {
-                    const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                    const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
-                    
+                    const isSelected = tier.id === this.state[serviceKey].selectedTier;
+                    let subtitleContent = '';
+
+                    if (!isSelected) {
+                        const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                        const hasDiscount = discountedPrice < tier.price;
+                        const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+
+                        if (hasDiscount) {
+                            subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
+                        } else {
+                            subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
+                        }
+                    }
+
                     return `
-                        <div class="service-tier-option ${tier.id === this.state[serviceKey].selectedTier ? 'active' : ''}" 
+                        <div class="service-tier-option ${isSelected ? 'active' : ''}" 
                              onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
                             <div class="tier-title">${tier.title}</div>
-                            <div class="tier-subtitle">${priceText}</div>
+                            ${subtitleContent}
                         </div>
                     `;
                 }).join('')}
@@ -1890,7 +1914,7 @@ class UnifiedConfigurator {
     addEntertainmentService(serviceKey) {
         this.state.selectedEntertainmentServices.add(serviceKey);
         this.state[serviceKey].enabled = true;
-        
+
         // Set default tier for services with tiers
         const serviceData = this.entertainmentData.entertainment[serviceKey];
         if (serviceData.tiers && serviceData.defaultTier) {
@@ -1906,7 +1930,7 @@ class UnifiedConfigurator {
     removeEntertainmentService(serviceKey) {
         this.state.selectedEntertainmentServices.delete(serviceKey);
         this.state[serviceKey].enabled = false;
-        
+
         this.renderAvailableEntertainmentServices();
         this.renderSelectedEntertainmentServices();
         this.updateAllEntertainmentSubtitles();
@@ -1946,7 +1970,7 @@ class UnifiedConfigurator {
         }
     }
 
-    
+
 
     scrollToEntertainmentBox() {
         const entertainmentBoxBlock = document.getElementById('entertainment-box-block');
@@ -1955,11 +1979,11 @@ class UnifiedConfigurator {
                 behavior: 'smooth',
                 block: 'center'
             });
-            
+
             // Add a subtle highlight effect
             entertainmentBoxBlock.style.transition = 'background-color 0.3s ease';
             entertainmentBoxBlock.style.backgroundColor = '#f8f9fa';
-            
+
             setTimeout(() => {
                 entertainmentBoxBlock.style.backgroundColor = '';
             }, 1000);
