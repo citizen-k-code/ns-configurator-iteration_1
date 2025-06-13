@@ -206,41 +206,7 @@ class UnifiedConfigurator {
             });
         }
 
-        // Entertainment toggles (only if elements exist)
-        const netflixToggle = document.getElementById('netflix-toggle');
-        if (netflixToggle) {
-            netflixToggle.addEventListener('change', (e) => {
-                this.toggleProduct('netflix', e.target.checked);
-            });
-        }
-
-        const streamzToggle = document.getElementById('streamz-toggle');
-        if (streamzToggle) {
-            streamzToggle.addEventListener('change', (e) => {
-                this.toggleProduct('streamz', e.target.checked);
-            });
-        }
-
-        const disneyToggle = document.getElementById('disney-toggle');
-        if (disneyToggle) {
-            disneyToggle.addEventListener('change', (e) => {
-                this.toggleProduct('disney', e.target.checked);
-            });
-        }
-
-        const sportToggle = document.getElementById('sport-toggle');
-        if (sportToggle) {
-            sportToggle.addEventListener('change', (e) => {
-                this.toggleProduct('sport', e.target.checked);
-            });
-        }
-
-        const cinemaToggle = document.getElementById('cinema-toggle');
-        if (cinemaToggle) {
-            cinemaToggle.addEventListener('change', (e) => {
-                this.toggleProduct('cinema', e.target.checked);
-            });
-        }
+        // Individual entertainment service toggles are handled within the entertainment interface
 
         // Entertainment toggle (only if element exists)
         const entertainmentToggle = document.getElementById('entertainment-toggle');
@@ -269,12 +235,7 @@ class UnifiedConfigurator {
             { id: 'tv', headerSelector: '#tv-block .product-header', toggleSelector: '#tv-toggle' },
             { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' },
             { id: 'entertainment', headerSelector: '#entertainment-block .product-header', toggleSelector: '#entertainment-toggle' },
-            { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' },
-            { id: 'netflix', headerSelector: '#netflix-block .product-header', toggleSelector: '#netflix-toggle' },
-            { id: 'streamz', headerSelector: '#streamz-block .product-header', toggleSelector: '#streamz-toggle' },
-            { id: 'disney', headerSelector: '#disney-block .product-header', toggleSelector: '#disney-toggle' },
-            { id: 'sport', headerSelector: '#sport-block .product-header', toggleSelector: '#sport-toggle' },
-            { id: 'cinema', headerSelector: '#cinema-block .product-header', toggleSelector: '#cinema-toggle' }
+            { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' }
         ];
 
         allProducts.forEach(product => {
@@ -303,7 +264,7 @@ class UnifiedConfigurator {
     }
 
     updateProductHeaderStates() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'netflix', 'streamz', 'disney', 'sport', 'cinema'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
 
         allProducts.forEach(productId => {
             let blockId;
@@ -498,31 +459,7 @@ class UnifiedConfigurator {
                 content.style.display = 'none';
             }
         } 
-        // Handle entertainment products
-        else if (['netflix', 'streamz', 'disney', 'sport', 'cinema'].includes(productType)) {
-            const content = document.getElementById(`${productType}-content`);
-
-            if (enabled) {
-                content.style.display = 'block';
-                if (productType === 'netflix' || productType === 'streamz') {
-                    this.renderEntertainmentTiers(productType);
-                    this.state[productType].selectedTier = this.entertainmentData.entertainment[productType].defaultTier;
-                    this.updateEntertainmentTierInfo(productType);
-                } else {
-                    this.updateEntertainmentProductInfo(productType);
-                }
-
-                // Smooth scroll to ensure the entertainment product block is visible
-                setTimeout(() => {
-                    const productBlock = document.getElementById(`${productType}-block`);
-                    this.scrollToElementSmooth(productBlock);
-                }, 100);
-            } else {
-                content.style.display = 'none';
-            }
-            this.updateAllEntertainmentSubtitles();
-            this.refreshAllEntertainmentProductInfo();
-        }
+        // Individual entertainment services are handled within the entertainment interface
 
         this.updateProductHeaderStates();
         this.updateCostSummary();
