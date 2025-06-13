@@ -560,6 +560,7 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (tier.discountValue) {
+            // Temporary discount: show strikethrough with caption
             const discountPrice = tier.price - tier.discountValue;
             priceHtml = `
                 <div class="tier-price-container">
@@ -629,26 +630,35 @@ class UnifiedConfigurator {
 
         if (hasDiscount) {
             const { finalPrice, permanentDiscountAmount, temporaryDiscountAmount } = discountCalc;
-            let discountCopy = '';
-
+            
             if (permanentDiscountAmount > 0 && temporaryDiscountAmount > 0) {
-                const priceAfterTemp = tier.price - permanentDiscountAmount;
-                discountCopy = tier.discountCopy.both
+                // Both permanent and temporary discount: show strikethrough with permanent discount applied
+                const priceAfterPermanent = tier.price - permanentDiscountAmount;
+                const discountCopy = tier.discountCopy.both
                     .replace('##MONTHS##', tier.discountPeriod)
-                    .replace('##NEWPRICE##', `€ ${priceAfterTemp.toFixed(2).replace('.', ',')}`);
+                    .replace('##NEWPRICE##', `€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}`);
+                
+                priceHtml = `
+                    <div class="tier-price-container">
+                        <div class="original-price">€ ${priceAfterPermanent.toFixed(2).replace('.', ',')}</div>
+                        <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        <div class="discount-info">${discountCopy}</div>
+                    </div>
+                `;
             } else if (permanentDiscountAmount > 0) {
-                discountCopy = tier.discountCopy.permanentOnly;
+                // Only permanent discount: show only discounted price in pink, no strikethrough
+                priceHtml = `<div class="tier-price permanent-discount">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>`;
             } else if (temporaryDiscountAmount > 0) {
-                discountCopy = tier.discountCopy.temporaryOnly;
+                // Only temporary discount: show strikethrough with caption
+                const discountCopy = tier.discountCopy.temporaryOnly;
+                priceHtml = `
+                    <div class="tier-price-container">
+                        <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        <div class="discount-info">${discountCopy}</div>
+                    </div>
+                `;
             }
-
-            priceHtml = `
-                <div class="tier-price-container">
-                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
-                    <div class="discount-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">${discountCopy}</div>
-                </div>
-            `;
         } else {
             priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
@@ -730,6 +740,7 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (tvData.discountValue) {
+            // Temporary discount: show strikethrough with caption
             const discountPrice = tvData.price - tvData.discountValue;
             priceHtml = `
                 <div class="tier-price-container">
@@ -788,6 +799,7 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (tier.discountValue !== undefined) {
+            // Temporary discount: show strikethrough with caption
             const discountPrice = tier.price - tier.discountValue;
             priceHtml = `
                 <div class="tier-price-container">
