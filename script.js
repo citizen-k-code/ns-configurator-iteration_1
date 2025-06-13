@@ -1347,14 +1347,14 @@ class UnifiedConfigurator {
             }
         }
 
-        // Update advantage block - only show temporary discounts
+        // Update advantage block
         const advantageElement = document.getElementById('advantage-block');
         if (advantageElement) {
-            if (totalTemporaryDiscount > 0) {
+            if (hasDiscounts) {
                 advantageElement.style.display = 'block';
                 const advantageAmountElement = document.getElementById('advantage-amount');
                 if (advantageAmountElement) {
-                    advantageAmountElement.textContent = `€${totalTemporaryDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
+                    advantageAmountElement.textContent = `€${totalDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
                 }
             } else {
                 advantageElement.style.display = 'none';
@@ -1638,15 +1638,14 @@ class UnifiedConfigurator {
             mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
         }
 
-        // Update mobile advantage - only show temporary discounts
-        const { totalTemporaryDiscount: mobileTemporaryDiscount } = this.calculateTotal();
+        // Update mobile advantage
         const mobileAdvantageElement = document.getElementById('mobile-advantage');
         if (mobileAdvantageElement) {
-            if (mobileTemporaryDiscount > 0) {
+            if (hasDiscounts) {
                 mobileAdvantageElement.style.display = 'block';
                 const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
                 if (mobileAdvantageAmountElement) {
-                    mobileAdvantageAmountElement.textContent = `€${mobileTemporaryDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
+                    mobileAdvantageAmountElement.textContent = `€${totalDiscount.toFixed(2).replace('.', ',')} voordeel in totaal`;
                 }
             } else {
                 mobileAdvantageElement.style.display = 'none';
@@ -1852,20 +1851,6 @@ class UnifiedConfigurator {
                     product: 'Entertainment Box',
                     discountValue: entertainmentBoxData.discountValue,
                     discountPeriod: entertainmentBoxData.discountPeriod
-                });
-            }
-        }
-
-        // Add WiFi pods discount period
-        if (this.state.internet.enabled && this.state.internet.wifiPods > 0) {
-            const wifiPodsData = this.data.products.internet.wifiPods;
-            if (wifiPodsData.discountPeriod) {
-                const podsOriginalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
-                totalTemporaryDiscount += podsOriginalPrice * wifiPodsData.discountPeriod;
-                discountsInfo.push({
-                    product: 'WiFi-pods',
-                    discountValue: podsOriginalPrice,
-                    discountPeriod: wifiPodsData.discountPeriod
                 });
             }
         }
