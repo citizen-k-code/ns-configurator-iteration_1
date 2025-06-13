@@ -92,20 +92,17 @@
   },
     "closedStates": {
         "entertainment": {
-            "summary": "Kies uit Netflix, Disney+, Streamz, HBO Max en nog veel meer. Vanaf €##PRICE##/maand",
-            "showServiceIcons": true,
+            "summary": "…en nog veel meer.<br />Vanaf € ##PRICE##/maand",
             "highlight": {
                 "title": "Krijg 5% korting op streaming",
-                "content": "Combineer twee of meer services"
-            }
+                "content": "Combineer 2 of meer services."
+            },
+            "showServiceIcons": true
         },
         "entertainmentBox": {
-            "summary": "De nieuwste TV en streamingbox. Al je zenders en streamingdiensten op één plek. Vanaf €##PRICE##/maand",
-            "showImage": true,
-            "highlight": {
-                "title": "Nieuw!",
-                "content": "De nieuwste TV en streamingbox"
-            }
+            "summary": "Onze nieuwste TV en<br />streamingbox<br />€ ##PRICE##/maand",
+            "highlight": null,
+            "showImage": true
         }
     }
 }

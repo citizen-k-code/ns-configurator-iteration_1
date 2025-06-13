@@ -520,9 +520,7 @@ class UnifiedConfigurator {
 
             if (enabled) {
                 this.removeProductClosedState('entertainmentBox');
-                if (content) {
-                    content.style.display = 'block';
-                }
+                content.style.display = 'block';
                 this.updateEntertainmentBoxStandaloneInfo();
 
                 // Smooth scroll to ensure the product block is visible
@@ -531,9 +529,7 @@ class UnifiedConfigurator {
                     this.scrollToElementSmooth(productBlock);
                 }, 100);
             } else {
-                if (content) {
-                    content.style.display = 'none';
-                }
+                content.style.display = 'none';
                 this.renderProductClosedState('entertainmentBox');
             }
         } 
@@ -704,44 +700,41 @@ class UnifiedConfigurator {
 
         if (!container || !addBtn || !this.data) return;
 
-        container.innerHTML = this.state.mobile.simcards.map((simcard, index) => {
-            const simcardHtml = `
-                <div class="simcard">
-                    <div class="simcard-header">
-                        <div class="simcard-title">Simkaart ${index + 1}</div>
-                        ${this.state.mobile.simcards.length > 1 && index > 0 ? `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : ''}
-                    </div>
-                    <div class="tier-selector">
-                        ${this.data.products.mobile.tiers.map(tier => {
-                            const discountCalc = this.calculateMobileDiscount(tier, index);
-                            const displayPrice = discountCalc.hasDiscount ? discountCalc.finalPrice : tier.price;
-                            const isSelected = tier.id === simcard.selectedTier;
-
-                            let subtitleContent = '';
-                            if (!isSelected) {
-                                if (discountCalc.hasDiscount) {
-                                    subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
-                                } else {
-                                    subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
-                                }
-                            }
-
-                            return `
-                                <div class="tier-option ${isSelected ? 'active' : ''}" 
-                                     onclick="app.selectMobileTier(${simcard.id}, ${tier.id})">
-                                    <div class="tier-title">${tier.title}</div>
-                                    ${subtitleContent}
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                    <div class="tier-info">
-                        ${this.getMobileTierInfo(simcard.selectedTier, index)}
-                    </div>
+        container.innerHTML = this.state.mobile.simcards.map((simcard, index) => `
+            <div class="simcard">
+                <div class="simcard-header">
+                    <div class="simcard-title">Simkaart ${index + 1}</div>
+                    ${this.state.mobile.simcards.length > 1 && index > 0 ? `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : ''}
                 </div>
-            `;
-            return simcardHtml;
-        }).join('');
+                <div class="tier-selector">
+                    ${this.data.products.mobile.tiers.map(tier => {
+                        const discountCalc = this.calculateMobileDiscount(tier, index);
+                        const displayPrice = discountCalc.hasDiscount ? discountCalc.finalPrice : tier.price;
+                        const isSelected = tier.id === simcard.selectedTier;
+
+                        let subtitleContent = '';
+                        if (!isSelected) {
+                            if (discountCalc.hasDiscount) {
+                                subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
+                            } else {
+                                subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
+                            }
+                        }
+
+                        return `
+                            <div class="tier-option ${isSelected ? 'active' : ''}" 
+                                 onclick="app.selectMobileTier(${simcard.id}, ${tier.id})">
+                                <div class="tier-title">${tier.title}</div>
+                                ${subtitleContent}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                <div class="tier-info">
+                    ${this.getMobileTierInfo(simcard.selectedTier, index)}
+                </div>
+            </div>
+        `).join('');
 
         const simcardCount = this.state.mobile.simcards.length;
         const maxSimcards = this.data.products.mobile.maxSimcards;
@@ -2328,9 +2321,6 @@ class UnifiedConfigurator {
             if (this.data?.products?.entertainmentBox) {
                 const boxData = this.data.products.entertainmentBox;
                 price = boxData.discountValue ? boxData.price - boxData.discountValue : boxData.price;
-            } else {
-                // Fallback to default price if standalone box data not available
-                price = 5.00;
             }
         } else if (productType === 'entertainment' && this.entertainmentData) {
             // Find the cheapest entertainment service
