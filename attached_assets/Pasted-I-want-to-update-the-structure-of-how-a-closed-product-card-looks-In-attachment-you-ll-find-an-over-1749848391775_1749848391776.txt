@@ -1,0 +1,36 @@
+I want to update the structure of how a closed product card looks. In attachment you’ll find an overview of all closed product cards.
+
+- at the top there is still the product name with a switch on the right
+- 8px below there is a line with a grey colour (#CBD2E0)
+- 16px below the line there is a card summary, html text, colour #717D96. the card summary text is always mandatory and can contain a variable. If there is ##PRICE## within the content, that should be replaced with the price of the product or price of the 1st tier if there are tiers. The price should have all discounts applied if it would have been added
+- Below that there is an optional highlighted item with a green (#D1FFD9) background colour and a title and content. 
+- All content should be easily editable in the data.json file
+
+Overview card content:
+
+- Internet: 
+    - card summary: “Kies voor snelheden tot 8,5 Gbps<br />Vanaf € ##PRICE##/maand”
+    - highlighted item: no
+- Mobile:
+    - card summary: “Voeg tot 5 mobiele nummers toe<br />Vanaf € ##PRICE##/maand”
+    - highlighted item: yes
+    - hightlighted item title: “Extra voordeel met Internet + Mobiel”
+    - hightlighted item content:  “Minstens 50% korting op je mobiele abonnement in combinatie met internet.”
+- TV: 
+    - card summary: “Voeg een TV-pakket toe<br />€ ##PRICE##/maand”
+    - highlighted item: no
+- Entertainment:
+    - card summary: “…en nog veel meer.<br />Vanaf € ##PRICE##/maand”
+    - highlighted item: yes
+    - hightlighted item title: “Krijg 5% koering op streming.l”
+    - hightlighted item content:  “Combineer 2 of meer services.”
+- Entertainment Box: 
+    - card summary: “Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand”
+    - highlighted item: no
+- Phone:
+    - card summary: “Voeg gratis een vaste telefoonlijn toe”
+    - highlighted item: no
+
+For Entertainment: add a placeholder above the card summary content with small icons for all the services
+
+For Entertainment Box: add a placeholder image to the right (positioned absolutely) and align text to the right.
