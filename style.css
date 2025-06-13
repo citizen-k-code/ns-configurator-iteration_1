@@ -485,6 +485,37 @@
 
 .entertainment-box-container {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0;
+}
+
+.entertainment-box-image {
+    width: 80px;
+    height: 60px;
+    background-color: #2D3648;
+    border-radius: 8px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.entertainment-box-image::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.entertainment-box-content {
+    flex: 1;
+}
 }
 
 .entertainment-box-image {
