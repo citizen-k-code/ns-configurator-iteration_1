@@ -605,7 +605,7 @@ class UnifiedConfigurator {
                         const discountCalc = this.calculateMobileDiscount(tier, index);
                         const displayPrice = discountCalc.hasDiscount ? discountCalc.finalPrice : tier.price;
                         const isSelected = tier.id === simcard.selectedTier;
-                        
+
                         let subtitleContent = '';
                         if (!isSelected) {
                             if (discountCalc.hasDiscount) {
@@ -614,7 +614,7 @@ class UnifiedConfigurator {
                                 subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
                             }
                         }
-                        
+
                         return `
                             <div class="tier-option ${isSelected ? 'active' : ''}" 
                                  onclick="app.selectMobileTier(${simcard.id}, ${tier.id})">
@@ -735,7 +735,7 @@ class UnifiedConfigurator {
         const isPermanentApplicable = permanentDiscount.enabled && 
                                     isInternetEnabled && 
                                     permanentDiscount.conditions.applicableToTiers.includes(tier.id);
-        const hasTemporaryDiscount = tier.discountValue && tier.discountPeriod && simcardIndex >= 1;
+        const hasTemporaryDiscount = tier.discountValue && tier.discountPeriod;
 
         let finalPrice = tier.price;
         let permanentDiscountAmount = 0;
@@ -1634,7 +1634,7 @@ class UnifiedConfigurator {
         if (this.state.mobile.enabled) {
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                if (mobileTier.discountValue && mobileTier.discountPeriod && index >= 1) {
+                if (mobileTier.discountValue && mobileTier.discountPeriod) {
                     totalTemporaryDiscount += mobileTier.discountValue * mobileTier.discountPeriod;
                     discountsInfo.push({
                         product: `Simkaart ${simcard.id}`,
