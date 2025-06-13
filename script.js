@@ -878,8 +878,6 @@ class UnifiedConfigurator {
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
-            ```python
-<previous_generation>
             ${priceHtml}
         `;
     }
