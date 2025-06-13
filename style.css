@@ -170,16 +170,20 @@
 }
 
 .service-tier-option {
-    padding: 8px 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 20px;
-    background-color: #f8f9fa;
-    cursor: pointer;
-    font-size: 14px;
-    color: #717D96;
-    transition: all 0.2s ease;
-    text-align: center;
+    flex: 1;
     min-width: 80px;
+    flex-shrink: 0;
+    padding: 12px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .service-tier-option.active {
@@ -191,6 +195,21 @@
 .service-tier-option:hover:not(.active) {
     border-color: #2D3648;
     color: #2D3648;
+}
+
+.service-tier-option .tier-title {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.service-tier-option .tier-subtitle {
+    font-size: 11px;
+    color: #717D96;
+    margin-top: 2px;
+}
+
+.service-tier-option.active .tier-subtitle {
+    color: #CBD2E0;
 }
 
 .service-details {

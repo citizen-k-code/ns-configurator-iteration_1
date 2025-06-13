@@ -854,14 +854,22 @@ class UnifiedConfigurator {
     // Entertainment methods
     renderEntertainmentTiers(productType) {
         const tiersContainer = document.getElementById(`${productType}-tiers`);
+        if (!tiersContainer || !this.entertainmentData) return;
+        
         const tiers = this.entertainmentData.entertainment[productType].tiers;
 
-        tiersContainer.innerHTML = tiers.map(tier => `
-            <div class="tier-option ${tier.id === this.state[productType].selectedTier ? 'active' : ''}" 
-                 onclick="app.selectEntertainmentTier('${productType}', ${tier.id})">
-                <div class="tier-title">${tier.title}</div>
-            </div>
-        `).join('');
+        tiersContainer.innerHTML = tiers.map(tier => {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+            
+            return `
+                <div class="tier-option ${tier.id === this.state[productType].selectedTier ? 'active' : ''}" 
+                     onclick="app.selectEntertainmentTier('${productType}', ${tier.id})">
+                    <div class="tier-title">${tier.title}</div>
+                    <div class="tier-subtitle">${priceText}</div>
+                </div>
+            `;
+        }).join('');
     }
 
     selectEntertainmentTier(productType, tierId) {
@@ -873,8 +881,12 @@ class UnifiedConfigurator {
     }
 
     updateEntertainmentTierInfo(productType) {
+        if (!this.entertainmentData) return;
+        
         const tier = this.entertainmentData.entertainment[productType].tiers.find(t => t.id === this.state[productType].selectedTier);
         const infoContainer = document.getElementById(`${productType}-info`);
+        
+        if (!infoContainer || !tier) return;
 
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
@@ -903,8 +915,12 @@ class UnifiedConfigurator {
     }
 
     updateEntertainmentProductInfo(productType) {
+        if (!this.entertainmentData) return;
+        
         const productData = this.entertainmentData.entertainment[productType];
         const infoContainer = document.getElementById(`${productType}-info`);
+        
+        if (!infoContainer || !productData) return;
 
         const summaryItems = productData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
@@ -974,7 +990,10 @@ class UnifiedConfigurator {
 
     updateEntertainmentSubtitle(productType) {
         const subtitleElement = document.getElementById(`${productType}-subtitle`);
+        if (!subtitleElement || !this.entertainmentData) return;
+        
         const productData = this.entertainmentData.entertainment[productType];
+        if (!productData) return;
 
         if (productType === 'netflix' || productType === 'streamz') {
             const minPrice = Math.min(...productData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price)));
@@ -1794,12 +1813,18 @@ class UnifiedConfigurator {
 
         return `
             <div class="service-tier-selector">
-                ${serviceData.tiers.map(tier => `
-                    <div class="service-tier-option ${tier.id === this.state[serviceKey].selectedTier ? 'active' : ''}" 
-                         onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
-                        ${tier.title}
-                    </div>
-                `).join('')}
+                ${serviceData.tiers.map(tier => {
+                    const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                    const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                    
+                    return `
+                        <div class="service-tier-option ${tier.id === this.state[serviceKey].selectedTier ? 'active' : ''}" 
+                             onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
+                            <div class="tier-title">${tier.title}</div>
+                            <div class="tier-subtitle">${priceText}</div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
         `;
     }
