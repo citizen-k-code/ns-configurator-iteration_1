@@ -959,13 +959,8 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (hasDiscount) {
-            priceHtml = `
-                <div class="tier-price-container">
-                    <div class="original-price">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
-                    <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">5% combinatiekorting</div>
-                </div>
-            `;
+            // Permanent discount: show only pink price without strikethrough
+            priceHtml = `<div class="tier-price permanent-discount">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>`;
         } else {
             priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
@@ -993,13 +988,8 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (hasDiscount) {
-            priceHtml = `
-                <div class="tier-price-container">
-                    <div class="original-price">€ ${productData.price.toFixed(2).replace('.', ',')}</div>
-                    <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="discount-info">5% combinatiekorting</div>
-                </div>
-            `;
+            // Permanent discount: show only pink price without strikethrough
+            priceHtml = `<div class="tier-price permanent-discount">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>`;
         } else {
             priceHtml = `<div class="tier-price">€ ${productData.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
@@ -1940,11 +1930,10 @@ class UnifiedConfigurator {
         const hasDiscount = discountedPrice < originalPrice;
 
         if (hasDiscount) {
+            // Permanent discount: show only pink price without strikethrough
             return `
                 <div class="service-price-container">
-                    <div class="service-original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                    <div class="service-discount-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="service-discount-info">5% combinatiekorting</div>
+                    <div class="service-price permanent-discount">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
                 </div>
             `;
         } else {

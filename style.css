@@ -1032,7 +1032,11 @@ input:checked+.slider:before {
 }
 
 .tier-price.permanent-discount {
-    color: #F134F7 !important;
+    color: #F134F7;
+}
+
+.service-price.permanent-discount {
+    color: #F134F7;
 }
 
 /* Promotional price styling */
