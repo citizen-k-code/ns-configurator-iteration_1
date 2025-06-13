@@ -1715,7 +1715,7 @@ class UnifiedConfigurator {
             { key: 'hbo', name: 'HBO Max', icon: 'HBO', iconClass: 'hbo-icon' },
             { key: 'streamz', name: 'Streamz', icon: 'S', iconClass: 'streamz-icon' },
             { key: 'sport', name: 'Sport', icon: '⚽', iconClass: 'sport-icon' },
-            { key: 'cinema', name'cinema', icon: '🎬', iconClass: 'cinema-icon' }
+            { key: 'cinema', name: 'cinema', icon: '🎬', iconClass: 'cinema-icon' }
         ];
 
         container.innerHTML = services
