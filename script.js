@@ -875,6 +875,8 @@ class UnifiedConfigurator {
         infoContainer.innerHTML = `
             <ul class="tier-details">
                 ${summaryItems}
+```text
+
             </ul>
             ${priceHtml}
         `;
@@ -1709,7 +1711,7 @@ class UnifiedConfigurator {
         }
 // Entertainment permanent discounts (5% combo discount)
         const entertainmentTotal = this.calculateEntertainmentTotal();
-        if (entertainmentTotal.totalDiscount > 0) {
+        if (entertainmentTotal.totalDiscount > 0){
             // Add individual entertainment product discounts
             if (this.state.netflix.enabled) {
                 const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
@@ -2219,7 +2221,7 @@ class UnifiedConfigurator {
     // Add method to render closed states for all disabled products
     renderClosedStatesForDisabledProducts() {
         const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
-        
+
         allProducts.forEach(productType => {
             if (!this.state[productType].enabled) {
                 this.renderProductClosedState(productType);
@@ -2232,7 +2234,7 @@ class UnifiedConfigurator {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
         if (!productBlock) return;
-        
+
         const productHeader = productBlock.querySelector('.product-header');
         if (!productHeader) return;
 
