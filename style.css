@@ -509,6 +509,28 @@
     flex-shrink: 0;
 }
 
+.checkbox-content {
+    flex: 1;
+}
+
+.checkbox-title {
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.checkbox-subtitle {
+    font-size: 13px;
+    color: #717D96;
+}
+
+.entertainment-box-link {
+    text-decoration: underline;
+    color: #2D3648;
+    font-weight: 500;
+}
+}
+
 .tv-checkmark {
     width: 18px;
     height: 18px;

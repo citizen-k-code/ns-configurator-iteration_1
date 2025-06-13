@@ -151,7 +151,7 @@ class UnifiedConfigurator {
                 tvToggle.checked = true;
                 tvContent.style.display = 'block';
                 this.updateTvInfo();
-                this.renderEntertainmentBoxTiers();
+                this.setEntertainmentBoxCheckbox(this.state.tv.entertainmentBoxTier === 2);
 
                 // Enable Entertainment Box by default when TV is enabled via URL
                 this.state.entertainmentBox.enabled = true;
@@ -163,7 +163,10 @@ class UnifiedConfigurator {
                 }
                 if (entertainmentBoxContent) {
                     entertainmentBoxContent.style.display = 'block';
-                    this.updateEntertainmentBoxStandaloneInfo();
+                    // Use setTimeout to ensure DOM is ready
+                    setTimeout(() => {
+                        this.updateEntertainmentBoxStandaloneInfo();
+                    }, 100);
                 }
             }
         }
@@ -408,7 +411,7 @@ class UnifiedConfigurator {
                 } else if (productType === 'tv') {
                     this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
                     this.updateTvInfo();
-                    this.renderEntertainmentBoxTiers();
+                    this.setEntertainmentBoxCheckbox(this.state.tv.entertainmentBoxTier === 2);
 
                     // Enable Entertainment Box by default when TV is enabled
                     this.state.entertainmentBox.enabled = true;
@@ -720,26 +723,24 @@ class UnifiedConfigurator {
         `;
     }
 
-    renderEntertainmentBoxTiers() {
-        const tiersContainer = document.getElementById('entertainment-box-tiers');
-        if (!tiersContainer || !this.data) return;
+    toggleEntertainmentBoxOption() {
+        const checkbox = document.getElementById('entertainment-box-checkbox');
+        checkbox.checked = !checkbox.checked;
 
-        const tiers = this.data.products.tv.entertainmentBox.tiers;
-
-        tiersContainer.innerHTML = tiers.map(tier => `
-            <div class="tier-option ${tier.id === this.state.tv.entertainmentBoxTier ? 'active' : ''}" 
-                 onclick="app.selectEntertainmentBoxTier(${tier.id})">
-                <div class="tier-title">${tier.title}</div>
-            </div>
-        `).join('');
+        const isChecked = checkbox.checked;
+        this.state.tv.entertainmentBoxTier = isChecked ? 2 : 1; // 2 = with box, 1 = without box
 
         this.updateEntertainmentBoxInfo();
+        this.updateCostSummary();
     }
 
-    selectEntertainmentBoxTier(tierId) {
-        this.state.tv.entertainmentBoxTier = tierId;
-        this.renderEntertainmentBoxTiers();
-        this.updateCostSummary();
+    setEntertainmentBoxCheckbox(enabled) {
+        const checkbox = document.getElementById('entertainment-box-checkbox');
+        if (checkbox) {
+            checkbox.checked = enabled;
+            this.state.tv.entertainmentBoxTier = enabled ? 2 : 1;
+            this.updateEntertainmentBoxInfo();
+        }
     }
 
     updateEntertainmentBoxInfo() {
@@ -887,7 +888,8 @@ class UnifiedConfigurator {
 
         if (!infoContainer || !productData) return;
 
-        const summaryItems = productData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        const summaryItems = productData.summary.split(', ').map(item =>```python
+item => `<li>${item}</li>`).join('');
 
         const discountPrice = this.getEntertainmentDiscountedPrice(productData.price);
         const hasDiscount = discountPrice < productData.price;
