@@ -5,6 +5,7 @@
       "tooltip": "Welke snelheid heb ik nodig?",
       "closedState": {
         "summary": "Kies voor snelheden tot 8,5 Gbps<br>Vanaf € ##PRICE##/maand",
+        "showHighlight": false,
         "highlight": null
       },
       "tiers": [
@@ -65,6 +66,7 @@
       "tooltip": "Hoeveel mobiele data heb ik nodig?",
       "closedState": {
         "summary": "Voeg tot 5 mobiele nummers toe<br>Vanaf € ##PRICE##/maand",
+        "showHighlight": true,
         "highlight": {
           "title": "Extra voordeel met Internet + Mobiel",
           "description": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
@@ -119,6 +121,7 @@
       "tooltip": "Welke snelheid heb ik nodig?",
       "closedState": {
         "summary": "Voeg een TV-pakket toe<br>€ ##PRICE##/maand",
+        "showHighlight": false,
         "highlight": null
       },
       "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> terugkijk TV, Inclusief tot <strong>200 uur opnames</strong> in the cloud",
@@ -159,6 +162,7 @@
       "tooltip": "",
       "closedState": {
         "summary": "Voeg gratis een vaste telefonlijn toe",
+        "showHighlight": false,
         "highlight": null
       },
       "summary": "<strong>Gratis</strong> vaste lijn voor thuis, Huidig <strong>vast nummer behouden</strong> of een nieuw nummer aanvragen",
@@ -173,6 +177,7 @@
       "title": "Entertainment",
       "closedState": {
         "summary": "... en nog veel meer.<br>Vanaf € ##PRICE##/maand",
+        "showHighlight": true,
         "highlight": {
           "title": "Krijg 5% korting op streaming",
           "description": "Combineer twee of meer services"
@@ -191,6 +196,7 @@
       },
       "closedState": {
         "summary": "Onze nieuwste TV en streamingbox<br>€ ##PRICE##/maand",
+        "showHighlight": false,
         "highlight": null
       }
     }

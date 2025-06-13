@@ -2201,10 +2201,18 @@ class UnifiedConfigurator {
     removeProductClosedState(productType) {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
-        const closedStateDiv = productBlock.querySelector('.product-closed-state');
+        if (!productBlock) return;
 
-        if (closedStateDiv) {
-            closedStateDiv.remove();
+        // Remove any existing closed state content
+        const existingClosedContent = productBlock.querySelector('.product-closed-content');
+        if (existingClosedContent) {
+            existingClosedContent.remove();
+        }
+
+        // Also remove old closed state divs if they exist
+        const existingClosedState = productBlock.querySelector('.product-closed-state');
+        if (existingClosedState) {
+            existingClosedState.remove();
         }
     }
 
@@ -2228,7 +2236,7 @@ class UnifiedConfigurator {
         const productHeader = productBlock.querySelector('.product-header');
         if (!productHeader) return;
 
-        // Remove existing closed state
+        // Remove existing closed state first
         this.removeProductClosedState(productType);
 
         // Get product data
@@ -2237,6 +2245,8 @@ class UnifiedConfigurator {
             productData = this.data.products.fixedPhone;
         } else if (productType === 'entertainmentBox') {
             productData = this.data.products.entertainmentBox;
+        } else if (productType === 'entertainment') {
+            productData = this.data.products.entertainment;
         } else {
             productData = this.data.products[productType];
         }
@@ -2244,7 +2254,41 @@ class UnifiedConfigurator {
         if (!productData || !productData.closedState) return;
 
         // Calculate price for ##PRICE## replacement
+        let price = this.calculateClosedStatePrice(productType, productData);
+
+        // Replace ##PRICE## in summary
+        let summary = productData.closedState.summary;
+        if (summary && summary.includes('##PRICE##')) {
+            summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
+        }
+
+        // Build closed state HTML
+        let closedStateHtml = `
+            <div class="product-closed-content">
+                <div class="product-closed-divider"></div>
+                <div class="product-closed-summary">${summary}</div>
+        `;
+
+        // Add highlight block if configured
+        if (productData.closedState.showHighlight && productData.closedState.highlight) {
+            closedStateHtml += `
+                <div class="product-closed-highlight">
+                    <div class="closed-highlight-title">${productData.closedState.highlight.title}</div>
+                    <div class="closed-highlight-description">${productData.closedState.highlight.description}</div>
+                </div>
+            `;
+        }
+
+        closedStateHtml += `</div>`;
+
+        // Insert after header
+        productHeader.insertAdjacentHTML('afterend', closedStateHtml);
+    }
+
+    // Helper method to calculate price for closed state
+    calculateClosedStatePrice(productType, productData) {
         let price = 0;
+
         if (productType === 'internet' && this.data.products.internet.tiers) {
             const firstTier = this.data.products.internet.tiers[0];
             price = firstTier.discountValue ? firstTier.price - firstTier.discountValue : firstTier.price;
@@ -2279,31 +2323,7 @@ class UnifiedConfigurator {
             price = productData.discountValue ? productData.price - productData.discountValue : productData.price;
         }
 
-        // Replace ##PRICE## in summary
-        let summary = productData.closedState.summary;
-        if (summary && summary.includes('##PRICE##')) {
-            summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
-        }
-
-        let closedStateHtml = `
-            <div class="product-closed-content">
-                <div class="product-closed-divider"></div>
-                <div class="product-closed-summary">${summary}</div>
-        `;
-
-        if (productData.closedState.highlight) {
-            closedStateHtml += `
-                <div class="product-closed-highlight">
-                    <div class="closed-highlight-title">${productData.closedState.highlight.title}</div>
-                    <div class="closed-highlight-description">${productData.closedState.highlight.description}</div>
-                </div>
-            `;
-        }
-
-        closedStateHtml += `</div>`;
-
-        // Insert after header
-        productHeader.insertAdjacentHTML('afterend', closedStateHtml);
+        return price;
     }
 }
 
