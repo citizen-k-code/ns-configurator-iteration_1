@@ -1,0 +1,89 @@
+For the entertainment block we need to add specific functionality. In attachment you’ll find 4 designs:
+
+- ENT-Close: this is the situation when the Entertainment product is switched off. We show some icons of the services you can fin here, some copy below and a green (#D1FFD9) highlighted block with a title and copy informing on a discount
+- ENT-Full: this is the situation when the product is swtiched on and in this image already has 2 services selected
+- ENT - non active: this is an overview of the bottom section (see below) with all the services a user can select
+- ENT - active: this is an overview of the mid-section in a situation where 2 services have been selected, the 5% discount has been applied and a highlighted blue (#B0DCFF) box informs a user the discount has been applied
+
+
+
+In the open card (ENT-Full), we have 3 sections.
+
+Top:
+
+- below the Entertainment title we show a link that will open a bottom sheet overlay with some information. Make sure the content of this bottomsheet can be easily adapted.
+
+Bottom (see “ENT - non active.png” file)
+
+- we show an overview of all services that can be added
+- for each service we show an icon, a name and below the price (or starting price) of the service
+- it also has a “plus” icon which should help identify each card as clickable
+- at the top of this section we have a highlighted item indicating that there is a discount, with some small caption copy below
+- The caption should say the price of the service, if there are multiple tiers of the service the caption should say “Vanaf “ and then show the price of the lowest tier
+- Whenever a user taps on a service, the service will be added to the mid section and will disappear in the bottom section
+
+Mid (see “ENT - Active.png” file)
+
+- here we show the services that have been selected. You already have the information of these services in your system.
+- For each service we show
+    - title
+    - trash can
+    - tabs to switch between tiers (if applicable)
+    - A summary of this service or tier
+    - pricing info
+- Here is an overview of all services with their content and different tiers + pricing:
+    - Service 1 - 3 tiers:
+        - title: Netflix
+        - Tiers
+            - Tier 1:
+                - Tab title: “Basic”
+                - summary: “Max. 1 scherm, Kijk in HD-kwaliteit, Download op 1 apparaat”
+                - Price: € 9,99/maand
+            - Tier 2:
+                - Tab title: “Standaard”
+                - summary: “Max. 2 schermen,Kijk in Full HD-kwaliteit, Download op 2 apparaten”
+                - Price: € 14,99/maand
+            - Tier 3:
+                - Tab title: “Premium”
+                - summary: “Max. 4 schermen,Kijk in Ultra HD-kwaliteit, Download op 6 apparaten”
+                - Price: € 19,99/maand
+    - Service 2 - no tiers:
+        - title: Disney+
+        - summary: “Info line 1, Info line 2”
+        - Price: € 13,99/maand
+    - Service 3 - 2 tiers:
+        - title: HBO Max
+        - Tiers
+            - Tier 1:
+                - Tab title: “Basic”
+                - summary: “Max. 1 scherm, Kijk in HD-kwaliteit, Download op 1 apparaat”
+                - Price: € 5,99/maand
+            - Tier 2:
+                - Tab title: “Premium”
+                - summary: “Max. 3 schermen,Kijk in Ultra HD-kwaliteit, Download op 6 apparaten”
+                - Price: € 12,99/maand
+    - Service 4 - 3 tiers:
+        - title: Streamz
+        - Tiers
+            - Tier 1:
+                - Tab title: “Basic”
+                - summary: “Max. 1 scherm, Max. 2 kijkprofielen, Met reclame, Geen downloads”
+                - Price: € 8,99/maand
+            - Tier 2:
+                - Tab title: “Premium”
+                - summary: “Max. 4 schermen, Max. 5 kijkprofielen, Zonder reclame, Downloaden en offline kijken”
+                - Price: € 13,99/maand
+            - Tier 3:
+                - Tab title: “Premium+”
+                - summary: “Alles van Streamz Premium,Toegang tot recente blockbusters, Zonder reclame, Downloaden en offline kijken”
+                - Price: € 21,99/maand
+        - Service 5 - no tiers:
+            - title: Sport
+            - summary: “Volg alle populaire sporten live, zowel uit België als internationaal, Voetbal - NBA - Tennis”
+            - Price: € 15,99/maand
+        - Service 6 - no tiers:
+            - title: Cinema
+            - summary: “De laatste kaskrakers,3 extra filmkanalen met non-stop film”
+            - Price: € 26,99/maand
+- When a user tabs the trash icon the service is removed from the mid section and the corresponding card appears again in the bottom section.
+- From the moment a user has selected at least 2 streaming services, all the prices of the will get a 5% discount and we show a blue highlight banner right on top of the mid section saying the discounte price is active.
