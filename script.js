@@ -1709,11 +1709,9 @@ class UnifiedConfigurator {
                 }
             });
         }
-```javascript
-
-        // Entertainment permanent discounts (5% combo discount)
+// Entertainment permanent discounts (5% combo discount)
         const entertainmentTotal = this.calculateEntertainmentTotal();
-        if (entertainmentTotal.totalDiscount> 0) {
+        if (entertainmentTotal.totalDiscount > 0) {
             // Add individual entertainment product discounts
             if (this.state.netflix.enabled) {
                 const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
@@ -2216,7 +2214,10 @@ class UnifiedConfigurator {
     renderProductClosedState(productType) {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
+        if (!productBlock) return;
+        
         const productHeader = productBlock.querySelector('.product-header');
+        if (!productHeader) return;
 
         // Remove existing closed state
         this.removeProductClosedState(productType);
@@ -2275,7 +2276,7 @@ class UnifiedConfigurator {
             summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
         }
 
-         let closedStateHtml = `
+        let closedStateHtml = `
             <div class="product-closed-content">
                 <div class="product-closed-divider"></div>
                 <div class="product-closed-summary">${summary}</div>
@@ -2293,9 +2294,7 @@ class UnifiedConfigurator {
         closedStateHtml += `</div>`;
 
         // Insert after header
-        if(productHeader){
-            productHeader.insertAdjacentHTML('afterend', closedStateHtml);
-        }
+        productHeader.insertAdjacentHTML('afterend', closedStateHtml);
     }
 }
 
