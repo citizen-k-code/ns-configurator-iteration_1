@@ -878,6 +878,8 @@ class UnifiedConfigurator {
             <ul class="tier-details">
                 ${summaryItems}
             </ul>
+            ```python
+<previous_generation>
             ${priceHtml}
         `;
     }
@@ -1712,7 +1714,7 @@ class UnifiedConfigurator {
 
         // Entertainment permanent discounts (5% combo discount)
         const entertainmentTotal = this.calculateEntertainmentTotal();
-        if (entertainmentTotal.totalDiscount > 0) {
+        if (entertainmentTotal.totalDiscount> 0) {
             // Add individual entertainment product discounts
             if (this.state.netflix.enabled) {
                 const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
@@ -2216,10 +2218,10 @@ class UnifiedConfigurator {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
         const productHeader = productBlock.querySelector('.product-header');
-        
+
         // Remove existing closed state
         this.removeProductClosedState(productType);
-        
+
         // Get product data
         let productData;
         if (productType === 'fixedPhone') {
@@ -2229,9 +2231,9 @@ class UnifiedConfigurator {
         } else {
             productData = this.data.products[productType];
         }
-        
+
         if (!productData || !productData.closedState) return;
-        
+
         // Calculate price for ##PRICE## replacement
         let price = 0;
         if (productType === 'internet' && this.data.products.internet.tiers) {
@@ -2267,20 +2269,20 @@ class UnifiedConfigurator {
         } else if (productData.price !== undefined) {
             price = productData.discountValue ? productData.price - productData.discountValue : productData.price;
         }
-        
+
         // Replace ##PRICE## in summary
         let summary = productData.closedState.summary;
-        if (summary.includes('##PRICE##')) {
+        if (summary && summary.includes('##PRICE##')) {
             summary = summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
         }
-        
+
         // Create closed state HTML
         let closedStateHtml = `
             <div class="product-closed-content">
                 <div class="product-closed-divider"></div>
                 <div class="product-closed-summary">${summary}</div>
         `;
-        
+
         // Add highlight if it exists
         if (productData.closedState.highlight) {
             closedStateHtml += `
@@ -2290,11 +2292,13 @@ class UnifiedConfigurator {
                 </div>
             `;
         }
-        
+
         closedStateHtml += `</div>`;
-        
+
         // Insert after header
-        productHeader.insertAdjacentHTML('afterend', closedStateHtml);
+        if(productHeader){
+            productHeader.insertAdjacentHTML('afterend', closedStateHtml);
+        }
     }
 }
 
