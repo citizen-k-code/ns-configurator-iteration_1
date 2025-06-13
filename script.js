@@ -1712,7 +1712,7 @@ class UnifiedConfigurator {
             });
         }
 
-        // Entertainment permanent discounts (5% combo discount)
+        // Entertainment permanentdiscounts (5% combo discount)
         const entertainmentTotal = this.calculateEntertainmentTotal();
         if (entertainmentTotal.totalDiscount > 0) {
             // Add individual entertainment product discounts
@@ -2222,13 +2222,88 @@ class UnifiedConfigurator {
     renderProductClosedState(productType) {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
-        if (!productBlock) return;
+        if (!productBlock || !this.data) return;
 
-        // Remove existing closed state first
-        this.removeProductClosedState(productType);
+        // Remove any existing closed state content
+        const existingClosedContent = productBlock.querySelector('.product-closed-content');
+        if (existingClosedContent) {
+            existingClosedContent.remove();
+        }
 
-        // For closed state, we only keep the header with title and switch
-        // No additional content is added - the block shows only title and toggle
+        const closedCardData = this.data.closedCards[productType];
+        if (!closedCardData) return;
+
+        // Calculate price with discounts
+        let price = 0;
+        if (productType === 'internet') {
+            const firstTier = this.data.products.internet.tiers[0];
+            price = firstTier.discountValue ? firstTier.price - firstTier.discountValue : firstTier.price;
+        } else if (productType === 'mobile') {
+            const firstTier = this.data.products.mobile.tiers[0];
+            price = firstTier.price;
+        } else if (productType === 'tv') {
+            price = this.data.products.tv.price;
+        } else if (productType === 'entertainment') {
+            price = 5.99; // Lowest price from entertainment services
+        } else if (productType === 'entertainmentBox') {
+            price = this.data.products.entertainmentBox.price;
+        }
+
+        // Replace ##PRICE## placeholder with actual price
+        let cardSummary = closedCardData.cardSummary;
+        if (cardSummary.includes('##PRICE##')) {
+            cardSummary = cardSummary.replace('##PRICE##', price.toFixed(2));
+        }
+
+        // Create closed state content
+        const closedContent = document.createElement('div');
+        closedContent.className = 'product-closed-content';
+
+        let content = '';
+
+        // Add special content for entertainment (service icons)
+        if (productType === 'entertainment') {
+            content += `
+                <div class="entertainment-service-icons">
+                    <div class="service-icon netflix-icon">N</div>
+                    <div class="service-icon streamz-icon">S</div>
+                    <div class="service-icon disney-icon">D+</div>
+                    <div class="service-icon sport-icon">⚽</div>
+                    <div class="service-icon cinema-icon">🎬</div>
+                    <div class="service-icon hbo-icon">HBO</div>
+                </div>
+            `;
+        }
+
+        // Add container for entertainment box special layout
+        if (productType === 'entertainmentBox') {
+            content += '<div class="entertainment-box-container">';
+            content += `<div class="entertainment-box-image">📦</div>`;
+        }
+
+        // Add divider
+        content += '<div class="closed-card-divider"></div>';
+
+        // Add card summary
+        content += `<div class="closed-card-summary">${cardSummary}</div>`;
+
+        // Add highlighted item if exists
+        if (closedCardData.highlightedItem) {
+            content += `
+                <div class="closed-card-highlighted">
+                    <div class="closed-card-highlighted-title">${closedCardData.highlightedItem.title}</div>
+                    <div class="closed-card-highlighted-content">${closedCardData.highlightedItem.content}</div>
+                </div>
+            `;
+        }
+
+        // Close entertainment box container
+        if (productType === 'entertainmentBox') {
+            content += '</div>';
+        }
+
+        closedContent.innerHTML = content;
+        productBlock.appendChild(closedContent);
     }
 
     // Helper method to calculate price for closed state

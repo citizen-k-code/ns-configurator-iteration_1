@@ -249,5 +249,37 @@
       "title": "Wat is een WiFi-pod? Hoeveel heb ik nodig?",
       "content": "WiFi-pods zijn kleine apparaatjes die je WiFi-signaal versterken door je huis. Ze zorgen voor een stabiele internetverbinding in elke kamer. <br><br><strong>Hoeveel heb je nodig?</strong><br>• 1-2 pods: Voor een klein appartement<br>• 3-4 pods: Voor een gemiddeld huis<br>• 5+ pods: Voor een groot huis of meerdere verdiepingen"
     }
+  },
+  "closedCards": {
+    "internet": {
+      "cardSummary": "Kies voor snelheden tot 8,5 Gbps<br />Vanaf € ##PRICE##/maand",
+      "highlightedItem": null
+    },
+    "mobile": {
+      "cardSummary": "Voeg tot 5 mobiele nummers toe<br />Vanaf € ##PRICE##/maand",
+      "highlightedItem": {
+        "title": "Extra voordeel met Internet + Mobiel",
+        "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+      }
+    },
+    "tv": {
+      "cardSummary": "Voeg een TV-pakket toe<br />€ ##PRICE##/maand",
+      "highlightedItem": null
+    },
+    "entertainment": {
+      "cardSummary": "…en nog veel meer.<br />Vanaf € ##PRICE##/maand",
+      "highlightedItem": {
+        "title": "Krijg 5% korting op streaming",
+        "content": "Combineer 2 of meer services."
+      }
+    },
+    "entertainmentBox": {
+      "cardSummary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
+      "highlightedItem": null
+    },
+    "fixedPhone": {
+      "cardSummary": "Voeg gratis een vaste telefoonlijn toe",
+      "highlightedItem": null
+    }
   }
 }
