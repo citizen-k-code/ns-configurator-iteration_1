@@ -1,4 +1,3 @@
-
 class UnifiedConfigurator {
     constructor() {
         this.data = null;
@@ -425,6 +424,7 @@ class UnifiedConfigurator {
                     this.renderWifiPods();
                     if (this.state.mobile.enabled) {
                         this.renderMobileSimcards();
+                        this.updateMobileHighlightBlock();
                     }
                 } else if (productType === 'mobile') {
                     this.state.mobile.simcards = [{
@@ -469,9 +469,11 @@ class UnifiedConfigurator {
                 content.style.display = 'none';
                 if (productType === 'mobile') {
                     this.state.mobile.simcards = [];
+                    this.updateMobileHighlightBlock();
                 } else if (productType === 'internet') {
                     if (this.state.mobile.enabled) {
                         this.renderMobileSimcards();
+                        this.updateMobileHighlightBlock();
                     }
                 }
                 // Render closed state for telecom products
@@ -580,6 +582,7 @@ class UnifiedConfigurator {
         this.updateInternetInfo();
         if (this.state.mobile.enabled) {
             this.renderMobileSimcards();
+            this.updateMobileHighlightBlock();
         }
         this.updateCostSummary();
     }
@@ -872,7 +875,7 @@ class UnifiedConfigurator {
 
         const tvData = this.data.products.tv;
 
-        const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        const summaryItems = tvData.summary.split(', ').map(item =>`<li>${item}</li>`).join('');
 
         // No temporary discount for TV anymore
         const priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
@@ -2205,6 +2208,7 @@ class UnifiedConfigurator {
         existingHighlights.forEach(block => block.remove());
 
         // Highlight blocks are no longer added automatically
+        this.updateMobileHighlightBlock(); // Ensure Mobile highlight is updated/removed
     }
 
     scrollToEntertainmentBox() {
@@ -2363,6 +2367,47 @@ class UnifiedConfigurator {
             return 5.00; // fallback
         }
         return 0;
+    }
+
+    updateMobileHighlightBlock() {
+        const mobileBlock = document.getElementById('mobile-block');
+        if (!mobileBlock) return;
+
+        const existingHighlight = mobileBlock.querySelector('.highlight-block');
+        if (existingHighlight) {
+            existingHighlight.remove(); // Remove existing highlight
+        }
+
+        if (this.state.mobile.enabled) {
+            let highlightHtml = '';
+            let highlightClass = '';
+            let highlightTitle = '';
+            let highlightContent = '';
+
+            if (!this.state.internet.enabled) {
+                highlightClass = 'highlight-block light-grey';
+                highlightTitle = 'Extra voordeel met Internet + Mobiel';
+                highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
+            } else {
+                highlightClass = 'highlight-block blue';
+                highlightTitle = 'Korting Actief';
+                highlightContent = 'Je korting is actief doordat je internet en mobiel combineert.';
+            }
+
+            if (highlightClass !== '') {
+                highlightHtml = `
+                    <div class="${highlightClass}">
+                        <div class="highlight-title">${highlightTitle}</div>
+                        <div class="highlight-content">${highlightContent}</div>
+                    </div>
+                `;
+
+                const simcardsContainer = document.getElementById('simcards-container');
+                if (simcardsContainer) {
+                    simcardsContainer.insertAdjacentHTML('beforebegin', highlightHtml);
+                }
+            }
+        }
     }
 }
 

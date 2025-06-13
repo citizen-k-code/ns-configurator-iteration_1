@@ -1380,6 +1380,51 @@ input:checked+.slider:before {
     font-style: italic;
 }
 
+/* Mobile highlight block styles */
+.mobile-highlight-block {
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.mobile-highlight-grey {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+}
+
+.mobile-highlight-blue {
+    background-color: #B0DCFF;
+    border: 1px solid #7BB3E0;
+}
+
+.mobile-highlight-title {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.mobile-highlight-grey .mobile-highlight-title {
+    color: #2D3648;
+}
+
+.mobile-highlight-blue .mobile-highlight-title {
+    color: #1a4480;
+}
+
+.mobile-highlight-content {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.mobile-highlight-grey .mobile-highlight-content {
+    color: #717D96;
+}
+
+.mobile-highlight-blue .mobile-highlight-content {
+    color: #1a4480;
+}
+
 /* Simcard specific styles */
 .simcard {
     margin-bottom: 20px;
