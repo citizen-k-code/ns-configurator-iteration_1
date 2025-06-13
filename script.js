@@ -111,6 +111,7 @@ class UnifiedConfigurator {
                     internetContent.style.display = 'block';
                     this.renderInternetTiers();
                     this.updateInternetInfo();
+                    this.renderWifiPods();
                 }
             }
         }
