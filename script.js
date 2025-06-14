@@ -2326,6 +2326,9 @@ class UnifiedConfigurator {
                 return standaloneData.discountValue ? standaloneData.price - standaloneData.discountValue : standaloneData.price;
             }
             return 5.00; // fallback
+        } else if (productType === 'entertainment') {
+            // For entertainment closed state, show lowest streaming service price
+            return 5.99; // Lowest price from streaming services
         }
         return 0;
     }
