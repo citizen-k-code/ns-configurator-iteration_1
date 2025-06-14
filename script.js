@@ -1,4 +1,3 @@
-
 class UnifiedConfigurator {
     constructor() {
         this.data = null;
@@ -277,7 +276,7 @@ class UnifiedConfigurator {
     setupMobileSummaryObserver() {
         const mobileSummary = document.getElementById('mobile-bottom-summary');
         const mainSummary = document.querySelector('.cost-summary');
-        
+
         if (!mobileSummary || !mainSummary) return;
 
         const observer = new IntersectionObserver((entries) => {
@@ -875,6 +874,7 @@ class UnifiedConfigurator {
         this.state.mobile.simcards = this.state.mobile.simcards.filter(s => s.id !== simcardId);
         this.renderMobileSimcards();
         this.updateCostSummary();
+    ```text
     }
 
     calculateMobileDiscount(tier, simcardIndex) {
@@ -1556,7 +1556,7 @@ class UnifiedConfigurator {
 
     updateCostSummary() {
         const { total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount } = this.calculateTotal();
-        
+
         // Update main summary total
         const monthlyTotalElement = document.getElementById('monthly-total');
         if (monthlyTotalElement) {
@@ -1572,16 +1572,16 @@ class UnifiedConfigurator {
         // Add caption below price if there are temporary discounts
         const priceCaption = document.getElementById('price-caption');
         const mobilePriceCaption = document.getElementById('mobile-price-caption');
-        
+
         if (totalTemporaryDiscount > 0) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
             const captionText = `gedurende ${shortestDuration} maanden`;
-            
+
             if (priceCaption) {
                 priceCaption.textContent = captionText;
                 priceCaption.style.display = 'block';
             }
-            
+
             if (mobilePriceCaption) {
                 mobilePriceCaption.textContent = captionText;
                 mobilePriceCaption.style.display = 'block';
@@ -1594,11 +1594,11 @@ class UnifiedConfigurator {
         // Update advantage display
         const advantageBlock = document.getElementById('advantage-block');
         const mobileAdvantage = document.getElementById('mobile-advantage');
-        
+
         if (totalTemporaryDiscount > 0) {
             const temporaryData = this.calculateTotalTemporaryDiscount();
             const advantageText = `€${temporaryData.total.toFixed(2).replace('.', ',')} voordeel in totaal`;
-            
+
             if (advantageBlock) {
                 advantageBlock.style.display = 'block';
                 const advantageAmountElement = document.getElementById('advantage-amount');
@@ -1606,7 +1606,7 @@ class UnifiedConfigurator {
                     advantageAmountElement.textContent = advantageText;
                 }
             }
-            
+
             if (mobileAdvantage) {
                 mobileAdvantage.style.display = 'block';
                 const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
@@ -1628,12 +1628,12 @@ class UnifiedConfigurator {
         if (!overviewContent) return;
 
         let overviewHtml = '';
-        
+
         // Internet
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
             let priceHtml = `€${internetTier.price.toFixed(2).replace('.', ',')}`;
-            
+
             if (internetTier.discountValue) {
                 const discountedPrice = internetTier.price - internetTier.discountValue;
                 priceHtml = `
@@ -1642,7 +1642,7 @@ class UnifiedConfigurator {
                     <span class="discount-info">${internetTier.discountCopy.temporaryOnly}</span>
                 `;
             }
-            
+
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">Internet</div>
@@ -1677,13 +1677,13 @@ class UnifiedConfigurator {
                     <div class="overview-group-title">Mobiel</div>
                 </div>
             `;
-            
+
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 const discountCalc = this.calculateMobileDiscount(mobileTier, index);
-                
+
                 let priceHtml = `€${mobileTier.price.toFixed(2).replace('.', ',')}`;
-                
+
                 if (discountCalc.hasDiscount) {
                     if (discountCalc.permanentDiscountAmount > 0 && discountCalc.temporaryDiscountAmount > 0) {
                         const priceAfterPermanent = mobileTier.price - discountCalc.permanentDiscountAmount;
@@ -1694,7 +1694,7 @@ class UnifiedConfigurator {
                         priceHtml = `<span class="original-price">€${mobileTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${mobileTier.discountCopy.temporaryOnly}</span>`;
                     }
                 }
-                
+
                 overviewHtml += `
                     <div class="overview-item">
                         <span class="overview-item-name">Simkaart ${index + 1} - ${mobileTier.title}</span>
@@ -1708,7 +1708,7 @@ class UnifiedConfigurator {
         if (this.state.tv.enabled) {
             const tvData = this.data.products.tv;
             let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
-            
+
             if (tvData.discountValue) {
                 const discountedPrice = tvData.price - tvData.discountValue;
                 tvPriceHtml = `
@@ -1717,12 +1717,12 @@ class UnifiedConfigurator {
                     <span class="discount-info">${tvData.discountCopy.temporaryOnly}</span>
                 `;
             }
-            
+
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">TV</div>
                     <div class="overview-item">
-                        <span class="overview-item-name">TV</span>
+<span class="overview-item-name">TV</span>
                         <span class="overview-item-price">${tvPriceHtml}</span>
                     </div>
                 </div>
@@ -1732,7 +1732,7 @@ class UnifiedConfigurator {
             const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
             if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
                 let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
-                
+
                 if (entertainmentBoxTier.discountValue !== undefined) {
                     const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
                     boxPriceHtml = `
@@ -1741,7 +1741,7 @@ class UnifiedConfigurator {
                         <span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>
                     `;
                 }
-                
+
                 overviewHtml += `
                     <div class="overview-item">
                         <span class="overview-item-name">${entertainmentBoxTier.title}</span>
@@ -1755,7 +1755,7 @@ class UnifiedConfigurator {
         if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
-            
+
             if (entertainmentBoxData.discountValue) {
                 const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
                 boxPriceHtml = `
@@ -1764,7 +1764,7 @@ class UnifiedConfigurator {
                     <span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>
                 `;
             }
-            
+
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">Entertainment Box</div>
@@ -1798,17 +1798,17 @@ class UnifiedConfigurator {
                     <div class="overview-group-title">Entertainment</div>
                 </div>
             `;
-            
+
             selectedServices.forEach(serviceKey => {
                 const serviceData = this.entertainmentData.entertainment[serviceKey];
                 const serviceName = this.getServiceDisplayName(serviceKey);
-                
+
                 let priceHtml;
                 if (serviceData.tiers) {
                     const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                     const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
                     const hasDiscount = discountedPrice < tier.price;
-                    
+
                     if (hasDiscount) {
                         priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
                     } else {
@@ -1817,14 +1817,14 @@ class UnifiedConfigurator {
                 } else {
                     const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
                     const hasDiscount = discountedPrice < serviceData.price;
-                    
+
                     if (hasDiscount) {
                         priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
                     } else {
                         priceHtml = `€${serviceData.price.toFixed(2).replace('.', ',')}`;
                     }
                 }
-                
+
                 overviewHtml += `
                     <div class="overview-item">
                         <span class="overview-item-name">${serviceName}</span>
@@ -1840,9 +1840,9 @@ class UnifiedConfigurator {
     toggleProductOverview() {
         const overviewContent = document.getElementById('product-overview-content');
         const toggleArrow = document.getElementById('toggle-arrow');
-        
+
         if (!overviewContent || !toggleArrow) return;
-        
+
         if (overviewContent.style.display === 'none' || overviewContent.style.display === '') {
             overviewContent.style.display = 'block';
             toggleArrow.classList.add('rotated');
@@ -2200,7 +2200,7 @@ class UnifiedConfigurator {
         } else {
             blockId = `${productType}-block`;
         }
-        
+
         const productBlock = document.getElementById(blockId);
         if (!productBlock) return;
 
@@ -2237,9 +2237,9 @@ class UnifiedConfigurator {
             } else {
                 blockId = `${productType}-block`;
             }
-            
+
             const productBlock = document.getElementById(blockId);
-            
+
             if (productBlock && this.state[productType] && !this.state[productType].enabled) {
                 console.log(`Rendering closed state for ${productType}`);
                 this.renderProductClosedState(productType);
@@ -2261,11 +2261,11 @@ class UnifiedConfigurator {
         } else {
             blockId = `${productType}-block`;
         }
-        
+
         const productBlock = document.getElementById(blockId);
 
         console.log("product block =", productBlock);
-        
+
         if (!productBlock) return;
 
         // Remove existing closed state first
@@ -2371,7 +2371,7 @@ class UnifiedConfigurator {
             if (this.entertainmentData && this.entertainmentData.entertainment) {
                 const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
                 let lowestPrice = Infinity;
-                
+
                 services.forEach(service => {
                     const serviceData = this.entertainmentData.entertainment[service];
                     if (serviceData) {
@@ -2383,7 +2383,7 @@ class UnifiedConfigurator {
                         }
                     }
                 });
-                
+
                 return lowestPrice !== Infinity ? lowestPrice : 5.99;
             }
             return 5.99; // fallback
@@ -2395,10 +2395,9 @@ class UnifiedConfigurator {
         const mobileBlock = document.getElementById('mobile-block');
         if (!mobileBlock) return;
 
-        const existingHighlight = mobileBlock.querySelector('.highlight-block');
-        if (existingHighlight) {
-            existingHighlight.remove(); // Remove existing highlight
-        }
+        // Remove any existing highlight blocks (check for all possible classes)
+        const existingHighlights = mobileBlock.querySelectorAll('.highlight-block, .promo-highlight, .combo-discount-banner, .promo-highlight-open');
+        existingHighlights.forEach(highlight => highlight.remove());
 
         if (this.state.mobile.enabled) {
             let highlightHtml = '';
@@ -2407,7 +2406,7 @@ class UnifiedConfigurator {
             let highlightContent = '';
 
             if (!this.state.internet.enabled) {
-                highlightClass = 'promo-highlight-open';
+                highlightClass = 'promo-highlight';
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
                 highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
             } else {
@@ -2424,8 +2423,6 @@ class UnifiedConfigurator {
                     </div>
                 `;
 
-                console.log("highlightHtml = ", highlightHtml);
-
                 const simcardsContainer = document.getElementById('simcards-container');
                 if (simcardsContainer) {
                     simcardsContainer.insertAdjacentHTML('beforebegin', highlightHtml);
@@ -2433,21 +2430,21 @@ class UnifiedConfigurator {
             }
         }
     }
-    
+
     // Advantage bottomsheet methods
     openAdvantageBottomSheet() {
         const overlay = document.getElementById('advantage-sheet-overlay');
         const title = document.getElementById('advantage-sheet-title');
         const body = document.getElementById('advantage-sheet-body');
-        
+
         if (!overlay || !title || !body) return;
 
         // Get temporary discount data
         const temporaryData = this.calculateTotalTemporaryDiscount();
-        
+
         // Sort discounts by duration (shortest first)
         const sortedDiscounts = temporaryData.discounts.sort((a, b) => a.discountPeriod - b.discountPeriod);
-        
+
         // Create discount overview
         const discountList = sortedDiscounts.map(discount => 
             `<li>${discount.discountPeriod} maanden €${discount.discountValue.toFixed(2).replace('.', ',')} korting op ${discount.product}</li>`
@@ -2455,10 +2452,10 @@ class UnifiedConfigurator {
 
         // Calculate price evolution based on temporary discount expiration
         const { total: currentPrice } = this.calculateTotal();
-        
+
         // Get unique discount periods
         const uniquePeriods = [...new Set(temporaryData.discounts.map(d => d.discountPeriod))].sort((a, b) => a - b);
-        
+
         // Calculate price progression
         const priceProgression = [];
         priceProgression.push({
@@ -2472,7 +2469,7 @@ class UnifiedConfigurator {
             // Find all discounts that expire at this period
             const expiringDiscounts = temporaryData.discounts.filter(d => d.discountPeriod === period);
             const totalExpiringDiscount = expiringDiscounts.reduce((sum, d) => sum + d.discountValue, 0);
-            
+
             cumulativePrice += totalExpiringDiscount;
             priceProgression.push({
                 period: period,
@@ -2485,7 +2482,7 @@ class UnifiedConfigurator {
 
         // Create bundelvoordelen list - include both mobile and entertainment permanent discounts
         const bundleAdvantages = [];
-        
+
         // Mobile permanent discounts
         if (this.state.mobile.enabled && this.state.internet.enabled) {
             this.state.mobile.simcards.forEach((simcard, index) => {
@@ -2524,7 +2521,7 @@ class UnifiedConfigurator {
                 <ul>
                     ${priceProgressionList}
                 </ul>
-                
+
                 <div class="advantage-total">
                     Totaal voordeel: €${temporaryData.total.toFixed(2).replace('.', ',')}
                 </div>
@@ -2536,7 +2533,7 @@ class UnifiedConfigurator {
                 <ul>
                     ${bundleAdvantagesList}
                 </ul>
-                
+
                 <div class="advantage-extra">
                     Extra voordeel per jaar: €${permanentData.total.toFixed(2).replace('.', ',')}
                 </div>
