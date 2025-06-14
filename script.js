@@ -2407,7 +2407,7 @@ class UnifiedConfigurator {
             let highlightContent = '';
 
             if (!this.state.internet.enabled) {
-                highlightClass = 'promo-highlight';
+                highlightClass = 'promo-highlight-open';
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
                 highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
             } else {
@@ -2423,6 +2423,8 @@ class UnifiedConfigurator {
                         <div class="highlight-content">${highlightContent}</div>
                     </div>
                 `;
+
+                console.log("highlightHtml = ", highlightHtml);
 
                 const simcardsContainer = document.getElementById('simcards-container');
                 if (simcardsContainer) {
