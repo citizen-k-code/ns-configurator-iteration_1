@@ -1819,12 +1819,26 @@ html {
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 999;
     transform: translateY(0);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: block;
 }
 
 .mobile-bottom-summary.hidden {
     transform: translateY(100%);
+}
+
+/* Ensure the animation starts from the correct position on load */
+.mobile-bottom-summary:not(.hidden) {
+    animation: slideInFromBottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 .mobile-summary-content {

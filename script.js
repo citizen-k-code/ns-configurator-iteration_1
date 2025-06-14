@@ -275,7 +275,27 @@ class UnifiedConfigurator {
     }
 
     setupMobileSummaryObserver() {
-        // This method exists to maintain compatibility
+        const mobileSummary = document.getElementById('mobile-bottom-summary');
+        const mainSummary = document.querySelector('.cost-summary');
+        
+        if (!mobileSummary || !mainSummary) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Main summary is visible, hide mobile summary
+                    mobileSummary.classList.add('hidden');
+                } else {
+                    // Main summary is not visible, show mobile summary
+                    mobileSummary.classList.remove('hidden');
+                }
+            });
+        }, {
+            threshold: 0.1, // Trigger when 10% of the element is visible
+            rootMargin: '0px 0px -50px 0px' // Account for some margin
+        });
+
+        observer.observe(mainSummary);
     }
 
     setupProductHeaderListeners() {
