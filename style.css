@@ -2697,3 +2697,83 @@ html {
 .main-cta-btn:hover {
     background-color: #1a2332;
 }
+
+ /* cost summary */
+ .cost-summary-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 20px auto;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #555;
+}
+
+.item-cost {
+    color: #444;
+}
+
+.total-section {
+    padding-top: 10px;
+    border-top: 2px solid #bbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-label {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.monthly-total {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .price-caption {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+
+/* mobile bottom summary */
+.mobile-summary-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.mobile-summary-price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .mobile-price-caption {
+        font-size: 12px;
+        color: #666;
+        font-style: italic;
+        margin-top: 2px;
+    }

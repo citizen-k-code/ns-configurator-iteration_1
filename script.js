@@ -1542,6 +1542,28 @@ class UnifiedConfigurator {
             mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
         }
 
+        // Add caption below price if there are temporary discounts
+        const priceCaption = document.getElementById('price-caption');
+        const mobilePriceCaption = document.getElementById('mobile-price-caption');
+        
+        if (totalTemporaryDiscount > 0) {
+            const shortestDuration = this.getShortestTemporaryDiscountPeriod();
+            const captionText = `gedurende ${shortestDuration} maanden`;
+            
+            if (priceCaption) {
+                priceCaption.textContent = captionText;
+                priceCaption.style.display = 'block';
+            }
+            
+            if (mobilePriceCaption) {
+                mobilePriceCaption.textContent = captionText;
+                mobilePriceCaption.style.display = 'block';
+            }
+        } else {
+            if (priceCaption) priceCaption.style.display = 'none';
+            if (mobilePriceCaption) mobilePriceCaption.style.display = 'none';
+        }
+
         // Update advantage display
         const advantageBlock = document.getElementById('advantage-block');
         const mobileAdvantage = document.getElementById('mobile-advantage');
