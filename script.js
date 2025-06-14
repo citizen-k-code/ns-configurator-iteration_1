@@ -2395,10 +2395,9 @@ class UnifiedConfigurator {
         const mobileBlock = document.getElementById('mobile-block');
         if (!mobileBlock) return;
 
-        const existingHighlight = mobileBlock.querySelector('.highlight-block');
-        if (existingHighlight) {
-            existingHighlight.remove(); // Remove existing highlight
-        }
+        // Remove any existing highlight blocks (check for all possible classes)
+        const existingHighlights = mobileBlock.querySelectorAll('.highlight-block, .promo-highlight, .combo-discount-banner');
+        existingHighlights.forEach(highlight => highlight.remove());
 
         if (this.state.mobile.enabled) {
             let highlightHtml = '';
