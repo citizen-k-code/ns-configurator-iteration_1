@@ -2407,11 +2407,11 @@ class UnifiedConfigurator {
             let highlightContent = '';
 
             if (!this.state.internet.enabled) {
-                highlightClass = 'highlight-block light-grey';
+                highlightClass = 'product-closed-highlight';
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
                 highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
             } else {
-                highlightClass = 'highlight-block blue';
+                highlightClass = 'combo-discount-banner';
                 highlightTitle = 'Korting Actief';
                 highlightContent = 'Je korting is actief doordat je internet en mobiel combineert.';
             }
