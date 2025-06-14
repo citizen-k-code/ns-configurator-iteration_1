@@ -2192,7 +2192,15 @@ class UnifiedConfigurator {
 
     // Add method to remove product closed state
     removeProductClosedState(productType) {
-        const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+        let blockId;
+        if (productType === 'fixedPhone') {
+            blockId = 'fixed-phone-block';
+        } else if (productType === 'entertainmentBox') {
+            blockId = 'entertainment-box-block';
+        } else {
+            blockId = `${productType}-block`;
+        }
+        
         const productBlock = document.getElementById(blockId);
         if (!productBlock) return;
 
@@ -2221,7 +2229,15 @@ class UnifiedConfigurator {
 
         allProducts.forEach(productType => {
             // Only render closed state if the product exists in the DOM and is disabled
-            const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+            let blockId;
+            if (productType === 'fixedPhone') {
+                blockId = 'fixed-phone-block';
+            } else if (productType === 'entertainmentBox') {
+                blockId = 'entertainment-box-block';
+            } else {
+                blockId = `${productType}-block`;
+            }
+            
             const productBlock = document.getElementById(blockId);
             
             if (productBlock && this.state[productType] && !this.state[productType].enabled) {
@@ -2237,7 +2253,15 @@ class UnifiedConfigurator {
 
     // Add method to render product closed state
     renderProductClosedState(productType) {
-        const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+        let blockId;
+        if (productType === 'fixedPhone') {
+            blockId = 'fixed-phone-block';
+        } else if (productType === 'entertainmentBox') {
+            blockId = 'entertainment-box-block';
+        } else {
+            blockId = `${productType}-block`;
+        }
+        
         const productBlock = document.getElementById(blockId);
 
         console.log("product block =", productBlock);
