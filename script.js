@@ -2349,24 +2349,62 @@ class UnifiedConfigurator {
             `<li>${discount.discountPeriod} maanden €${discount.discountValue.toFixed(2).replace('.', ',')} korting op ${discount.product}</li>`
         ).join('');
 
-        // Calculate price evolution
+        // Calculate price evolution based on temporary discount expiration
         const { total: currentPrice } = this.calculateTotal();
-        const priceAfter3Months = currentPrice + 10; // Example calculation
-        const priceAfter6Months = currentPrice + 20; // Example calculation
+        
+        // Get unique discount periods
+        const uniquePeriods = [...new Set(temporaryData.discounts.map(d => d.discountPeriod))].sort((a, b) => a - b);
+        
+        // Calculate price progression
+        const priceProgression = [];
+        priceProgression.push({
+            period: 0,
+            price: currentPrice,
+            description: `€${currentPrice.toFixed(2).replace('.', ',')}/maand gedurende de eerste ${uniquePeriods[0] || 3} maanden`
+        });
 
-        // Create bundelvoordelen list
+        let cumulativePrice = currentPrice;
+        uniquePeriods.forEach(period => {
+            // Find all discounts that expire at this period
+            const expiringDiscounts = temporaryData.discounts.filter(d => d.discountPeriod === period);
+            const totalExpiringDiscount = expiringDiscounts.reduce((sum, d) => sum + d.discountValue, 0);
+            
+            cumulativePrice += totalExpiringDiscount;
+            priceProgression.push({
+                period: period,
+                price: cumulativePrice,
+                description: `€${cumulativePrice.toFixed(2).replace('.', ',')}/maand na ${period} maanden`
+            });
+        });
+
+        const priceProgressionList = priceProgression.map(p => `<li>${p.description}</li>`).join('');
+
+        // Create bundelvoordelen list - include both mobile and entertainment permanent discounts
         const bundleAdvantages = [];
+        
+        // Mobile permanent discounts
         if (this.state.mobile.enabled && this.state.internet.enabled) {
-            const mobileCount = this.state.mobile.simcards.length;
-            bundleAdvantages.push(`50% korting gedurende op je 1e mobiele abonnement (20 GB)`);
-            if (mobileCount > 1) {
-                bundleAdvantages.push(`50% korting op je 2e mobiele abonnement (Onbeperkt)`);
-            }
+            this.state.mobile.simcards.forEach((simcard, index) => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                const permanentDiscount = this.data.discounts.permanent;
+                if (permanentDiscount.enabled && permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
+                    bundleAdvantages.push(`50% korting gedurende op je ${index === 0 ? '1e' : index === 1 ? '2e' : `${index + 1}e`} mobiele abonnement (${mobileTier.title})`);
+                }
+            });
+        }
+
+        // Entertainment permanent discounts
+        const enabledEntertainmentServices = this.getEnabledEntertainmentProductsCount();
+        if (enabledEntertainmentServices >= 2) {
+            bundleAdvantages.push(`5% korting op je entertainment services door bundeling`);
         }
 
         const bundleAdvantagesList = bundleAdvantages.map(advantage => 
             `<li>${advantage}</li>`
         ).join('');
+
+        // Calculate total permanent discount per year
+        const permanentData = this.calculateTotalPermanentDiscount();
 
         title.textContent = 'Jouw voordeel';
         body.innerHTML = `
@@ -2380,9 +2418,7 @@ class UnifiedConfigurator {
             <div class="advantage-section">
                 <h4>Je betaalt</h4>
                 <ul>
-                    <li>€${currentPrice.toFixed(2).replace('.', ',')}/maand gedurende de eerste 3 maanden</li>
-                    <li>€${priceAfter3Months.toFixed(2).replace('.', ',')}/maand na 3 maanden</li>
-                    <li>€${priceAfter6Months.toFixed(2).replace('.', ',')}/maand na 6 maanden</li>
+                    ${priceProgressionList}
                 </ul>
                 
                 <div class="advantage-total">
@@ -2398,7 +2434,7 @@ class UnifiedConfigurator {
                 </ul>
                 
                 <div class="advantage-extra">
-                    Extra voordeel per jaar: €640,00
+                    Extra voordeel per jaar: €${permanentData.total.toFixed(2).replace('.', ',')}
                 </div>
             </div>
             ` : ''}
