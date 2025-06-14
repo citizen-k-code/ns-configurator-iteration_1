@@ -2394,11 +2394,10 @@ class UnifiedConfigurator {
         const mobileBlock = document.getElementById('mobile-block');
         if (!mobileBlock) return;
 
-        // Remove any existing highlight blocks (check for all possible classes)
-        const existingHighlights = mobileBlock.querySelectorAll('.highlight-block, .promo-highlight, .combo-discount-banner, .promo-highlight-open');
-        existingHighlights.forEach(highlight => highlight.remove());
-
         if (this.state.mobile.enabled) {
+            // Remove any existing highlight blocks (check for all possible classes)
+            const existingHighlights = mobileBlock.querySelectorAll('.highlight-block, .promo-highlight, .combo-discount-banner, .promo-highlight-open');
+            existingHighlights.forEach(highlight => highlight.remove());
             let highlightHtml = '';
             let highlightClass = '';
             let highlightTitle = '';
@@ -2428,6 +2427,7 @@ class UnifiedConfigurator {
                 }
             }
         }
+        // If mobile is disabled, don't remove highlights as they might be part of closed state
     }
 
     // Advantage bottomsheet methods
