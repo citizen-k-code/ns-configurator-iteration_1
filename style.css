@@ -419,21 +419,21 @@
     text-align: center;
 }
 
-.product-closed-highlight {
+.promo-highlight {
     background-color: #D1FFD9;
     border-radius: 8px;
     padding: 12px 16px;
     margin-top: 16px;
 }
 
-.product-closed-highlight-title {
+.highlight-title {
     font-weight: 600;
     color: #2D3648;
     font-size: 14px;
     margin-bottom: 4px;
 }
 
-.product-closed-highlight-content {
+.highlight-content {
     color: #717D96;
     font-size: 14px;
     line-height: 1.3;

@@ -2326,9 +2326,9 @@ class UnifiedConfigurator {
         // Add highlight if present
         if (closedStateData.highlight) {
             closedStateHtml += `
-                <div class="product-closed-highlight">
-                    <div class="product-closed-highlight-title">${closedStateData.highlight.title}</div>
-                    <div class="product-closed-highlight-content">${closedStateData.highlight.content}</div>
+                <div class="promo-highlight">
+                    <div class="highlight-title">${closedStateData.highlight.title}</div>
+                    <div class="highlight-content">${closedStateData.highlight.content}</div>
                 </div>
             `;
         }
@@ -2407,7 +2407,7 @@ class UnifiedConfigurator {
             let highlightContent = '';
 
             if (!this.state.internet.enabled) {
-                highlightClass = 'product-closed-highlight';
+                highlightClass = 'promo-highlight';
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
                 highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
             } else {
