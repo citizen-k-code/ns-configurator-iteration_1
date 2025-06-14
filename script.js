@@ -2239,6 +2239,9 @@ class UnifiedConfigurator {
     renderProductClosedState(productType) {
         const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
         const productBlock = document.getElementById(blockId);
+
+        console.log("product block =", productBlock);
+        
         if (!productBlock) return;
 
         // Remove existing closed state first
