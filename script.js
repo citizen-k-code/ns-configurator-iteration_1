@@ -874,7 +874,6 @@ class UnifiedConfigurator {
         this.state.mobile.simcards = this.state.mobile.simcards.filter(s => s.id !== simcardId);
         this.renderMobileSimcards();
         this.updateCostSummary();
-    ```text
     }
 
     calculateMobileDiscount(tier, simcardIndex) {
