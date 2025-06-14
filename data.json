@@ -244,14 +244,14 @@
             },
             "showServiceIcons": true
         },
+        "fixedPhone": {
+            "summary": "Voeg gratis een vaste telefoonlijn toe",
+            "highlight": null
+        },
         "entertainmentBox": {
             "summary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
             "highlight": null,
             "showImage": true
-        },
-        "fixedPhone": {
-            "summary": "Voeg gratis een vaste telefoonlijn toe",
-            "highlight": null
         }
     },
   "tooltips": {

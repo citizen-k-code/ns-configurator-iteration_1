@@ -2224,8 +2224,13 @@ class UnifiedConfigurator {
             const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
             const productBlock = document.getElementById(blockId);
             
-            if (productBlock && !this.state[productType].enabled) {
+            if (productBlock && this.state[productType] && !this.state[productType].enabled) {
+                console.log(`Rendering closed state for ${productType}`);
                 this.renderProductClosedState(productType);
+            } else if (productBlock && !this.state[productType]) {
+                console.log(`State missing for ${productType}`);
+            } else if (!productBlock) {
+                console.log(`Block element not found for ${productType}`);
             }
         });
     }
@@ -2243,13 +2248,17 @@ class UnifiedConfigurator {
         let closedStateData;
         if (productType === 'entertainment' && this.entertainmentData) {
             closedStateData = this.entertainmentData.closedStates?.[productType];
-        } else if (productType === 'entertainmentBox' && this.data) {
-            closedStateData = this.data.closedStates?.[productType];
+        } else if (productType === 'entertainmentBox') {
+            // Check both data sources for entertainment box
+            closedStateData = this.data?.closedStates?.[productType] || this.entertainmentData?.closedStates?.[productType];
         } else {
             closedStateData = this.data?.closedStates?.[productType];
         }
 
-        if (!closedStateData) return;
+        if (!closedStateData) {
+            console.log(`No closed state data found for ${productType}`);
+            return;
+        }
 
         // Calculate price for summary
         let price = this.calculateClosedStatePrice(productType, null);
