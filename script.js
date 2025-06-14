@@ -876,7 +876,9 @@ class UnifiedConfigurator {
         this.updateCostSummary();
     }
 
-    calculateMobileDiscount(tier, simcardIndex) {
+    calculateMobileDiscount(tier, simcardThis JavaScript file defines a class `UnifiedConfigurator` that manages the configuration of telecom and entertainment products.
+```
+cardIndex) {
         const permanentDiscount = this.data.discounts.permanent;
         const isInternetEnabled = this.state.internet.enabled;
         const isPermanentApplicable = permanentDiscount.enabled && 
@@ -2408,7 +2410,7 @@ class UnifiedConfigurator {
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
                 highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
             } else {
-                highlightClass = 'combo-discount-banner';
+                highlightClass = 'highlight-banner';
                 highlightTitle = 'Korting Actief';
                 highlightContent = 'Je korting is actief doordat je internet en mobiel combineert.';
             }
