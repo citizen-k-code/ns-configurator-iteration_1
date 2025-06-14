@@ -876,9 +876,7 @@ class UnifiedConfigurator {
         this.updateCostSummary();
     }
 
-    calculateMobileDiscount(tier, simcardThis JavaScript file defines a class `UnifiedConfigurator` that manages the configuration of telecom and entertainment products.
-```
-cardIndex) {
+    calculateMobileDiscount(tier, simcardIndex) {
         const permanentDiscount = this.data.discounts.permanent;
         const isInternetEnabled = this.state.internet.enabled;
         const isPermanentApplicable = permanentDiscount.enabled && 
