@@ -2220,7 +2220,11 @@ class UnifiedConfigurator {
         const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
 
         allProducts.forEach(productType => {
-            if (!this.state[productType].enabled) {
+            // Only render closed state if the product exists in the DOM and is disabled
+            const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+            const productBlock = document.getElementById(blockId);
+            
+            if (productBlock && !this.state[productType].enabled) {
                 this.renderProductClosedState(productType);
             }
         });
@@ -2328,7 +2332,25 @@ class UnifiedConfigurator {
             return 5.00; // fallback
         } else if (productType === 'entertainment') {
             // For entertainment closed state, show lowest streaming service price
-            return 5.99; // Lowest price from streaming services
+            if (this.entertainmentData && this.entertainmentData.entertainment) {
+                const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
+                let lowestPrice = Infinity;
+                
+                services.forEach(service => {
+                    const serviceData = this.entertainmentData.entertainment[service];
+                    if (serviceData) {
+                        if (serviceData.tiers) {
+                            const minTierPrice = Math.min(...serviceData.tiers.map(tier => tier.price));
+                            lowestPrice = Math.min(lowestPrice, minTierPrice);
+                        } else {
+                            lowestPrice = Math.min(lowestPrice, serviceData.price);
+                        }
+                    }
+                });
+                
+                return lowestPrice !== Infinity ? lowestPrice : 5.99;
+            }
+            return 5.99; // fallback
         }
         return 0;
     }
