@@ -2408,7 +2408,7 @@ class UnifiedConfigurator {
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
                 highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
             } else {
-                highlightClass = 'highlight-banner';
+                highlightClass = 'combo-discount-banner';
                 highlightTitle = 'Korting Actief';
                 highlightContent = 'Je korting is actief doordat je internet en mobiel combineert.';
             }
