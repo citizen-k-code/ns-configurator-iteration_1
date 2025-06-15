@@ -2187,6 +2187,10 @@ class UnifiedConfigurator {
             setTimeout(() => {
                 entertainmentBoxBlock.style.backgroundColor = '';
             }, 1000);
+        } else {
+            // If the entertainment box block doesn't exist on this page, 
+            // redirect to configurator page with entertainment box enabled
+            window.location.href = 'configurator.html?tv=1&box=1';
         }
     }
 
