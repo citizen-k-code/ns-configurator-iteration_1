@@ -426,8 +426,9 @@ class UnifiedConfigurator {
         if (this.currentSection === 'telecom') {
             this.showEntertainmentSection();
         } else {
-            // Handle final order
+            // Handle final order - redirect to success page
             console.log('Order placed!', this.state);
+            window.location.href = 'success.html';
         }
     }
 
