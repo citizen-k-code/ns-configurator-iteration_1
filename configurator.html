@@ -69,10 +69,12 @@
     <div class="app-container">
         <!-- Part 1: Product Configuration -->
         <div class="part1" id="part1">
-            <div class="page-header">
+
+            <header class="page-header">
                 <a href="index.html" class="back-btn">←</a>
                 <h1>Configureer je product</h1>
-            </div>
+                <div class="header-spacer"></div>
+            </header>
 
             <!-- Surfen & Bellen Section -->
             <div class="section-group">
@@ -90,7 +92,8 @@
                         </label>
                     </div>
                     <div class="product-content" id="internet-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('internet')">Welke snelheid heb ik nodig?</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('internet')">Welke snelheid heb ik
+                            nodig?</div>
                         <div class="tier-selector" id="internet-tiers"></div>
                         <div class="tier-info" id="internet-info"></div>
                         <div id="wifi-pods-section"></div>
@@ -109,7 +112,8 @@
                         </label>
                     </div>
                     <div class="product-content" id="mobile-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik nodig?</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik
+                            nodig?</div>
                         <div class="simcards-container" id="simcards-container"></div>
                         <button class="add-simcard-btn" id="add-simcard-btn">
                             ➕ Voeg 3e simkaart toe
@@ -134,7 +138,8 @@
                         </label>
                     </div>
                     <div class="product-content" id="tv-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?
+                        </div>
                         <div class="tier-info" id="tv-info"></div>
 
                         <!-- TV Viewing Method Section -->
@@ -148,7 +153,9 @@
                                     <div class="tv-checkbox-content">
                                         <div class="tv-checkbox-title">Met de Entertainment Box</div>
                                         <div class="tv-checkbox-description">
-                                            Bekijk TV via onze <a href="#" class="entertainment-box-link" onclick="event.stopPropagation(); app.scrollToEntertainmentBox();">Entertainment Box</a> en ontdek streamingdiensten.
+                                            Bekijk TV via onze <a href="#" class="entertainment-box-link"
+                                                onclick="event.stopPropagation(); app.scrollToEntertainmentBox();">Entertainment
+                                                Box</a> en ontdek streamingdiensten.
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +204,8 @@
                     <div class="product-content" id="entertainment-content" style="display: none;">
                         <!-- Top section: Info link -->
                         <div class="entertainment-info-section">
-                            <a href="#" class="entertainment-info-link" onclick="app.openEntertainmentBottomSheet(); return false;">
+                            <a href="#" class="entertainment-info-link"
+                                onclick="app.openEntertainmentBottomSheet(); return false;">
                                 Wat als ik al streamingdiensten heb?
                             </a>
                         </div>
@@ -226,7 +234,8 @@
                                         <div class="services-discount-subtitle">Combineer twee of meer services</div>
                                     </div>
                                 </div>
-                                <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan je makkelijk overzetten.</p>
+                                <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan
+                                    je makkelijk overzetten.</p>
                             </div>
 
                             <div class="available-services-grid" id="available-services-grid">
@@ -344,7 +353,8 @@
                     <span id="mobile-advantage-amount">€0 voordeel in totaal</span>
                 </div>
             </div>
-            <button class="mobile-order-btn" id="mobile-order-btn" onclick="app.handleMobileOrderButton()">Bestellen</button>
+            <button class="mobile-order-btn" id="mobile-order-btn"
+                onclick="app.handleMobileOrderButton()">Bestellen</button>
         </div>
     </div>
 
@@ -365,7 +375,8 @@
     </div>
 
     <!-- Entertainment Info Bottom Sheet -->
-    <div class="sheet-overlay" id="entertainment-sheet-overlay" style="display: none;" onclick="app.closeEntertainmentBottomSheet()">
+    <div class="sheet-overlay" id="entertainment-sheet-overlay" style="display: none;"
+        onclick="app.closeEntertainmentBottomSheet()">
         <div class="tooltip-sheet" id="entertainment-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
                 <button class="sheet-close-btn" onclick="app.closeEntertainmentBottomSheet()">×</button>
@@ -373,7 +384,8 @@
             <div class="sheet-content">
                 <h3 class="sheet-title">Wat als ik al streamingdiensten heb?</h3>
                 <div class="sheet-body">
-                    <p>Als je al een abonnement hebt op een van deze streamingdiensten, kan je dit makkelijk overzetten naar je nieuwe pack.</p>
+                    <p>Als je al een abonnement hebt op een van deze streamingdiensten, kan je dit makkelijk overzetten
+                        naar je nieuwe pack.</p>
                     <p>Je bestaande account en profielen blijven behouden, en je profiteert van de bundelkorting.</p>
                     <p>Contacteer onze klantenservice voor hulp bij het overzetten van je bestaande abonnementen.</p>
                 </div>
@@ -385,7 +397,8 @@
     </div>
 
     <!-- Advantage Bottom Sheet -->
-    <div class="sheet-overlay" id="advantage-sheet-overlay" style="display: none;" onclick="app.closeAdvantageBottomSheet()">
+    <div class="sheet-overlay" id="advantage-sheet-overlay" style="display: none;"
+        onclick="app.closeAdvantageBottomSheet()">
         <div class="tooltip-sheet" id="advantage-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
                 <button class="sheet-close-btn" onclick="app.closeAdvantageBottomSheet()">×</button>

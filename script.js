@@ -562,7 +562,7 @@ class UnifiedConfigurator {
                 if (content) content.style.display = 'none';
                 this.renderProductClosedState('entertainmentBox');
             }
-        } 
+        }
         // Individual entertainment services are handled within the entertainment interface
 
         this.updateProductHeaderStates();
@@ -757,7 +757,7 @@ class UnifiedConfigurator {
                 `;
             }).join('');
 
-            const deleteButton = this.state.mobile.simcards.length > 1 && index > 0 ? 
+            const deleteButton = this.state.mobile.simcards.length > 1 && index > 0 ?
                 `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
 
             return `
@@ -878,9 +878,9 @@ class UnifiedConfigurator {
     calculateMobileDiscount(tier, simcardIndex) {
         const permanentDiscount = this.data.discounts.permanent;
         const isInternetEnabled = this.state.internet.enabled;
-        const isPermanentApplicable = permanentDiscount.enabled && 
-                                    isInternetEnabled && 
-                                    permanentDiscount.conditions.applicableToTiers.includes(tier.id);
+        const isPermanentApplicable = permanentDiscount.enabled &&
+            isInternetEnabled &&
+            permanentDiscount.conditions.applicableToTiers.includes(tier.id);
         const hasTemporaryDiscount = tier.discountValue && tier.discountPeriod;
 
         let finalPrice = tier.price;
@@ -913,7 +913,7 @@ class UnifiedConfigurator {
 
         const tvData = this.data.products.tv;
 
-        const summaryItems = tvData.summary.split(', ').map(item =>`<li>${item}</li>`).join('');
+        const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         // No temporary discount for TV anymore
         const priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
@@ -1293,11 +1293,11 @@ class UnifiedConfigurator {
 
         const totalDiscount = totalPermanentDiscount + totalTemporaryDiscount;
 
-        return { 
-            total, 
-            totalDiscount, 
-            totalPermanentDiscount, 
-            totalTemporaryDiscount 
+        return {
+            total,
+            totalDiscount,
+            totalPermanentDiscount,
+            totalTemporaryDiscount
         };
     }
 
@@ -2051,29 +2051,29 @@ class UnifiedConfigurator {
         return `
             <div class="service-tier-selector">
                 ${serviceData.tiers.map(tier => {
-                    const isSelected = tier.id === this.state[serviceKey].selectedTier;
-                    let subtitleContent = '';
+            const isSelected = tier.id === this.state[serviceKey].selectedTier;
+            let subtitleContent = '';
 
-                    if (!isSelected) {
-                        const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                        const hasDiscount = discountedPrice < tier.price;
-                        const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+            if (!isSelected) {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                const hasDiscount = discountedPrice < tier.price;
+                const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
 
-                        if (hasDiscount) {
-                            subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
-                        } else {
-                            subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
-                        }
-                    }
+                if (hasDiscount) {
+                    subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
+                } else {
+                    subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
+                }
+            }
 
-                    return `
+            return `
                         <div class="service-tier-option ${isSelected ? 'active' : ''}" 
                              onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
                             <div class="tier-title">${tier.title}</div>
                             ${subtitleContent}
                         </div>
                     `;
-                }).join('')}
+        }).join('')}
             </div>
         `;
     }
@@ -2299,12 +2299,7 @@ class UnifiedConfigurator {
         if (productType === 'entertainment' && closedStateData.showServiceIcons) {
             closedStateHtml += `
                 <div class="entertainment-service-icons">
-                    <div class="entertainment-service-icon netflix">N</div>
-                    <div class="entertainment-service-icon disney">D+</div>
-                    <div class="entertainment-service-icon streamz">S</div>
-                    <div class="entertainment-service-icon hbo">HBO</div>
-                    <div class="entertainment-service-icon sport">⚽</div>
-                    <div class="entertainment-service-icon cinema">🎬</div>
+                    <img src="final_assets/streaming_icon_row.png" alt="streaming diensten" />
                 </div>
             `;
         }
@@ -2444,7 +2439,7 @@ class UnifiedConfigurator {
         const sortedDiscounts = temporaryData.discounts.sort((a, b) => a.discountPeriod - b.discountPeriod);
 
         // Create discount overview
-        const discountList = sortedDiscounts.map(discount => 
+        const discountList = sortedDiscounts.map(discount =>
             `<li>${discount.discountPeriod} maanden €${discount.discountValue.toFixed(2).replace('.', ',')} korting op ${discount.product}</li>`
         ).join('');
 
@@ -2498,7 +2493,7 @@ class UnifiedConfigurator {
             bundleAdvantages.push(`5% korting op je entertainment services door bundeling`);
         }
 
-        const bundleAdvantagesList = bundleAdvantages.map(advantage => 
+        const bundleAdvantagesList = bundleAdvantages.map(advantage =>
             `<li>${advantage}</li>`
         ).join('');
 
