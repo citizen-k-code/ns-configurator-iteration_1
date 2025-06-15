@@ -1,4 +1,3 @@
-
 class EntertainmentConfigurator {
     constructor() {
         this.data = null;
@@ -40,7 +39,7 @@ class EntertainmentConfigurator {
         try {
             const response = await fetch('./entertainment-data.json');
             this.data = await response.json();
-            
+
             const mainResponse = await fetch('./data.json');
             this.mainData = await mainResponse.json();
         } catch (error) {
@@ -67,7 +66,7 @@ class EntertainmentConfigurator {
 
     parseMainUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
-        
+
         // Internet
         const internetTier = urlParams.get('internet');
         if (internetTier) {
@@ -158,7 +157,7 @@ class EntertainmentConfigurator {
         products.forEach(product => {
             const header = document.querySelector(product.headerSelector);
             const toggle = document.querySelector(product.toggleSelector);
-            
+
             if (header && toggle) {
                 header.addEventListener('click', (e) => {
                     if (!this.state[product.id].enabled && !e.target.closest('.switch')) {
@@ -299,7 +298,7 @@ class EntertainmentConfigurator {
     getDiscountedPrice(originalPrice) {
         const enabledProducts = this.getEnabledProductsCount();
         const discount = this.data.discounts.entertainment_combo;
-        
+
         if (discount.enabled && enabledProducts >= discount.minProducts) {
             return originalPrice * (1 - discount.percentage / 100);
         }
@@ -312,7 +311,7 @@ class EntertainmentConfigurator {
 
     updateAllSubtitles() {
         const products = ['netflix', 'streamz', 'disney', 'sport', 'cinema'];
-        
+
         products.forEach(productId => {
             this.updateSubtitle(productId);
         });
@@ -603,7 +602,7 @@ class EntertainmentConfigurator {
 
         // Main configurator temporary discounts
         const mainTotal = this.calculateMainConfiguratorTotal();
-        
+
         // Internet temporary discount
         if (this.mainState.internet.enabled) {
             const internetTier = this.mainData.products.internet.tiers.find(t => t.id === this.mainState.internet.selectedTier);
