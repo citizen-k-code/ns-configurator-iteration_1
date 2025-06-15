@@ -2205,17 +2205,46 @@ html {
     font-size: 14px;
 }
 
+/* Packs Carousel Container */
+.packs-carousel-container {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.packs-carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 16px;
+}
+
+.packs-carousel::-webkit-scrollbar {
+    display: none;
+}
+
 .pack-card {
+    flex: 0 0 100%;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     background-color: white;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+.pack-image {
+    position: relative;
+    overflow: hidden;
 }
 
 .pack-image img {
     width: 100%;
     height: 120px;
     object-fit: cover;
+    border-radius: 12px 12px 0 0;
 }
 
 .pack-content {
@@ -2223,7 +2252,7 @@ html {
 }
 
 .pack-content h3 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: #2D3648;
     margin-bottom: 12px;
@@ -2232,6 +2261,7 @@ html {
 .pack-features {
     list-style: none;
     margin-bottom: 16px;
+    padding: 0;
 }
 
 .pack-features li {
@@ -2243,20 +2273,39 @@ html {
 }
 
 .pack-features li:before {
-    content: "•";
+    content: "»";
     position: absolute;
     left: 0;
     color: #2D3648;
+    font-weight: bold;
 }
 
-.pack-price {
+.pack-pricing {
     margin-bottom: 16px;
 }
 
-.price-amount {
-    font-size: 18px;
+.pack-badge {
+    display: inline-block;
+    background-color: #F134F7;
+    color: white;
+    font-size: 10px;
     font-weight: 600;
-    color: #2D3648;
+    padding: 4px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.pack-price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.price-amount {
+    font-size: 20px;
+    font-weight: 600;
+    color: #F134F7;
 }
 
 .price-period {
@@ -2267,18 +2316,109 @@ html {
 .pack-btn {
     display: block;
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background-color: #2D3648;
     color: white;
     text-decoration: none;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
+    transition: background-color 0.2s ease;
 }
 
 .pack-btn:hover {
     background-color: #1a2332;
+}
+
+/* Carousel Dots */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #CBD2E0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dot.active {
+    background-color: #2D3648;
+}
+
+/* Packs Benefits */
+.packs-benefits {
+    background-color: #e8f5e8;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.benefits-icon {
+    font-size: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.benefits-content h4 {
+    font-weight: 600;
+    color: #2d5f2d;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.benefits-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.benefits-list li {
+    font-size: 12px;
+    color: #2d5f2d;
+    margin-bottom: 4px;
+    position: relative;
+    padding-left: 12px;
+}
+
+.benefits-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #2d5f2d;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    .packs-carousel {
+        overflow-x: visible;
+        gap: 20px;
+    }
+
+    .pack-card {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .carousel-dots {
+        display: none;
+    }
+
+    .pack-content h3 {
+        font-size: 16px;
+    }
+
+    .price-amount {
+        font-size: 18px;
+    }
 }
 
 .benefits-section {

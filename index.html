@@ -117,22 +117,100 @@
                 <a href="packs.html" class="see-all-link">Alle packs</a>
             </div>
 
-            <div class="pack-card">
-                <div class="pack-image">
-                    <img src="attached_assets/00_homepage_1749733292384.png" alt="De starter pack" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
-                </div>
-                <div class="pack-content">
-                    <h3>De starter</h3>
-                    <ul class="pack-features">
-                        <li>Snel internet voor dagelijkse gebruik</li>
-                        <li>1 of 2 simkaarten met 10 GB data</li>
-                        <li>Toegang tot populaire streamingdiensten</li>
-                    </ul>
-                    <div class="pack-price">
-                        <span class="price-amount">€65,00</span>
-                        <span class="price-period">/maand</span>
+            <div class="packs-carousel-container">
+                <div class="packs-carousel" id="packs-carousel">
+                    <!-- De starter -->
+                    <div class="pack-card">
+                        <div class="pack-image">
+                            <img src="attached_assets/00_homepage_1749733292384.png" alt="De starter pack">
+                        </div>
+                        <div class="pack-content">
+                            <h3>De starter</h3>
+                            <ul class="pack-features">
+                                <li>Snel internet voor dagelijkse gebruik</li>
+                                <li>1 of 2 simkaarten met 10 GB data</li>
+                                <li>Toegang tot populaire streamingdiensten</li>
+                                <li>Maandelijk opzegbaar</li>
+                            </ul>
+                            <div class="pack-pricing">
+                                <span class="pack-badge">Introductiekorting</span>
+                                <div class="pack-price">
+                                    <span class="price-amount">€65,00</span>
+                                    <span class="price-period">/maand</span>
+                                </div>
+                            </div>
+                            <a href="configurator.html" class="pack-btn">Ga verder met het starter pack</a>
+                        </div>
                     </div>
-                    <a href="configurator.html" class="pack-btn">Ga verder met het starter pack</a>
+
+                    <!-- De gamer -->
+                    <div class="pack-card">
+                        <div class="pack-image">
+                            <img src="attached_assets/01_packs page_1749733292386.png" alt="De gamer pack">
+                        </div>
+                        <div class="pack-content">
+                            <h3>De gamer</h3>
+                            <ul class="pack-features">
+                                <li>High-speed Fiber internet</li>
+                                <li>Mobiele data voor on-the-go gaming</li>
+                                <li>Wifi-optimalisatie</li>
+                                <li>Extra gaming voordelen</li>
+                            </ul>
+                            <div class="pack-pricing">
+                                <span class="pack-badge">Introductiekorting</span>
+                                <div class="pack-price">
+                                    <span class="price-amount">€45,00</span>
+                                    <span class="price-period">/maand</span>
+                                </div>
+                            </div>
+                            <a href="configurator.html" class="pack-btn">Ga verder met het gamer pack</a>
+                        </div>
+                    </div>
+
+                    <!-- De familie -->
+                    <div class="pack-card">
+                        <div class="pack-image">
+                            <img src="attached_assets/00_homepage_1749733292384.png" alt="De familie pack">
+                        </div>
+                        <div class="pack-content">
+                            <h3>De familie</h3>
+                            <ul class="pack-features">
+                                <li>Voldoende internet voor iedereen</li>
+                                <li>2 tot 5 simkaarten</li>
+                                <li>TV via de tv-box</li>
+                                <li>Streaming entertainment</li>
+                            </ul>
+                            <div class="pack-pricing">
+                                <span class="pack-badge">Introductiekorting</span>
+                                <div class="pack-price">
+                                    <span class="price-amount">€85,00</span>
+                                    <span class="price-period">/maand</span>
+                                </div>
+                            </div>
+                            <a href="configurator.html" class="pack-btn">Ga verder met het familie pack</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel dots for mobile -->
+                <div class="carousel-dots" id="carousel-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                </div>
+            </div>
+
+            <!-- Always included benefits section -->
+            <div class="packs-benefits">
+                <div class="benefits-icon">💡</div>
+                <div class="benefits-content">
+                    <h4>Altijd inbegrepen in de packs</h4>
+                    <ul class="benefits-list">
+                        <li>Korting voor meerdere mobiele lijnen of extra diensten</li>
+                        <li>Flexibel: pas aan wat je wil, wanneer je wil</li>
+                        <li>Altijd de nieuwste technologie</li>
+                        <li>All-in-one factuur</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -270,6 +348,94 @@
             
             window.location.href = url;
         }
+
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('packs-carousel');
+            const dots = document.querySelectorAll('.dot');
+            let currentSlide = 0;
+
+            function updateDots() {
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+
+            function scrollToSlide(slideIndex) {
+                if (window.innerWidth < 768) { // Only on mobile
+                    const cardWidth = carousel.children[0].offsetWidth;
+                    const gap = 16; // Gap between cards
+                    carousel.scrollTo({
+                        left: (cardWidth + gap) * slideIndex,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // Handle dot clicks
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    scrollToSlide(currentSlide);
+                    updateDots();
+                });
+            });
+
+            // Handle scroll events to update active dot
+            carousel.addEventListener('scroll', () => {
+                if (window.innerWidth < 768) {
+                    const cardWidth = carousel.children[0].offsetWidth;
+                    const gap = 16;
+                    const scrollLeft = carousel.scrollLeft;
+                    const newSlide = Math.round(scrollLeft / (cardWidth + gap));
+                    
+                    if (newSlide !== currentSlide) {
+                        currentSlide = newSlide;
+                        updateDots();
+                    }
+                }
+            });
+
+            // Handle touch/swipe on mobile
+            let startX = 0;
+            let scrollStart = 0;
+
+            carousel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                scrollStart = carousel.scrollLeft;
+            });
+
+            carousel.addEventListener('touchmove', (e) => {
+                if (window.innerWidth < 768) {
+                    e.preventDefault();
+                    const currentX = e.touches[0].clientX;
+                    const diff = startX - currentX;
+                    carousel.scrollLeft = scrollStart + diff;
+                }
+            });
+
+            carousel.addEventListener('touchend', () => {
+                if (window.innerWidth < 768) {
+                    const cardWidth = carousel.children[0].offsetWidth;
+                    const gap = 16;
+                    const scrollLeft = carousel.scrollLeft;
+                    const newSlide = Math.round(scrollLeft / (cardWidth + gap));
+                    
+                    currentSlide = Math.max(0, Math.min(2, newSlide));
+                    scrollToSlide(currentSlide);
+                    updateDots();
+                }
+            });
+
+            // Update on window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 768) {
+                    carousel.scrollLeft = 0; // Reset scroll on desktop
+                } else {
+                    scrollToSlide(currentSlide);
+                }
+            });
+        });
     </script>
     <script src="script.js"></script>
     <script src="header.js"></script>
