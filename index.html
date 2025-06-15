@@ -79,7 +79,8 @@
                         <span class="search-icon">📡</span>
                         <div class="search-content">
                             <div class="search-title">Internet</div>
-                            <a href="product-internet.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
+                            <a href="product-internet.html" class="search-description"
+                                onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
                         <input type="checkbox" class="search-checkbox" id="internet-checkbox">
                     </div>
@@ -88,7 +89,8 @@
                         <span class="search-icon">📱</span>
                         <div class="search-content">
                             <div class="search-title">Mobiel</div>
-                            <a href="product-mobile.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
+                            <a href="product-mobile.html" class="search-description"
+                                onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
                         <input type="checkbox" class="search-checkbox" id="mobile-checkbox">
                     </div>
@@ -97,7 +99,8 @@
                         <span class="search-icon">📺</span>
                         <div class="search-content">
                             <div class="search-title">TV & Streamen</div>
-                            <a href="product-entertainment.html" class="search-description" onclick="event.stopPropagation()">Bekijk details</a>
+                            <a href="product-entertainment.html" class="search-description"
+                                onclick="event.stopPropagation()">Bekijk details</a>
                         </div>
                         <input type="checkbox" class="search-checkbox" id="entertainment-checkbox">
                     </div>
@@ -106,9 +109,7 @@
                 <button class="configurator-btn" onclick="navigateToConfigurator()">Bekijk ons aanbod</button>
             </div>
 
-            <div class="discount-banner">
-                <span class="discount-text">10% korting bovenstaarkontract</span>
-            </div>
+
         </header>
 
         <!-- Packs Section -->
@@ -228,7 +229,8 @@
                 <span class="benefit-icon">🔄</span>
                 <div class="benefit-content">
                     <h3>Het strafste netwerk</h3>
-                    <p>Met ons hybride 5G+ netwerk geef jij altijd vol gas. Radiant, snel en voelig. Verbinding zo tof! Uhu.</p>
+                    <p>Met ons hybride 5G+ netwerk geef jij altijd vol gas. Radiant, snel en voelig. Verbinding zo tof!
+                        Uhu.</p>
                 </div>
             </div>
 
@@ -244,7 +246,8 @@
                 <span class="benefit-icon">📞</span>
                 <div class="benefit-content">
                     <h3>Productdienesten en support</h3>
-                    <p>Je altijd je bunden Telstream zijn samen... Je bereikt ons ook voor bij je kunt aanbied gebruit.</p>
+                    <p>Je altijd je bunden Telstream zijn samen... Je bereikt ons ook voor bij je kunt aanbied gebruit.
+                    </p>
                 </div>
             </div>
         </section>
@@ -269,7 +272,7 @@
     <script>
         // Session state management
         const SESSION_KEY = 'homepage_checkbox_state';
-        
+
         // Load state from sessionStorage or set defaults
         function loadCheckboxState() {
             const savedState = sessionStorage.getItem(SESSION_KEY);
@@ -284,7 +287,7 @@
                 };
             }
         }
-        
+
         // Save state to sessionStorage
         function saveCheckboxState() {
             const state = {
@@ -294,34 +297,34 @@
             };
             sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
         }
-        
+
         // Handle search option clicks
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Load and apply saved state
             const savedState = loadCheckboxState();
             document.getElementById('internet-checkbox').checked = savedState.internet;
             document.getElementById('mobile-checkbox').checked = savedState.mobile;
             document.getElementById('entertainment-checkbox').checked = savedState.entertainment;
-            
+
             const searchOptions = document.querySelectorAll('.search-option');
-            
+
             searchOptions.forEach(option => {
-                option.addEventListener('click', function(e) {
+                option.addEventListener('click', function (e) {
                     // Don't toggle if clicking on the "Bekijk details" link or checkbox directly
                     if (e.target.classList.contains('search-description') || e.target.classList.contains('search-checkbox')) {
                         return;
                     }
-                    
+
                     const checkbox = this.querySelector('.search-checkbox');
                     checkbox.checked = !checkbox.checked;
                     saveCheckboxState();
                 });
             });
-            
+
             // Handle direct checkbox clicks
             const checkboxes = document.querySelectorAll('.search-checkbox');
             checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
+                checkbox.addEventListener('change', function () {
                     saveCheckboxState();
                 });
             });
@@ -331,26 +334,26 @@
             const internetChecked = document.getElementById('internet-checkbox').checked;
             const mobileChecked = document.getElementById('mobile-checkbox').checked;
             const entertainmentChecked = document.getElementById('entertainment-checkbox').checked;
-            
+
             let url = 'configurator.html';
             let params = [];
-            
+
             if (internetChecked) {
                 params.push('internet=1');
             }
-            
+
             if (mobileChecked) {
                 params.push('mobile=2');
             }
-            
+
             if (entertainmentChecked) {
                 params.push('tv=1');
             }
-            
+
             if (params.length > 0) {
                 url += '?' + params.join('&');
             }
-            
+
             window.location.href = url;
         }
 
@@ -392,7 +395,7 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initSwiper();
 
             window.addEventListener('resize', () => {
