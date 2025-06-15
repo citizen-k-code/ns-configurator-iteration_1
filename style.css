@@ -2209,30 +2209,27 @@ html {
 .packs-carousel-container {
     position: relative;
     margin-bottom: 24px;
+    padding: 0 20px;
 }
 
-.packs-carousel {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding-bottom: 16px;
+.packs-swiper {
+    width: 100%;
+    padding-bottom: 40px;
 }
 
-.packs-carousel::-webkit-scrollbar {
-    display: none;
+.packs-swiper .swiper-slide {
+    height: auto;
 }
 
 .pack-card {
-    flex: 0 0 100%;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     overflow: hidden;
     background-color: white;
-    scroll-snap-align: start;
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .pack-image {
@@ -2249,6 +2246,9 @@ html {
 
 .pack-content {
     padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .pack-content h3 {
@@ -2325,31 +2325,29 @@ html {
     font-size: 14px;
     font-weight: 600;
     transition: background-color 0.2s ease;
+    margin-top: auto;
 }
 
 .pack-btn:hover {
     background-color: #1a2332;
 }
 
-/* Carousel Dots */
-.carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 16px;
+/* Swiper Pagination */
+.swiper-pagination {
+    position: relative !important;
+    margin-top: 20px;
 }
 
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #CBD2E0;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+.swiper-pagination-bullet {
+    width: 8px !important;
+    height: 8px !important;
+    background-color: #CBD2E0 !important;
+    opacity: 1 !important;
+    margin: 0 4px !important;
 }
 
-.dot.active {
-    background-color: #2D3648;
+.swiper-pagination-bullet-active {
+    background-color: #2D3648 !important;
 }
 
 /* Packs Benefits */
@@ -2360,6 +2358,7 @@ html {
     display: flex;
     align-items: flex-start;
     gap: 12px;
+    margin: 0 20px;
 }
 
 .benefits-icon {
@@ -2397,19 +2396,27 @@ html {
 }
 
 /* Desktop styles */
-@media (min-width: 768px) {
-    .packs-carousel {
-        overflow-x: visible;
+@media (min-width: 641px) {
+    .packs-carousel-container {
+        padding: 0;
+    }
+
+    .packs-swiper {
+        padding-bottom: 0;
+    }
+
+    .packs-swiper .swiper-wrapper {
+        display: flex;
         gap: 20px;
     }
 
-    .pack-card {
+    .packs-swiper .swiper-slide {
         flex: 1;
         min-width: 0;
     }
 
-    .carousel-dots {
-        display: none;
+    .swiper-pagination {
+        display: none !important;
     }
 
     .pack-content h3 {
@@ -2418,6 +2425,10 @@ html {
 
     .price-amount {
         font-size: 18px;
+    }
+
+    .packs-benefits {
+        margin: 0;
     }
 }
 
