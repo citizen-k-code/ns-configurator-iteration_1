@@ -450,7 +450,7 @@ class UnifiedConfigurator {
                     this.state.internet.selectedTier = this.data.products.internet.defaultTier;
                     this.state.internet.wifiPods = 0;
                     this.updateInternetInfo();
-                    this.renderWifiPods();
+                    this.renderWifiPodsSection();
                     if (this.state.mobile.enabled) {
                         this.renderMobileSimcards();
                         this.updateMobileHighlightBlock();
@@ -651,16 +651,12 @@ class UnifiedConfigurator {
                 ${summaryItems}
             </ul>
             ${priceHtml}
-            <div class="wifi-pods-section">
-                <hr class="section-divider">
-                <div id="wifi-pods-container"></div>
-            </div>
         `;
     }
 
-    renderWifiPods() {
-        const container = document.getElementById('wifi-pods-container');
-        if (!container || !this.data) return;
+    renderWifiPodsSection() {
+        const wifiPodsSection = document.getElementById('wifi-pods-section');
+        if (!wifiPodsSection || !this.data) return;
 
         const wifiPodsData = this.data.products.internet.wifiPods;
         const currentPods = this.state.internet.wifiPods;
@@ -693,7 +689,8 @@ class UnifiedConfigurator {
             `;
         }
 
-        container.innerHTML = `
+        wifiPodsSection.innerHTML = `
+            <hr class="section-divider">
             <div class="wifi-pods-header">
                 <div class="wifi-pods-title">${wifiPodsData.title}</div>
                 <div class="tooltip-link" onclick="app.openTooltipSheet('wifi_pods')">${wifiPodsData.tooltip}</div>
@@ -707,11 +704,16 @@ class UnifiedConfigurator {
         `;
     }
 
+    renderWifiPods() {
+        // Keep this method for backward compatibility but redirect to the new section renderer
+        this.renderWifiPodsSection();
+    }
+
     increaseWifiPods() {
         const maxPods = this.data.products.internet.wifiPods.maxPods;
         if (this.state.internet.wifiPods < maxPods) {
             this.state.internet.wifiPods++;
-            this.renderWifiPods();
+            this.renderWifiPodsSection();
             this.updateCostSummary();
         }
     }
@@ -719,7 +721,7 @@ class UnifiedConfigurator {
     decreaseWifiPods() {
         if (this.state.internet.wifiPods > 0) {
             this.state.internet.wifiPods--;
-            this.renderWifiPods();
+            this.renderWifiPodsSection();
             this.updateCostSummary();
         }
     }
