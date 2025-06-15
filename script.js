@@ -2033,12 +2033,12 @@ class UnifiedConfigurator {
 
     getServiceIcon(serviceKey) {
         const icons = {
-            'netflix': '<img src="final_assets/icons/Netflix.svg" alt="Netflix" style="width: 100%; height: 100%; object-fit: contain;">',
-            'streamz': '<img src="final_assets/icons/Streamz.svg" alt="Streamz" style="width: 100%; height: 100%; object-fit: contain;">',
-            'disney': '<img src="final_assets/icons/Disney.svg" alt="Disney+" style="width: 100%; height: 100%; object-fit: contain;">',
-            'sport': '<img src="final_assets/icons/Sport.svg" alt="Sport" style="width: 100%; height: 100%; object-fit: contain;">',
-            'cinema': '<img src="final_assets/icons/Cinema.svg" alt="Cinema" style="width: 100%; height: 100%; object-fit: contain;">',
-            'hbo': '<img src="final_assets/icons/Hbo.svg" alt="HBO" style="width: 100%; height: 100%; object-fit: contain;">'
+            'netflix': '<img src="final_assets/icons/Netflix.svg" alt="Netflix" style="width: 48px; height: 48px; object-fit: contain;">',
+            'streamz': '<img src="final_assets/icons/Streamz.svg" alt="Streamz" style="width: 48px; height: 48px; object-fit: contain;">',
+            'disney': '<img src="final_assets/icons/Disney.svg" alt="Disney+" style="width: 48px; height: 48px; object-fit: contain;">',
+            'sport': '<img src="final_assets/icons/Sport.svg" alt="Sport" style="width: 48px; height: 48px; object-fit: contain;">',
+            'cinema': '<img src="final_assets/icons/Cinema.svg" alt="Cinema" style="width: 48px; height: 48px; object-fit: contain;">',
+            'hbo': '<img src="final_assets/icons/Hbo.svg" alt="HBO" style="width: 48px; height: 48px; object-fit: contain;">'
         };
         return icons[serviceKey] || '';
     }
