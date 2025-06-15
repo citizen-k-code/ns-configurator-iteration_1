@@ -2191,6 +2191,7 @@ html {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
+    padding: 0 20px;
 }
 
 .section-header h2 {
