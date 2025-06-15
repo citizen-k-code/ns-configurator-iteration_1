@@ -423,13 +423,9 @@ class UnifiedConfigurator {
     }
 
     handleOrderButton() {
-        if (this.currentSection === 'telecom') {
-            this.showEntertainmentSection();
-        } else {
-            // Handle final order - redirect to success page
-            console.log('Order placed!', this.state);
-            window.location.href = 'success.html';
-        }
+        // Always redirect to success page when order button is clicked
+        console.log('Order placed!', this.state);
+        window.location.href = 'success.html';
     }
 
     handleMobileOrderButton() {
