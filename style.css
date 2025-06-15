@@ -2182,8 +2182,7 @@ html {
 
 .packs-section {
     background-color: white;
-    padding: 20px;
-    margin: 0 -20px;
+    padding: 20px 0;
 }
 
 .section-header {
