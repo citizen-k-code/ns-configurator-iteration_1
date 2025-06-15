@@ -1926,12 +1926,12 @@ class UnifiedConfigurator {
         if (!container || !this.entertainmentData) return;
 
         const services = [
-            { key: 'netflix', name: 'Netflix', icon: 'N', iconClass: 'netflix-icon' },
-            { key: 'disney', name: 'Disney+', icon: 'D+', iconClass: 'disney-icon' },
-            { key: 'hbo', name: 'HBO Max', icon: 'HBO', iconClass: 'hbo-icon' },
-            { key: 'streamz', name: 'Streamz', icon: 'S', iconClass: 'streamz-icon' },
-            { key: 'sport', name: 'Sport', icon: '⚽', iconClass: 'sport-icon' },
-            { key: 'cinema', name: 'Cinema', icon: '🎬', iconClass: 'cinema-icon' }
+            { key: 'netflix', name: 'Netflix', iconClass: 'netflix-icon' },
+            { key: 'disney', name: 'Disney+', iconClass: 'disney-icon' },
+            { key: 'hbo', name: 'HBO Max', iconClass: 'hbo-icon' },
+            { key: 'streamz', name: 'Streamz', iconClass: 'streamz-icon' },
+            { key: 'sport', name: 'Sport', iconClass: 'sport-icon' },
+            { key: 'cinema', name: 'Cinema', iconClass: 'cinema-icon' }
         ];
 
         container.innerHTML = services
@@ -1948,9 +1948,11 @@ class UnifiedConfigurator {
                     priceText = `€ ${discountPrice.toFixed(2).replace('.', ',')}`;
                 }
 
+                const iconHtml = this.getServiceIcon(service.key);
+
                 return `
                     <div class="available-service" onclick="app.addEntertainmentService('${service.key}')">
-                        <div class="service-icon ${service.iconClass}">${service.icon}</div>
+                        <div class="service-icon ${service.iconClass}">${iconHtml}</div>
                         <div class="available-service-content">
                             <div class="available-service-name">${service.name}</div>
                             <div class="available-service-price">${priceText}</div>
