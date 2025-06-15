@@ -147,14 +147,14 @@
                             <h3 class="tv-viewing-title">Hoe wil je TV-kijken?</h3>
 
                             <div class="tv-checkbox-card">
-                                <div class="tv-checkbox-option" onclick="app.scrollToEntertainmentBox()">
+                                <div class="tv-checkbox-option">
                                     <input type="checkbox" id="tv-entertainment-box-checkbox" checked>
                                     <div class="tv-checkmark"></div>
                                     <div class="tv-checkbox-content">
                                         <div class="tv-checkbox-title">Met de Entertainment Box</div>
                                         <div class="tv-checkbox-description">
                                             Bekijk TV via onze <a href="#" class="entertainment-box-link"
-                                                onclick="event.stopPropagation(); app.scrollToEntertainmentBox();">Entertainment
+                                                onclick="app.scrollToEntertainmentBox();">Entertainment
                                                 Box</a> en ontdek streamingdiensten.
                                         </div>
                                     </div>
@@ -226,7 +226,6 @@
                         <div class="selected-entertainment-services" id="selected-entertainment-services">
                             <!-- Combo discount banner (shown when 2+ services selected) -->
                             <div class="combo-discount-banner" id="combo-discount-banner" style="display: none;">
-                                <div class="combo-discount-icon">⚙️</div>
                                 <div class="combo-discount-content">
                                     <div class="combo-discount-title">5% bundelvoordeel op streaming</div>
                                     <div class="combo-discount-subtitle">Korting op alle streamingdiensten</div>
@@ -240,7 +239,6 @@
                             <div class="available-services-header">
                                 <p>Duid aan welke services je wil toevoegen aan je pack.</p>
                                 <div class="services-discount-info">
-                                    <div class="services-discount-icon">⚙️</div>
                                     <div class="services-discount-content">
                                         <div class="services-discount-title">Krijg 5% korting op streaming</div>
                                         <div class="services-discount-subtitle">Combineer twee of meer services</div>
