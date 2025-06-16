@@ -1275,29 +1275,15 @@ class UnifiedConfigurator {
             total += phoneData.price;
         }
 
-        // Entertainment Box cost (independent calculation)
-        if (this.state.entertainmentBox.enabled) {
-            if (this.state.tv.enabled) {
-                // When TV is enabled, calculate Entertainment Box cost from TV data
-                const entertainmentBoxTier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-                if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                    if (entertainmentBoxTier.discountValue !== undefined) {
-                        total += entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
-                        totalTemporaryDiscount += entertainmentBoxTier.discountValue;
-                    } else {
-                        total += entertainmentBoxTier.price;
-                    }
-                }
-            } else {
-                // When standalone, use standalone Entertainment Box data
-                const entertainmentBoxData = this.data.products.entertainmentBox;
-                if (entertainmentBoxData) {
-                    if (entertainmentBoxData.discountValue) {
-                        total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                        totalTemporaryDiscount += entertainmentBoxData.discountValue;
-                    } else {
-                        total += entertainmentBoxData.price;
-                    }
+        // Entertainment Box cost (only when standalone - not part of TV)
+        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (entertainmentBoxData) {
+                if (entertainmentBoxData.discountValue) {
+                    total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                    totalTemporaryDiscount += entertainmentBoxData.discountValue;
+                } else {
+                    total += entertainmentBoxData.price;
                 }
             }
         }
@@ -1724,7 +1710,7 @@ class UnifiedConfigurator {
             overviewHtml += `</div>`;
         }
 
-        // TV
+        // TV (including Entertainment Box when TV is enabled)
         if (this.state.tv.enabled) {
             const tvData = this.data.products.tv;
             let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
@@ -1745,21 +1731,13 @@ class UnifiedConfigurator {
                         <span class="overview-item-name">TV</span>
                         <span class="overview-item-price">${tvPriceHtml}</span>
                     </div>
-                </div>
             `;
-        }
 
-        // Entertainment Box (independent section - regardless of how it was activated)
-        if (this.state.entertainmentBox.enabled) {
-            let boxPriceHtml = '';
-            let boxName = 'Entertainment Box';
-
-            if (this.state.tv.enabled) {
-                // When TV is enabled, use the Entertainment Box tier from TV data
-                const entertainmentBoxTier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+            // Add Entertainment Box as part of TV section when TV is enabled
+            if (this.state.entertainmentBox.enabled) {
+                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
                 if (entertainmentBoxTier) {
-                    boxName = entertainmentBoxTier.title;
-                    boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
+                    let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
 
                     if (entertainmentBoxTier.discountValue !== undefined) {
                         const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
@@ -1769,33 +1747,44 @@ class UnifiedConfigurator {
                             <span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>
                         `;
                     }
-                }
-            } else {
-                // When standalone, use standalone Entertainment Box data
-                const entertainmentBoxData = this.data.products.entertainmentBox;
-                if (entertainmentBoxData) {
-                    boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
 
-                    if (entertainmentBoxData.discountValue) {
-                        const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                        boxPriceHtml = `
-                            <span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>
-                        `;
-                    }
+                    overviewHtml += `
+                        <div class="overview-item">
+                            <span class="overview-item-name">${entertainmentBoxTier.title}</span>
+                            <span class="overview-item-price">${boxPriceHtml}</span>
+                        </div>
+                    `;
                 }
             }
 
-            overviewHtml += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Entertainment Box</div>
-                    <div class="overview-item">
-                        <span class="overview-item-name">${boxName}</span>
-                        <span class="overview-item-price">${boxPriceHtml}</span>
+            overviewHtml += `</div>`;
+        }
+
+        // Entertainment Box (independent section - only when not part of TV)
+        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (entertainmentBoxData) {
+                let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
+
+                if (entertainmentBoxData.discountValue) {
+                    const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                    boxPriceHtml = `
+                        <span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
+                        <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                        <span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>
+                    `;
+                }
+
+                overviewHtml += `
+                    <div class="overview-group">
+                        <div class="overview-group-title">Entertainment Box</div>
+                        <div class="overview-item">
+                            <span class="overview-item-name">Entertainment Box</span>
+                            <span class="overview-item-price">${boxPriceHtml}</span>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
         }
 
         // Fixed Phone
