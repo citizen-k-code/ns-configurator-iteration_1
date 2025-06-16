@@ -871,9 +871,9 @@ class UnifiedConfigurator {
 
     deleteSimcard(simcardId) {
         this.state.mobile.simcards = this.state.mobile.simcards.filter(s => s.id !== simcardId);
-        this.renderMobileSimcards();
+        this.renderMobile```
+Simcards();
         this.updateCostSummary();
-```
     }
 
     calculateMobileDiscount(tier, simcardIndex) {
@@ -1277,7 +1277,7 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box cost (only when standalone - not part of TV)
-        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData) {
                 if (entertainmentBoxData.discountValue) {
@@ -1427,7 +1427,7 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box temporary discount (independent calculation)
-        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             // Only calculate standalone Entertainment Box discount when TV is not enabled
             // When TV is enabled, Entertainment Box discount is already calculated in TV section
             const entertainmentBoxData = this.data.products.entertainmentBox;
@@ -1718,7 +1718,8 @@ class UnifiedConfigurator {
         // TV (including Entertainment Box when TV is enabled)
         if (this.state.tv && this.state.tv.enabled) {
             const tvData = this.data.products.tv;
-            if (!tvData) return;
+            if (!```javascript
+tvData) return;
 
             let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.',',')}</span>`;
 
@@ -1771,7 +1772,7 @@ class UnifiedConfigurator {
         if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
-                let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>`;
+                let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
 
                 if (entertainmentBoxData.discountValue) {
                     const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
