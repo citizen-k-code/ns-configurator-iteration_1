@@ -873,6 +873,7 @@ class UnifiedConfigurator {
         this.state.mobile.simcards = this.state.mobile.simcards.filter(s => s.id !== simcardId);
         this.renderMobileSimcards();
         this.updateCostSummary();
+```
     }
 
     calculateMobileDiscount(tier, simcardIndex) {
@@ -1276,7 +1277,7 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box cost (only when standalone - not part of TV)
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData) {
                 if (entertainmentBoxData.discountValue) {
@@ -1426,7 +1427,7 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box temporary discount (independent calculation)
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
             // Only calculate standalone Entertainment Box discount when TV is not enabled
             // When TV is enabled, Entertainment Box discount is already calculated in TV section
             const entertainmentBoxData = this.data.products.entertainmentBox;
@@ -1637,7 +1638,7 @@ class UnifiedConfigurator {
         if (this.state.internet && this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
             if (!internetTier) return;
-            
+
             let priceHtml = `€${internetTier.price.toFixed(2).replace('.', ',')}`;
 
             if (internetTier.discountValue) {
@@ -1687,7 +1688,7 @@ class UnifiedConfigurator {
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 if (!mobileTier) return;
-                
+
                 const discountCalc = this.calculateMobileDiscount(mobileTier, index);
 
                 let priceHtml = `€${mobileTier.price.toFixed(2).replace('.', ',')}`;
@@ -1718,8 +1719,8 @@ class UnifiedConfigurator {
         if (this.state.tv && this.state.tv.enabled) {
             const tvData = this.data.products.tv;
             if (!tvData) return;
-            
-            let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
+
+            let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.',',')}</span>`;
 
             if (tvData.discountValue) {
                 const discountedPrice = tvData.price - tvData.discountValue;
@@ -1743,7 +1744,7 @@ class UnifiedConfigurator {
             if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
                 const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
                 if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                    let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
+                    let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>`;
 
                     if (entertainmentBoxTier.discountValue !== undefined) {
                         const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
@@ -1770,7 +1771,7 @@ class UnifiedConfigurator {
         if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
-                let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
+                let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>`;
 
                 if (entertainmentBoxData.discountValue) {
                     const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
@@ -1821,14 +1822,14 @@ class UnifiedConfigurator {
                 selectedServices.forEach(serviceKey => {
                     const serviceData = this.entertainmentData.entertainment[serviceKey];
                     if (!serviceData) return;
-                    
+
                     const serviceName = this.getServiceDisplayName(serviceKey);
 
                     let priceHtml;
                     if (serviceData.tiers) {
                         const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                         if (!tier) return;
-                        
+
                         const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
                         const hasDiscount = discountedPrice < tier.price;
 
