@@ -1598,7 +1598,7 @@ class UnifiedConfigurator {
             const advantageText = `€${temporaryData.total.toFixed(2).replace('.', ',')} voordeel in totaal`;
 
             if (advantageBlock) {
-                advantageBlock.style.display = 'block';
+                advantageBlock.style.display = 'flex';
                 const advantageAmountElement = document.getElementById('advantage-amount');
                 if (advantageAmountElement) {
                     advantageAmountElement.textContent = advantageText;
@@ -1648,7 +1648,6 @@ class UnifiedConfigurator {
                         <span class="overview-item-name">${internetTier.title}</span>
                         <span class="overview-item-price">${priceHtml}</span>
                     </div>
-                </div>
             `;
 
             // WiFi Pods
@@ -1666,6 +1665,8 @@ class UnifiedConfigurator {
                     </div>
                 `;
             }
+
+            overviewHtml += `</div>`;
         }
 
         // Mobile
@@ -1673,7 +1674,6 @@ class UnifiedConfigurator {
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">Mobiel</div>
-                </div>
             `;
 
             this.state.mobile.simcards.forEach((simcard, index) => {
@@ -1700,6 +1700,8 @@ class UnifiedConfigurator {
                     </div>
                 `;
             });
+
+            overviewHtml += `</div>`;
         }
 
         // TV
@@ -1794,7 +1796,6 @@ class UnifiedConfigurator {
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">Entertainment</div>
-                </div>
             `;
 
             selectedServices.forEach(serviceKey => {
@@ -1830,6 +1831,8 @@ class UnifiedConfigurator {
                     </div>
                 `;
             });
+
+            overviewHtml += `</div>`;
         }
 
         overviewContent.innerHTML = overviewHtml;
@@ -2305,7 +2308,7 @@ class UnifiedConfigurator {
         if (productType === 'entertainment' && closedStateData.showServiceIcons) {
             closedStateHtml += `
                 <div class="entertainment-service-icons">
-                    <img src="final_assets/streaming_icon_row.png" alt="streaming diensten" />
+                    <img src="final_assets/streaming_icon_row.svg" alt="streaming diensten" />
                 </div>
             `;
         }
@@ -2406,7 +2409,7 @@ class UnifiedConfigurator {
             if (!this.state.internet.enabled) {
                 highlightClass = 'promo-highlight';
                 highlightTitle = 'Extra voordeel met Internet + Mobiel';
-                highlightContent = 'Minstens 50% korting op je mobiele abonnement in combinatie met internet.';
+                highlightContent = 'Minstens 50% korting op je mobiele abonnement als je het combineert met internet.';
             } else {
                 highlightClass = 'combo-discount-banner';
                 highlightTitle = 'Korting Actief';
@@ -2488,7 +2491,7 @@ class UnifiedConfigurator {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 const permanentDiscount = this.data.discounts.permanent;
                 if (permanentDiscount.enabled && permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
-                    bundleAdvantages.push(`50% korting gedurende op je ${index === 0 ? '1e' : index === 1 ? '2e' : `${index + 1}e`} mobiele abonnement (${mobileTier.title})`);
+                    bundleAdvantages.push(`<strong>50% korting</strong> op je ${index === 0 ? '1e' : index === 1 ? '2e' : `${index + 1}e`} mobiele abonnement (${mobileTier.title})`);
                 }
             });
         }
@@ -2496,7 +2499,7 @@ class UnifiedConfigurator {
         // Entertainment permanent discounts
         const enabledEntertainmentServices = this.getEnabledEntertainmentProductsCount();
         if (enabledEntertainmentServices >= 2) {
-            bundleAdvantages.push(`5% korting op je entertainment services door bundeling`);
+            bundleAdvantages.push(`<strong>5% korting</strong> op je entertainment services door bundeling`);
         }
 
         const bundleAdvantagesList = bundleAdvantages.map(advantage =>
@@ -2527,14 +2530,14 @@ class UnifiedConfigurator {
             </div>
 
             ${bundleAdvantages.length > 0 ? `
-            <div class="advantage-section">
-                <p>Daarnaast geniet je nog van een aantal <strong>bundelvoordelen</strong>:</p>
+            <div class="advantage-section combo-advantage">
+                <p>Daarnaast geniet je nog van een aantal <strong>combovoordelen:</strong>:</p>
                 <ul>
                     ${bundleAdvantagesList}
                 </ul>
 
                 <div class="advantage-extra">
-                    Extra voordeel per jaar: €${permanentData.total.toFixed(2).replace('.', ',')}
+                    Extra voordeel per jaar: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
                 </div>
             </div>
             ` : ''}

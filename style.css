@@ -131,9 +131,11 @@
     background-color: #B0DCFF;
     border-radius: 8px;
     padding: 12px;
+    /*
     display: flex;
     align-items: center;
     gap: 12px;
+    */
     margin-bottom: 16px;
 }
 
@@ -154,11 +156,16 @@
 }
 
 .selected-service {
+    /*
     background-color: white;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 12px;
+    */
+    margin-bottom: 24px;
+    border-bottom: #717d96 1px solid;
+    padding-bottom: 24px;
 }
 
 .selected-service-header {
@@ -305,12 +312,18 @@
 
 /* Available Entertainment Services */
 .available-entertainment-services {
+    /*
     border-top: 1px solid #e0e0e0;
     padding-top: 24px;
+    */
 }
 
 .available-services-header {
     margin-bottom: 20px;
+}
+
+.available-services-header h5 {
+    margin-bottom: 8px;
 }
 
 .available-services-header p {
@@ -385,7 +398,7 @@
     background-color: white;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -438,7 +451,7 @@
 }
 
 .product-closed-content {
-    padding: 8px 20px 20px;
+    padding: 8px 16px 16px;
 }
 
 .product-closed-divider {
@@ -460,6 +473,10 @@
     border-radius: 8px;
     padding: 12px 16px;
     margin-top: 16px;
+}
+
+.product-content .promo-highlight {
+    margin: 0 0 16px;
 }
 
 .highlight-title {
@@ -725,13 +742,10 @@
 
 /* Entertainment Box Styles */
 .entertainment-box-highlight {
-    background-color: #fff3cd;
-    border-radius: 6px;
+    background-color: #EDF0F7;
+    border-radius: 8px;
     padding: 12px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin: 16px 0;
 }
 
 .highlight-badge {
@@ -1187,7 +1201,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px 4px;
+    padding: 16px 16px 4px;
 }
 
 .product-header.clickable {
@@ -1195,7 +1209,7 @@ body {
 }
 
 .product-header.clickable:hover {
-    background-color: #f8f9fa;
+    /*background-color: #f8f9fa;*/
 }
 
 .product-title {
@@ -1211,7 +1225,7 @@ body {
 }
 
 .product-content {
-    padding: 0 20px 20px;
+    padding: 0 16px 16px;
 }
 
 .tooltip-link {
@@ -1375,21 +1389,21 @@ input:checked+.slider:before {
 
 /* Promo badge styling */
 .promo-badge {
-    background-color: #F134F7;
-    color: white;
+    background-color: #C7D3E1;
+    color: #291D18;
     font-size: 12px;
     font-weight: 600;
     padding: 4px 8px;
-    border-radius: 12px;
-    text-transform: uppercase;
+    border-radius: 0%;
+    /*text-transform: uppercase;*/
     white-space: nowrap;
 }
 
 /* Price with badge layout */
 .price-with-badge {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    gap: 8px;
 }
 
 .price-content {
@@ -1425,7 +1439,6 @@ input:checked+.slider:before {
     font-weight: 600;
     color: #F134F7;
     font-size: 16px;
-    margin-bottom: 4px;
 }
 
 .discount-info {
@@ -1595,18 +1608,24 @@ input:checked+.slider:before {
 .advantage-block {
     background-color: #B0DCFF;
     color: #1a4480;
-    padding: 12px 16px;
+    padding: 8px 12px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     display: flex;
-    justify-content: space-between;
+    gap: 4px;
+    justify-content: center;
     align-items: center;
 }
 
+#advantage-amount {
+    line-height: 24px;
+}
+
 .advantage-block .info-icon {
-    font-size: 16px;
-    opacity: 0.7;
+    display: block;
+    width: 24px;
+    height: 24px;
 }
 
 .cost-breakdown {
@@ -1780,7 +1799,7 @@ html {
 }
 
 .sheet-body {
-    color: #717D96;
+    color: #2D3648;
     line-height: 1.5;
     font-size: 14px;
 }
@@ -2015,9 +2034,9 @@ html {
     align-items: center;
     cursor: pointer;
     padding: 8px 0;
+    margin-bottom: 8px;
     font-size: 14px;
     color: #717D96;
-    text-decoration: underline;
 }
 
 .overview-toggle:hover {
@@ -2034,9 +2053,10 @@ html {
 }
 
 .product-overview-content {
-    margin-top: 15px;
+    margin-bottom: 16px;
     padding: 12px;
     background-color: #F7F9FC;
+    border-radius: 8px;
 }
 
 .overview-group {
@@ -2051,7 +2071,7 @@ html {
     font-weight: 600;
     color: #2D3648;
     font-size: 14px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .overview-item {
@@ -2713,11 +2733,6 @@ html {
     gap: 12px;
 }
 
-.info-icon {
-    font-size: 20px;
-    margin-top: 2px;
-}
-
 .info-title {
     font-weight: 600;
     color: #2d5f2d;
@@ -2808,13 +2823,12 @@ html {
 
 .discount-price .price-period {
     font-size: 12px;
-    color: #717D96;
+    color: #4A5468;
 }
 
 .discount-info {
-    font-size: 10px;
-    color: #717D96;
-    margin-top: 2px;
+    font-size: 12px;
+    color: #4A5468;
 }
 
 .product-btn {
@@ -3059,6 +3073,7 @@ html {
     color: #666;
     margin-bottom: 10px;
     font-style: italic;
+    text-align: right;
 }
 
 /* mobile bottom summary */
@@ -3084,4 +3099,38 @@ html {
     color: #666;
     font-style: italic;
     margin-top: 2px;
+}
+
+/**
+ * Manual added classes
+ */
+.combo-advantage {
+    padding: 12px;
+    background-color: #EDF0F7;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.advantage-extra {
+    text-align: center;
+}
+
+div.paragraph {}
+
+div.paragraph h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+}
+
+div.paragraph h4 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+div.paragraph h5 {
+    font-size: 14px;
+}
+
+.sheet-body p {
+    margin-bottom: 16px;
 }

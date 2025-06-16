@@ -4,7 +4,7 @@
       "title": "Internet",
       "tooltip": "Welke snelheid heb ik nodig?",
       "closedState": {
-        "summary": "Kies voor snelheden tot 8,5 Gbps<br>Vanaf € ##PRICE##/maand",
+        "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br>Vanaf <strong>€ ##PRICE##/maand</strong>",
         "showHighlight": false,
         "highlight": null
       },
@@ -13,7 +13,7 @@
           "id": 1,
           "title": "200 Mbps",
           "subtitle": "€50,00",
-          "summary": "Download snelheid: <strong>200 Mbps</strong>, Upload snelheid: <strong>20 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
+          "summary": "<strong>200 Mbps</strong> downloadsnelheid, <strong>20 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 50.00,
           "discountCopy": {
             "temporaryOnly": "",
@@ -25,13 +25,13 @@
           "id": 2,
           "title": "500 Mbps",
           "subtitle": "€75,00",
-          "summary": "Download snelheid: <strong>500 Mbps</strong>, Upload snelheid: <strong>50 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
+          "summary": "<strong>500 Mbps</strong> downloadsnelheid, <strong>50 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 75.00,
           "discountValue": 25.00,
           "discountPeriod": 6,
-          "promoName": "launch discount",
+          "promoName": "Webdeal",
           "discountCopy": {
-            "temporaryOnly": "launch discount gedurende 6 maanden",
+            "temporaryOnly": "gedurende 6 maanden",
             "permanentOnly": "",
             "both": ""
           }
@@ -40,7 +40,7 @@
           "id": 3,
           "title": "2,5 Gbps",
           "subtitle": "€85,00",
-          "summary": "Download snelheid: <strong>2,5 Gbps</strong>, Upload snelheid: <strong>200 Mbps</strong>, Downloadvolume: <strong>onbeperkt</strong>",
+          "summary": "<strong>2,5 Gbps</strong> downloadsnelheid, <strong>200 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 85.00,
           "discountCopy": {
             "temporaryOnly": "",
@@ -51,13 +51,13 @@
       ],
       "defaultTier": 1,
       "wifiPods": {
-        "title": "Versterk je signaal met WiFi-pods",
-        "tooltip": "Wat is een WiFi-pod? Hoeveel heb ik nodig?",
+        "title": "Versterk je wifi met slimme wifi-pods",
+        "tooltip": "Hoeveel wifi-pods heb ik nodig?",
         "pricePerPod": 3.00,
         "maxPods": 5,
         "discountValue": 3.00,
         "discountPeriod": 3,
-        "promoName": "try before you buy",
+        "promoName": "Gratis proberen",
         "freeTrialText": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil."
       }
     },
@@ -75,9 +75,9 @@
       "tiers": [
         {
           "id": 1,
-          "title": "Mobile junior",
+          "title": "Junior",
           "subtitle": "€5,00",
-          "summary": "Mobiele data: <strong>5 GB</strong>, <strong>60 belminuten</strong> en <strong>200 SMS'en</strong>, <strong>1 jaar ChatLicense cadeau</strong>",
+          "summary": "<strong>5 GB</strong> mobiele data, <strong>60 belminuten</strong> en <strong>200 SMS'en</strong>, <strong>1 jaar ChatLicense cadeau</strong>",
           "price": 5.00,
           "discountCopy": {
             "temporaryOnly": "Introductietarief",
@@ -89,27 +89,27 @@
           "id": 2,
           "title": "15 GB",
           "subtitle": "€20,00",
-          "summary": "Mobiele data: <strong>15 GB</strong>, Downloadsnelheid: <strong>250 Mbps</strong>, <strong>Onbeperkt bellen en SMS'en</strong>",
+          "summary": "<strong>15 GB</strong> mobiele data, <strong>250 Mbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en SMS'en",
           "price": 20.00,
           "discountCopy": {
             "temporaryOnly": "",
-            "permanentOnly": "50% combovoordeel",
-            "both": "50% combovoordeel"
+            "permanentOnly": "",
+            "both": ""
           }
         },
         {
           "id": 3,
           "title": "Unlimited",
           "subtitle": "€40,00",
-          "summary": "Mobiele data: <strong>Onbeperkt</strong>, Downloadsnelheid: <strong>1 Gbps</strong>, <strong>Onbeperkt bellen en SMS'en</strong>",
+          "summary": "<strong>Onbeperkte</strong> mobiele data, <strong>1 Gbps</strong> max downloadsnelheid, <strong>Onbeperkt</strong> bellen en SMS'en",
           "price": 40.00,
           "discountValue": 10.00,
           "discountPeriod": 6,
-          "promoName": "launch discount",
+          "promoName": "Webdeal",
           "discountCopy": {
-            "temporaryOnly": "launch discount gedurende 6 maanden",
-            "permanentOnly": "50% combovoordeel",
-            "both": "50% combovoordeel + launch discount"
+            "temporaryOnly": "gedurende 6 maanden",
+            "permanentOnly": "",
+            "both": "gedurende 6 maanden"
           }
         }
       ],
@@ -118,13 +118,13 @@
     },
     "tv": {
       "title": "TV",
-      "tooltip": "Welke snelheid heb ik nodig?",
+      "tooltip": "Wat hoort er bij je tv-pakket?",
       "closedState": {
-        "summary": "Voeg een TV-pakket toe<br>€ ##PRICE##/maand",
+        "summary": "Voeg een tv-pakket toe<br><strong>€ ##PRICE##/maand</strong>",
         "showHighlight": false,
         "highlight": null
       },
-      "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> terugkijk TV, Inclusief tot <strong>200 uur opnames</strong> in the cloud",
+      "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> programma's herbekijken, Tot <strong>200 uur</strong> opnames in the cloud",
       "price": 14.00,
       "discountCopy": {
         "temporaryOnly": "",
@@ -142,7 +142,7 @@
           {
             "id": 2,
             "title": "Ja, dat wil ik",
-            "summary": "Al je zenders en streamingdiensten <strong>op één plek</strong>, Een handige <strong>TV-gids</strong> en <strong>afstands-bediening</strong>, <strong>Gepersonaliseerde aanbevelingen</strong> over al jouw <strong>entertainment</strong>",
+            "summary": "<strong>Zoeken</strong> over kanalen en streamingdiensten, <strong>Persoonlijke aanbevelingen</strong>, <strong>Huur of koop</strong> films vers uit de cinema",
             "price": 5.00,
             "discountValue": 5.00,
             "discountPeriod": 3,
@@ -165,7 +165,7 @@
         "showHighlight": false,
         "highlight": null
       },
-      "summary": "<strong>Gratis</strong> vaste lijn voor thuis, Huidig <strong>vast nummer behouden</strong> of een nieuw nummer aanvragen",
+      "summary": "<strong>Gratis</strong> vaste lijn voor thuis, Behoud je huidige vast nummer of vraag een nieuw nummer aan",
       "price": 0.00,
       "discountCopy": {
         "temporaryOnly": "",
@@ -176,26 +176,26 @@
     "entertainment": {
       "title": "Entertainment",
       "closedState": {
-        "summary": "... en nog veel meer.<br>Vanaf € ##PRICE##/maand",
+        "summary": "... en nog veel meer.<br>Vanaf <strong>€ ##PRICE##/maand</strong>",
         "showHighlight": true,
         "highlight": {
           "title": "Krijg 5% korting op streaming",
-          "description": "Combineer twee of meer services"
+          "description": "Combineer 2 of meer streamingdiensten"
         }
       }
     },
     "entertainmentBox": {
       "title": "Entertainment Box",
-      "summary": "Al je zenders en streamingdiensten <strong>op één plek</strong>, Een handige <strong>TV-gids</strong> en <strong>afstands-bediening</strong>, <strong>Gepersonaliseerde aanbevelingen</strong> over al jouw <strong>entertainment</strong>",
+      "summary": "Zoeken tussen alle <strong>zenders en streamingdiensten</strong>, <strong>Persoonlijke aanbevelingen</strong>, <strong>Huur of koop films</strong> recht uit de cinema",
       "price": 5.00,
       "discountValue": 5,
       "discountPeriod": 3,
-      "promoName": "try before you buy",
+      "promoName": "Gratis proberen",
       "discountCopy": {
-        "temporaryOnly": "- €5,00 voor 3 maanden"
+        "temporaryOnly": "gedurende 3 maanden"
       },
       "closedState": {
-        "summary": "Onze nieuwste TV en streamingbox<br>€ ##PRICE##/maand",
+        "summary": "Onze nieuwste tv- en streamingbox<br><strong>€ ##PRICE##/maand</strong>",
         "showHighlight": false,
         "highlight": null
       }
@@ -218,58 +218,62 @@
   },
   "highlightBlock": {
     "title": "Extra voordeel met Internet + Mobiel",
-    "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+    "content": "Minstens 50% korting op je mobiele abonnement als je het combineert met internet."
   },
   "closedStates": {
         "internet": {
-            "summary": "Kies voor snelheden tot 8,5 Gbps<br />Vanaf € ##PRICE##/maand",
+            "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br />Vanaf </strong>€ ##PRICE##/maand</strong>",
             "highlight": null
         },
         "mobile": {
-            "summary": "Voeg tot 5 mobiele nummers toe<br />Vanaf € ##PRICE##/maand",
+            "summary": "Voeg tot <strong>5 mobiele nummers</strong> toe<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
             "highlight": {
                 "title": "Extra voordeel met Internet + Mobiel",
                 "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
             }
         },
         "tv": {
-            "summary": "Voeg een TV-pakket toe<br />€ ##PRICE##/maand",
+            "summary": "Voeg een TV-pakket toe<br /><strong>€ ##PRICE##/maand</strong>",
             "highlight": null
         },
         "entertainment": {
-            "summary": "…en nog veel meer.<br />Vanaf € ##PRICE##/maand",
+            "summary": "…en nog veel meer.<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
             "highlight": {
                 "title": "Krijg 5% korting op streaming",
-                "content": "Combineer 2 of meer services."
+                "content": "Combineer 2 of meer streamingdiensten."
             },
             "showServiceIcons": true
         },
         "fixedPhone": {
-            "summary": "Voeg gratis een vaste telefoonlijn toe",
+            "summary": "Voeg <strong>gratis</strong> een vaste telefoonlijn toe",
             "highlight": null
         },
         "entertainmentBox": {
-            "summary": "Onze nieuwste TV en streamingbox<br />€ ##PRICE##/maand",
+            "summary": "Onze nieuwste TV en streamingbox<br /><strong>€ ##PRICE##/maand</strong>",
             "highlight": null,
             "showImage": true
         }
     },
   "tooltips": {
     "internet": {
-      "title": "Welke snelheid heb ik nodig?",
-      "content": "<p>De internetsnelheid die je nodig hebt, hangt af van je gebruikspatroon:</p><ul><li><strong>500 Mb:</strong> Perfect voor gewoon surfen, e-mailen en streaming op 1-2 apparaten</li><li><strong>1 Gb:</strong> Ideaal voor meerdere apparaten, gaming en 4K streaming</li><li><strong>2,5 Gb:</strong> Voor power users met veel apparaten en intensief gebruik</li><li><strong>10 Gb:</strong> Voor professioneel gebruik en toekomstbestendigheid</li></ul>"
+      "title": "Welke internetsnelheid heb ik nodig?",
+      "content": "<p>De downloadsnelheid van je internet thuis bepaalt met hoeveel je gelijktijdig vlot kan surfen, gamen, videobellen, … Die snelheid wordt in Mbps of Gbps uitgedrukt en 1 Gbps is gelijk aan 1000 Mbps.</p><div class='paragraph'><h4>Ons advies</h4><p>Heb je gamers in huis of kijk je veel video’s en series op YouTube, Netflix, …? Dan kies je best een hogere snelheid. Die heb je nodig voor een Ultra HD-ervaring.</p><p>Andere activiteiten zoals surfen, videobellen of muziek streamen vragen niet zo’n hoge downloadsnelheid.</p></div><div class='paragraph'><h4>Intensief streamen in Ultra HD of gamen?</h4><p>Kies dan voor downloaden tot 500 Mbps of hoger.</p></div><div class='paragraph'><h4>Niet intensief streamen in Ultra HD of gamen?</h4><p>Kies gerust een lagere downloadsnelheid.</p></div>"
     },
     "mobile": {
       "title": "Hoeveel mobiele data heb ik nodig",
-      "content": "Meer informatie ivm hoeveel <strong>mobiele data</strong> een gebruiker nodig heeft"
+      "content": "<div class='paragraph'><h4>5 GB data</h4><p>Met 5 GB per maand kan je dagelijks:</p><ul><li>2,5 uur muziek beluisteren</li><li>40 min. video's kijken (bv. op Facebook, Instagram of TikTok), of</li><li>80 artikels lezen</li></ul></div><div class='paragraph'><h4>15 GB data</h4><p>Met 15 GB per maand kan je dagelijks:</p><ul><li>1 uur muziek beluisteren, of</li><li>2 uur video's streamen (bv. op Instagram of TikTok), of</li><li>650 websites bezoeken</li></ul></div><div class='paragraph'><h4>Unlimited data</h4><p>Je kan in België ongelimiteerd surfen (tot max. 300 GB per maand). Surf je meer? Dan doe je dat aan een verlaagde snelheid. In de EU-zone heb je 100 GB data.</p><p>Met Unlimited data kan je dagelijks:</p><ul><li>170 uur naar muziek luisteren, of</li><li>Non-stop video’s streamen, of</li><li>10.000 websites bezoeken</li></ul><p>Met Unlimited data kan je in de EU-zone dagelijks:</p><ul><li>Een hele dag naar muziek luisteren, of</li><li>11 uur video's streamen, of</li><li>3215 websites bezoeken</li></ul></div>"
     },
     "tv_main": {
-      "title": "Meer over TV",
-      "content": "Meer informatie over hoe je naar TV kan kijken en welke zenders inbegrepen zijn"
+      "title": "Wat zit er in het tv-pakket",
+      "content": "<p>In het tv-pakket zitten maar liefst 98 zenders.</p><p>De lokale zenders van VTM, Play, VRT, NPO en France. Maar ook internationale zenders als Eurosport, National Geographic, Discovery, Nickolodeon, Comedy Central, Disney en nog veel meer.</p>"
     },
     "tv_entertainment": {
-      "title": "Meer over onze Entertainment Box",
-      "content": "Meer informatie over onze Entertainment box, en wat je er allemaal mee kan doen."
+      "title": "Alles over onze streamingdiensten",
+      "content": "<div class='paragraph'><h4>Waarom streamingdiensten toevoegen?</h4><p>Zo kan je al je streamingdiensten beheren op één plek en krijg je 1 overzichtelijke factuur voor al je entertainment.</p></div><div class='paragraph'><h4>Heb je al een account op een streamingdienst</h4><p>Dan kan je je bestaande accounts van Netflix, Disney+, HBO Max en Apple TV eenvoudig overzetten.</p></div><div class='paragraph'><h4>Hoe beheer ik mijn diensten?</h4><p>Je pauzeert of stopt je streamingdiensten wanneer je wilt. Of wil je een streamingdienst toevoegen? Je doet het allemaal eenvoudig via je online klantenzone.</p></div>"
+    },
+    "entertainment_box": {
+      "title": "Wat is een Entertainment Box?",
+      "content": "<p>De Entertainment Box is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot meer dan 90 tv-zenders, je favoriete streamingdiensten en radiozenders.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je favoriete entertainment, recente opnames en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Box inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
     },
     "permanent_promotion": {
       "title": "Permanent promotion",
@@ -280,8 +284,8 @@
       "content": "Totale tijdelijke korting: ##NUMBER##"
     },
     "wifi_pods": {
-      "title": "Wat is een WiFi-pod? Hoeveel heb ik nodig?",
-      "content": "WiFi-pods zijn kleine apparaatjes die je WiFi-signaal versterken door je huis. Ze zorgen voor een stabiele internetverbinding in elke kamer. <br><br><strong>Hoeveel heb je nodig?</strong><br>• 1-2 pods: Voor een klein appartement<br>• 3-4 pods: Voor een gemiddeld huis<br>• 5+ pods: Voor een groot huis of meerdere verdiepingen"
+      "title": "Wat is een slimme wifi-pod?",
+      "content": "<p>Een slimme wifi-pod is een uitbreiding van je internetnetwerk thuis. Je gebruikt het om je wifi-signaal te versterken op een plek waar je wifi minder sterk is. Zo krijg je overal in huis een stabiele en snelle verbinding.</p><div class='paragraph'><h3>Hoeveel slimme wifi-pods heb ik nodig?</h3><p>Je kies je aantal wifi-pods op basis van de grootte van je woning. Zo bereik je het verste punt vanaf je modem. Je kan altijd extra wifi-pods bijbestellen als dat nodig is.</p><ul><li><h5>1 wifi-pod</h5>Woning of groot appartement zonder verdiepingen.</li><li><h5>2 wifi-pods</h5>Woning of appartement met 1 verdieping.</li><li><h5>3 wifi-pods</h5>Grote woning met 2 verdiepingen.</li><li><h5>4 wifi-pods</h5>Grote woning met 3 of meer verdiepingen.</li></ul></div>"
     }
   }
 }

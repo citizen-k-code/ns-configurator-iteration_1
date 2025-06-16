@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="nav-footer">
-                    <div class="nav-footer-text">© 2024 Company Name</div>
+                    <div class="nav-footer-text">© 2025 altijdonline</div>
                 </div>
             </nav>
         </div>
@@ -124,7 +124,7 @@
 
             <!-- TV-kijken en streamen Section -->
             <div class="section-group">
-                <h2 class="section-title">TV-kijken en streamen</h2>
+                <h2 class="section-title">Tv-kijken en streamen</h2>
 
                 <!-- TV Product Card -->
                 <div class="product-card" id="tv-block">
@@ -138,7 +138,7 @@
                         </label>
                     </div>
                     <div class="product-content" id="tv-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Welke snelheid heb ik nodig?
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Wat zit er in je tv-pakket?
                         </div>
                         <div class="tier-info" id="tv-info"></div>
 
@@ -168,7 +168,7 @@
                 <div class="product-card" id="entertainment-block">
                     <div class="product-header">
                         <div class="product-title">
-                            <span>Entertainment</span>
+                            <span>Streamingdiensten</span>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="entertainment-toggle">
@@ -237,7 +237,7 @@
                         <!-- Bottom section: Available services -->
                         <div class="available-entertainment-services">
                             <div class="available-services-header">
-                                <p>Duid aan welke services je wil toevoegen aan je pack.</p>
+                                <h5>Duid aan welke streamingdiensten je wil toevoegen aan je pack.</h5>
                                 <div class="services-discount-info">
                                     <div class="services-discount-content">
                                         <div class="services-discount-title">Krijg 5% korting op streaming</div>
@@ -267,22 +267,23 @@
                         </label>
                     </div>
                     <div class="product-content" id="entertainment-box-content" style="display: none;">
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('entertainment_box')">Wat is een
+                            Entertainment Box?</div>
                         <div class="entertainment-box-highlight">
-                            <div class="highlight-badge">Nieuw!</div>
-                            <div class="highlight-text">De nieuwste TV en streamingbox</div>
+                            <div class="highlight-title">Een handige TV-Box met afstandsbediening</div>
+                            <div class="highlight-content">Jouw gids tussen live tv en streaming, lokaal én
+                                internationaal
+                            </div>
                         </div>
-
-                        <div class="entertainment-box-image">
-                            <div class="tv-box-illustration">📺</div>
-                        </div>
-
+                        <!--
                         <div class="entertainment-box-usps">
                             <ul>
-                                <li>Al je zenders en streamingdiensten op één plek</li>
-                                <li>Een handige TV-gids en afstandsbediening</li>
-                                <li>Gepersonaliseerde aanbevelingen over al jouw entertainment</li>
+                                <li><strong>Zoeken</strong> over kanalen en streamingdiensten</li>
+                                <li><strong>Persoonlijke aanbevelingen</strong></li>
+                                <li><strong>Huur of koop</strong> films vers uit de cinema</li>
                             </ul>
                         </div>
+                        -->
 
                         <div class="tier-info" id="entertainment-box-info"></div>
                     </div>
@@ -326,7 +327,7 @@
 
                     <div class="advantage-block" id="advantage-block" style="display: none;">
                         <span id="advantage-amount">€0 voordeel in totaal</span>
-                        <span class="info-icon">ⓘ</span>
+                        <span class="info-icon"><img src="final_assets/icons/i-icon-blue.svg" alt="info"></span>
                     </div>
                 </div>
 
@@ -414,7 +415,7 @@
                 <button class="sheet-close-btn" onclick="app.closeAdvantageBottomSheet()">×</button>
             </div>
             <div class="sheet-content">
-                <h3 class="sheet-title" id="advantage-sheet-title">Jouw voordeel</h3>
+                <h3 class="sheet-title" id="advantage-sheet-title">Jouw kortingen en voordelen</h3>
                 <div class="sheet-body" id="advantage-sheet-body">
                     <!-- Content will be populated by JavaScript -->
                 </div>
