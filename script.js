@@ -1629,13 +1629,15 @@ class UnifiedConfigurator {
 
     updateProductOverview() {
         const overviewContent = document.getElementById('product-overview-content');
-        if (!overviewContent) return;
+        if (!overviewContent || !this.data) return;
 
         let overviewHtml = '';
 
         // Internet
-        if (this.state.internet.enabled) {
+        if (this.state.internet && this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            if (!internetTier) return;
+            
             let priceHtml = `€${internetTier.price.toFixed(2).replace('.', ',')}`;
 
             if (internetTier.discountValue) {
@@ -1676,7 +1678,7 @@ class UnifiedConfigurator {
         }
 
         // Mobile
-        if (this.state.mobile.enabled && this.state.mobile.simcards.length > 0) {
+        if (this.state.mobile && this.state.mobile.enabled && this.state.mobile.simcards && this.state.mobile.simcards.length > 0) {
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">Mobiel</div>
@@ -1684,6 +1686,8 @@ class UnifiedConfigurator {
 
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (!mobileTier) return;
+                
                 const discountCalc = this.calculateMobileDiscount(mobileTier, index);
 
                 let priceHtml = `€${mobileTier.price.toFixed(2).replace('.', ',')}`;
@@ -1711,8 +1715,10 @@ class UnifiedConfigurator {
         }
 
         // TV (including Entertainment Box when TV is enabled)
-        if (this.state.tv.enabled) {
+        if (this.state.tv && this.state.tv.enabled) {
             const tvData = this.data.products.tv;
+            if (!tvData) return;
+            
             let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
 
             if (tvData.discountValue) {
@@ -1734,9 +1740,9 @@ class UnifiedConfigurator {
             `;
 
             // Add Entertainment Box as part of TV section when TV is enabled
-            if (this.state.entertainmentBox.enabled) {
+            if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
                 const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-                if (entertainmentBoxTier) {
+                if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
                     let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
 
                     if (entertainmentBoxTier.discountValue !== undefined) {
@@ -1761,9 +1767,9 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box (independent section - only when not part of TV)
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData) {
+            if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
                 let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
 
                 if (entertainmentBoxData.discountValue) {
@@ -1788,62 +1794,70 @@ class UnifiedConfigurator {
         }
 
         // Fixed Phone
-        if (this.state.fixedPhone.enabled) {
+        if (this.state.fixedPhone && this.state.fixedPhone.enabled) {
             const phoneData = this.data.products.fixedPhone;
-            overviewHtml += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Vaste lijn</div>
-                    <div class="overview-item">
-                        <span class="overview-item-name">Vaste lijn</span>
-                        <span class="overview-item-price">€${phoneData.price.toFixed(2).replace('.', ',')}</span>
+            if (phoneData && phoneData.price !== undefined) {
+                overviewHtml += `
+                    <div class="overview-group">
+                        <div class="overview-group-title">Vaste lijn</div>
+                        <div class="overview-item">
+                            <span class="overview-item-name">Vaste lijn</span>
+                            <span class="overview-item-price">€${phoneData.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
         }
 
         // Entertainment services
-        const selectedServices = Array.from(this.state.selectedEntertainmentServices);
-        if (selectedServices.length > 0) {
-            overviewHtml += `
-                <div class="overview-group">
-                    <div class="overview-group-title">Entertainment</div>
-            `;
-
-            selectedServices.forEach(serviceKey => {
-                const serviceData = this.entertainmentData.entertainment[serviceKey];
-                const serviceName = this.getServiceDisplayName(serviceKey);
-
-                let priceHtml;
-                if (serviceData.tiers) {
-                    const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
-                    const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                    const hasDiscount = discountedPrice < tier.price;
-
-                    if (hasDiscount) {
-                        priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
-                    } else {
-                        priceHtml = `€${tier.price.toFixed(2).replace('.', ',')}`;
-                    }
-                } else {
-                    const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
-                    const hasDiscount = discountedPrice < serviceData.price;
-
-                    if (hasDiscount) {
-                        priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
-                    } else {
-                        priceHtml = `€${serviceData.price.toFixed(2).replace('.', ',')}`;
-                    }
-                }
-
+        if (this.state.selectedEntertainmentServices && this.entertainmentData) {
+            const selectedServices = Array.from(this.state.selectedEntertainmentServices);
+            if (selectedServices.length > 0) {
                 overviewHtml += `
-                    <div class="overview-item">
-                        <span class="overview-item-name">${serviceName}</span>
-                        <span class="overview-item-price">${priceHtml}</span>
-                    </div>
+                    <div class="overview-group">
+                        <div class="overview-group-title">Entertainment</div>
                 `;
-            });
 
-            overviewHtml += `</div>`;
+                selectedServices.forEach(serviceKey => {
+                    const serviceData = this.entertainmentData.entertainment[serviceKey];
+                    if (!serviceData) return;
+                    
+                    const serviceName = this.getServiceDisplayName(serviceKey);
+
+                    let priceHtml;
+                    if (serviceData.tiers) {
+                        const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                        if (!tier) return;
+                        
+                        const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                        const hasDiscount = discountedPrice < tier.price;
+
+                        if (hasDiscount) {
+                            priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
+                        } else {
+                            priceHtml = `€${tier.price.toFixed(2).replace('.', ',')}`;
+                        }
+                    } else {
+                        const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+                        const hasDiscount = discountedPrice < serviceData.price;
+
+                        if (hasDiscount) {
+                            priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
+                        } else {
+                            priceHtml = `€${serviceData.price.toFixed(2).replace('.', ',')}`;
+                        }
+                    }
+
+                    overviewHtml += `
+                        <div class="overview-item">
+                            <span class="overview-item-name">${serviceName}</span>
+                            <span class="overview-item-price">${priceHtml}</span>
+                        </div>
+                    `;
+                });
+
+                overviewHtml += `</div>`;
+            }
         }
 
         overviewContent.innerHTML = overviewHtml;
