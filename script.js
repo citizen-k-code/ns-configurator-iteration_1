@@ -875,6 +875,7 @@ class UnifiedConfigurator {
         this.updateCostSummary();
     }
 
+    ```python
     calculateMobileDiscount(tier, simcardIndex) {
         const permanentDiscount = this.data.discounts.permanent;
         const isInternetEnabled = this.state.internet.enabled;
@@ -2295,8 +2296,6 @@ class UnifiedConfigurator {
         }
 
         const productBlock = document.getElementById(blockId);
-
-        console.log("product block =", productBlock);
 
         if (!productBlock) return;
 
