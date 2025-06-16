@@ -877,7 +877,6 @@ class UnifiedConfigurator {
     }
 
     
-    ```python
     calculateMobileDiscount(tier, simcardIndex) {
         const permanentDiscount = this.data.discounts.permanent;
         const isInternetEnabled = this.state.internet.enabled;
@@ -1645,11 +1644,7 @@ class UnifiedConfigurator {
 
             if (internetTier.discountValue) {
                 const discountedPrice = internetTier.price - internetTier.discountValue;
-                priceHtml = `
-                    <span class="original-price">€${internetTier.price.toFixed(2).replace('.', ',')}</span>
-                    <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                    <span class="discount-info">${internetTier.discountCopy.temporaryOnly}</span>
-                `;
+                priceHtml = `<span class="original-price">€${internetTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${internetTier.discountCopy.temporaryOnly}</span>`;
             }
 
             overviewHtml += `
@@ -1726,11 +1721,7 @@ class UnifiedConfigurator {
 
             if (tvData.discountValue) {
                 const discountedPrice = tvData.price - tvData.discountValue;
-                tvPriceHtml = `
-                    <span class="original-price">€${tvData.price.toFixed(2).replace('.', ',')}</span>
-                    <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                    <span class="discount-info">${tvData.discountCopy.temporaryOnly}</span>
-                `;
+                tvPriceHtml = `<span class="original-price">€${tvData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${tvData.discountCopy.temporaryOnly}</span>`;
             }
 
             overviewHtml += `
@@ -1746,15 +1737,11 @@ class UnifiedConfigurator {
             if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
                 const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
                 if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                    let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>`;
+                    let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
 
                     if (entertainmentBoxTier.discountValue !== undefined) {
                         const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
-                        boxPriceHtml = `
-                            <span class="original-price">€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>
-                        `;
+                        boxPriceHtml = `<span class="original-price">€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>`;
                     }
 
                     overviewHtml += `
@@ -1777,11 +1764,7 @@ class UnifiedConfigurator {
 
                 if (entertainmentBoxData.discountValue) {
                     const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                    boxPriceHtml = `
-                        <span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
-                        <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                        <span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>
-                    `;
+                    boxPriceHtml = `<span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>`;
                 }
 
                 overviewHtml += `
