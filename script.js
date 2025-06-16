@@ -110,6 +110,7 @@ class UnifiedConfigurator {
                     this.renderInternetTiers();
                     this.updateInternetInfo();
                     this.renderWifiPods();
+                    
                 }
             }
         }
@@ -875,6 +876,7 @@ class UnifiedConfigurator {
         this.updateCostSummary();
     }
 
+    
     ```python
     calculateMobileDiscount(tier, simcardIndex) {
         const permanentDiscount = this.data.discounts.permanent;
