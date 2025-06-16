@@ -871,8 +871,7 @@ class UnifiedConfigurator {
 
     deleteSimcard(simcardId) {
         this.state.mobile.simcards = this.state.mobile.simcards.filter(s => s.id !== simcardId);
-        this.renderMobile```
-Simcards();
+        this.renderMobileSimcards();
         this.updateCostSummary();
     }
 
@@ -1718,10 +1717,9 @@ Simcards();
         // TV (including Entertainment Box when TV is enabled)
         if (this.state.tv && this.state.tv.enabled) {
             const tvData = this.data.products.tv;
-            if (!```javascript
-tvData) return;
+            if (!tvData) return;
 
-            let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.',',')}</span>`;
+            let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
 
             if (tvData.discountValue) {
                 const discountedPrice = tvData.price - tvData.discountValue;
