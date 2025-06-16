@@ -1275,14 +1275,30 @@ class UnifiedConfigurator {
             total += phoneData.price;
         }
 
-        // Entertainment Box cost (standalone)
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
-            const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData && entertainmentBoxData.discountValue) {
-                total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                totalTemporaryDiscount += entertainmentBoxData.discountValue;
-            } else if (entertainmentBoxData) {
-                total += entertainmentBoxData.price;
+        // Entertainment Box cost (independent calculation)
+        if (this.state.entertainmentBox.enabled) {
+            if (this.state.tv.enabled) {
+                // When TV is enabled, calculate Entertainment Box cost from TV data
+                const entertainmentBoxTier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+                if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
+                    if (entertainmentBoxTier.discountValue !== undefined) {
+                        total += entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
+                        totalTemporaryDiscount += entertainmentBoxTier.discountValue;
+                    } else {
+                        total += entertainmentBoxTier.price;
+                    }
+                }
+            } else {
+                // When standalone, use standalone Entertainment Box data
+                const entertainmentBoxData = this.data.products.entertainmentBox;
+                if (entertainmentBoxData) {
+                    if (entertainmentBoxData.discountValue) {
+                        total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                        totalTemporaryDiscount += entertainmentBoxData.discountValue;
+                    } else {
+                        total += entertainmentBoxData.price;
+                    }
+                }
             }
         }
 
@@ -1423,8 +1439,10 @@ class UnifiedConfigurator {
             }
         }
 
-        // Entertainment Box temporary discount (standalone)
+        // Entertainment Box temporary discount (independent calculation)
         if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            // Only calculate standalone Entertainment Box discount when TV is not enabled
+            // When TV is enabled, Entertainment Box discount is already calculated in TV section
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData && entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
                 totalTemporaryDiscount += entertainmentBoxData.discountValue * entertainmentBoxData.discountPeriod;
@@ -1531,6 +1549,8 @@ class UnifiedConfigurator {
         }
 
         if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+            // Only add standalone Entertainment Box discount period when TV is not enabled
+            // When TV is enabled, Entertainment Box discount period is already added in TV section
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData && entertainmentBoxData.discountPeriod) {
                 periods.push(entertainmentBoxData.discountPeriod);
@@ -1722,54 +1742,56 @@ class UnifiedConfigurator {
                 <div class="overview-group">
                     <div class="overview-group-title">TV</div>
                     <div class="overview-item">
-<span class="overview-item-name">TV</span>
+                        <span class="overview-item-name">TV</span>
                         <span class="overview-item-price">${tvPriceHtml}</span>
                     </div>
                 </div>
             `;
-
-            // Entertainment Box (via TV)
-            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-            if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
-
-                if (entertainmentBoxTier.discountValue !== undefined) {
-                    const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
-                    boxPriceHtml = `
-                        <span class="original-price">€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>
-                        <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                        <span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>
-                    `;
-                }
-
-                overviewHtml += `
-                    <div class="overview-item">
-                        <span class="overview-item-name">${entertainmentBoxTier.title}</span>
-                        <span class="overview-item-price">${boxPriceHtml}</span>
-                    </div>
-                `;
-            }
         }
 
-        // Entertainment Box (standalone)
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
-            const entertainmentBoxData = this.data.products.entertainmentBox;
-            let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
+        // Entertainment Box (independent section - regardless of how it was activated)
+        if (this.state.entertainmentBox.enabled) {
+            let boxPriceHtml = '';
+            let boxName = 'Entertainment Box';
 
-            if (entertainmentBoxData.discountValue) {
-                const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                boxPriceHtml = `
-                    <span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
-                    <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
-                    <span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>
-                `;
+            if (this.state.tv.enabled) {
+                // When TV is enabled, use the Entertainment Box tier from TV data
+                const entertainmentBoxTier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+                if (entertainmentBoxTier) {
+                    boxName = entertainmentBoxTier.title;
+                    boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
+
+                    if (entertainmentBoxTier.discountValue !== undefined) {
+                        const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
+                        boxPriceHtml = `
+                            <span class="original-price">€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>
+                        `;
+                    }
+                }
+            } else {
+                // When standalone, use standalone Entertainment Box data
+                const entertainmentBoxData = this.data.products.entertainmentBox;
+                if (entertainmentBoxData) {
+                    boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
+
+                    if (entertainmentBoxData.discountValue) {
+                        const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                        boxPriceHtml = `
+                            <span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>
+                        `;
+                    }
+                }
             }
 
             overviewHtml += `
                 <div class="overview-group">
                     <div class="overview-group-title">Entertainment Box</div>
                     <div class="overview-item">
-                        <span class="overview-item-name">Entertainment Box</span>
+                        <span class="overview-item-name">${boxName}</span>
                         <span class="overview-item-price">${boxPriceHtml}</span>
                     </div>
                 </div>
