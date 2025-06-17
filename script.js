@@ -1669,7 +1669,7 @@ class UnifiedConfigurator {
 
         if (totalTemporaryDiscount > 0) {
             const temporaryData = this.calculateTotalTemporaryDiscount();
-            const advantageText = `€${temporaryData.total.toFixed(2).replace('.', ',')} voordeel in totaal`;
+            const advantageText = `€${temporaryData.total.toFixed(2).replace('.', ',')} korting in totaal`;
 
             if (advantageBlock) {
                 advantageBlock.style.display = 'flex';
@@ -1688,7 +1688,7 @@ class UnifiedConfigurator {
             }
         } else if (totalPermanentDiscount > 0) {
             // Show advantage block for permanent discounts only
-            const advantageText = `Bekijk je voordeel`;
+            const advantageText = `Bekijk je combovoordelen`;
 
             if (advantageBlock) {
                 advantageBlock.style.display = 'flex';
@@ -2073,7 +2073,7 @@ class UnifiedConfigurator {
         // Show/hide combo discount banner
         if (comboDiscountBanner) {
             if (selectedServices.length >= 2) {
-                comboDiscountBanner.style.display = 'flex';
+                comboDiscountBanner.style.display = 'block';
             } else {
                 comboDiscountBanner.style.display = 'none';
             }
@@ -2510,12 +2510,12 @@ class UnifiedConfigurator {
 
             if (!this.state.internet.enabled) {
                 highlightClass = 'promo-highlight';
-                highlightTitle = 'Extra voordeel met Internet + Mobiel';
-                highlightContent = 'Minstens 50% korting op je mobiele abonnement als je het combineert met internet.';
+                highlightTitle = 'Combovoordeel Internet + Mobiel';
+                highlightContent = 'Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet.';
             } else {
                 highlightClass = 'combo-discount-banner';
-                highlightTitle = 'Korting Actief';
-                highlightContent = 'Je korting is actief doordat je internet en mobiel combineert.';
+                highlightTitle = 'Je combovoordeel is geactiveerd';
+                highlightContent = 'Je krijgt <strong>50% korting</strong> op 15 GB en Unlimited mobiel.';
             }
 
             if (highlightClass !== '') {
@@ -2573,7 +2573,7 @@ class UnifiedConfigurator {
             `<li>${advantage}</li>`
         ).join('');
 
-        title.textContent = 'Jouw voordeel';
+        title.textContent = 'Jouw kortingen en voordelen';
 
         if (hasTemporaryDiscounts) {
             // Show full advantage sheet with temporary discounts
@@ -2630,13 +2630,13 @@ class UnifiedConfigurator {
                     </ul>
 
                     <div class="advantage-total">
-                        Totaal voordeel: €${temporaryData.total.toFixed(2).replace('.', ',')}
+                        Totale korting: €${temporaryData.total.toFixed(2).replace('.', ',')}
                     </div>
                 </div>
 
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <p>Daarnaast geniet je nog van een aantal <strong>combovoordelen:</strong>:</p>
+                    <h4>Overzicht van je combovoordelen:</h4>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
@@ -2646,8 +2646,6 @@ class UnifiedConfigurator {
                     </div>
                 </div>
                 ` : ''}
-
-                <p><em>Promo alleen geldig voor nieuwe klanten</em></p>
             `;
         } else if (hasPermanentDiscounts) {
             // Show only permanent discounts (combo advantages)

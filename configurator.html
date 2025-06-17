@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configureer je product</title>
+    <title>Altijd online - Configureer je product</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link href="header.css" rel="stylesheet" type="text/css" />
@@ -40,7 +40,7 @@
                         </a>
                         <a href="product-entertainment.html" class="nav-link">
                             <span class="nav-link-icon">📺</span>
-                            <span class="nav-link-text">TV & Streamen</span>
+                            <span class="nav-link-text">Tv & Streamen</span>
                             <span class="nav-link-arrow">→</span>
                         </a>
                     </div>
@@ -72,7 +72,7 @@
 
             <header class="page-header">
                 <a href="index.html" class="back-btn">←</a>
-                <h1>Configureer je product</h1>
+                <h1>Personaliseer je pack</h1>
                 <div class="header-spacer"></div>
             </header>
 
@@ -130,7 +130,7 @@
                 <div class="product-card" id="tv-block">
                     <div class="product-header">
                         <div class="product-title">
-                            <span>TV</span>
+                            <span>Tv</span>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="tv-toggle">
@@ -144,18 +144,16 @@
 
                         <!-- TV Viewing Method Section -->
                         <div class="tv-viewing-section">
-                            <h3 class="tv-viewing-title">Hoe wil je TV-kijken?</h3>
+                            <h3 class="tv-viewing-title">Hoe wil je tv-kijken?</h3>
 
                             <div class="tv-checkbox-card">
                                 <div class="tv-checkbox-option">
                                     <input type="checkbox" id="tv-entertainment-box-checkbox" checked>
                                     <div class="tv-checkmark"></div>
                                     <div class="tv-checkbox-content">
-                                        <div class="tv-checkbox-title">Met de Entertainment Box</div>
+                                        <div class="tv-checkbox-title">Met de <a href="#entertainment-box-block" class="entertainment-box-link">Entertainment Box</a></div>
                                         <div class="tv-checkbox-description">
-                                            Bekijk TV via onze <a href="#" class="entertainment-box-link"
-                                                onclick="app.scrollToEntertainmentBox();">Entertainment
-                                                Box</a> en ontdek streamingdiensten.
+                                            Ervaar de klassieke tv-ervaring met afstandsbediening en het gemak van zappen. 
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +161,7 @@
 
                             <div class="warning-highlight" id="warning-highlight">
                                 <div class="highlight-content">
-                                    Opgepast! De Entertainment Box is verwijderd.
+                                    Opgepast! Je hebt de Entertainment box verwijderd. Dan kijk je via onze app.
                                 </div>
                             </div>
                         </div>
@@ -223,7 +221,7 @@
                         <!-- Top section: Info link -->
                         <div class="entertainment-info-section">
                             <a href="#" class="entertainment-info-link"
-                                onclick="app.openEntertainmentBottomSheet(); return false;">
+                                onclick="app.Wat al ik al str(); return false;">
                                 Wat als ik al streamingdiensten heb?
                             </a>
                         </div>
@@ -232,11 +230,11 @@
                         <div class="selected-entertainment-services" id="selected-entertainment-services">
                             <!-- Combo discount banner (shown when 2+ services selected) -->
                             <div class="combo-discount-banner" id="combo-discount-banner" style="display: none;">
-                                <div class="combo-discount-content">
-                                    <div class="combo-discount-title">5% bundelvoordeel op streaming</div>
-                                    <div class="combo-discount-subtitle">Korting op alle streamingdiensten</div>
-                                </div>
+                                <div class="highlight-title">Je combovoordeel is geactiveerd</div>
+                                <div class="highlight-content">Je krijgt <strong>5% korting</strong> op al je streamingdiensten</div>
                             </div>
+
+                            
                             <!-- Selected services will be rendered here -->
                         </div>
 
@@ -244,11 +242,10 @@
                         <div class="available-entertainment-services">
                             <div class="available-services-header">
                                 <h5>Duid aan welke streamingdiensten je wil toevoegen aan je pack.</h5>
-                                <div class="services-discount-info">
-                                    <div class="services-discount-content">
-                                        <div class="services-discount-title">Krijg 5% korting op streaming</div>
-                                        <div class="services-discount-subtitle">Combineer twee of meer services</div>
-                                    </div>
+
+                                <div class="promo-highlight">
+                                    <div class="highlight-title">Combovoordeel Streaming</div>
+                                    <div class="highlight-content">Krijg 5% korting als je 2 of meer streamingdiensten combineert.</div>
                                 </div>
                                 <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan
                                     je makkelijk overzetten.</p>
@@ -273,23 +270,13 @@
                         </label>
                     </div>
                     <div class="product-content" id="entertainment-box-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('entertainment_box')">Wat is een
-                            Entertainment Box?</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('entertainment_box')">Waarom kiezen voor onze Entertainment box? </div>
                         <div class="entertainment-box-highlight">
-                            <div class="highlight-title">Een handige TV-Box met afstandsbediening</div>
-                            <div class="highlight-content">Jouw gids tussen live tv en streaming, lokaal én
-                                internationaal
+                            <div class="highlight-title">Zappen of streamen - of allebei.</div>
+                            <div class="highlight-content">Met onze box haal je het beste uit twee werelden. 
                             </div>
                         </div>
-                        <!--
-                        <div class="entertainment-box-usps">
-                            <ul>
-                                <li><strong>Zoeken</strong> over kanalen en streamingdiensten</li>
-                                <li><strong>Persoonlijke aanbevelingen</strong></li>
-                                <li><strong>Huur of koop</strong> films vers uit de cinema</li>
-                            </ul>
-                        </div>
-                        -->
+                       
 
                         <div class="tier-info" id="entertainment-box-info"></div>
                         <div class="entertainment-box-image">
@@ -351,7 +338,7 @@
                     </div>
                 </div>
 
-                <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Bestellen</button>
+                <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Verder naar bestellen</button>
 
                 <div class="save-for-later">
                     <button class="save-btn">Bewaar voor later</button>
@@ -447,16 +434,20 @@
                 <h3 class="sheet-title">Netflix en al je lokale favorieten op één handige plek</h3>
                 <ul class="recommendation-features">
                     <li class="feature-item">
-                        Gepersonaliseerde aanbevelingen over al jouw entertainment
+                        <h4>Gedaan met schakelen tussen apps.</h4>
+                        Alles komt samen in één overzicht – inclusief VRT MAX, VTM GO en GoPlay.
                     </li>
                     <li class="feature-item">
-                        Zoek over alle streamingdiensten heen, ook buiten jouw abonnement
+                        <h4>Ontvang slimme kijktips, helemaal op jouw maat.</h4>
+                        We raden je niet alleen content aan uit je abonnementen, maar ook daarbuiten.
                     </li>
                     <li class="feature-item">
-                        Ontdek nieuwe content, <strong>ook buiten je eigen abonnementen</strong>
+                        <h4>Zoek één keer, vind alles.</h4>
+                        Doorzoek al je apps tegelijk – ook als je er (nog) geen abonnement op hebt.
                     </li>
                     <li class="feature-item">
-                        Huur of koop films vers uit de cinema
+                        <h4>Beheer je abonnementen met één druk op de knop.</h4>
+                        Zet diensten makkelijk aan of uit via onze eenvoudige beheeromgeving.
                     </li>
                 </ul>
                 <div class="product-price-discount">

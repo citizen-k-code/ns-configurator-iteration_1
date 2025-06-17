@@ -186,7 +186,7 @@
     },
     "entertainmentBox": {
       "title": "Entertainment Box",
-      "summary": "Zoeken tussen alle <strong>zenders en streamingdiensten</strong>, <strong>Persoonlijke aanbevelingen</strong>, <strong>Huur of koop films</strong> recht uit de cinema",
+      "summary": "<strong>Alles op één plek</strong>: zenders sport lokale en internationale apps, Zoek en ontdek <strong>over alle diensten</strong>, <strong>Persoonlijke aanbevelingen</strong> over al jouw diensten",
       "price": 5.00,
       "discountValue": 5,
       "discountPeriod": 3,
@@ -217,8 +217,8 @@
     }
   },
   "highlightBlock": {
-    "title": "Extra voordeel met Internet + Mobiel",
-    "content": "Minstens 50% korting op je mobiele abonnement als je het combineert met internet."
+    "title": "Combovoordeel Internet + Mobiel",
+    "content": "Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet."
   },
   "closedStates": {
         "internet": {
@@ -228,8 +228,8 @@
         "mobile": {
             "summary": "Voeg tot <strong>5 mobiele nummers</strong> toe<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
             "highlight": {
-                "title": "Extra voordeel met Internet + Mobiel",
-                "content": "Minstens 50% korting op je mobiele abonnement in combinatie met internet."
+                "title": "Combovoordeel Internet + Mobiel",
+                "content": "Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet."
             }
         },
         "tv": {
@@ -239,8 +239,8 @@
         "entertainment": {
             "summary": "…en nog veel meer.<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
             "highlight": {
-                "title": "Krijg 5% korting op streaming",
-                "content": "Combineer 2 of meer streamingdiensten."
+                "title": "Combovoordeel Streaming",
+                "content": "Krijg 5% korting als je 2 of meer streamingdiensten combineert."
             },
             "showServiceIcons": true
         },
@@ -268,15 +268,15 @@
     },
     "tv_main": {
       "title": "Wat zit er in het tv-pakket",
-      "content": "<p>In het tv-pakket zitten maar liefst 98 zenders.</p><p>De lokale zenders van VTM, Play, VRT, NPO en France. Maar ook internationale zenders als Eurosport, National Geographic, Discovery, Nickolodeon, Comedy Central, Disney en nog veel meer.</p>"
+      "content": "<p>Geniet van meer dan 90 zenders waaronder alle zenders van VRT, VTM, Play, RTL, NPO, BBC, Discovery, National Geographic en de regionale zenders. </p><p>Tip: voor de klassieke tv-ervaring met afstandsbediening en zappen, selecteer je best ook de Entertainment box. Dit gebeurt automatisch als je TV-pakket kies.</p>"
     },
     "tv_entertainment": {
       "title": "Alles over onze streamingdiensten",
       "content": "<div class='paragraph'><h4>Waarom streamingdiensten toevoegen?</h4><p>Zo kan je al je streamingdiensten beheren op één plek en krijg je 1 overzichtelijke factuur voor al je entertainment.</p></div><div class='paragraph'><h4>Heb je al een account op een streamingdienst</h4><p>Dan kan je je bestaande accounts van Netflix, Disney+, HBO Max en Apple TV eenvoudig overzetten.</p></div><div class='paragraph'><h4>Hoe beheer ik mijn diensten?</h4><p>Je pauzeert of stopt je streamingdiensten wanneer je wilt. Of wil je een streamingdienst toevoegen? Je doet het allemaal eenvoudig via je online klantenzone.</p></div>"
     },
     "entertainment_box": {
-      "title": "Wat is een Entertainment Box?",
-      "content": "<p>De Entertainment Box is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot meer dan 90 tv-zenders, je favoriete streamingdiensten en radiozenders.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je favoriete entertainment, recente opnames en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Box inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
+      "title": "Waarom kiezen voor onze Entertainment box? ",
+      "content": "<p>De Entertainment Box is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot meer dan 90 tv-zenders, je favoriete streamingdiensten en radiozenders.</p></div><div class='paragraph'><h4>Geen gedoe meer met switchen tussen apps</h4><p>We bundelen alles van VRT MAX, VTM GO, GoPlay én je betalende streamingdiensten op één plek. Zo vind je jouw favoriete content zonder van app naar app te moeten springen.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je favoriete entertainment, recente opnames en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Box inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
     },
     "permanent_promotion": {
       "title": "Permanent promotion",
