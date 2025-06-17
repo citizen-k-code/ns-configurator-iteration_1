@@ -1686,6 +1686,25 @@ class UnifiedConfigurator {
                     mobileAdvantageAmountElement.textContent = advantageText;
                 }
             }
+        } else if (totalPermanentDiscount > 0) {
+            // Show advantage block for permanent discounts only
+            const advantageText = `Bekijk je voordeel`;
+
+            if (advantageBlock) {
+                advantageBlock.style.display = 'flex';
+                const advantageAmountElement = document.getElementById('advantage-amount');
+                if (advantageAmountElement) {
+                    advantageAmountElement.textContent = advantageText;
+                }
+            }
+
+            if (mobileAdvantage) {
+                mobileAdvantage.style.display = 'block';
+                const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
+                if (mobileAdvantageAmountElement) {
+                    mobileAdvantageAmountElement.textContent = advantageText;
+                }
+            }
         } else {
             if (advantageBlock) advantageBlock.style.display = 'none';
             if (mobileAdvantage) mobileAdvantage.style.display = 'none';
@@ -2524,46 +2543,11 @@ class UnifiedConfigurator {
 
         if (!overlay || !title || !body) return;
 
-        // Get temporary discount data
+        // Get temporary and permanent discount data
         const temporaryData = this.calculateTotalTemporaryDiscount();
-
-        // Sort discounts by duration (shortest first)
-        const sortedDiscounts = temporaryData.discounts.sort((a, b) => a.discountPeriod - b.discountPeriod);
-
-        // Create discount overview
-        const discountList = sortedDiscounts.map(discount =>
-            `<li>${discount.discountPeriod} maanden <strong>€${discount.discountValue.toFixed(2).replace('.', ',')} korting</strong> op ${discount.product}</li>`
-        ).join('');
-
-        // Calculate price evolution based on temporary discount expiration
-        const { total: currentPrice } = this.calculateTotal();
-
-        // Get unique discount periods
-        const uniquePeriods = [...new Set(temporaryData.discounts.map(d => d.discountPeriod))].sort((a, b) => a - b);
-
-        // Calculate price progression
-        const priceProgression = [];
-        priceProgression.push({
-            period: 0,
-            price: currentPrice,
-            description: `<strong>€${currentPrice.toFixed(2).replace('.', ',')}/maand</strong> gedurende de eerste ${uniquePeriods[0] || 3} maanden`
-        });
-
-        let cumulativePrice = currentPrice;
-        uniquePeriods.forEach(period => {
-            // Find all discounts that expire at this period
-            const expiringDiscounts = temporaryData.discounts.filter(d => d.discountPeriod === period);
-            const totalExpiringDiscount = expiringDiscounts.reduce((sum, d) => sum + d.discountValue, 0);
-
-            cumulativePrice += totalExpiringDiscount;
-            priceProgression.push({
-                period: period,
-                price: cumulativePrice,
-                description: `<strong>€${cumulativePrice.toFixed(2).replace('.', ',')}/maand</strong> na ${period} maanden`
-            });
-        });
-
-        const priceProgressionList = priceProgression.map(p => `<li>${p.description}</li>`).join('');
+        const permanentData = this.calculateTotalPermanentDiscount();
+        const hasTemporaryDiscounts = temporaryData.total > 0;
+        const hasPermanentDiscounts = permanentData.total > 0;
 
         // Create bundelvoordelen list - include both mobile and entertainment permanent discounts
         const bundleAdvantages = [];
@@ -2589,44 +2573,101 @@ class UnifiedConfigurator {
             `<li>${advantage}</li>`
         ).join('');
 
-        // Calculate total permanent discount per year
-        const permanentData = this.calculateTotalPermanentDiscount();
-
         title.textContent = 'Jouw voordeel';
-        body.innerHTML = `
-            <div class="advantage-section">
-                <h4>Overzicht van je kortingen</h4>
-                <ul>
-                    ${discountList}
-                </ul>
-            </div>
 
-            <div class="advantage-section">
-                <h4>Je betaalt</h4>
-                <ul>
-                    ${priceProgressionList}
-                </ul>
+        if (hasTemporaryDiscounts) {
+            // Show full advantage sheet with temporary discounts
+            // Sort discounts by duration (shortest first)
+            const sortedDiscounts = temporaryData.discounts.sort((a, b) => a.discountPeriod - b.discountPeriod);
 
-                <div class="advantage-total">
-                    Totaal voordeel: €${temporaryData.total.toFixed(2).replace('.', ',')}
+            // Create discount overview
+            const discountList = sortedDiscounts.map(discount =>
+                `<li>${discount.discountPeriod} maanden <strong>€${discount.discountValue.toFixed(2).replace('.', ',')} korting</strong> op ${discount.product}</li>`
+            ).join('');
+
+            // Calculate price evolution based on temporary discount expiration
+            const { total: currentPrice } = this.calculateTotal();
+
+            // Get unique discount periods
+            const uniquePeriods = [...new Set(temporaryData.discounts.map(d => d.discountPeriod))].sort((a, b) => a - b);
+
+            // Calculate price progression
+            const priceProgression = [];
+            priceProgression.push({
+                period: 0,
+                price: currentPrice,
+                description: `<strong>€${currentPrice.toFixed(2).replace('.', ',')}/maand</strong> gedurende de eerste ${uniquePeriods[0] || 3} maanden`
+            });
+
+            let cumulativePrice = currentPrice;
+            uniquePeriods.forEach(period => {
+                // Find all discounts that expire at this period
+                const expiringDiscounts = temporaryData.discounts.filter(d => d.discountPeriod === period);
+                const totalExpiringDiscount = expiringDiscounts.reduce((sum, d) => sum + d.discountValue, 0);
+
+                cumulativePrice += totalExpiringDiscount;
+                priceProgression.push({
+                    period: period,
+                    price: cumulativePrice,
+                    description: `<strong>€${cumulativePrice.toFixed(2).replace('.', ',')}/maand</strong> na ${period} maanden`
+                });
+            });
+
+            const priceProgressionList = priceProgression.map(p => `<li>${p.description}</li>`).join('');
+
+            body.innerHTML = `
+                <div class="advantage-section">
+                    <h4>Overzicht van je kortingen</h4>
+                    <ul>
+                        ${discountList}
+                    </ul>
                 </div>
-            </div>
 
-            ${bundleAdvantages.length > 0 ? `
-            <div class="advantage-section combo-advantage">
-                <p>Daarnaast geniet je nog van een aantal <strong>combovoordelen:</strong>:</p>
-                <ul>
-                    ${bundleAdvantagesList}
-                </ul>
+                <div class="advantage-section">
+                    <h4>Je betaalt</h4>
+                    <ul>
+                        ${priceProgressionList}
+                    </ul>
 
-                <div class="advantage-extra">
-                    Extra voordeel per jaar: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                    <div class="advantage-total">
+                        Totaal voordeel: €${temporaryData.total.toFixed(2).replace('.', ',')}
+                    </div>
                 </div>
-            </div>
-            ` : ''}
 
-            <p><em>Promo alleen geldig voor nieuwe klanten</em></p>
-        `;
+                ${bundleAdvantages.length > 0 ? `
+                <div class="advantage-section combo-advantage">
+                    <p>Daarnaast geniet je nog van een aantal <strong>combovoordelen:</strong>:</p>
+                    <ul>
+                        ${bundleAdvantagesList}
+                    </ul>
+
+                    <div class="advantage-extra">
+                        Extra voordeel per jaar: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                    </div>
+                </div>
+                ` : ''}
+
+                <p><em>Promo alleen geldig voor nieuwe klanten</em></p>
+            `;
+        } else if (hasPermanentDiscounts) {
+            // Show only permanent discounts (combo advantages)
+            body.innerHTML = `
+                ${bundleAdvantages.length > 0 ? `
+                <div class="advantage-section combo-advantage">
+                    <p>Je geniet van de volgende <strong>combovoordelen:</strong></p>
+                    <ul>
+                        ${bundleAdvantagesList}
+                    </ul>
+
+                    <div class="advantage-extra">
+                        Extra voordeel per jaar: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                    </div>
+                </div>
+                ` : ''}
+
+                <p><em>Promo alleen geldig voor nieuwe klanten</em></p>
+            `;
+        }
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
