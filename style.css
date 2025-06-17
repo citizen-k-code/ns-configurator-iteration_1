@@ -94,31 +94,38 @@
     margin-bottom: 20px;
 }
 
-/* Entertainment Box Recommendation Bottom Sheet */
+/* Entertainment Box Recommendation Modal */
 .entertainment-box-recommendation-sheet {
     background: white;
-    border-radius: 16px 16px 0 0;
+    border-radius: 16px;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 480px;
-    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 32px);
+    max-width: 540px;
+    max-height: calc(100vh - 80px);
+    margin: 0;
     padding: 0;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease-out;
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .entertainment-box-recommendation-sheet .sheet-header {
     position: relative;
     padding: 16px 20px 0;
     border-bottom: none;
+    flex-shrink: 0;
 }
 
 .entertainment-box-recommendation-sheet .sheet-content {
     padding: 0 20px 20px;
     text-align: left;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .recommendation-image {
@@ -200,6 +207,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex-shrink: 0;
+    background: white;
 }
 
 .recommendation-add-btn {
@@ -2008,6 +2017,18 @@ html {
     }
 }
 
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
 /* Mobile Bottom Summary */
 .mobile-bottom-summary {
     position: fixed;
@@ -2133,6 +2154,17 @@ html {
 
     .sheet-footer {
         padding: 30px;
+    }
+
+    /* Entertainment box recommendation modal desktop styles */
+    .entertainment-box-recommendation-sheet {
+        width: calc(100% - 32px);
+        max-width: 540px;
+        margin: 40px 16px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-height: calc(100vh - 80px);
     }
 }
 
