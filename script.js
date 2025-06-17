@@ -110,9 +110,17 @@ class UnifiedConfigurator {
                     this.renderInternetTiers();
                     this.updateInternetInfo();
                     this.renderWifiPods();
-
                 }
             }
+        }
+
+        // WiFi Pods: ?wifipods=3 (number of WiFi pods)
+        const wifiPodsParam = urlParams.get('wifipods');
+        if (wifiPodsParam) {
+            const wifiPodsCount = Math.min(parseInt(wifiPodsParam), 5);
+            this.state.internet.wifiPods = wifiPodsCount;
+            this.renderWifiPods();
+            this.updateCostSummary();
         }
 
         // Mobile: ?mobile=2,3,1 (comma-separated tier IDs for each simcard)

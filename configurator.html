@@ -438,41 +438,41 @@
     <!-- Entertainment Box Recommendation Bottom Sheet -->
     <div class="sheet-overlay" id="entertainment-box-recommendation-overlay" style="display: none;"
         onclick="app.closeEntertainmentBoxRecommendation()">
-        <div class="entertainment-box-recommendation-sheet" id="entertainment-box-recommendation-sheet" onclick="event.stopPropagation()">
+        <div class="entertainment-box-recommendation-sheet" id="entertainment-box-recommendation-sheet"
+            onclick="event.stopPropagation()">
             <div class="sheet-header">
                 <button class="sheet-close-btn" onclick="app.closeEntertainmentBoxRecommendation()">×</button>
             </div>
             <div class="sheet-content">
-                <div class="recommendation-image">
-                    <img src="final_assets/entertainment_box_1.jpg" alt="Entertainment Box" />
-                </div>
                 <h3 class="sheet-title">Netflix en al je lokale favorieten op één handige plek</h3>
-                <div class="recommendation-features">
-                    <div class="feature-item">
-                        <span class="feature-icon">››</span>
-                        <span class="feature-text">Gepersonaliseerde aanbevelingen over al jouw entertainment</span>
+                <ul class="recommendation-features">
+                    <li class="feature-item">
+                        Gepersonaliseerde aanbevelingen over al jouw entertainment
+                    </li>
+                    <li class="feature-item">
+                        Zoek over alle streamingdiensten heen, ook buiten jouw abonnement
+                    </li>
+                    <li class="feature-item">
+                        Ontdek nieuwe content, <strong>ook buiten je eigen abonnementen</strong>
+                    </li>
+                    <li class="feature-item">
+                        Huur of koop films vers uit de cinema
+                    </li>
+                </ul>
+                <div class="product-price-discount">
+                    <div class="original-price">€5,00</div>
+                    <div class="discount-price">
+                        <span class="price-amount">€0,00</span>
+                        <span class="price-period">/maand</span>
                     </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">››</span>
-                        <span class="feature-text">Zoek over alle streamingdiensten heen, ook buiten jouw abonnement</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">››</span>
-                        <span class="feature-text">Ontdek nieuwe content, <strong>ook buiten je eigen abonnementen</strong></span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">››</span>
-                        <span class="feature-text">Huur of koop films vers uit de cinema</span>
-                    </div>
-                </div>
-                <div class="recommendation-price">
-                    <span class="price-amount">€5,00</span>
-                    <span class="price-period">/maand</span>
+                    <div class="discount-info">gedurende 3 maanden</div>
                 </div>
             </div>
             <div class="sheet-footer recommendation-footer">
-                <button class="recommendation-add-btn" onclick="app.addEntertainmentBoxAndContinue()">Voeg toe aan mijn bestelling</button>
-                <button class="recommendation-skip-btn" onclick="app.continueWithoutEntertainmentBox()">Nee bedankt, Ik ga verder zonder</button>
+                <button class="recommendation-add-btn" onclick="app.addEntertainmentBoxAndContinue()">Voeg toe aan mijn
+                    bestelling</button>
+                <button class="recommendation-skip-btn" onclick="app.continueWithoutEntertainmentBox()">Nee bedankt, Ik
+                    ga verder zonder</button>
             </div>
         </div>
     </div>

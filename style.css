@@ -112,6 +112,10 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    background-image: url("final_assets/ent-overlay-background.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+
 }
 
 .entertainment-box-recommendation-sheet .sheet-header {
@@ -122,44 +126,31 @@
 }
 
 .entertainment-box-recommendation-sheet .sheet-content {
-    padding: 0 20px 20px;
+    padding: 120px 20px 20px;
     text-align: left;
     flex: 1;
     overflow-y: auto;
 }
 
-.recommendation-image {
-    width: 100%;
-    height: 200px;
-    margin-bottom: 24px;
-    border-radius: 12px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.recommendation-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .entertainment-box-recommendation-sheet .sheet-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: #2D3648;
     line-height: 1.3;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     text-align: left;
+}
+
+.entertainment-box-recommendation-sheet .product-price-discount {
+    margin-bottom: 0;
 }
 
 .recommendation-features {
     margin-bottom: 24px;
+    padding-left: 16px;
 }
 
+/*
 .feature-item {
     display: flex;
     align-items: flex-start;
@@ -181,6 +172,7 @@
     line-height: 1.4;
     flex: 1;
 }
+*/
 
 .recommendation-price {
     display: flex;
@@ -202,11 +194,11 @@
 }
 
 .recommendation-footer {
-    padding: 20px;
+    padding: 16px;
     border-top: 1px solid #E5E9F0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
     background: white;
 }
@@ -1986,7 +1978,7 @@ html {
 }
 
 .sheet-footer {
-    padding: 20px;
+    padding: 16px;
     border-top: 1px solid #e0e0e0;
 }
 
@@ -2451,7 +2443,6 @@ html {
 
 .packs-swiper {
     width: 100%;
-    padding-bottom: 40px;
     overflow: visible;
 }
 
@@ -2940,10 +2931,8 @@ html {
 }
 
 .feature-item {
-    display: block;
-    font-size: 12px;
-    color: #717D96;
-    margin-bottom: 4px;
+    font-size: 14px;
+    margin-bottom: 8px;
 }
 
 .product-price {
@@ -2963,13 +2952,14 @@ html {
 
 .product-price-discount {
     margin-bottom: 16px;
+    text-align: right;
 }
 
 .original-price {
     font-size: 14px;
     color: #717D96;
     text-decoration: line-through;
-    margin-bottom: 2px;
+    margin-bottom: -2px;
 }
 
 .discount-price .price-amount {
