@@ -254,6 +254,9 @@
             "showImage": true
         }
     },
+  "modalTitles": {
+    "multipleServices": "Al je streaming services"
+  },
   "tooltips": {
     "internet": {
       "title": "Welke internetsnelheid heb ik nodig?",

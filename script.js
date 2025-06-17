@@ -2658,6 +2658,31 @@ class UnifiedConfigurator {
                 }
             }
 
+            // Update the modal title based on selected streaming services
+            const titleElement = overlay.querySelector('.sheet-title');
+            if (titleElement) {
+                const selectedServices = Array.from(this.state.selectedEntertainmentServices);
+                let titleText = '';
+
+                if (selectedServices.length === 1) {
+                    // Single service: use the service name
+                    const serviceName = this.getServiceDisplayName(selectedServices[0]);
+                    titleText = `${serviceName} en al je lokale favorieten op één handige plek`;
+                } else if (selectedServices.length >= 2 && selectedServices.length <= 3) {
+                    // 2-3 services: list them separated by commas
+                    const serviceNames = selectedServices.map(service => this.getServiceDisplayName(service));
+                    titleText = `${serviceNames.join(', ')} en al je lokale favorieten op één handige plek`;
+                } else if (selectedServices.length > 3) {
+                    // More than 3 services: use generic text
+                    titleText = `${this.data.modalTitles.multipleServices} en al je lokale favorieten op één handige plek`;
+                } else {
+                    // Fallback (shouldn't happen since this modal only shows when services are selected)
+                    titleText = 'Netflix en al je lokale favorieten op één handige plek';
+                }
+
+                titleElement.textContent = titleText;
+            }
+
             overlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
