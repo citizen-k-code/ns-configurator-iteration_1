@@ -94,6 +94,149 @@
     margin-bottom: 20px;
 }
 
+/* Entertainment Box Recommendation Bottom Sheet */
+.entertainment-box-recommendation-sheet {
+    background: white;
+    border-radius: 16px 16px 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+.entertainment-box-recommendation-sheet .sheet-header {
+    position: relative;
+    padding: 16px 20px 0;
+    border-bottom: none;
+}
+
+.entertainment-box-recommendation-sheet .sheet-content {
+    padding: 0 20px 20px;
+    text-align: left;
+}
+
+.recommendation-image {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.recommendation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.entertainment-box-recommendation-sheet .sheet-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2D3648;
+    line-height: 1.3;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.recommendation-features {
+    margin-bottom: 24px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 12px;
+}
+
+.feature-icon {
+    color: #2D3648;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    color: #2D3648;
+    font-size: 15px;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.recommendation-price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 24px;
+    justify-content: flex-start;
+}
+
+.price-amount {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.price-period {
+    font-size: 16px;
+    color: #717D96;
+}
+
+.recommendation-footer {
+    padding: 20px;
+    border-top: 1px solid #E5E9F0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recommendation-add-btn {
+    background-color: #2D3648;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.recommendation-add-btn:hover {
+    background-color: #1a2332;
+}
+
+.recommendation-skip-btn {
+    background-color: transparent;
+    color: #2D3648;
+    border: 2px solid #E5E9F0;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.recommendation-skip-btn:hover {
+    border-color: #2D3648;
+    background-color: #f8f9fa;
+}
+
 .entertainment-info-link {
     color: #2D3648;
     text-decoration: underline;

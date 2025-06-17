@@ -446,9 +446,14 @@ class UnifiedConfigurator {
     }
 
     handleOrderButton() {
-        // Always redirect to success page when order button is clicked
-        console.log('Order placed!', this.state);
-        window.location.href = 'success.html';
+        // Check if we should show entertainment box recommendation
+        if (this.shouldShowEntertainmentBoxRecommendation()) {
+            this.openEntertainmentBoxRecommendation();
+        } else {
+            // Directly go to success page
+            console.log('Order placed!', this.state);
+            window.location.href = 'success.html';
+        }
     }
 
     handleMobileOrderButton() {
@@ -2625,6 +2630,81 @@ class UnifiedConfigurator {
             overlay.style.display = 'none';
             document.body.style.overflow = '';
         }
+    }
+
+    // Entertainment Box Recommendation methods
+    shouldShowEntertainmentBoxRecommendation() {
+        // Check if TV is not active AND Entertainment Box is not active AND user has streaming services
+        const tvNotActive = !this.state.tv.enabled;
+        const entertainmentBoxNotActive = !this.state.entertainmentBox.enabled;
+        const hasStreamingServices = this.state.selectedEntertainmentServices.size > 0;
+
+        return tvNotActive && entertainmentBoxNotActive && hasStreamingServices;
+    }
+
+    openEntertainmentBoxRecommendation() {
+        const overlay = document.getElementById('entertainment-box-recommendation-overlay');
+        if (overlay) {
+            // Update the price in the recommendation based on current data
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (entertainmentBoxData) {
+                const priceElement = overlay.querySelector('.price-amount');
+                if (priceElement) {
+                    let displayPrice = entertainmentBoxData.price;
+                    if (entertainmentBoxData.discountValue) {
+                        displayPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                    }
+                    priceElement.textContent = `€${displayPrice.toFixed(2).replace('.', ',')}`;
+                }
+            }
+
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeEntertainmentBoxRecommendation() {
+        const overlay = document.getElementById('entertainment-box-recommendation-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    addEntertainmentBoxAndContinue() {
+        // Enable Entertainment Box
+        this.state.entertainmentBox.enabled = true;
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.checked = true;
+        }
+        if (entertainmentBoxContent) {
+            entertainmentBoxContent.style.display = 'block';
+            this.updateEntertainmentBoxStandaloneInfo();
+            this.removeProductClosedState('entertainmentBox');
+        }
+
+        // Update UI states
+        this.updateProductHeaderStates();
+        this.updateCostSummary();
+
+        // Close the recommendation sheet
+        this.closeEntertainmentBoxRecommendation();
+
+        // Continue to success page
+        console.log('Order placed with Entertainment Box added!', this.state);
+        window.location.href = 'success.html';
+    }
+
+    continueWithoutEntertainmentBox() {
+        // Close the recommendation sheet
+        this.closeEntertainmentBoxRecommendation();
+
+        // Continue to success page without Entertainment Box
+        console.log('Order placed without Entertainment Box!', this.state);
+        window.location.href = 'success.html';
     }
 }
 
