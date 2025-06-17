@@ -152,7 +152,7 @@ class UnifiedConfigurator {
                 tvToggle.checked = true;
                 tvContent.style.display = 'block';
                 this.updateTvInfo();
-                this.renderEntertainmentBoxTiers();
+                //this.renderEntertainmentBoxTiers();
 
                 // Auto-check the TV checkbox since Entertainment Box is enabled by default with TV
                 const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
@@ -171,6 +171,7 @@ class UnifiedConfigurator {
                 if (entertainmentBoxContent) {
                     entertainmentBoxContent.style.display = 'block';
                     this.updateEntertainmentBoxStandaloneInfo();
+                    this.removeProductClosedState('entertainmentBox');
                 }
             }
         }
@@ -185,6 +186,20 @@ class UnifiedConfigurator {
                 fixedPhoneToggle.checked = true;
                 fixedPhoneContent.style.display = 'block';
                 this.updateFixedPhoneInfo();
+            }
+        }
+
+        // Entertainment: ?entertainment=1 (1 enables entertainment)
+        const entertainmentEnabled = urlParams.get('entertainment');
+        if (entertainmentEnabled === '1') {
+            this.state.entertainment.enabled = true;
+            const entertainmentToggle = document.getElementById('entertainment-toggle');
+            const entertainmentContent = document.getElementById('entertainment-content');
+            if (entertainmentToggle && entertainmentContent) {
+                entertainmentToggle.checked = true;
+                entertainmentContent.style.display = 'block';
+                this.renderAvailableEntertainmentServices();
+                this.renderSelectedEntertainmentServices();
             }
         }
     }
@@ -231,9 +246,13 @@ class UnifiedConfigurator {
         if (tvEntertainmentBoxCheckbox) {
             tvEntertainmentBoxCheckbox.addEventListener('change', (e) => {
                 const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                const warningHighlight = document.getElementById('warning-highlight');
                 if (entertainmentBoxToggle) {
                     entertainmentBoxToggle.checked = e.target.checked;
                     this.toggleProduct('entertainmentBox', e.target.checked);
+                }
+                if (warningHighlight) {
+                    warningHighlight.style.display = e.target.checked ? 'none' : 'block';
                 }
             });
         }
@@ -256,8 +275,11 @@ class UnifiedConfigurator {
 
                 // Sync the TV checkbox when Entertainment Box is toggled
                 const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+                const warningHighlight = document.getElementById('warning-highlight');
+
                 if (tvCheckbox && this.state.tv.enabled) {
                     tvCheckbox.checked = e.target.checked;
+                    warningHighlight.style.display = tvCheckbox.checked ? 'none' : 'block';
                 }
             });
         }
@@ -447,9 +469,11 @@ class UnifiedConfigurator {
                 this.removeProductClosedState(productType);
                 if (content) content.style.display = 'block';
                 if (productType === 'internet') {
-                    this.renderInternetTiers();
+                    console.log("internet default tier = ", this.data.products.internet.defaultTier);
+
                     this.state.internet.selectedTier = this.data.products.internet.defaultTier;
                     this.state.internet.wifiPods = 0;
+                    this.renderInternetTiers();
                     this.updateInternetInfo();
                     this.renderWifiPodsSection();
                     if (this.state.mobile.enabled) {
@@ -463,27 +487,32 @@ class UnifiedConfigurator {
                     }];
                     this.renderMobileSimcards();
                 } else if (productType === 'tv') {
-                    this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
+                    //this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
                     this.updateTvInfo();
-                    this.renderEntertainmentBoxTiers();
+                    //this.renderEntertainmentBoxTiers();
 
                     // Auto-check the TV checkbox since Entertainment Box is enabled by default
                     const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+                    const warningHighlight = document.getElementById('warning-highlight');
                     if (tvCheckbox) {
                         tvCheckbox.checked = true;
+                        warningHighlight.style.display = 'none';
                     }
 
-                    // Enable Entertainment Box by default when TV is enabled
-                    this.state.entertainmentBox.enabled = true;
-                    const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
-                    const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+                    if (!this.state.entertainmentBox.enabled) {
+                        // Enable Entertainment Box by default when TV is enabled
+                        this.state.entertainmentBox.enabled = true;
+                        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                        const entertainmentBoxContent = document.getElementById('entertainment-box-content');
 
-                    if (entertainmentBoxToggle) {
-                        entertainmentBoxToggle.checked = true;
-                    }
-                    if (entertainmentBoxContent) {
-                        entertainmentBoxContent.style.display = 'block';
-                        this.updateEntertainmentBoxStandaloneInfo();
+                        if (entertainmentBoxToggle) {
+                            entertainmentBoxToggle.checked = true;
+                        }
+                        if (entertainmentBoxContent) {
+                            entertainmentBoxContent.style.display = 'block';
+                            this.updateEntertainmentBoxStandaloneInfo();
+                            this.removeProductClosedState('entertainmentBox');
+                        }
                     }
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
@@ -578,6 +607,9 @@ class UnifiedConfigurator {
         const tiers = this.data.products.internet.tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => {
+
+            console.log("selected internet tier = ", this.state.internet.selectedTier);
+
             const isSelected = tier.id === this.state.internet.selectedTier;
             let finalPrice = tier.price;
             let hasDiscount = false;
@@ -927,6 +959,7 @@ class UnifiedConfigurator {
         `;
     }
 
+    /*
     renderEntertainmentBoxTiers() {
         const tiersContainer = document.getElementById('entertainment-box-tiers');
         if (!tiersContainer || !this.data) return;
@@ -948,8 +981,11 @@ class UnifiedConfigurator {
         this.renderEntertainmentBoxTiers();
         this.updateCostSummary();
     }
+    */
 
     updateEntertainmentBoxInfo() {
+        ondeviceorientationabsolute.log("ent box update from TV ");
+
         const tier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
         const infoContainer = document.getElementById('entertainment-box-info');
 
@@ -1259,6 +1295,7 @@ class UnifiedConfigurator {
             }
 
             // Entertainment Box cost
+            /*
             const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
             if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
                 if (entertainmentBoxTier.discountValue !== undefined) {
@@ -1268,6 +1305,7 @@ class UnifiedConfigurator {
                     total += entertainmentBoxTier.price;
                 }
             }
+            */
         }
 
         // Fixed Phone cost
@@ -1277,6 +1315,21 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box cost (only when standalone - not part of TV)
+        if (this.state.entertainmentBox.enabled) {
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+
+            console.log("entertainmentBoxData = ", entertainmentBoxData);
+
+            //if (entertainmentBoxData) {
+            if (entertainmentBoxData.discountValue) {
+                total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                totalTemporaryDiscount += entertainmentBoxData.discountValue;
+            } else {
+                total += entertainmentBoxData.price;
+            }
+            //}
+        }
+        /*
         if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData) {
@@ -1288,6 +1341,7 @@ class UnifiedConfigurator {
                 }
             }
         }
+        */
 
         // Entertainment costs
         const entertainmentTotal = this.calculateEntertainmentTotal();
@@ -1427,9 +1481,7 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box temporary discount (independent calculation)
-        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
-            // Only calculate standalone Entertainment Box discount when TV is not enabled
-            // When TV is enabled, Entertainment Box discount is already calculated in TV section
+        if (this.state.entertainmentBox.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData && entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
                 totalTemporaryDiscount += entertainmentBoxData.discountValue * entertainmentBoxData.discountPeriod;
@@ -1535,11 +1587,11 @@ class UnifiedConfigurator {
             }
         }
 
-        if (this.state.entertainmentBox.enabled && !this.state.tv.enabled) {
+        if (this.state.entertainmentBox.enabled) {
             // Only add standalone Entertainment Box discount period when TV is not enabled
             // When TV is enabled, Entertainment Box discount period is already added in TV section
             const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData && entertainmentBoxData.discountPeriod) {
+            if (entertainmentBoxData.discountPeriod) {
                 periods.push(entertainmentBoxData.discountPeriod);
             }
         }
@@ -1577,6 +1629,8 @@ class UnifiedConfigurator {
         // Add caption below price if there are temporary discounts
         const priceCaption = document.getElementById('price-caption');
         const mobilePriceCaption = document.getElementById('mobile-price-caption');
+
+        console.log("Overview update = ", total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount);
 
         if (totalTemporaryDiscount > 0) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
@@ -1756,7 +1810,7 @@ class UnifiedConfigurator {
         }
 
         // Entertainment Box (independent section - only when not part of TV)
-        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
+        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
                 let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
@@ -2288,14 +2342,20 @@ class UnifiedConfigurator {
 
         // Get closed state data
         let closedStateData;
+        /*
         if (productType === 'entertainment' && this.entertainmentData) {
-            closedStateData = this.entertainmentData.closedStates?.[productType];
+            closedStateData = this.data?.closedStates?.[productType];
         } else if (productType === 'entertainmentBox') {
             // Check both data sources for entertainment box
             closedStateData = this.data?.closedStates?.[productType] || this.entertainmentData?.closedStates?.[productType];
         } else {
             closedStateData = this.data?.closedStates?.[productType];
         }
+        */
+
+        closedStateData = this.data?.closedStates?.[productType];
+
+        console.log("Closed State info = ", closedStateData);
 
         if (!closedStateData) {
             console.log(`No closed state data found for ${productType}`);
@@ -2325,7 +2385,9 @@ class UnifiedConfigurator {
         if (productType === 'entertainmentBox' && closedStateData.showImage) {
             closedStateHtml += `
                 <div class="entertainment-box-container">
-                    <div class="entertainment-box-image"></div>
+                    <div class="entertainment-box-image">
+                        <div class="box-image-wrap"><img src="final_assets/entertainment_box_1.jpg" /></div>
+                    </div>
                     <div class="entertainment-box-content">
             `;
         }
@@ -2457,7 +2519,7 @@ class UnifiedConfigurator {
 
         // Create discount overview
         const discountList = sortedDiscounts.map(discount =>
-            `<li>${discount.discountPeriod} maanden €${discount.discountValue.toFixed(2).replace('.', ',')} korting op ${discount.product}</li>`
+            `<li>${discount.discountPeriod} maanden <strong>€${discount.discountValue.toFixed(2).replace('.', ',')} korting</strong> op ${discount.product}</li>`
         ).join('');
 
         // Calculate price evolution based on temporary discount expiration
@@ -2471,7 +2533,7 @@ class UnifiedConfigurator {
         priceProgression.push({
             period: 0,
             price: currentPrice,
-            description: `€${currentPrice.toFixed(2).replace('.', ',')}/maand gedurende de eerste ${uniquePeriods[0] || 3} maanden`
+            description: `<strong>€${currentPrice.toFixed(2).replace('.', ',')}/maand</strong> gedurende de eerste ${uniquePeriods[0] || 3} maanden`
         });
 
         let cumulativePrice = currentPrice;
@@ -2484,7 +2546,7 @@ class UnifiedConfigurator {
             priceProgression.push({
                 period: period,
                 price: cumulativePrice,
-                description: `€${cumulativePrice.toFixed(2).replace('.', ',')}/maand na ${period} maanden`
+                description: `<strong>€${cumulativePrice.toFixed(2).replace('.', ',')}/maand</strong> na ${period} maanden`
             });
         });
 

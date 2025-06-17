@@ -4,7 +4,7 @@
       "title": "Internet",
       "tooltip": "Welke snelheid heb ik nodig?",
       "closedState": {
-        "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br>Vanaf <strong>€ ##PRICE##/maand</strong>",
+        "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br />Vanaf <strong>€ ##PRICE##/maand</strong>",
         "showHighlight": false,
         "highlight": null
       },
@@ -222,7 +222,7 @@
   },
   "closedStates": {
         "internet": {
-            "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br />Vanaf </strong>€ ##PRICE##/maand</strong>",
+            "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br />Vanaf <strong>€ ##PRICE##/maand</strong>",
             "highlight": null
         },
         "mobile": {
