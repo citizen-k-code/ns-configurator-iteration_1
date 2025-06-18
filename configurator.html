@@ -151,9 +151,11 @@
                                     <input type="checkbox" id="tv-entertainment-box-checkbox" checked>
                                     <div class="tv-checkmark"></div>
                                     <div class="tv-checkbox-content">
-                                        <div class="tv-checkbox-title">Met de <a href="#entertainment-box-block" class="entertainment-box-link">Entertainment Box</a></div>
+                                        <div class="tv-checkbox-title">Met de <a href="#entertainment-box-block"
+                                                class="entertainment-box-link">Entertainment Box</a></div>
                                         <div class="tv-checkbox-description">
-                                            Ervaar de klassieke tv-ervaring met afstandsbediening en het gemak van zappen. 
+                                            Ervaar de klassieke tv-ervaring met afstandsbediening en het gemak van
+                                            zappen.
                                         </div>
                                     </div>
                                 </div>
@@ -220,21 +222,21 @@
                     <div class="product-content" id="entertainment-content" style="display: none;">
                         <!-- Top section: Info link -->
                         <div class="entertainment-info-section">
-                            <a href="#" class="entertainment-info-link"
-                                onclick="app.Wat al ik al str(); return false;">
-                                Wat als ik al streamingdiensten heb?
-                            </a>
+                            <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Wat als ik al
+                                streamingdiensten heb?
+                            </div>
                         </div>
 
                         <!-- Mid section: Selected services -->
-                        <div class="selected-entertainment-services" id="selected-entertainment-services">
+                        <div class=" selected-entertainment-services" id="selected-entertainment-services">
                             <!-- Combo discount banner (shown when 2+ services selected) -->
                             <div class="combo-discount-banner" id="combo-discount-banner" style="display: none;">
                                 <div class="highlight-title">Je combovoordeel is geactiveerd</div>
-                                <div class="highlight-content">Je krijgt <strong>5% korting</strong> op al je streamingdiensten</div>
+                                <div class="highlight-content">Je krijgt <strong>5% korting</strong> op al je
+                                    streamingdiensten</div>
                             </div>
 
-                            
+
                             <!-- Selected services will be rendered here -->
                         </div>
 
@@ -245,7 +247,8 @@
 
                                 <div class="promo-highlight">
                                     <div class="highlight-title">Combovoordeel Streaming</div>
-                                    <div class="highlight-content">Krijg 5% korting als je 2 of meer streamingdiensten combineert.</div>
+                                    <div class="highlight-content">Krijg 5% korting als je 2 of meer streamingdiensten
+                                        combineert.</div>
                                 </div>
                                 <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan
                                     je makkelijk overzetten.</p>
@@ -270,13 +273,14 @@
                         </label>
                     </div>
                     <div class="product-content" id="entertainment-box-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('entertainment_box')">Waarom kiezen voor onze Entertainment box? </div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('entertainment_box')">Waarom kiezen voor
+                            onze Entertainment box? </div>
                         <div class="entertainment-box-highlight">
                             <div class="highlight-title">Zappen of streamen - of allebei.</div>
-                            <div class="highlight-content">Met onze box haal je het beste uit twee werelden. 
+                            <div class="highlight-content">Met onze box haal je het beste uit twee werelden.
                             </div>
                         </div>
-                       
+
 
                         <div class="tier-info" id="entertainment-box-info"></div>
                         <div class="entertainment-box-image">
@@ -338,7 +342,8 @@
                     </div>
                 </div>
 
-                <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Verder naar bestellen</button>
+                <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Verder naar
+                    bestellen</button>
 
                 <div class="save-for-later">
                     <button class="save-btn">Bewaar voor later</button>
@@ -434,20 +439,17 @@
                 <h3 class="sheet-title">Netflix en al je lokale favorieten op één handige plek</h3>
                 <ul class="recommendation-features">
                     <li class="feature-item">
-                        <h4>Gedaan met schakelen tussen apps.</h4>
-                        Alles komt samen in één overzicht – inclusief VRT MAX, VTM GO en GoPlay.
+                        Gedaan met schakelen tussen apps. Alles van VRT MAX, VTM GO, GoPlay en je andere
+                        streamingdiensten zie je in één overzicht.
                     </li>
                     <li class="feature-item">
-                        <h4>Ontvang slimme kijktips, helemaal op jouw maat.</h4>
-                        We raden je niet alleen content aan uit je abonnementen, maar ook daarbuiten.
+                        We geven je persoonlijke kijktips, ook buiten je abonnementen.
                     </li>
                     <li class="feature-item">
-                        <h4>Zoek één keer, vind alles.</h4>
-                        Doorzoek al je apps tegelijk – ook als je er (nog) geen abonnement op hebt.
+                        Zoek één keer en doorzoek al je apps tegelijk.
                     </li>
                     <li class="feature-item">
-                        <h4>Beheer je abonnementen met één druk op de knop.</h4>
-                        Zet diensten makkelijk aan of uit via onze eenvoudige beheeromgeving.
+                        Beheer je abonnementen eenvoudig en zet ze aan of uit wanneer je wil.
                     </li>
                 </ul>
                 <div class="product-price-discount">
