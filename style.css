@@ -276,7 +276,7 @@
     border-top: 1px solid #E5E9F0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
     background: white;
 }
@@ -1995,7 +1995,7 @@ html {
 
 .sheet-content {
     flex: 1;
-    padding: 0 20px 24px;
+    padding: 0 20px 8px;
     overflow-y: auto;
 }
 
@@ -3377,7 +3377,7 @@ div.paragraph h5 {
 .box-image-wrap {
     width: 120px;
     position: absolute;
-    bottom: -25px;
+    bottom: -35px;
 }
 
 .box-image-wrap img {
@@ -3409,4 +3409,12 @@ div.paragraph h5 {
 
 #fixed-phone-content.product-content {
     margin-top: 16px;
+}
+
+.entertainment-box-deselection-dialog .sheet-title {
+    font-size: 18px;
+}
+
+.entertainment-box-deselection-dialog .dialog-content {
+    padding: 0;
 }
