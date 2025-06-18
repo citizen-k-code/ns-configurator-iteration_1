@@ -238,6 +238,90 @@
     background-color: #f8f9fa;
 }
 
+/* Entertainment Box Deselection Dialog */
+.entertainment-box-deselection-dialog {
+    background: white;
+    border-radius: 16px 16px 0 0;
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: auto auto 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-content {
+    padding: 0 16px 24px;
+}
+
+.dialog-content p {
+    color: #2D3648;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.confirmation-footer {
+    padding: 16px;
+    border-top: 1px solid #E5E9F0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-shrink: 0;
+    background: white;
+}
+
+.confirmation-keep-btn {
+    background-color: #2D3648;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.confirmation-keep-btn:hover {
+    background-color: #1a2332;
+}
+
+.confirmation-remove-btn {
+    background-color: transparent;
+    color: #2D3648;
+    border: 2px solid #E5E9F0;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.confirmation-remove-btn:hover {
+    border-color: #2D3648;
+    background-color: #f8f9fa;
+}
+
+@media (min-width: 1024px) {
+    .entertainment-box-deselection-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        border-radius: 16px;
+        max-height: calc(100vh - 80px);
+        max-width: 540px;
+        width: calc(100% - 32px);
+    }
+}
+
 .entertainment-info-link {
     color: #2D3648;
     text-decoration: underline;

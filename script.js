@@ -253,6 +253,14 @@ class UnifiedConfigurator {
         const tvEntertainmentBoxCheckbox = document.getElementById('tv-entertainment-box-checkbox');
         if (tvEntertainmentBoxCheckbox) {
             tvEntertainmentBoxCheckbox.addEventListener('change', (e) => {
+                // Check if we need to show confirmation dialog when unchecking
+                if (!e.target.checked && this.shouldShowDeselectionConfirmation()) {
+                    // Prevent the checkbox from unchecking and show confirmation dialog
+                    e.target.checked = true;
+                    this.openEntertainmentBoxDeselectionDialog();
+                    return;
+                }
+
                 const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
                 const warningHighlight = document.getElementById('warning-highlight');
                 if (entertainmentBoxToggle) {
@@ -279,6 +287,14 @@ class UnifiedConfigurator {
         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
         if (entertainmentBoxToggle) {
             entertainmentBoxToggle.addEventListener('change', (e) => {
+                // Check if we need to show confirmation dialog when deselecting
+                if (!e.target.checked && this.shouldShowDeselectionConfirmation()) {
+                    // Prevent the toggle from changing and show confirmation dialog
+                    e.target.checked = true;
+                    this.openEntertainmentBoxDeselectionDialog();
+                    return;
+                }
+
                 this.toggleProduct('entertainmentBox', e.target.checked);
 
                 // Sync the TV checkbox when Entertainment Box is toggled
@@ -2777,6 +2793,76 @@ class UnifiedConfigurator {
         // Continue to success page without Entertainment Box
         console.log('Order placed without Entertainment Box!', this.state);
         window.location.href = 'success.html';
+    }
+
+    // Entertainment Box Deselection Confirmation methods
+    shouldShowDeselectionConfirmation() {
+        // Show confirmation if TV is enabled OR if user has streaming services selected
+        const hasTv = this.state.tv.enabled;
+        const hasStreamingServices = this.state.selectedEntertainmentServices.size > 0;
+        
+        return hasTv || hasStreamingServices;
+    }
+
+    openEntertainmentBoxDeselectionDialog() {
+        const overlay = document.getElementById('entertainment-box-deselection-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeEntertainmentBoxDeselectionDialog() {
+        const overlay = document.getElementById('entertainment-box-deselection-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    keepEntertainmentBox() {
+        // Close the dialog and keep Entertainment Box selected
+        this.closeEntertainmentBoxDeselectionDialog();
+        // Ensure the toggle and checkbox remain checked
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+        
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.checked = true;
+        }
+        if (tvCheckbox && this.state.tv.enabled) {
+            tvCheckbox.checked = true;
+        }
+    }
+
+    removeEntertainmentBox() {
+        // Close the dialog and proceed with deselecting Entertainment Box
+        this.closeEntertainmentBoxDeselectionDialog();
+        
+        // Disable Entertainment Box
+        this.state.entertainmentBox.enabled = false;
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+        const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+        const warningHighlight = document.getElementById('warning-highlight');
+
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.checked = false;
+        }
+        if (entertainmentBoxContent) {
+            entertainmentBoxContent.style.display = 'none';
+        }
+        if (tvCheckbox && this.state.tv.enabled) {
+            tvCheckbox.checked = false;
+        }
+        if (warningHighlight) {
+            warningHighlight.style.display = 'block';
+        }
+
+        // Render closed state and update UI
+        this.renderProductClosedState('entertainmentBox');
+        this.updateProductHeaderStates();
+        this.updateCostSummary();
     }
 }
 

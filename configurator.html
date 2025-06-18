@@ -470,6 +470,28 @@
         </div>
     </div>
 
+    <!-- Entertainment Box Deselection Confirmation Dialog -->
+    <div class="sheet-overlay" id="entertainment-box-deselection-overlay" style="display: none;"
+        onclick="app.closeEntertainmentBoxDeselectionDialog()">
+        <div class="entertainment-box-deselection-dialog" id="entertainment-box-deselection-dialog"
+            onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeEntertainmentBoxDeselectionDialog()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title">Opgepast!</h3>
+                <div class="dialog-content">
+                    <p>Als je de Entertainment Box weghaalt, kan je enkel tv-kijken via onze app. Je kan dan niet meer zappen zoals op gewone televisie.</p>
+                    <p>Wil je doorgaan?</p>
+                </div>
+            </div>
+            <div class="sheet-footer confirmation-footer">
+                <button class="confirmation-keep-btn" onclick="app.keepEntertainmentBox()">Doorgaan met TV-box</button>
+                <button class="confirmation-remove-btn" onclick="app.removeEntertainmentBox()">Doorgaan zonder TV-box</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="header.js"></script>
 </body>
