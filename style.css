@@ -377,54 +377,91 @@
     color: #1a4480;
 }
 
-.selected-service {
-    /*
+.selected-service-card {
     background-color: white;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 16px;
-    margin-bottom: 12px;
-    */
-    margin-bottom: 24px;
-    border-bottom: #717d96 1px solid;
-    padding-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .selected-service-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 16px;
 }
 
-.selected-service-title {
+.selected-service-main {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-weight: 600;
-    color: #2D3648;
-    font-size: 16px;
+    flex: 1;
 }
 
-.remove-service {
-    background: none;
-    border: none;
+.selected-service-info {
+    flex: 1;
+}
+
+.selected-service-name {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.selected-service-tier {
+    font-size: 14px;
+    color: #717D96;
+}
+
+.selected-service-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+    margin-bottom: 4px;
+}
+
+.selected-service-period {
+    font-size: 14px;
+    color: #717D96;
+    text-align: right;
+}
+
+.selected-service-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+.edit-service-btn,
+.remove-service-btn {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
     color: #717D96;
     cursor: pointer;
-    font-size: 18px;
-    padding: 4px;
-    width: 32px;
-    height: 32px;
+    font-size: 16px;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: 8px;
     transition: all 0.2s ease;
 }
 
-.remove-service:hover {
+.edit-service-btn:hover,
+.remove-service-btn:hover {
+    color: #2D3648;
+    border-color: #2D3648;
+}
+
+.remove-service-btn:hover {
     color: #dc3545;
-    background-color: #f8f9fa;
+    border-color: #dc3545;
 }
 
 .service-tier-selector {
@@ -3494,8 +3531,7 @@ html {
     color: #333;
 }
 
-.mobile```text
--price-caption {
+.mobile-summary-price-caption {
     font-size: 12px;
     color: #666;
     font-style: italic;
@@ -3878,4 +3914,93 @@ div.paragraph h5 {
     to {
         transform: translateX(0);
     }
+}
+
+/* Adding some new code based on the design file*/
+
+.selected-service-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.selected-service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.selected-service-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.selected-service-info {
+    flex: 1;
+}
+
+.selected-service-name {
+    font-weight: 600;
+    color: #2D3648;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.selected-service-tier {
+    font-size: 14px;
+    color: #717D96;
+}
+
+.selected-service-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+    margin-bottom: 4px;
+}
+
+.selected-service-period {
+    font-size: 14px;
+    color: #717D96;
+    text-align: right;
+}
+
+.selected-service-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+.edit-service-btn,
+.remove-service-btn {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    color: #717D96;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.edit-service-btn:hover,
+.remove-service-btn:hover {
+    color: #2D3648;
+    border-color: #2D3648;
+}
+
+.remove-service-btn:hover {
+    color: #dc3545;
+    border-color: #dc3545;
 }

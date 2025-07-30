@@ -2182,23 +2182,37 @@ updateProductOverview() {
             }
 
             const discountedPrice = this.getEntertainmentDiscountedPrice(price);
+            const hasDiscount = discountedPrice < price;
 
             const serviceElement = document.createElement('div');
             serviceElement.className = 'selected-service-card';
             serviceElement.innerHTML = `
-                <div class="service-icon ${iconClass}">${icon}</div>
-                <div class="selected-service-info">
-                    <div class="selected-service-name">${serviceName}</div>
-                    ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
+                <div class="selected-service-header">
+                    <div class="selected-service-main">
+                        <div class="service-icon ${iconClass}">${icon}</div>
+                        <div class="selected-service-info">
+                            <div class="selected-service-name">${serviceName}</div>
+                            ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="selected-service-pricing">
+                        <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                        <div class="selected-service-period">/maand</div>
+                    </div>
+                    <div class="selected-service-actions">
+                        ${serviceData.tiers && serviceData.tiers.length > 1 ? 
+                            `<button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>` : 
+                            ''
+                        }
+                        <button class="remove-service-btn" onclick="app.removeEntertainmentService('${serviceKey}')" title="Verwijder service">🗑️</button>
+                    </div>
                 </div>
-                <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
-                <div class="selected-service-actions">
-                    ${serviceData.tiers && serviceData.tiers.length > 1 ? 
-                        `<button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>` : 
-                        ''
-                    }
-                    <button class="remove-service-btn" onclick="app.removeEntertainmentService('${serviceKey}')" title="Verwijder service">🗑️</button>
-                </div>
+                ${hasDiscount ? `
+                    <div class="entertainment-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                        <span>Combi korting actief</span>
+                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    </div>
+                ` : ''}
             `;
 
             container.appendChild(serviceElement);
