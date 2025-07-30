@@ -885,7 +885,6 @@ class UnifiedConfigurator {
         } else {
             addBtn.style.display = 'block';
             addBtn.textContent = `➕ Voeg ${simcardCount + 1}e simkaart toe`;
-        ```python
         }
     }
 
@@ -1750,7 +1749,6 @@ class UnifiedConfigurator {
             const temporaryData = this.calculateTotalTemporaryDiscount();
             const advantageText = `€${temporaryData.total.toFixed(2).replace('.', ',')} korting in totaal`;
 
-            ```python
             if (advantageBlock) {
                 advantageBlock.style.display = 'flex';
                 const advantageAmountElement = document.getElementById('advantage-amount');
@@ -2959,156 +2957,120 @@ updateProductOverview() {
     }
 
     // Streaming tier selection bottom sheet methods
-    openStreamingTierSheet(serviceKey) {
-        console.log('Opening streaming tier sheet for:', serviceKey);
-
-        const service = this.data.products.entertainment.services[serviceKey];
-        if (!service) {
-            console.error('Service not found:', serviceKey);
-            return;
-        }
-
-        // Check if service has only one tier - use simplified sheet
-        if (service.tiers.length === 1) {
-            this.openSingleTierSheet(serviceKey, service);
-            return;
-        }
-
-        // Create overlay
+    openStreamingTierSheet(serviceKey, isEditing = false) {
+        this.currentStreamingService = serviceKey;
+        this.isEditingStreamingService = isEditing;
+        
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
-        overlay.className = 'sheet-overlay';
+        const title = document.getElementById('tier-sheet-title');
+        const icon = document.getElementById('tier-sheet-icon');
+        const container = document.getElementById('tier-selection-container');
+        const details = document.getElementById('tier-sheet-details');
+        const pricing = document.getElementById('tier-sheet-pricing');
+        const confirmBtn = document.getElementById('streaming-tier-confirm-btn');
 
-        // Create sheet
-        const sheet = document.createElement('div');
-        sheet.className = 'streaming-tier-sheet';
+        if (!overlay || !title || !icon || !container || !details || !pricing || !confirmBtn) return;
 
-        const serviceIcon = this.getServiceIcon(serviceKey);
+        // Set service name and icon
+        title.textContent = this.getServiceDisplayName(serviceKey);
+        icon.innerHTML = this.getServiceIcon(serviceKey);
+        icon.className = `service-icon-large ${this.getServiceIconClass(serviceKey)}`;
 
-        sheet.innerHTML = `
-            <div class="sheet-header">
-                <button class="sheet-close-btn" onclick="app.closeStreamingTierSheet()">&times;</button>
-            </div>
-            <div class="sheet-content">
-                <div class="streaming-service-header">
-                    <div class="service-icon-large ${this.getServiceIconClass(serviceKey)}">
-                        ${serviceIcon}
-                    </div>
-                    <h2 class="sheet-title">${this.getServiceDisplayName(serviceKey)}</h2>
-                </div>
+        // Set current selected tier or default
+        const currentTier = this.state[serviceKey].selectedTier || serviceData.defaultTier || 1;
+        this.tempSelectedTier = currentTier;
 
-                <div class="tier-selection-container">
-                    ${service.tiers.map(tier => `
-                        <button class="tier-selection-option ${tier.id === this.state[serviceKey].selectedTier ? 'active' : ''}" 
-                                onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
-                            <div class="tier-name">${tier.title}</div>
-                            <div class="tier-price">€${tier.price.toFixed(2).replace('.', ',')}</div>
-                        </button>
-                    `).join('')}
-                </div>
-
-                <div class="service-details">
-                    <ul>
-                        ${service.tiers.find(tier => tier.id === this.state[serviceKey].selectedTier).summary.split(', ').map(item => `<li>${item}</li>`).join('')}
-                    </ul>
-                </div>
-
-                <div class="service-price-container">
-                    <div class="service-price">€${service.tiers.find(tier => tier.id === this.state[serviceKey].selectedTier).price.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        Combodiscount toegepast
-                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
-                    </div>
-                </div>
-            </div>
-            <div class="sheet-footer">
-                <button class="streaming-tier-confirm-btn" onclick="app.confirmStreamingTierSelection()">
-                    Toevoegen
+        // Render tier options
+        container.innerHTML = serviceData.tiers.map(tier => {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            return `
+                <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}" 
+                        onclick="app.selectTempTier(${tier.id})">
+                    <div class="tier-name">${tier.title}</div>
+                    <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
                 </button>
-            </div>
-        `;
+            `;
+        }).join('');
 
-        overlay.appendChild(sheet);
-        document.body.appendChild(overlay);
+        // Update details and pricing for current tier
+        this.updateTierSheetDetails();
 
-        // Animate in
-        requestAnimationFrame(() => {
-            overlay.style.display = 'flex';
-        });
-    }
+        // Update confirm button text
+        confirmBtn.textContent = isEditing ? 'Wijzigen' : 'Toevoegen';
 
-    openSingleTierSheet(serviceKey, service) {
-        // Create overlay
-        const overlay = document.createElement('div');
-        overlay.className = 'sheet-overlay';
-
-        // Create sheet
-        const sheet = document.createElement('div');
-        sheet.className = 'streaming-tier-sheet';
-
-        const serviceIcon = this.getServiceIcon(serviceKey);
-        const tier = service.tiers[0];
-
-        sheet.innerHTML = `
-            <div class="sheet-header">
-                <button class="sheet-close-btn" onclick="app.closeStreamingTierSheet()">&times;</button>
-            </div>
-            <div class="sheet-content">
-                <div class="streaming-service-header">
-                    <div class="service-icon-large ${this.getServiceIconClass(serviceKey)}">
-                        ${serviceIcon}
-                    </div>
-                    <h2 class="sheet-title">${this.getServiceDisplayName(serviceKey)}</h2>
-                </div>
-
-                <div class="service-details">
-                    <ul>
-                        ${tier.features.map(feature => `<li>${feature}</li>`).join('')}
-                    </ul>
-                </div>
-
-                <div class="service-price-container">
-                    <div class="service-price">€${tier.price.toFixed(2).replace('.', ',')}/maand</div>
-                    <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        Combodiscount toegepast
-                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
-                    </div>
-                </div>
-            </div>
-            <div class="sheet-footer">
-                <button class="streaming-tier-confirm-btn" onclick="app.confirmStreamingTierSelection()">
-                    Toevoegen
-                </button>
-            </div>
-        `;
-
-        overlay.appendChild(sheet);
-        document.body.appendChild(overlay);
-
-        // Animate in
-        requestAnimationFrame(() => {
-            overlay.style.display = 'flex';
-        });
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
     closeStreamingTierSheet() {
-        const overlay = document.querySelector('.sheet-overlay');
+        const overlay = document.getElementById('streaming-tier-sheet-overlay');
         if (overlay) {
-            overlay.remove();
+            overlay.style.display = 'none';
             document.body.style.overflow = '';
+        }
+        this.currentStreamingService = null;
+        this.isEditingStreamingService = false;
+        this.tempSelectedTier = null;
+    }
+
+    selectTempTier(tierId) {
+        this.tempSelectedTier = tierId;
+        
+        // Update active state in UI
+        const options = document.querySelectorAll('.tier-selection-option');
+        options.forEach(option => {
+            option.classList.remove('active');
+        });
+        
+        const selectedOption = document.querySelector(`.tier-selection-option:nth-child(${tierId})`);
+        if (selectedOption) {
+            selectedOption.classList.add('active');
+        }
+
+        this.updateTierSheetDetails();
+    }
+
+    updateTierSheetDetails() {
+        const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
+        const tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
+        
+        if (!tier) return;
+
+        const details = document.getElementById('tier-sheet-details');
+        const pricing = document.getElementById('tier-sheet-pricing');
+
+        if (details) {
+            const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+            details.innerHTML = `<ul>${summaryItems}</ul>`;
+        }
+
+        if (pricing) {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            pricing.innerHTML = `
+                <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                <div class="price-period">/maand</div>
+            `;
         }
     }
 
     confirmStreamingTierSelection() {
-        // Add service with default tier
-        this.state.entertainment.selectedServices.push({
-            key: this.currentStreamingSelection.serviceKey,
-            name: this.currentStreamingSelection.service.name,
-            tierIndex: 0,
-            tier: this.currentStreamingSelection.service.tiers[0]
-        });
+        if (!this.currentStreamingService || !this.tempSelectedTier) return;
 
+        const serviceKey = this.currentStreamingService;
+        
+        // Add or update service
+        this.state.selectedEntertainmentServices.add(serviceKey);
+        this.state[serviceKey].enabled = true;
+        this.state[serviceKey].selectedTier = this.tempSelectedTier;
+
+        // Close the sheet
         this.closeStreamingTierSheet();
-        this.renderEntertainmentSection();
+
+        // Update UI
+        this.renderAvailableEntertainmentServices();
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
         this.updateCostSummary();
     }
 
