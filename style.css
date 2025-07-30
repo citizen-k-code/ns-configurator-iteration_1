@@ -3708,54 +3708,56 @@ div.paragraph h5 {
 
 .tier-selection-container {
     display: flex;
-    gap: 4px;
-    margin-bottom: 32px;
-    background-color: #F5F7FA;
-    border-radius: 12px;
-    padding: 4px;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
 }
 
 .tier-selection-option {
     flex: 1;
-    padding: 16px 8px;
-    border: none;
-    border-radius: 8px;
+    min-width: 80px;
+    flex-shrink: 0;
+    padding: 12px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
     text-align: center;
     cursor: pointer;
-    background-color: transparent;
+    background-color: white;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #717D96;
-    font-weight: 500;
-    min-height: 60px;
 }
 
 .tier-selection-option.active {
     background-color: #2D3648;
     color: white;
+    border-color: #2D3648;
 }
 
 .tier-selection-option:hover:not(.active) {
-    background-color: #E5E9F0;
+    border-color: #2D3648;
     color: #2D3648;
 }
 
 .tier-selection-option .tier-name {
-    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 4px;
+    font-size: 13px;
 }
 
 .tier-selection-option .tier-price {
-    font-size: 14px;
-    opacity: 0.8;
+    font-size: 11px;
+    color: #717D96;
+    margin-top: 2px;
+}
+
+.tier-selection-option.active .tier-price {
+    color: #CBD2E0;
 }
 
 .tier-details {
-    margin-bottom: 32px;
+    margin-bottom: 15px;
 }
 
 .tier-details ul {
@@ -3765,43 +3767,37 @@ div.paragraph h5 {
 }
 
 .tier-details li {
-    font-size: 18px;
+    margin-bottom: 5px;
+    font-size: 14px;
     color: #2D3648;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    line-height: 1.4;
+    position: relative;
+    padding-left: 15px;
 }
 
 .tier-details li:before {
-    content: "•";
+    content: "»";
+    position: absolute;
+    left: 0;
     color: #2D3648;
-    font-weight: bold;
-    flex-shrink: 0;
-    margin-top: 4px;
-    font-size: 20px;
 }
 
 .tier-pricing {
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-end;
-    gap: 4px;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #E5E9F0;
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 .tier-pricing .price-display {
-    font-size: 36px;
+    font-size: 16px;
     font-weight: 600;
     color: #2D3648;
 }
 
 .tier-pricing .price-period {
-    font-size: 18px;
-    color: #717D96;
+    font-size: 16px;
+    color: #2D3648;
 }
 
 .streaming-tier-sheet .sheet-footer {
