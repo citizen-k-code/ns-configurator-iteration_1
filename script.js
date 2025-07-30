@@ -3078,10 +3078,25 @@ updateProductOverview() {
 
         if (pricing) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(price);
-            pricing.innerHTML = `
+            const hasDiscount = discountedPrice < price;
+            
+            let pricingHtml = `
                 <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
                 <div class="price-period">/maand</div>
             `;
+
+            // Add discount tag if entertainment combo discount is applied
+            if (hasDiscount) {
+                pricingHtml += `
+                    <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                        <span class="discount-tag-icon">🏷️</span>
+                        <span class="discount-tag-text">5% permanente korting toegepast</span>
+                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    </div>
+                `;
+            }
+
+            pricing.innerHTML = pricingHtml;
         }
     }
 

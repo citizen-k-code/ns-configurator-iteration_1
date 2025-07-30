@@ -3832,6 +3832,40 @@ div.paragraph h5 {
     margin-bottom: 20px;
 }
 
+.tier-sheet-discount-tag {
+    background-color: #D1FFD9;
+    border: 1px solid #A7E7B8;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.tier-sheet-discount-tag:hover {
+    background-color: #C4F7D0;
+}
+
+.tier-sheet-discount-tag .discount-tag-icon {
+    font-size: 16px;
+}
+
+.tier-sheet-discount-tag .discount-tag-text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.tier-sheet-discount-tag .info-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+}
+
 .streaming-tier-sheet .sheet-footer {
     padding: 20px;
     border-top: 1px solid #E5E9F0;
