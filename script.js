@@ -2328,24 +2328,8 @@ updateProductOverview() {
     }
 
     addEntertainmentService(serviceKey) {
-        // Open tier selection sheet for services with tiers
-        const serviceData = this.entertainmentData.entertainment[serviceKey];
-        if (serviceData.tiers && serviceData.tiers.length > 1) {
-            this.openStreamingTierSheet(serviceKey);
-        } else {
-            // Directly add service without tier selection
-            this.state.selectedEntertainmentServices.add(serviceKey);
-            this.state[serviceKey].enabled = true;
-
-            if (serviceData.tiers && serviceData.defaultTier) {
-                this.state[serviceKey].selectedTier = serviceData.defaultTier;
-            }
-
-            this.renderAvailableEntertainmentServices();
-            this.renderSelectedEntertainmentServices();
-            this.updateAllEntertainmentSubtitles();
-            this.updateCostSummary();
-        }
+        // Always open tier selection sheet for all services
+        this.openStreamingTierSheet(serviceKey);
     }
 
     removeEntertainmentService(serviceKey) {
@@ -2981,17 +2965,39 @@ updateProductOverview() {
         const currentTier = this.state[serviceKey].selectedTier || serviceData.defaultTier || 1;
         this.tempSelectedTier = currentTier;
 
-        // Render tier options
-        container.innerHTML = serviceData.tiers.map(tier => {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-            return `
-                <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}" 
-                        onclick="app.selectTempTier(${tier.id})">
-                    <div class="tier-name">${tier.title}</div>
+        // Hide/show tier selection subtitle based on whether service has multiple tiers
+        const subtitle = document.querySelector('.tier-selection-subtitle');
+        if (subtitle) {
+            if (!serviceData.tiers || serviceData.tiers.length <= 1) {
+                subtitle.classList.add('hidden');
+            } else {
+                subtitle.classList.remove('hidden');
+            }
+        }
+
+        // Render tier options or single option for services without tiers
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            container.innerHTML = serviceData.tiers.map(tier => {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                return `
+                    <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}" 
+                            onclick="app.selectTempTier(${tier.id})">
+                        <div class="tier-name">${tier.title}</div>
+                        <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                    </button>
+                `;
+            }).join('');
+        } else {
+            // For services without tiers, show a single option
+            const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+            this.tempSelectedTier = 1; // Default tier for services without tiers
+            container.innerHTML = `
+                <button class="tier-selection-option active" onclick="app.selectTempTier(1)">
+                    <div class="tier-name">${this.getServiceDisplayName(serviceKey)}</div>
                     <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
                 </button>
             `;
-        }).join('');
+        }
 
         // Update details and pricing for current tier
         this.updateTierSheetDetails();
@@ -3033,20 +3039,31 @@ updateProductOverview() {
 
     updateTierSheetDetails() {
         const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
-        const tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
         
-        if (!tier) return;
-
         const details = document.getElementById('tier-sheet-details');
         const pricing = document.getElementById('tier-sheet-pricing');
 
+        let summary, price;
+
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            // Service has tiers
+            const tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
+            if (!tier) return;
+            summary = tier.summary;
+            price = tier.price;
+        } else {
+            // Service without tiers
+            summary = serviceData.summary;
+            price = serviceData.price;
+        }
+
         if (details) {
-            const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+            const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
             details.innerHTML = `<ul>${summaryItems}</ul>`;
         }
 
         if (pricing) {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(price);
             pricing.innerHTML = `
                 <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
                 <div class="price-period">/maand</div>
@@ -3055,14 +3072,21 @@ updateProductOverview() {
     }
 
     confirmStreamingTierSelection() {
-        if (!this.currentStreamingService || !this.tempSelectedTier) return;
+        if (!this.currentStreamingService) return;
 
         const serviceKey = this.currentStreamingService;
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
         
         // Add or update service
         this.state.selectedEntertainmentServices.add(serviceKey);
         this.state[serviceKey].enabled = true;
-        this.state[serviceKey].selectedTier = this.tempSelectedTier;
+        
+        // Set tier for services with tiers, or default tier for services without
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            this.state[serviceKey].selectedTier = this.tempSelectedTier;
+        } else {
+            this.state[serviceKey].selectedTier = 1; // Default tier for services without tiers
+        }
 
         // Close the sheet
         this.closeStreamingTierSheet();

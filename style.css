@@ -3708,6 +3708,10 @@ div.paragraph h5 {
     cursor: pointer;
 }
 
+.tier-selection-subtitle.hidden {
+    display: none;
+}
+
 .tier-selection-container {
     display: flex;
     gap: 8px;
