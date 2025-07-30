@@ -1283,11 +1283,15 @@ class UnifiedConfigurator {
         `;
     }
 
-    getEntertainmentDiscountedPrice(originalPrice) {
+    getEntertainmentDiscountedPrice(originalPrice, isAddingSecondService = false) {
         const enabledProducts = this.getEnabledEntertainmentProductsCount();
         const discount = this.entertainmentData.discounts.entertainment_combo;
 
-        if (discount.enabled && enabledProducts >= discount.minProducts) {
+        // Apply discount if we already have enough products OR if we're adding the second service
+        const willHaveMinProducts = enabledProducts >= discount.minProducts || 
+                                   (enabledProducts === 1 && isAddingSecondService);
+
+        if (discount.enabled && willHaveMinProducts) {
             return originalPrice * (1 - discount.percentage / 100);
         }
         return originalPrice;
@@ -2119,11 +2123,15 @@ updateProductOverview() {
                 const serviceData = this.entertainmentData.entertainment[service.key];
                 let priceText;
 
+                // Check if this would be the second service to show discounted price
+                const currentlyEnabled = this.state.selectedEntertainmentServices.size;
+                const isSecondService = currentlyEnabled === 1;
+
                 if (serviceData.tiers) {
-                    const minPrice = Math.min(...serviceData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price)));
+                    const minPrice = Math.min(...serviceData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price, isSecondService)));
                     priceText = `Vanaf € ${minPrice.toFixed(2).replace('.', ',')}`;
                 } else {
-                    const discountPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+                    const discountPrice = this.getEntertainmentDiscountedPrice(serviceData.price, isSecondService);
                     priceText = `€ ${discountPrice.toFixed(2).replace('.', ',')}`;
                 }
 
@@ -3077,7 +3085,11 @@ updateProductOverview() {
         }
 
         if (pricing) {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(price);
+            // Check if we're adding the second service to show discounted price
+            const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
+            const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
+            
+            const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
             const hasDiscount = discountedPrice < price;
             
             let pricingHtml = `
