@@ -2202,10 +2202,7 @@ updateProductOverview() {
                         ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
                     </div>
                     <div class="selected-service-actions">
-                        ${serviceData.tiers && serviceData.tiers.length > 1 ? 
-                            `<button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>` : 
-                            ''
-                        }
+                        <button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>
                     </div>
                 </div>
                 <div class="selected-service-divider"></div>
@@ -3023,8 +3020,33 @@ updateProductOverview() {
         // Update details and pricing for current tier
         this.updateTierSheetDetails();
 
-        // Update confirm button text
-        confirmBtn.textContent = isEditing ? 'Wijzigen' : 'Toevoegen';
+        // Update button layout based on editing mode
+        if (isEditing) {
+            confirmBtn.style.display = 'none';
+            
+            // Add dual button layout for editing
+            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
+            const existingDualButtons = footer.querySelector('.dual-button-layout');
+            if (!existingDualButtons) {
+                const dualButtonHtml = `
+                    <div class="dual-button-layout">
+                        <button class="streaming-tier-remove-btn" onclick="app.removeStreamingServiceFromEdit()">Verwijderen</button>
+                        <button class="streaming-tier-update-btn" onclick="app.confirmStreamingTierSelection()">Aanpassen</button>
+                    </div>
+                `;
+                footer.insertAdjacentHTML('afterbegin', dualButtonHtml);
+            }
+        } else {
+            confirmBtn.style.display = 'block';
+            confirmBtn.textContent = 'Toevoegen';
+            
+            // Remove dual button layout if it exists
+            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
+            const existingDualButtons = footer.querySelector('.dual-button-layout');
+            if (existingDualButtons) {
+                existingDualButtons.remove();
+            }
+        }
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -3140,6 +3162,23 @@ updateProductOverview() {
 
     editStreamingService(serviceKey) {
         this.openStreamingTierSheet(serviceKey, true);
+    }
+
+    removeStreamingServiceFromEdit() {
+        if (!this.currentStreamingService) return;
+
+        // Remove the service
+        this.state.selectedEntertainmentServices.delete(this.currentStreamingService);
+        this.state[this.currentStreamingService].enabled = false;
+
+        // Close the sheet
+        this.closeStreamingTierSheet();
+
+        // Update UI
+        this.renderAvailableEntertainmentServices();
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
+        this.updateCostSummary();
     }
 
     // Combo discount bottomsheet methods
