@@ -387,16 +387,9 @@
 
 .selected-service-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-}
-
-.selected-service-main {
-    display: flex;
     align-items: center;
     gap: 12px;
-    flex: 1;
+    margin-bottom: 12px;
 }
 
 .selected-service-info {
@@ -406,8 +399,8 @@
 .selected-service-name {
     font-weight: 600;
     color: #2D3648;
-    font-size: 18px;
-    margin-bottom: 4px;
+    font-size: 16px;
+    margin-bottom: 2px;
 }
 
 .selected-service-tier {
@@ -415,29 +408,40 @@
     color: #717D96;
 }
 
+.selected-service-actions {
+    display: flex;
+    align-items: center;
+}
+
+.selected-service-divider {
+    height: 1px;
+    background-color: #E5E9F0;
+    margin-bottom: 12px;
+}
+
+.selected-service-pricing {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.selected-service-price-section {
+    text-align: right;
+}
+
 .selected-service-price {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #2D3648;
-    text-align: right;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .selected-service-period {
     font-size: 14px;
     color: #717D96;
-    text-align: right;
+    font-weight: 400;
 }
 
-.selected-service-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 12px;
-}
-
-.edit-service-btn,
-.remove-service-btn {
+.edit-service-btn {
     background: #f8f9fa;
     border: 1px solid #e0e0e0;
     color: #717D96;
@@ -453,15 +457,35 @@
     transition: all 0.2s ease;
 }
 
-.edit-service-btn:hover,
-.remove-service-btn:hover {
+.edit-service-btn:hover {
     color: #2D3648;
     border-color: #2D3648;
 }
 
-.remove-service-btn:hover {
-    color: #dc3545;
-    border-color: #dc3545;
+.entertainment-discount-tag {
+    background-color: #D1FFD9;
+    border: 1px solid #A7E7B8;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.entertainment-discount-tag:hover {
+    background-color: #C4F7D0;
+}
+
+.entertainment-discount-tag .info-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
 }
 
 .service-tier-selector {
@@ -1079,7 +1103,7 @@
     position: absolute;
     left: 0;
     color: #28a745;
-    font-weight: 600;
+    font-weight: 60;
 }
 
 /* TV Viewing Section */
@@ -3843,6 +3867,9 @@ div.paragraph h5 {
     gap: 8px;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2D3648;
 }
 
 .tier-sheet-discount-tag:hover {
@@ -3951,90 +3978,3 @@ div.paragraph h5 {
 }
 
 /* Adding some new code based on the design file*/
-
-.selected-service-card {
-    background-color: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-}
-
-.selected-service-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-}
-
-.selected-service-main {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-}
-
-.selected-service-info {
-    flex: 1;
-}
-
-.selected-service-name {
-    font-weight: 600;
-    color: #2D3648;
-    font-size: 18px;
-    margin-bottom: 4px;
-}
-
-.selected-service-tier {
-    font-size: 14px;
-    color: #717D96;
-}
-
-.selected-service-price {
-    font-size: 18px;
-    font-weight: 600;
-    color: #2D3648;
-    text-align: right;
-    margin-bottom: 4px;
-}
-
-.selected-service-period {
-    font-size: 14px;
-    color: #717D96;
-    text-align: right;
-}
-
-.selected-service-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 12px;
-}
-
-.edit-service-btn,
-.remove-service-btn {
-    background: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    color: #717D96;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 8px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.edit-service-btn:hover,
-.remove-service-btn:hover {
-    color: #2D3648;
-    border-color: #2D3648;
-}
-
-.remove-service-btn:hover {
-    color: #dc3545;
-    border-color: #dc3545;
-}

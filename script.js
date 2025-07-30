@@ -2196,31 +2196,30 @@ updateProductOverview() {
             serviceElement.className = 'selected-service-card';
             serviceElement.innerHTML = `
                 <div class="selected-service-header">
-                    <div class="selected-service-main">
-                        <div class="service-icon ${iconClass}">${icon}</div>
-                        <div class="selected-service-info">
-                            <div class="selected-service-name">${serviceName}</div>
-                            ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
-                        </div>
-                    </div>
-                    <div class="selected-service-pricing">
-                        <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
-                        <div class="selected-service-period">/maand</div>
+                    <div class="service-icon ${iconClass}">${icon}</div>
+                    <div class="selected-service-info">
+                        <div class="selected-service-name">${serviceName}</div>
+                        ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
                     </div>
                     <div class="selected-service-actions">
                         ${serviceData.tiers && serviceData.tiers.length > 1 ? 
                             `<button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>` : 
                             ''
                         }
-                        <button class="remove-service-btn" onclick="app.removeEntertainmentService('${serviceKey}')" title="Verwijder service">🗑️</button>
                     </div>
                 </div>
-                ${hasDiscount ? `
-                    <div class="entertainment-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        <span>Combi korting actief</span>
-                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                <div class="selected-service-divider"></div>
+                <div class="selected-service-pricing">
+                    <div class="selected-service-price-section">
+                        <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
+                        ${hasDiscount ? `
+                            <div class="entertainment-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                                <span>5% permanente korting toegepast</span>
+                                <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                            </div>
+                        ` : ''}
                     </div>
-                ` : ''}
+                </div>
             `;
 
             container.appendChild(serviceElement);
