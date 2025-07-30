@@ -7,8 +7,7 @@ class UnifiedConfigurator {
             // Telecom state
             internet: {
                 enabled: false,
-                selectedTier: 1,
-                wifiPods: 0
+                selectedTier: 1
             },
             mobile: {
                 enabled: false,
@@ -515,10 +514,8 @@ class UnifiedConfigurator {
                     console.log("internet default tier = ", this.data.products.internet.defaultTier);
 
                     this.state.internet.selectedTier = this.data.products.internet.defaultTier;
-                    this.state.internet.wifiPods = 0;
                     this.renderInternetTiers();
                     this.updateInternetInfo();
-                    this.renderWifiPodsSection();
                     if (this.state.mobile.enabled) {
                         this.renderMobileSimcards();
                         this.updateMobileHighlightBlock();
@@ -753,77 +750,7 @@ class UnifiedConfigurator {
         `;
     }
 
-    renderWifiPodsSection() {
-        const wifiPodsSection = document.getElementById('wifi-pods-section');
-        if (!wifiPodsSection || !this.data) return;
-
-        const wifiPodsData = this.data.products.internet.wifiPods;
-        const currentPods = this.state.internet.wifiPods;
-
-        let contentHtml = '';
-
-        if (currentPods === 0) {
-            contentHtml = `
-                <div class="wifi-pods-free-trial">
-                    <div class="free-trial-title">Probeer het gratis uit</div>
-                    <div class="free-trial-text">${wifiPodsData.freeTrialText}</div>
-                </div>
-            `;
-        } else {
-            const originalPrice = currentPods * wifiPodsData.pricePerPod;
-            const discountedPrice = 0; // Free for 3 months
-            const promoBadge = `<span class="promo-badge">${wifiPodsData.promoName}</span>`;
-
-            contentHtml = `
-                <div class="wifi-pods-pricing">
-                    <div class="price-with-badge">
-                        ${promoBadge}
-                        <div class="price-content">
-                            <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                            <div class="discount-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
-                        </div>
-                    </div>
-                    <div class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</div>
-                </div>
-            `;
-        }
-
-        wifiPodsSection.innerHTML = `
-            <hr class="section-divider">
-            <div class="wifi-pods-header">
-                <div class="wifi-pods-title">${wifiPodsData.title}</div>
-                <div class="tooltip-link" onclick="app.openTooltipSheet('wifi_pods')">${wifiPodsData.tooltip}</div>
-            </div>
-            <div class="wifi-pods-stepper">
-                <button class="stepper-btn" onclick="app.decreaseWifiPods()" ${currentPods === 0 ? 'disabled' : ''}>−</button>
-                <span class="stepper-value">${currentPods}</span>
-                <button class="stepper-btn" onclick="app.increaseWifiPods()" ${currentPods >= wifiPodsData.maxPods ? 'disabled' : ''}>+</button>
-            </div>
-            ${contentHtml}
-        `;
-    }
-
-    renderWifiPods() {
-        // Keep this method for backward compatibility but redirect to the new section renderer
-        this.renderWifiPodsSection();
-    }
-
-    increaseWifiPods() {
-        const maxPods = this.data.products.internet.wifiPods.maxPods;
-        if (this.state.internet.wifiPods < maxPods) {
-            this.state.internet.wifiPods++;
-            this.renderWifiPodsSection();
-            this.updateCostSummary();
-        }
-    }
-
-    decreaseWifiPods() {
-        if (this.state.internet.wifiPods > 0) {
-            this.state.internet.wifiPods--;
-            this.renderWifiPodsSection();
-            this.updateCostSummary();
-        }
-    }
+    // WiFi-pods section methods removed - now using standalone WiFi-pods card
 
     // WiFi-pods standalone methods
     increaseWifiPodsStandalone() {
@@ -1400,15 +1327,6 @@ class UnifiedConfigurator {
             } else {
                 total += internetTier.price;
             }
-
-            // WiFi pods cost
-            if (this.state.internet.wifiPods > 0) {
-                const wifiPodsData = this.data.products.internet.wifiPods;
-                const podsOriginalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
-                const podsDiscountedPrice = 0; // Free for promotional period
-                total += podsDiscountedPrice;
-                totalTemporaryDiscount += podsOriginalPrice; // Full discount for promotional period
-            }
         }
 
         // Mobile costs
@@ -1643,19 +1561,7 @@ class UnifiedConfigurator {
             }
         }
 
-        // Add WiFi pods discount period (from internet)
-        if (this.state.internet.enabled && this.state.internet.wifiPods > 0) {
-            const wifiPodsData = this.data.products.internet.wifiPods;
-            if (wifiPodsData.discountPeriod) {
-                const podsOriginalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
-                totalTemporaryDiscount += podsOriginalPrice * wifiPodsData.discountPeriod;
-                discountsInfo.push({
-                    product: 'WiFi-pods',
-                    discountValue: podsOriginalPrice,
-                    discountPeriod: wifiPodsData.discountPeriod
-                });
-            }
-        }
+        
 
         // Add WiFi pods standalone discount period
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
@@ -1760,13 +1666,7 @@ class UnifiedConfigurator {
             }
         }
 
-        // Add WiFi pods discount period
-        if (this.state.internet.enabled && this.state.internet.wifiPods > 0) {
-            const wifiPodsData = this.data.products.internet.wifiPods;
-            if (wifiPodsData.discountPeriod) {
-                periods.push(wifiPodsData.discountPeriod);
-            }
-        }
+        
 
         if (periods.length > 0) {
             shortestPeriod = Math.min(...periods);
@@ -1892,21 +1792,7 @@ class UnifiedConfigurator {
                     </div>
             `;
 
-            // WiFi Pods
-            if (this.state.internet.wifiPods > 0) {
-                const wifiPodsData = this.data.products.internet.wifiPods;
-                const originalPrice = this.state.internet.wifiPods * wifiPodsData.pricePerPod;
-                overviewHtml += `
-                    <div class="overview-item">
-                        <span class="overview-item-name">${this.state.internet.wifiPods}x WiFi-pods</span>
-                        <span class="overview-item-price">
-                            <span class="original-price">€${originalPrice.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-price">€0,00</span>
-                            <span class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</span>
-                        </span>
-                    </div>
-                `;
-            }
+            
 
             overviewHtml += `</div>`;
         }
