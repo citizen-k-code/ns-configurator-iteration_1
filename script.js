@@ -113,7 +113,6 @@ class UnifiedConfigurator {
                     internetContent.style.display = 'block';
                     this.renderInternetTiers();
                     this.updateInternetInfo();
-                    this.renderWifiPods();
                 }
             }
         }
@@ -776,15 +775,15 @@ class UnifiedConfigurator {
         const counterElement = document.getElementById('wifi-pods-count');
         const decreaseBtn = document.getElementById('wifi-pods-decrease');
         const increaseBtn = document.getElementById('wifi-pods-increase');
-        
+
         if (counterElement) {
             counterElement.textContent = this.state.wifiPods.count;
         }
-        
+
         if (decreaseBtn) {
             decreaseBtn.disabled = this.state.wifiPods.count <= 1;
         }
-        
+
         if (increaseBtn) {
             increaseBtn.disabled = this.state.wifiPods.count >= this.data.products.wifiPods.maxPods;
         }
@@ -888,7 +887,7 @@ class UnifiedConfigurator {
 
     getMobileTierInfo(tierId, simcardIndex = 0) {
         const tier = this.data.products.mobile.tiers.find(t => t.id === tierId);
-        const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        const summaryItems = tier.summary.split(', ').map(item => `li>${item}</li>`).join('');
 
         let priceHtml;
         const discountCalc = this.calculateMobileDiscount(tier, simcardIndex);
@@ -1561,7 +1560,7 @@ class UnifiedConfigurator {
             }
         }
 
-        
+
 
         // Add WiFi pods standalone discount period
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
@@ -1666,7 +1665,7 @@ class UnifiedConfigurator {
             }
         }
 
-        
+
 
         if (periods.length > 0) {
             shortestPeriod = Math.min(...periods);
@@ -1765,6 +1764,7 @@ class UnifiedConfigurator {
         this.updateProductOverview();
     }
 
+```python
     updateProductOverview() {
         const overviewContent = document.getElementById('product-overview-content');
         if (!overviewContent || !this.data) return;
@@ -1791,9 +1791,6 @@ class UnifiedConfigurator {
                         <span class="overview-item-price">${priceHtml}</span>
                     </div>
             `;
-
-            
-
             overviewHtml += `</div>`;
         }
 
@@ -2843,7 +2840,7 @@ class UnifiedConfigurator {
         // Show confirmation if TV is enabled OR if user has streaming services selected
         const hasTv = this.state.tv.enabled;
         const hasStreamingServices = this.state.selectedEntertainmentServices.size > 0;
-        
+
         return hasTv || hasStreamingServices;
     }
 
@@ -2869,7 +2866,7 @@ class UnifiedConfigurator {
         // Ensure the toggle and checkbox remain checked
         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
         const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
-        
+
         if (entertainmentBoxToggle) {
             entertainmentBoxToggle.checked = true;
         }
@@ -2881,7 +2878,7 @@ class UnifiedConfigurator {
     removeEntertainmentBox() {
         // Close the dialog and proceed with deselecting Entertainment Box
         this.closeEntertainmentBoxDeselectionDialog();
-        
+
         // Disable Entertainment Box
         this.state.entertainmentBox.enabled = false;
         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
