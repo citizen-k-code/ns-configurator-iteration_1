@@ -400,6 +400,8 @@ class UnifiedConfigurator {
                 blockId = 'fixed-phone-block';
             } else if (productId === 'entertainmentBox') {
                 blockId = 'entertainment-box-block';
+            } else if (productId === 'wifiPods') {
+                blockId = 'wifi-pods-block';
             } else {
                 blockId = `${productId}-block`;
             }
@@ -1764,8 +1766,7 @@ class UnifiedConfigurator {
         this.updateProductOverview();
     }
 
-```python
-    updateProductOverview() {
+updateProductOverview() {
         const overviewContent = document.getElementById('product-overview-content');
         if (!overviewContent || !this.data) return;
 
@@ -2353,6 +2354,8 @@ class UnifiedConfigurator {
             blockId = 'fixed-phone-block';
         } else if (productType === 'entertainmentBox') {
             blockId = 'entertainment-box-block';
+        } else if (productType === 'wifiPods') {
+            blockId = 'wifi-pods-block';
         } else {
             blockId = `${productType}-block`;
         }
@@ -2390,6 +2393,8 @@ class UnifiedConfigurator {
                 blockId = 'fixed-phone-block';
             } else if (productType === 'entertainmentBox') {
                 blockId = 'entertainment-box-block';
+            } else if (productType === 'wifiPods') {
+                blockId = 'wifi-pods-block';
             } else {
                 blockId = `${productType}-block`;
             }
@@ -2397,12 +2402,7 @@ class UnifiedConfigurator {
             const productBlock = document.getElementById(blockId);
 
             if (productBlock && this.state[productType] && !this.state[productType].enabled) {
-                console.log(`Rendering closed state for ${productType}`);
                 this.renderProductClosedState(productType);
-            } else if (productBlock && !this.state[productType]) {
-                console.log(`State missing for ${productType}`);
-            } else if (!productBlock) {
-                console.log(`Block element not found for ${productType}`);
             }
         });
     }
@@ -2414,6 +2414,8 @@ class UnifiedConfigurator {
             blockId = 'fixed-phone-block';
         } else if (productType === 'entertainmentBox') {
             blockId = 'entertainment-box-block';
+        } else if (productType === 'wifiPods') {
+            blockId = 'wifi-pods-block';
         } else {
             blockId = `${productType}-block`;
         }
