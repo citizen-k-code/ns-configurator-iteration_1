@@ -100,6 +100,37 @@
                     </div>
                 </div>
 
+                <!-- Wifi-pods Product Card -->
+                <div class="product-card" id="wifi-pods-block">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Wifi-pods</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="wifi-pods-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="wifi-pods-content" style="display: none;">
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('wifi_pods')">Hoeveel wifi-pods heb ik nodig?</div>
+                        <div class="wifi-pods-stepper">
+                            <button class="stepper-btn" onclick="app.decreaseWifiPodsStandalone()" id="wifi-pods-decrease">−</button>
+                            <span class="stepper-value" id="wifi-pods-count">1</span>
+                            <button class="stepper-btn" onclick="app.increaseWifiPodsStandalone()" id="wifi-pods-increase">+</button>
+                        </div>
+                        <div class="tier-info" id="wifi-pods-info"></div>
+                    </div>
+                    <div class="wifi-pods-free-trial" id="wifi-pods-free-trial" style="display: block;">
+                        <div class="product-closed-content">
+                            <div class="product-closed-divider"></div>
+                            <div class="promo-highlight">
+                                <div class="highlight-title">Probeer het gratis uit</div>
+                                <div class="highlight-content">Je kan wifi-pods bijstellen of terugbrengen wanneer je wil.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Mobile Product Card -->
                 <div class="product-card" id="mobile-block">
                     <div class="product-header">

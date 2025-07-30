@@ -58,7 +58,12 @@ class UnifiedConfigurator {
                 selectedTier: 1
             },
             // Track selected entertainment services for the new interface
-            selectedEntertainmentServices: new Set()
+            selectedEntertainmentServices: new Set(),
+            // WiFi-pods standalone state
+            wifiPods: {
+                enabled: false,
+                count: 1
+            }
         };
         this.init();
     }
@@ -308,6 +313,14 @@ class UnifiedConfigurator {
             });
         }
 
+        // WiFi-pods toggle (only if element exists)
+        const wifiPodsToggle = document.getElementById('wifi-pods-toggle');
+        if (wifiPodsToggle) {
+            wifiPodsToggle.addEventListener('change', (e) => {
+                this.toggleProduct('wifiPods', e.target.checked);
+            });
+        }
+
         // Product header click listeners
         this.setupProductHeaderListeners();
 
@@ -351,7 +364,8 @@ class UnifiedConfigurator {
             { id: 'tv', headerSelector: '#tv-block .product-header', toggleSelector: '#tv-toggle' },
             { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' },
             { id: 'entertainment', headerSelector: '#entertainment-block .product-header', toggleSelector: '#entertainment-toggle' },
-            { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' }
+            { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' },
+            { id: 'wifiPods', headerSelector: '#wifi-pods-block .product-header', toggleSelector: '#wifi-pods-toggle' }
         ];
 
         allProducts.forEach(product => {
@@ -380,7 +394,7 @@ class UnifiedConfigurator {
     }
 
     updateProductHeaderStates() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods'];
 
         allProducts.forEach(productId => {
             let blockId;
@@ -622,6 +636,29 @@ class UnifiedConfigurator {
                 this.renderProductClosedState('entertainmentBox');
             }
         }
+        // Handle WiFi-pods toggle
+        else if (productType === 'wifiPods') {
+            const content = document.getElementById('wifi-pods-content');
+            const freeTrialDiv = document.getElementById('wifi-pods-free-trial');
+
+            if (enabled) {
+                this.removeProductClosedState('wifiPods');
+                if (content) content.style.display = 'block';
+                if (freeTrialDiv) freeTrialDiv.style.display = 'none';
+                this.state.wifiPods.count = 1;
+                this.updateWifiPodsStandaloneInfo();
+
+                // Smooth scroll to ensure the product block is visible
+                setTimeout(() => {
+                    const productBlock = document.getElementById('wifi-pods-block');
+                    this.scrollToElementSmooth(productBlock);
+                }, 100);
+            } else {
+                if (content) content.style.display = 'none';
+                if (freeTrialDiv) freeTrialDiv.style.display = 'block';
+                this.renderProductClosedState('wifiPods');
+            }
+        }
         // Individual entertainment services are handled within the entertainment interface
 
         this.updateProductHeaderStates();
@@ -786,6 +823,79 @@ class UnifiedConfigurator {
             this.renderWifiPodsSection();
             this.updateCostSummary();
         }
+    }
+
+    // WiFi-pods standalone methods
+    increaseWifiPodsStandalone() {
+        const maxPods = this.data.products.wifiPods.maxPods;
+        if (this.state.wifiPods.count < maxPods) {
+            this.state.wifiPods.count++;
+            this.updateWifiPodsStandaloneInfo();
+            this.updateWifiPodsStandaloneCounter();
+            this.updateCostSummary();
+        }
+    }
+
+    decreaseWifiPodsStandalone() {
+        if (this.state.wifiPods.count > 1) {
+            this.state.wifiPods.count--;
+            this.updateWifiPodsStandaloneInfo();
+            this.updateWifiPodsStandaloneCounter();
+            this.updateCostSummary();
+        }
+    }
+
+    updateWifiPodsStandaloneCounter() {
+        const counterElement = document.getElementById('wifi-pods-count');
+        const decreaseBtn = document.getElementById('wifi-pods-decrease');
+        const increaseBtn = document.getElementById('wifi-pods-increase');
+        
+        if (counterElement) {
+            counterElement.textContent = this.state.wifiPods.count;
+        }
+        
+        if (decreaseBtn) {
+            decreaseBtn.disabled = this.state.wifiPods.count <= 1;
+        }
+        
+        if (increaseBtn) {
+            increaseBtn.disabled = this.state.wifiPods.count >= this.data.products.wifiPods.maxPods;
+        }
+    }
+
+    updateWifiPodsStandaloneInfo() {
+        const infoContainer = document.getElementById('wifi-pods-info');
+        if (!infoContainer || !this.data) return;
+
+        const wifiPodsData = this.data.products.wifiPods;
+        const currentPods = this.state.wifiPods.count;
+        const originalPrice = currentPods * wifiPodsData.pricePerPod;
+        const discountedPrice = 0; // Free for 3 months
+        const promoBadge = `<span class="promo-badge">${wifiPodsData.promoName}</span>`;
+
+        const summaryItems = wifiPodsData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+
+        const priceHtml = `
+            <div class="tier-price-container">
+                <div class="price-with-badge">
+                    ${promoBadge}
+                    <div class="price-content">
+                        <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                        <div class="discount-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    </div>
+                </div>
+                <div class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</div>
+            </div>
+        `;
+
+        infoContainer.innerHTML = `
+            <ul class="tier-details">
+                ${summaryItems}
+            </ul>
+            ${priceHtml}
+        `;
+
+        this.updateWifiPodsStandaloneCounter();
     }
 
     // Mobile methods
@@ -1358,6 +1468,17 @@ class UnifiedConfigurator {
             }
             //}
         }
+
+        // WiFi-pods standalone cost
+        if (this.state.wifiPods.enabled) {
+            const wifiPodsData = this.data.products.wifiPods;
+            if (this.state.wifiPods.count > 0) {
+                const podsOriginalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
+                const podsDiscountedPrice = 0; // Free for promotional period
+                total += podsDiscountedPrice;
+                totalTemporaryDiscount += podsOriginalPrice; // Full discount for promotional period
+            }
+        }
         /*
         if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
@@ -1522,7 +1643,7 @@ class UnifiedConfigurator {
             }
         }
 
-        // Add WiFi pods discount period
+        // Add WiFi pods discount period (from internet)
         if (this.state.internet.enabled && this.state.internet.wifiPods > 0) {
             const wifiPodsData = this.data.products.internet.wifiPods;
             if (wifiPodsData.discountPeriod) {
@@ -1530,6 +1651,20 @@ class UnifiedConfigurator {
                 totalTemporaryDiscount += podsOriginalPrice * wifiPodsData.discountPeriod;
                 discountsInfo.push({
                     product: 'WiFi-pods',
+                    discountValue: podsOriginalPrice,
+                    discountPeriod: wifiPodsData.discountPeriod
+                });
+            }
+        }
+
+        // Add WiFi pods standalone discount period
+        if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
+            const wifiPodsData = this.data.products.wifiPods;
+            if (wifiPodsData.discountPeriod) {
+                const podsOriginalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
+                totalTemporaryDiscount += podsOriginalPrice * wifiPodsData.discountPeriod;
+                discountsInfo.push({
+                    product: 'WiFi-pods (standalone)',
                     discountValue: podsOriginalPrice,
                     discountPeriod: wifiPodsData.discountPeriod
                 });
@@ -1894,6 +2029,25 @@ class UnifiedConfigurator {
                     </div>
                 `;
             }
+        }
+
+        // WiFi-pods standalone
+        if (this.state.wifiPods && this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
+            const wifiPodsData = this.data.products.wifiPods;
+            const originalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
+            overviewHtml += `
+                <div class="overview-group">
+                    <div class="overview-group-title">WiFi-pods</div>
+                    <div class="overview-item">
+                        <span class="overview-item-name">${this.state.wifiPods.count}x WiFi-pods</span>
+                        <span class="overview-item-price">
+                            <span class="original-price">€${originalPrice.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-price">€0,00</span>
+                            <span class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</span>
+                        </span>
+                    </div>
+                </div>
+            `;
         }
 
         // Entertainment services
@@ -2344,7 +2498,7 @@ class UnifiedConfigurator {
 
     // Add method to render closed states for all disabled products
     renderClosedStatesForDisabledProducts() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods'];
 
         allProducts.forEach(productType => {
             // Only render closed state if the product exists in the DOM and is disabled
@@ -2507,6 +2661,9 @@ class UnifiedConfigurator {
                 return lowestPrice !== Infinity ? lowestPrice : 5.99;
             }
             return 5.99; // fallback
+        } else if (productType === 'wifiPods') {
+            const wifiPodsData = this.data.products.wifiPods;
+            return wifiPodsData.pricePerPod; // Price for 1 pod
         }
         return 0;
     }

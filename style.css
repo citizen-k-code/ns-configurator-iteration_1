@@ -667,6 +667,55 @@
     display: none !important;
 }
 
+/* WiFi-pods stepper */
+.wifi-pods-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.stepper-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #CBD2E0;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #2D3648;
+    transition: all 0.3s ease;
+}
+
+.stepper-btn:hover:not(:disabled) {
+    background-color: #2D3648;
+    color: white;
+    border-color: #2D3648;
+}
+
+.stepper-btn:disabled {
+    background-color: #f8f9fa;
+    color: #CBD2E0;
+    border-color: #CBD2E0;
+    cursor: not-allowed;
+}
+
+.stepper-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2D3648;
+    min-width: 30px;
+    text-align: center;
+}
+
 /* Product Closed States */
 .product-closed-state {
     padding: 0 20px 20px;

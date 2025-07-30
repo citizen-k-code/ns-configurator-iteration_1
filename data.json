@@ -199,6 +199,27 @@
         "showHighlight": false,
         "highlight": null
       }
+    },
+    "wifiPods": {
+      "title": "Wifi-pods",
+      "tooltip": "Hoeveel wifi-pods heb ik nodig?",
+      "closedState": {
+        "summary": "Versterk je wifi met slimme wifi-pods<br>Vanaf <strong>€ ##PRICE##/maand</strong>",
+        "showHighlight": false,
+        "highlight": null
+      },
+      "summary": "<strong>Versterk je wifi</strong> met slimme wifi-pods, <strong>Probeer het gratis uit</strong> gedurende 3 maanden, Tot <strong>5 wifi-pods</strong> mogelijk",
+      "pricePerPod": 3.00,
+      "maxPods": 5,
+      "discountValue": 3.00,
+      "discountPeriod": 3,
+      "promoName": "Gratis proberen",
+      "freeTrialText": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil.",
+      "discountCopy": {
+        "temporaryOnly": "gedurende 3 maanden",
+        "permanentOnly": "",
+        "both": ""
+      }
     }
   },
   "discounts": {
@@ -252,6 +273,13 @@
             "summary": "Onze nieuwste TV en streamingbox<br /><strong>€ ##PRICE##/maand</strong>",
             "highlight": null,
             "showImage": true
+        },
+        "wifiPods": {
+            "summary": "Versterk je wifi met slimme wifi-pods<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
+            "highlight": {
+                "title": "Probeer het gratis uit",
+                "content": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil."
+            }
         }
     },
   "modalTitles": {
