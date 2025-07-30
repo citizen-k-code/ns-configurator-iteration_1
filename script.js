@@ -3,6 +3,9 @@ class UnifiedConfigurator {
         this.data = null;
         this.entertainmentData = null;
         this.currentSection = 'telecom'; // 'telecom' or 'entertainment'
+        this.currentStreamingService = null;
+        this.isEditingStreamingService = false;
+        this.tempSelectedTier = null;
         this.state = {
             // Telecom state
             internet: {
@@ -2157,7 +2160,7 @@ updateProductOverview() {
         }
 
         // Clear existing selected services (but keep the banner)
-        const existingServices = container.querySelectorAll('.selected-service');
+        const existingServices = container.querySelectorAll('.selected-service-card');
         existingServices.forEach(service => service.remove());
 
         selectedServices.forEach(serviceKey => {
@@ -2166,19 +2169,36 @@ updateProductOverview() {
             const iconClass = this.getServiceIconClass(serviceKey);
             const icon = this.getServiceIcon(serviceKey);
 
+            // Get tier information
+            let tierName = '';
+            let price = serviceData.price || 0;
+
+            if (serviceData.tiers) {
+                const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                if (tier) {
+                    tierName = tier.title;
+                    price = tier.price;
+                }
+            }
+
+            const discountedPrice = this.getEntertainmentDiscountedPrice(price);
+
             const serviceElement = document.createElement('div');
-            serviceElement.className = 'selected-service';
+            serviceElement.className = 'selected-service-card';
             serviceElement.innerHTML = `
-                <div class="selected-service-header">
-                    <div class="selected-service-title">
-                        <div class="service-icon ${iconClass}">${icon}</div>
-                        ${serviceName}
-                    </div>
-                    <button class="remove-service" onclick="app.removeEntertainmentService('${serviceKey}')">🗑️</button>
+                <div class="service-icon ${iconClass}">${icon}</div>
+                <div class="selected-service-info">
+                    <div class="selected-service-name">${serviceName}</div>
+                    ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
                 </div>
-                ${this.renderServiceTiers(serviceKey)}
-                ${this.renderServiceDetails(serviceKey)}
-                ${this.renderServicePrice(serviceKey)}
+                <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
+                <div class="selected-service-actions">
+                    ${serviceData.tiers && serviceData.tiers.length > 1 ? 
+                        `<button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>` : 
+                        ''
+                    }
+                    <button class="remove-service-btn" onclick="app.removeEntertainmentService('${serviceKey}')" title="Verwijder service">🗑️</button>
+                </div>
             `;
 
             container.appendChild(serviceElement);
@@ -2308,19 +2328,24 @@ updateProductOverview() {
     }
 
     addEntertainmentService(serviceKey) {
-        this.state.selectedEntertainmentServices.add(serviceKey);
-        this.state[serviceKey].enabled = true;
-
-        // Set default tier for services with tiers
+        // Open tier selection sheet for services with tiers
         const serviceData = this.entertainmentData.entertainment[serviceKey];
-        if (serviceData.tiers && serviceData.defaultTier) {
-            this.state[serviceKey].selectedTier = serviceData.defaultTier;
-        }
+        if (serviceData.tiers && serviceData.tiers.length > 1) {
+            this.openStreamingTierSheet(serviceKey);
+        } else {
+            // Directly add service without tier selection
+            this.state.selectedEntertainmentServices.add(serviceKey);
+            this.state[serviceKey].enabled = true;
 
-        this.renderAvailableEntertainmentServices();
-        this.renderSelectedEntertainmentServices();
-        this.updateAllEntertainmentSubtitles();
-        this.updateCostSummary();
+            if (serviceData.tiers && serviceData.defaultTier) {
+                this.state[serviceKey].selectedTier = serviceData.defaultTier;
+            }
+
+            this.renderAvailableEntertainmentServices();
+            this.renderSelectedEntertainmentServices();
+            this.updateAllEntertainmentSubtitles();
+            this.updateCostSummary();
+        }
     }
 
     removeEntertainmentService(serviceKey) {
@@ -2929,6 +2954,128 @@ updateProductOverview() {
         this.renderProductClosedState('entertainmentBox');
         this.updateProductHeaderStates();
         this.updateCostSummary();
+    }
+
+    // Streaming tier selection bottom sheet methods
+    openStreamingTierSheet(serviceKey, isEditing = false) {
+        this.currentStreamingService = serviceKey;
+        this.isEditingStreamingService = isEditing;
+        
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        const overlay = document.getElementById('streaming-tier-sheet-overlay');
+        const title = document.getElementById('tier-sheet-title');
+        const icon = document.getElementById('tier-sheet-icon');
+        const container = document.getElementById('tier-selection-container');
+        const details = document.getElementById('tier-sheet-details');
+        const pricing = document.getElementById('tier-sheet-pricing');
+        const confirmBtn = document.getElementById('streaming-tier-confirm-btn');
+
+        if (!overlay || !title || !icon || !container || !details || !pricing || !confirmBtn) return;
+
+        // Set service name and icon
+        title.textContent = this.getServiceDisplayName(serviceKey);
+        icon.innerHTML = this.getServiceIcon(serviceKey);
+        icon.className = `service-icon-large ${this.getServiceIconClass(serviceKey)}`;
+
+        // Set current selected tier or default
+        const currentTier = this.state[serviceKey].selectedTier || serviceData.defaultTier || 1;
+        this.tempSelectedTier = currentTier;
+
+        // Render tier options
+        container.innerHTML = serviceData.tiers.map(tier => {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            return `
+                <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}" 
+                        onclick="app.selectTempTier(${tier.id})">
+                    <div class="tier-name">${tier.title}</div>
+                    <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                </button>
+            `;
+        }).join('');
+
+        // Update details and pricing for current tier
+        this.updateTierSheetDetails();
+
+        // Update confirm button text
+        confirmBtn.textContent = isEditing ? 'Wijzigen' : 'Toevoegen';
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeStreamingTierSheet() {
+        const overlay = document.getElementById('streaming-tier-sheet-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        this.currentStreamingService = null;
+        this.isEditingStreamingService = false;
+        this.tempSelectedTier = null;
+    }
+
+    selectTempTier(tierId) {
+        this.tempSelectedTier = tierId;
+        
+        // Update active state in UI
+        const options = document.querySelectorAll('.tier-selection-option');
+        options.forEach(option => {
+            option.classList.remove('active');
+        });
+        
+        const selectedOption = document.querySelector(`.tier-selection-option:nth-child(${tierId})`);
+        if (selectedOption) {
+            selectedOption.classList.add('active');
+        }
+
+        this.updateTierSheetDetails();
+    }
+
+    updateTierSheetDetails() {
+        const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
+        const tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
+        
+        if (!tier) return;
+
+        const details = document.getElementById('tier-sheet-details');
+        const pricing = document.getElementById('tier-sheet-pricing');
+
+        if (details) {
+            const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+            details.innerHTML = `<ul>${summaryItems}</ul>`;
+        }
+
+        if (pricing) {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            pricing.innerHTML = `
+                <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                <div class="price-period">/maand</div>
+            `;
+        }
+    }
+
+    confirmStreamingTierSelection() {
+        if (!this.currentStreamingService || !this.tempSelectedTier) return;
+
+        const serviceKey = this.currentStreamingService;
+        
+        // Add or update service
+        this.state.selectedEntertainmentServices.add(serviceKey);
+        this.state[serviceKey].enabled = true;
+        this.state[serviceKey].selectedTier = this.tempSelectedTier;
+
+        // Close the sheet
+        this.closeStreamingTierSheet();
+
+        // Update UI
+        this.renderAvailableEntertainmentServices();
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
+        this.updateCostSummary();
+    }
+
+    editStreamingService(serviceKey) {
+        this.openStreamingTierSheet(serviceKey, true);
     }
 
     // Combo discount bottomsheet methods

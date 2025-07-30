@@ -504,6 +504,35 @@
         </div>
     </div>
 
+    <!-- Streaming Service Tier Selection Bottom Sheet -->
+    <div class="sheet-overlay" id="streaming-tier-sheet-overlay" style="display: none;"
+        onclick="app.closeStreamingTierSheet()">
+        <div class="streaming-tier-sheet" id="streaming-tier-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeStreamingTierSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <div class="streaming-service-header">
+                    <div class="service-icon-large" id="tier-sheet-icon"></div>
+                    <h3 class="sheet-title" id="tier-sheet-title">Netflix</h3>
+                </div>
+                <div class="tier-selection-subtitle">Kies je streaming plan</div>
+                <div class="tier-selection-container" id="tier-selection-container">
+                    <!-- Tier options will be populated by JavaScript -->
+                </div>
+                <div class="tier-details" id="tier-sheet-details">
+                    <!-- Tier details will be populated by JavaScript -->
+                </div>
+                <div class="tier-pricing" id="tier-sheet-pricing">
+                    <!-- Pricing will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="sheet-footer">
+                <button class="streaming-tier-confirm-btn" id="streaming-tier-confirm-btn" onclick="app.confirmStreamingTierSelection()">Toevoegen</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Combo Discount Bottom Sheet -->
     <div class="sheet-overlay" id="combo-discount-sheet-overlay" style="display: none;"
         onclick="app.closeComboDiscountSheet()">
