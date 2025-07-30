@@ -509,7 +509,7 @@
                 <button class="sheet-close-btn" onclick="app.closeEntertainmentBoxDeselectionDialog()">×</button>
             </div>
             <div class="sheet-content">
-                <h3 class="sheet-title">Ben je zeker dat je de Entertainment Box wil verwijderen?</h3>
+                <h3 class="sheet-title">Weet je zeker dat je de Entertainment Box wil verwijderen?</h3>
                 <div class="dialog-content">
                     <p>Je kan dan enkel TV kijken en streamen met de apps.</p>
                     <p>Wil je toch verder zonder Box, dan kan je die later nog bijbestellen.</p>
@@ -518,6 +518,25 @@
             <div class="sheet-footer confirmation-footer">
                 <button class="confirmation-keep-btn" onclick="app.keepEntertainmentBox()">Doorgaan met TV-box</button>
                 <button class="confirmation-remove-btn" onclick="app.removeEntertainmentBox()">Doorgaan zonder TV-box</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Combo Discount Bottom Sheet -->
+    <div class="sheet-overlay" id="combo-discount-sheet-overlay" style="display: none;"
+        onclick="app.closeComboDiscountSheet()">
+        <div class="tooltip-sheet" id="combo-discount-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeComboDiscountSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title" id="combo-discount-sheet-title">Combo discount</h3>
+                <div class="sheet-body" id="combo-discount-sheet-body">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.closeComboDiscountSheet()">Sluiten</button>
             </div>
         </div>
     </div>

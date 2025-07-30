@@ -1634,11 +1634,11 @@ input:checked+.slider:before {
 }
 
 .tier-price.permanent-discount {
-    color: #F134F7;
+    color: #2D3648;
 }
 
 .service-price.permanent-discount {
-    color: #F134F7;
+    color: #2D3648;
 }
 
 /* Promotional price styling */
@@ -1705,6 +1705,41 @@ input:checked+.slider:before {
     font-size: 12px;
     color: #717D96;
     font-style: italic;
+}
+
+/* Combo discount tag */
+.combo-discount-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #D1FFD9;
+    color: #2d5f2d;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-top: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.combo-discount-tag:hover {
+    background-color: #b8f5c1;
+}
+
+.combo-discount-tag .info-icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.tier-info .combo-discount-tag {
+    margin-top: 8px;
+}
+
+.service-price-container .combo-discount-tag {
+    text-align: right;
+    justify-content: flex-end;
 }
 
 /* Mobile highlight block styles */

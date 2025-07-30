@@ -85,12 +85,14 @@ class UnifiedConfigurator {
 
     async loadData() {
         try {
-            const [dataResponse, entertainmentResponse] = await Promise.all([
+            const [dataResponse, entertainmentResponse, discountsResponse] = await Promise.all([
                 fetch('./data.json'),
-                fetch('./entertainment-data.json')
+                fetch('./entertainment-data.json'),
+                fetch('./discounts.json')
             ]);
             this.data = await dataResponse.json();
             this.entertainmentData = await entertainmentResponse.json();
+            this.discountsData = await discountsResponse.json();
         } catch (error) {
             console.error('Error loading data:', error);
         }
@@ -885,7 +887,7 @@ class UnifiedConfigurator {
 
     getMobileTierInfo(tierId, simcardIndex = 0) {
         const tier = this.data.products.mobile.tiers.find(t => t.id === tierId);
-        const summaryItems = tier.summary.split(', ').map(item => `li>${item}</li>`).join('');
+        const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         let priceHtml;
         const discountCalc = this.calculateMobileDiscount(tier, simcardIndex);
@@ -910,11 +912,23 @@ class UnifiedConfigurator {
                             </div>
                         </div>
                         <div class="discount-info">${discountCopy}</div>
+                        <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('permanentDiscount')">
+                            Combodiscount toegepast
+                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        </div>
                     </div>
                 `;
             } else if (permanentDiscountAmount > 0) {
-                // Only permanent discount: show only discounted price in pink, no strikethrough
-                priceHtml = `<div class="tier-price permanent-discount">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>`;
+                // Only permanent discount: show normal price with combo discount tag
+                priceHtml = `
+                    <div class="tier-price-container">
+                        <div class="tier-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
+                        <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('permanentDiscount')">
+                            Combodiscount toegepast
+                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        </div>
+                    </div>
+                `;
             } else if (temporaryDiscountAmount > 0) {
                 // Only temporary discount: show strikethrough with caption and promo badge
                 const promoBadge = tier.promoName ? `<span class="promo-badge">${tier.promoName}</span>` : '';
@@ -1207,8 +1221,16 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (hasDiscount) {
-            // Permanent discount: show only pink price without strikethrough
-            priceHtml = `<div class="tier-price permanent-discount">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>`;
+            // Permanent discount: show normal price with combo discount tag
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="tier-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                        Combodiscount toegepast
+                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    </div>
+                </div>
+            `;
         } else {
             priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
@@ -1236,8 +1258,16 @@ class UnifiedConfigurator {
 
         let priceHtml;
         if (hasDiscount) {
-            // Permanent discount: show only pink price without strikethrough
-            priceHtml = `<div class="tier-price permanent-discount">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>`;
+            // Permanent discount: show normal price with combo discount tag
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="tier-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                        Combodiscount toegepast
+                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    </div>
+                </div>
+            `;
         } else {
             priceHtml = `<div class="tier-price">€ ${productData.price.toFixed(2).replace('.', ',')}/maand</div>`;
         }
@@ -2258,10 +2288,14 @@ updateProductOverview() {
         const hasDiscount = discountedPrice < originalPrice;
 
         if (hasDiscount) {
-            // Permanent discount: show only pink price without strikethrough
+            // Permanent discount: show normal price with combo discount tag
             return `
                 <div class="service-price-container">
-                    <div class="service-price permanent-discount">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="service-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                        Combodiscount toegepast
+                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    </div>
                 </div>
             `;
         } else {
@@ -2895,6 +2929,34 @@ updateProductOverview() {
         this.renderProductClosedState('entertainmentBox');
         this.updateProductHeaderStates();
         this.updateCostSummary();
+    }
+
+    // Combo discount bottomsheet methods
+    openComboDiscountSheet(discountType) {
+        if (!this.discountsData) return;
+
+        const overlay = document.getElementById('combo-discount-sheet-overlay');
+        const title = document.getElementById('combo-discount-sheet-title');
+        const body = document.getElementById('combo-discount-sheet-body');
+
+        if (!overlay || !title || !body) return;
+
+        const discountData = this.discountsData[discountType];
+        if (!discountData) return;
+
+        title.textContent = discountData.title;
+        body.innerHTML = discountData.content;
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeComboDiscountSheet() {
+        const overlay = document.getElementById('combo-discount-sheet-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
     }
 }
 
