@@ -1135,6 +1135,91 @@
     color: #1a252f;
 }
 
+/* Entertainment Hub Section */
+.entertainment-hub-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.entertainment-hub-label {
+    background-color: #4A90E2;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.entertainment-hub-card {
+    background-color: #F8F9FA;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #E0E4E7;
+}
+
+.entertainment-hub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.entertainment-hub-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3648;
+    margin: 0;
+}
+
+.entertainment-hub-image {
+    width: 60px;
+    height: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.entertainment-hub-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.entertainment-hub-features {
+    margin-bottom: 16px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.feature-check {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    font-size: 14px;
+    color: #2D3648;
+    line-height: 1.4;
+}
+
+.entertainment-hub-pricing {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    text-align: right;
+}
+
 .tv-warning-banner {
     background-color: #FED7AD;
     border-radius: 8px;
