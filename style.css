@@ -1593,6 +1593,10 @@ input:checked+.slider:before {
     color: #CBD2E0;
 }
 
+.tier-option.active .tier-subtitle.promotional-price {
+    color: #CBD2E0;
+}
+
 /* Tier Info */
 .tier-info {
     /*

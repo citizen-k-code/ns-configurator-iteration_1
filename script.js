@@ -684,12 +684,10 @@ class UnifiedConfigurator {
             }
 
             let subtitleContent = '';
-            if (!isSelected) {
-                if (hasDiscount) {
-                    subtitleContent = `<div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
-                } else {
-                    subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
-                }
+            if (hasDiscount) {
+                subtitleContent = `<div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
+            } else {
+                subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
             }
 
             return `
@@ -840,12 +838,10 @@ class UnifiedConfigurator {
                 const isSelected = tier.id === simcard.selectedTier;
 
                 let subtitleContent = '';
-                if (!isSelected) {
-                    if (discountCalc.hasDiscount) {
-                        subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
-                    } else {
-                        subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
-                    }
+                if (discountCalc.hasDiscount) {
+                    subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
+                } else {
+                    subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
                 }
 
                 return `
@@ -1167,18 +1163,15 @@ class UnifiedConfigurator {
 
         tiersContainer.innerHTML = tiers.map(tier => {
             const isSelected = tier.id === this.state[productType].selectedTier;
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const hasDiscount = discountedPrice < tier.price;
+            const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+
             let subtitleContent = '';
-
-            if (!isSelected) {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                const hasDiscount = discountedPrice < tier.price;
-                const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
-
-                if (hasDiscount) {
-                    subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
-                } else {
-                    subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
-                }
+            if (hasDiscount) {
+                subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
+            } else {
+                subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
             }
 
             return `
@@ -2207,18 +2200,15 @@ updateProductOverview() {
             <div class="service-tier-selector">
                 ${serviceData.tiers.map(tier => {
             const isSelected = tier.id === this.state[serviceKey].selectedTier;
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const hasDiscount = discountedPrice < tier.price;
+            const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+
             let subtitleContent = '';
-
-            if (!isSelected) {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                const hasDiscount = discountedPrice < tier.price;
-                const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
-
-                if (hasDiscount) {
-                    subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
-                } else {
-                    subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
-                }
+            if (hasDiscount) {
+                subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
+            } else {
+                subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
             }
 
             return `
