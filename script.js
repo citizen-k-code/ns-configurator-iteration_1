@@ -698,7 +698,7 @@ class UnifiedConfigurator {
                 `;
             } else {
                 subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
-            }</subtitleContent>
+            }
 
             return `
                 <div class="tier-option ${isSelected ? 'active' : ''}" 
@@ -1074,7 +1074,7 @@ class UnifiedConfigurator {
     */
 
     updateEntertainmentBoxInfo() {
-        ondeviceorientationabsolute.log("ent box update from TV ");
+        console.log("ent box update from TV ");
 
         const tier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
         const infoContainer = document.getElementById('entertainment-box-info');
