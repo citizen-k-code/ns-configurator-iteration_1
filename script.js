@@ -690,10 +690,15 @@ class UnifiedConfigurator {
 
             let subtitleContent = '';
             if (hasTemporaryDiscount) {
-                subtitleContent = `<div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
+                subtitleContent = `
+                    <div class="tier-subtitle-container">
+                        <div class="tier-subtitle-original">€${tier.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                `;
             } else {
                 subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
-            }
+            }</subtitleContent>
 
             return `
                 <div class="tier-option ${isSelected ? 'active' : ''}" 
@@ -844,7 +849,12 @@ class UnifiedConfigurator {
 
                 let subtitleContent = '';
                 if (discountCalc.temporaryDiscountAmount > 0) {
-                    subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
+                    subtitleContent = `
+                        <div class="tier-subtitle-container">
+                            <div class="tier-subtitle-original">€${tier.price.toFixed(2).replace('.', ',')}</div>
+                            <div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>
+                        </div>
+                    `;
                 } else {
                     subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
                 }
