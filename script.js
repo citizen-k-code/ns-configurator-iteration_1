@@ -884,7 +884,7 @@ class UnifiedConfigurator {
             addBtn.style.display = 'none';
         } else {
             addBtn.style.display = 'block';
-            addBtn.textContent = `➕ Voeg `${simcardCount + 1}e simkaart toe`;
+            addBtn.textContent = `➕ Voeg ${simcardCount + 1}e simkaart toe`;
         }
     }
 
