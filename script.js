@@ -1770,7 +1770,7 @@ updateProductOverview() {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
             if (!internetTier) return;
 
-            let priceHtml = `€${internetTier.price.toFixed(2).replace('.', ',')}`;
+            let priceHtml;
 
             if (internetTier.discountValue) {
                 const discountedPrice = internetTier.price - internetTier.discountValue;
@@ -1783,6 +1783,8 @@ updateProductOverview() {
                         <div class="discount-duration">gedurende ${internetTier.discountPeriod} maanden</div>
                     </div>
                 `;
+            } else {
+                priceHtml = `€${internetTier.price.toFixed(2).replace('.', ',')}`;
             }
 
             overviewHtml += `
@@ -1831,7 +1833,7 @@ updateProductOverview() {
 
                 const discountCalc = this.calculateMobileDiscount(mobileTier, index);
 
-                let priceHtml = `€${mobileTier.price.toFixed(2).replace('.', ',')}`;
+                let priceHtml;
 
                 if (discountCalc.hasDiscount) {
                     if (discountCalc.permanentDiscountAmount > 0 && discountCalc.temporaryDiscountAmount > 0) {
@@ -1858,6 +1860,8 @@ updateProductOverview() {
                             </div>
                         `;
                     }
+                } else {
+                    priceHtml = `€${mobileTier.price.toFixed(2).replace('.', ',')}`;
                 }
 
                 overviewHtml += `
@@ -1880,7 +1884,7 @@ updateProductOverview() {
                 const tvData = this.data.products.tv;
                 if (!tvData) return;
 
-                let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
+                let tvPriceHtml;
 
                 if (tvData.discountValue) {
                     const discountedPrice = tvData.price - tvData.discountValue;
@@ -1893,6 +1897,8 @@ updateProductOverview() {
                             <div class="discount-duration">gedurende ${tvData.discountPeriod} maanden</div>
                         </div>
                     `;
+                } else {
+                    tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
                 }
 
                 overviewHtml += `
