@@ -690,12 +690,7 @@ class UnifiedConfigurator {
 
             let subtitleContent = '';
             if (hasTemporaryDiscount) {
-                subtitleContent = `
-                    <div class="tier-subtitle-container">
-                        <div class="tier-subtitle-original">€${tier.price.toFixed(2).replace('.', ',')}</div>
-                        <div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>
-                    </div>
-                `;
+                subtitleContent = `<div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
             } else {
                 subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
             }
@@ -849,12 +844,7 @@ class UnifiedConfigurator {
 
                 let subtitleContent = '';
                 if (discountCalc.temporaryDiscountAmount > 0) {
-                    subtitleContent = `
-                        <div class="tier-subtitle-container">
-                            <div class="tier-subtitle-original">€${tier.price.toFixed(2).replace('.', ',')}</div>
-                            <div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>
-                        </div>
-                    `;
+                    subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
                 } else {
                     subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
                 }
@@ -1074,7 +1064,7 @@ class UnifiedConfigurator {
     */
 
     updateEntertainmentBoxInfo() {
-        console.log("ent box update from TV ");
+        ondeviceorientationabsolute.log("ent box update from TV ");
 
         const tier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
         const infoContainer = document.getElementById('entertainment-box-info');

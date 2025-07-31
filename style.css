@@ -1742,23 +1742,6 @@ input:checked+.slider:before {
     color: #CBD2E0;
 }
 
-.tier-subtitle-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-}
-
-.tier-subtitle-original {
-    font-size: 10px;
-    color: #717D96;
-    text-decoration: line-through;
-}
-
-.tier-option.active .tier-subtitle-original {
-    color: #CBD2E0;
-}
-
 /* Tier Info */
 .tier-info {
     /*
