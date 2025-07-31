@@ -291,6 +291,26 @@ class UnifiedConfigurator {
             });
         }
 
+        // Entertainment Hub selection radio buttons
+        const separateAppsRadio = document.getElementById('separate-apps-radio');
+        const entertainmentHubRadio = document.getElementById('entertainment-hub-radio');
+        
+        if (separateAppsRadio) {
+            separateAppsRadio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.handleStreamingMethodSelection('separate');
+                }
+            });
+        }
+        
+        if (entertainmentHubRadio) {
+            entertainmentHubRadio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.handleStreamingMethodSelection('hub');
+                }
+            });
+        }
+
         // Entertainment Box toggle (only if element exists)
         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
         if (entertainmentBoxToggle) {
@@ -560,6 +580,9 @@ class UnifiedConfigurator {
                             this.removeProductClosedState('entertainmentBox');
                         }
                     }
+                    
+                    // Update Entertainment Hub selection visibility
+                    this.updateEntertainmentHubSelectionVisibility();
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
                 }
@@ -580,6 +603,9 @@ class UnifiedConfigurator {
                         this.renderMobileSimcards();
                         this.updateMobileHighlightBlock();
                     }
+                } else if (productType === 'tv') {
+                    // Update Entertainment Hub selection visibility when TV is disabled
+                    this.updateEntertainmentHubSelectionVisibility();
                 }
                 // Render closed state for telecom products
                 this.renderProductClosedState(productType);
@@ -600,6 +626,7 @@ class UnifiedConfigurator {
                 }
                 this.renderAvailableEntertainmentServices();
                 this.renderSelectedEntertainmentServices();
+                this.updateEntertainmentHubSelectionVisibility();
 
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
@@ -618,6 +645,7 @@ class UnifiedConfigurator {
                 });
                 // Render closed state for entertainment
                 this.renderProductClosedState('entertainment');
+                this.updateEntertainmentHubSelectionVisibility();
             }
         }
         // Handle entertainment box toggle
@@ -3179,6 +3207,71 @@ updateProductOverview() {
         if (overlay) {
             overlay.style.display = 'none';
             document.body.style.overflow = '';
+        }
+    }
+
+    handleStreamingMethodSelection(method) {
+        if (method === 'hub') {
+            // Enable Entertainment Box when hub is selected
+            if (!this.state.entertainmentBox.enabled) {
+                this.state.entertainmentBox.enabled = true;
+                const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+
+                if (entertainmentBoxToggle) {
+                    entertainmentBoxToggle.checked = true;
+                }
+                if (entertainmentBoxContent) {
+                    entertainmentBoxContent.style.display = 'block';
+                    this.updateEntertainmentBoxStandaloneInfo();
+                    this.removeProductClosedState('entertainmentBox');
+                }
+
+                this.updateProductHeaderStates();
+                this.updateCostSummary();
+            }
+        } else if (method === 'separate') {
+            // Disable Entertainment Box when separate apps is selected (only if TV is not enabled)
+            if (!this.state.tv.enabled && this.state.entertainmentBox.enabled) {
+                this.state.entertainmentBox.enabled = false;
+                const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+
+                if (entertainmentBoxToggle) {
+                    entertainmentBoxToggle.checked = false;
+                }
+                if (entertainmentBoxContent) {
+                    entertainmentBoxContent.style.display = 'none';
+                }
+
+                this.renderProductClosedState('entertainmentBox');
+                this.updateProductHeaderStates();
+                this.updateCostSummary();
+            }
+        }
+    }
+
+    updateEntertainmentHubSelectionVisibility() {
+        const hubSelectionSection = document.getElementById('entertainment-hub-selection-section');
+        const separateAppsRadio = document.getElementById('separate-apps-radio');
+        const entertainmentHubRadio = document.getElementById('entertainment-hub-radio');
+        
+        if (!hubSelectionSection) return;
+
+        // Show the section only when entertainment is enabled AND TV is not enabled
+        if (this.state.entertainment.enabled && !this.state.tv.enabled) {
+            hubSelectionSection.style.display = 'block';
+            
+            // Update radio button selection based on current Entertainment Box state
+            if (this.state.entertainmentBox.enabled) {
+                if (entertainmentHubRadio) entertainmentHubRadio.checked = true;
+                if (separateAppsRadio) separateAppsRadio.checked = false;
+            } else {
+                if (separateAppsRadio) separateAppsRadio.checked = true;
+                if (entertainmentHubRadio) entertainmentHubRadio.checked = false;
+            }
+        } else {
+            hubSelectionSection.style.display = 'none';
         }
     }
 }
