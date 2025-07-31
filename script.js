@@ -1785,6 +1785,23 @@ updateProductOverview() {
                         <span class="overview-item-price">${priceHtml}</span>
                     </div>
             `;
+
+            // Add WiFi-pods to Internet section if enabled
+            if (this.state.wifiPods && this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
+                const wifiPodsData = this.data.products.wifiPods;
+                const originalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
+                overviewHtml += `
+                    <div class="overview-item">
+                        <span class="overview-item-name">${this.state.wifiPods.count}x WiFi-pods</span>
+                        <span class="overview-item-price">
+                            <span class="original-price">€${originalPrice.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-price">€0,00</span>
+                            <span class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</span>
+                        </span>
+                    </div>
+                `;
+            }
+
             overviewHtml += `</div>`;
         }
 
@@ -1808,7 +1825,7 @@ updateProductOverview() {
                         const priceAfterPermanent = mobileTier.price - discountCalc.permanentDiscountAmount;
                         priceHtml = `<span class="original-price">€${priceAfterPermanent.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${mobileTier.discountCopy.both}</span>`;
                     } else if (discountCalc.permanentDiscountAmount > 0) {
-                        priceHtml = `<span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span>`;
+                        priceHtml = `€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}`;
                     } else if (discountCalc.temporaryDiscountAmount > 0) {
                         priceHtml = `<span class="original-price">€${mobileTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${mobileTier.discountCopy.temporaryOnly}</span>`;
                     }
@@ -1886,24 +1903,7 @@ updateProductOverview() {
             }
         }
 
-        // WiFi-pods standalone
-        if (this.state.wifiPods && this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
-            const wifiPodsData = this.data.products.wifiPods;
-            const originalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
-            overviewHtml += `
-                <div class="overview-group">
-                    <div class="overview-group-title">WiFi-pods</div>
-                    <div class="overview-item">
-                        <span class="overview-item-name">${this.state.wifiPods.count}x WiFi-pods</span>
-                        <span class="overview-item-price">
-                            <span class="original-price">€${originalPrice.toFixed(2).replace('.', ',')}</span>
-                            <span class="discount-price">€0,00</span>
-                            <span class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</span>
-                        </span>
-                    </div>
-                </div>
-            `;
-        }
+        
 
         // Entertainment services
         if (this.state.selectedEntertainmentServices && this.entertainmentData) {
@@ -1928,20 +1928,14 @@ updateProductOverview() {
                         const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
                         const hasDiscount = discountedPrice < tier.price;
 
-                        if (hasDiscount) {
-                            priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
-                        } else {
-                            priceHtml = `€${tier.price.toFixed(2).replace('.', ',')}`;
-                        }
+                        // Entertainment services only have permanent discounts, so never show pink styling
+                        priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
                     } else {
                         const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
                         const hasDiscount = discountedPrice < serviceData.price;
 
-                        if (hasDiscount) {
-                            priceHtml = `<span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>`;
-                        } else {
-                            priceHtml = `€${serviceData.price.toFixed(2).replace('.', ',')}`;
-                        }
+                        // Entertainment services only have permanent discounts, so never show pink styling
+                        priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
                     }
 
                     overviewHtml += `
