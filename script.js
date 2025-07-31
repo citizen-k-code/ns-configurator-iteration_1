@@ -2564,11 +2564,8 @@ updateProductOverview() {
                 highlightClass = 'promo-highlight';
                 highlightTitle = 'Combovoordeel Internet + Mobiel';
                 highlightContent = 'Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet.';
-            } else {
-                highlightClass = 'combo-discount-banner';
-                highlightTitle = 'Je combovoordeel is geactiveerd';
-                highlightContent = 'Je krijgt <strong>50% korting</strong> op 15 GB en Unlimited mobiel.';
             }
+            // Remove the else block that shows the blue combo discount banner when internet is enabled
 
             if (highlightClass !== '') {
                 highlightHtml = `
