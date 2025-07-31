@@ -783,13 +783,13 @@
 }
 
 .product-closed-content {
-    padding: 8px 16px 16px;
+    padding: 0 16px 16px;
 }
 
 .product-closed-divider {
     height: 1px;
     background-color: #CBD2E0;
-    margin: 8px 0 16px 0;
+    margin: 0 0 16px 0;
 }
 
 .product-closed-summary {
