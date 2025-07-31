@@ -1122,26 +1122,8 @@ class UnifiedConfigurator {
 
         const summaryItems = entertainmentBoxData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
-        let priceHtml;
-        if (entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
-            // Temporary discount: show promo badge and strikethrough with caption
-            const discountPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-            const promoBadge = entertainmentBoxData.promoName ? `<span class="promo-badge">${entertainmentBoxData.promoName}</span>` : '';
-            priceHtml = `
-                <div class="tier-price-container">
-                    <div class="price-with-badge">
-                        ${promoBadge}
-                        <div class="price-content">
-                            <div class="original-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</div>
-                            <div class="discount-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
-                        </div>
-                    </div>
-                    <div class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</div>
-                </div>
-            `;
-        } else {
-            priceHtml = `<div class="tier-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}/maand</div>`;
-        }
+        // Always show the base price without discount for Entertainment Box
+        const priceHtml = `<div class="tier-price">€ ${entertainmentBoxData.price.toFixed(2).replace('.', ',')}/maand</div>`;
 
         infoContainer.innerHTML = `
             <ul class="tier-details">
@@ -1408,14 +1390,8 @@ class UnifiedConfigurator {
 
             console.log("entertainmentBoxData = ", entertainmentBoxData);
 
-            //if (entertainmentBoxData) {
-            if (entertainmentBoxData.discountValue) {
-                total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                totalTemporaryDiscount += entertainmentBoxData.discountValue;
-            } else {
-                total += entertainmentBoxData.price;
-            }
-            //}
+            // Always use base price without discount for Entertainment Box
+            total += entertainmentBoxData.price;
         }
 
         // WiFi-pods standalone cost
@@ -1579,18 +1555,7 @@ class UnifiedConfigurator {
             }
         }
 
-        // Entertainment Box temporary discount (independent calculation)
-        if (this.state.entertainmentBox.enabled) {
-            const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData && entertainmentBoxData.discountValue && entertainmentBoxData.discountPeriod) {
-                totalTemporaryDiscount += entertainmentBoxData.discountValue * entertainmentBoxData.discountPeriod;
-                discountsInfo.push({
-                    product: 'Entertainment Box',
-                    discountValue: entertainmentBoxData.discountValue,
-                    discountPeriod: entertainmentBoxData.discountPeriod
-                });
-            }
-        }
+        // Entertainment Box temporary discount (independent calculation) - removed as no discount is applied
 
 
 
@@ -1890,12 +1855,8 @@ updateProductOverview() {
             if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
                 const entertainmentBoxData = this.data.products.entertainmentBox;
                 if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
-                    let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
-
-                    if (entertainmentBoxData.discountValue !== undefined) {
-                        const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                        boxPriceHtml = `<span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>`;
-                    }
+                    // Always show base price without discount for Entertainment Box
+                    const boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
 
                     overviewHtml += `
                         <div class="overview-item">
