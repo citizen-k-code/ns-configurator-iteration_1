@@ -1864,13 +1864,13 @@ updateProductOverview() {
 
         // TV (including Entertainment Box when TV is enabled OR Entertainment Box standalone)
         if ((this.state.tv && this.state.tv.enabled) || (this.state.entertainmentBox && this.state.entertainmentBox.enabled)) {
-            const tvData = this.data.products.tv;
-            if (!tvData) return;
-
             overviewHtml += `<div class="overview-group"><div class="overview-group-title">TV</div>`;
 
             // Add TV item only if TV is enabled
             if (this.state.tv && this.state.tv.enabled) {
+                const tvData = this.data.products.tv;
+                if (!tvData) return;
+
                 let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
 
                 if (tvData.discountValue) {
