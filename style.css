@@ -1104,8 +1104,7 @@
     left: 0;
     color: #28a745;
     font-weight: 60;
-}
-
+}```python
 /* TV Viewing Section */
 .tv-viewing-section {
     margin-top: 20px;
@@ -2565,29 +2564,43 @@ html {
     flex-shrink: 0;
 }
 
+.overview-item-price .price-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.overview-item-price .price-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .overview-item-price .original-price {
-    color: #717D96;
     text-decoration: line-through;
-    font-size: 12px;
-    display: block;
-    line-height: 1.2;
+    color: #999;
+    font-size: 14px;
 }
 
 .overview-item-price .discount-price {
-    color: #F134F7;
+    color: #e91e63;
     font-weight: 600;
-    display: block;
-    line-height: 1.2;
-    font-size: inherit;
+    font-size: 16px;
 }
 
-.overview-item-price .discount-info {
-    color: #717D96;
+.overview-item-price .discount-duration {
     font-size: 11px;
-    font-style: italic;
+    color: #666;
+    margin-top: 2px;
+    text-align: right;
+}
+
+/* Legacy support for old structure */
+.overview-item-price .discount-info {
     display: block;
-    line-height: 1.2;
-    margin-top: 1px;
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
 }
 
 /* Cost summary updates */
@@ -3485,7 +3498,7 @@ html {
 .cost-summary-container {
     background-color: #f0f0f0;
     padding: 20px;
-    border-radius: 5px;
+border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     margin: 20px auto;

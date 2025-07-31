@@ -1774,7 +1774,15 @@ updateProductOverview() {
 
             if (internetTier.discountValue) {
                 const discountedPrice = internetTier.price - internetTier.discountValue;
-                priceHtml = `<span class="original-price">€${internetTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${internetTier.discountCopy.temporaryOnly}</span>`;
+                priceHtml = `
+                    <div class="price-layout">
+                        <div class="price-main">
+                            <span class="original-price">€${internetTier.price.toFixed(2).replace('.', ',')}</span>
+                            <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <div class="discount-duration">gedurende ${internetTier.discountPeriod} maanden</div>
+                    </div>
+                `;
             }
 
             overviewHtml += `
@@ -1790,14 +1798,19 @@ updateProductOverview() {
             if (this.state.wifiPods && this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
                 const wifiPodsData = this.data.products.wifiPods;
                 const originalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
-                overviewHtml += `
-                    <div class="overview-item">
-                        <span class="overview-item-name">${this.state.wifiPods.count}x WiFi-pods</span>
-                        <span class="overview-item-price">
+                const wifiPodsPriceHtml = `
+                    <div class="price-layout">
+                        <div class="price-main">
                             <span class="original-price">€${originalPrice.toFixed(2).replace('.', ',')}</span>
                             <span class="discount-price">€0,00</span>
-                            <span class="discount-info">gedurende ${wifiPodsData.discountPeriod} maanden</span>
-                        </span>
+                        </div>
+                        <div class="discount-duration">gedurende ${wifiPodsData.discountPeriod} maanden</div>
+                    </div>
+                `;
+                overviewHtml += `
+                    <div class="overview-item">
+                        <span class="overview-item-name">${this.state.wifiPods.count} Wifi-pods</span>
+                        <span class="overview-item-price">${wifiPodsPriceHtml}</span>
                     </div>
                 `;
             }
@@ -1823,17 +1836,33 @@ updateProductOverview() {
                 if (discountCalc.hasDiscount) {
                     if (discountCalc.permanentDiscountAmount > 0 && discountCalc.temporaryDiscountAmount > 0) {
                         const priceAfterPermanent = mobileTier.price - discountCalc.permanentDiscountAmount;
-                        priceHtml = `<span class="original-price">€${priceAfterPermanent.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${mobileTier.discountCopy.both}</span>`;
+                        priceHtml = `
+                            <div class="price-layout">
+                                <div class="price-main">
+                                    <span class="original-price">€${priceAfterPermanent.toFixed(2).replace('.', ',')}</span>
+                                    <span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span>
+                                </div>
+                                <div class="discount-duration">gedurende ${mobileTier.discountPeriod} maanden</div>
+                            </div>
+                        `;
                     } else if (discountCalc.permanentDiscountAmount > 0) {
                         priceHtml = `€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}`;
                     } else if (discountCalc.temporaryDiscountAmount > 0) {
-                        priceHtml = `<span class="original-price">€${mobileTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${mobileTier.discountCopy.temporaryOnly}</span>`;
+                        priceHtml = `
+                            <div class="price-layout">
+                                <div class="price-main">
+                                    <span class="original-price">€${mobileTier.price.toFixed(2).replace('.', ',')}</span>
+                                    <span class="discount-price">€${discountCalc.finalPrice.toFixed(2).replace('.', ',')}</span>
+                                </div>
+                                <div class="discount-duration">gedurende ${mobileTier.discountPeriod} maanden</div>
+                            </div>
+                        `;
                     }
                 }
 
                 overviewHtml += `
                     <div class="overview-item">
-                        <span class="overview-item-name">Simkaart ${index + 1} - ${mobileTier.title}</span>
+                        <span class="overview-item-name">SIM ${index + 1}</span>
                         <span class="overview-item-price">${priceHtml}</span>
                     </div>
                 `;
@@ -1855,12 +1884,20 @@ updateProductOverview() {
 
                 if (tvData.discountValue) {
                     const discountedPrice = tvData.price - tvData.discountValue;
-                    tvPriceHtml = `<span class="original-price">€${tvData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${tvData.discountCopy.temporaryOnly}</span>`;
+                    tvPriceHtml = `
+                        <div class="price-layout">
+                            <div class="price-main">
+                                <span class="original-price">€${tvData.price.toFixed(2).replace('.', ',')}</span>
+                                <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            <div class="discount-duration">gedurende ${tvData.discountPeriod} maanden</div>
+                        </div>
+                    `;
                 }
 
                 overviewHtml += `
                     <div class="overview-item">
-                        <span class="overview-item-name">TV</span>
+                        <span class="overview-item-name">Full linear</span>
                         <span class="overview-item-price">${tvPriceHtml}</span>
                     </div>
                 `;
