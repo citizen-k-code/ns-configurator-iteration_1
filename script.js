@@ -884,7 +884,7 @@ class UnifiedConfigurator {
             addBtn.style.display = 'none';
         } else {
             addBtn.style.display = 'block';
-            addBtn.textContent = `➕ Voeg ${simcardCount + 1}e simkaart toe`;
+            addBtn.textContent = `➕ Voeg `${simcardCount + 1}e simkaart toe`;
         }
     }
 
@@ -1167,11 +1167,9 @@ class UnifiedConfigurator {
             const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
 
             let subtitleContent = '';
-            if (hasDiscount) {
-                subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
-            } else {
-                subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
-            }
+            // For entertainment services, permanent discounts should use default color
+            // Only temporary discounts (if any) should use promotional color
+            subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
 
             return `
                 <div class="tier-option ${isSelected ? 'active' : ''}" 
@@ -1870,7 +1868,7 @@ updateProductOverview() {
             overviewHtml += `</div>`;
         }
 
-        
+
 
         // Fixed Phone
         if (this.state.fixedPhone && this.state.fixedPhone.enabled) {
@@ -2216,11 +2214,9 @@ updateProductOverview() {
             const priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
 
             let subtitleContent = '';
-            if (hasDiscount) {
-                subtitleContent = `<div class="tier-subtitle promotional-price">${priceText}</div>`;
-            } else {
-                subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
-            }
+            // For entertainment services, permanent discounts should use default color
+            // Only temporary discounts (if any) should use promotional color
+            subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
 
             return `
                         <div class="service-tier-option ${isSelected ? 'active' : ''}" 
@@ -2902,7 +2898,7 @@ updateProductOverview() {
     openStreamingTierSheet(serviceKey, isEditing = false) {
         this.currentStreamingService = serviceKey;
         this.isEditingStreamingService = isEditing;
-        
+
         const serviceData = this.entertainmentData.entertainment[serviceKey];
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
         const title = document.getElementById('tier-sheet-title');
@@ -2963,7 +2959,7 @@ updateProductOverview() {
         // Update button layout based on editing mode
         if (isEditing) {
             confirmBtn.style.display = 'none';
-            
+
             // Add dual button layout for editing
             const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
             const existingDualButtons = footer.querySelector('.dual-button-layout');
@@ -2979,7 +2975,7 @@ updateProductOverview() {
         } else {
             confirmBtn.style.display = 'block';
             confirmBtn.textContent = 'Toevoegen';
-            
+
             // Remove dual button layout if it exists
             const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
             const existingDualButtons = footer.querySelector('.dual-button-layout');
@@ -3005,13 +3001,13 @@ updateProductOverview() {
 
     selectTempTier(tierId) {
         this.tempSelectedTier = tierId;
-        
+
         // Update active state in UI
         const options = document.querySelectorAll('.tier-selection-option');
         options.forEach(option => {
             option.classList.remove('active');
         });
-        
+
         const selectedOption = document.querySelector(`.tier-selection-option:nth-child(${tierId})`);
         if (selectedOption) {
             selectedOption.classList.add('active');
@@ -3022,7 +3018,7 @@ updateProductOverview() {
 
     updateTierSheetDetails() {
         const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
-        
+
         const details = document.getElementById('tier-sheet-details');
         const pricing = document.getElementById('tier-sheet-pricing');
 
@@ -3049,10 +3045,10 @@ updateProductOverview() {
             // Check if we're adding the second service to show discounted price
             const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
             const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
-            
+
             const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
             const hasDiscount = discountedPrice < price;
-            
+
             let pricingHtml = `
                 <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
                 <div class="price-period">/maand</div>
@@ -3078,11 +3074,11 @@ updateProductOverview() {
 
         const serviceKey = this.currentStreamingService;
         const serviceData = this.entertainmentData.entertainment[serviceKey];
-        
+
         // Add or update service
         this.state.selectedEntertainmentServices.add(serviceKey);
         this.state[serviceKey].enabled = true;
-        
+
         // Set tier for services with tiers, or default tier for services without
         if (serviceData.tiers && serviceData.tiers.length > 0) {
             this.state[serviceKey].selectedTier = this.tempSelectedTier;
