@@ -111,117 +111,124 @@
                         </label>
                     </div>
                     <div class="product-content" id="wifi-pods-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('wifi_pods')">Hoeveel wifi-pods heb ik nodig?</div>
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('wifi_pods')">Hoeveel wifi-pods heb ik
+                            nodig?</div>
                         <div class="wifi-pods-stepper">
-                            <button class="stepper-btn" onclick="app.decreaseWifiPodsStandalone()" id="wifi-pods-decrease">−</button>
+                            <button class="stepper-btn" onclick="app.decreaseWifiPodsStandalone()"
+                                id="wifi-pods-decrease">−</button>
                             <span class="stepper-value" id="wifi-pods-count">1</span>
-                            <button class="stepper-btn" onclick="app.increaseWifiPodsStandalone()" id="wifi-pods-increase">+</button>
+                            <button class="stepper-btn" onclick="app.increaseWifiPodsStandalone()"
+                                id="wifi-pods-increase">+</button>
                         </div>
                         <div class="tier-info" id="wifi-pods-info"></div>
                     </div>
-                    <div class="wifi-pods-free-trial" id="wifi-pods-free-trial" style="display: block;">
-                        <div class="product-closed-content">
-                            <div class="product-closed-divider"></div>
-                            <div class="promo-highlight">
-                                <div class="highlight-title">Probeer het gratis uit</div>
-                                <div class="highlight-content">Je kan wifi-pods bijstellen of terugbrengen wanneer je wil.</div>
+                    <div class="product-closed-content">
+                        <div class="product-closed-divider"></div>
+                        <div class="promo-highlight">
+                            <div class="highlight-title">Probeer het gratis uit</div>
+                            <div class="highlight-content">Je kan wifi-pods bijstellen of terugbrengen wanneer je wil.
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Mobile Product Card -->
-                <div class="product-card" id="mobile-block">
-                    <div class="product-header">
-                        <div class="product-title">
-                            <span>Mobiel</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="mobile-toggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="product-content" id="mobile-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik
-                            nodig?</div>
-                        <div class="simcards-container" id="simcards-container"></div>
-                        <button class="add-simcard-btn" id="add-simcard-btn">
-                            ➕ Voeg 3e simkaart toe
-                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- TV-kijken en streamen Section -->
-            <div class="section-group">
-                <h2 class="section-title">Tv-kijken en streamen</h2>
-
-                <!-- TV Product Card -->
-                <div class="product-card" id="tv-block">
-                    <div class="product-header">
-                        <div class="product-title">
-                            <span>Tv</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="tv-toggle">
-                            <span class="slider"></span>
-                        </label>
+            <!-- Mobile Product Card -->
+            <div class="product-card" id="mobile-block">
+                <div class="product-header">
+                    <div class="product-title">
+                        <span>Mobiel</span>
                     </div>
-                    <div class="product-content" id="tv-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Wat zit er in je tv-pakket?
-                        </div>
-                        <div class="tier-info" id="tv-info"></div>
+                    <label class="switch">
+                        <input type="checkbox" id="mobile-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="product-content" id="mobile-content" style="display: none;">
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('mobile')">Hoeveel mobiele data heb ik
+                        nodig?</div>
+                    <div class="simcards-container" id="simcards-container"></div>
+                    <button class="add-simcard-btn" id="add-simcard-btn">
+                        ➕ Voeg 3e simkaart toe
+                    </button>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Entertainment Hub Section -->
-                        <div class="entertainment-hub-section">
-                            <div class="entertainment-hub-label">Inbegrepen</div>
-                            <div class="entertainment-hub-card">
-                                <div class="entertainment-hub-header">
-                                    <h3 class="entertainment-hub-title">Entertainment Hub</h3>
-                                    <div class="entertainment-hub-image">
-                                        <img src="final_assets/entertainment_box_1.jpg" alt="Entertainment Box" />
-                                    </div>
+        <!-- TV-kijken en streamen Section -->
+        <div class="section-group">
+            <h2 class="section-title">Tv-kijken en streamen</h2>
+
+            <!-- TV Product Card -->
+            <div class="product-card" id="tv-block">
+                <div class="product-header">
+                    <div class="product-title">
+                        <span>Tv</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="tv-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="product-content" id="tv-content" style="display: none;">
+                    <div class="tooltip-link" onclick="app.openTooltipSheet('tv_main')">Wat zit er in je tv-pakket?
+                    </div>
+                    <div class="tier-info" id="tv-info"></div>
+
+                    <!-- Entertainment Hub Section -->
+                    <div class="entertainment-hub-section">
+                        <div class="entertainment-hub-label">Inbegrepen</div>
+                        <div class="entertainment-hub-card">
+                            <div class="entertainment-hub-header">
+                                <h3 class="entertainment-hub-title">Entertainment Hub</h3>
+                                <div class="entertainment-hub-image">
+                                    <img src="final_assets/entertainment_box_1.jpg" alt="Entertainment Box" />
                                 </div>
-                                <div class="entertainment-hub-features">
-                                    <div class="feature-item">
-                                        <span class="feature-check">✓</span>
-                                        <span class="feature-text">Inclusief <strong>afstandsbediening</strong> met slimme stembediening</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <span class="feature-check">✓</span>
-                                        <span class="feature-text">Alle live-tv kanalen, streamingdiensten en lokale apps <strong>samen op één plek</strong></span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <span class="feature-check">✓</span>
-                                        <span class="feature-text"><strong>Zoek, ontdek en bewaar</strong> over al je diensten heen</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <span class="feature-check">✓</span>
-                                        <span class="feature-text">Beheer je streamingdiensten makkelijk via onze <strong>TV-shop</strong></span>
-                                    </div>
+                            </div>
+                            <div class="entertainment-hub-features">
+                                <div class="feature-item">
+                                    <span class="feature-check">✓</span>
+                                    <span class="feature-text">Inclusief <strong>afstandsbediening</strong> met slimme
+                                        stembediening</span>
                                 </div>
-                                <div class="entertainment-hub-pricing" id="entertainment-hub-pricing">
-                                    €5,00/maand
+                                <div class="feature-item">
+                                    <span class="feature-check">✓</span>
+                                    <span class="feature-text">Alle live-tv kanalen, streamingdiensten en lokale apps
+                                        <strong>samen op één plek</strong></span>
                                 </div>
+                                <div class="feature-item">
+                                    <span class="feature-check">✓</span>
+                                    <span class="feature-text"><strong>Zoek, ontdek en bewaar</strong> over al je
+                                        diensten heen</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-check">✓</span>
+                                    <span class="feature-text">Beheer je streamingdiensten makkelijk via onze
+                                        <strong>TV-shop</strong></span>
+                                </div>
+                            </div>
+                            <div class="entertainment-hub-pricing" id="entertainment-hub-pricing">
+                                €5,00/maand
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Entertainment Product Card -->
-                <div class="product-card" id="entertainment-block">
-                    <div class="product-header">
-                        <div class="product-title">
-                            <span>Streamingdiensten</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="entertainment-toggle">
-                            <span class="slider"></span>
-                        </label>
+            <!-- Entertainment Product Card -->
+            <div class="product-card" id="entertainment-block">
+                <div class="product-header">
+                    <div class="product-title">
+                        <span>Streamingdiensten</span>
                     </div>
+                    <label class="switch">
+                        <input type="checkbox" id="entertainment-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-                    <!-- ENT-Close: When entertainment is disabled -->
-                    <!--
+                <!-- ENT-Close: When entertainment is disabled -->
+                <!--
                     <div class="entertainment-closed-state" id="entertainment-closed-state">
                         <div class="entertainment-preview">
                             <div class="service-icons-row">
@@ -256,112 +263,114 @@
                     </div>
                     -->
 
-                    <!-- ENT-Full: When entertainment is enabled -->
-                    <div class="product-content" id="entertainment-content" style="display: none;">
-                        <!-- Top section: Info link -->
-                        <div class="entertainment-info-section">
-                            <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Wat als ik al
-                                streamingdiensten heb?
+                <!-- ENT-Full: When entertainment is enabled -->
+                <div class="product-content" id="entertainment-content" style="display: none;">
+                    <!-- Top section: Info link -->
+                    <div class="entertainment-info-section">
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('tv_entertainment')">Wat als ik al
+                            streamingdiensten heb?
+                        </div>
+                    </div>
+
+                    <!-- Mid section: Selected services -->
+                    <div class=" selected-entertainment-services" id="selected-entertainment-services">
+                        <!-- Combo discount banner (shown when 2+ services selected) -->
+                        <!--
+                        <div class="combo-discount-banner" id="combo-discount-banner" style="display: none;">
+                            <div class="highlight-title">Je combovoordeel is geactiveerd</div>
+                            <div class="highlight-content">Je krijgt <strong>5% korting</strong> op al je
+                                streamingdiensten</div>
+                        </div>
+                        -->
+
+
+                        <!-- Selected services will be rendered here -->
+                    </div>
+
+                    <!-- Bottom section: Available services -->
+                    <div class="available-entertainment-services">
+                        <div class="available-services-header">
+                            <h5>Duid aan welke streamingdiensten je wil toevoegen aan je pack.</h5>
+
+                            <div class="promo-highlight">
+                                <div class="highlight-title">Combovoordeel Streaming</div>
+                                <div class="highlight-content">Krijg 5% korting als je 2 of meer streamingdiensten
+                                    combineert.</div>
                             </div>
+                            <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan
+                                je makkelijk overzetten.</p>
                         </div>
 
-                        <!-- Mid section: Selected services -->
-                        <div class=" selected-entertainment-services" id="selected-entertainment-services">
-                            <!-- Combo discount banner (shown when 2+ services selected) -->
-                            <div class="combo-discount-banner" id="combo-discount-banner" style="display: none;">
-                                <div class="highlight-title">Je combovoordeel is geactiveerd</div>
-                                <div class="highlight-content">Je krijgt <strong>5% korting</strong> op al je
-                                    streamingdiensten</div>
-                            </div>
-
-
-                            <!-- Selected services will be rendered here -->
-                        </div>
-
-                        <!-- Bottom section: Available services -->
-                        <div class="available-entertainment-services">
-                            <div class="available-services-header">
-                                <h5>Duid aan welke streamingdiensten je wil toevoegen aan je pack.</h5>
-
-                                <div class="promo-highlight">
-                                    <div class="highlight-title">Combovoordeel Streaming</div>
-                                    <div class="highlight-content">Krijg 5% korting als je 2 of meer streamingdiensten
-                                        combineert.</div>
-                                </div>
-                                <p class="services-account-note">Heb je al een account op 1 van deze diensten? Die kan
-                                    je makkelijk overzetten.</p>
-                            </div>
-
-                            <div class="available-services-grid" id="available-services-grid">
-                                <!-- Available services will be rendered here -->
-                            </div>
+                        <div class="available-services-grid" id="available-services-grid">
+                            <!-- Available services will be rendered here -->
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
-            <!-- Opties Section -->
-            <div class="section-group">
-                <h2 class="section-title">Opties</h2>
 
-                <!-- Fixed Phone Product Card -->
-                <div class="product-card" id="fixed-phone-block">
-                    <div class="product-header">
-                        <div class="product-title">
-                            <span>Vaste lijn</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="fixed-phone-toggle">
-                            <span class="slider"></span>
-                        </label>
+        </div>
+
+        <!-- Opties Section -->
+        <div class="section-group">
+            <h2 class="section-title">Opties</h2>
+
+            <!-- Fixed Phone Product Card -->
+            <div class="product-card" id="fixed-phone-block">
+                <div class="product-header">
+                    <div class="product-title">
+                        <span>Vaste lijn</span>
                     </div>
-                    <div class="product-content" id="fixed-phone-content" style="display: none;">
-                        <div class="tier-info" id="fixed-phone-info"></div>
-                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="fixed-phone-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="product-content" id="fixed-phone-content" style="display: none;">
+                    <div class="tier-info" id="fixed-phone-info"></div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Part 2: Cost Summary -->
-        <div class="part2" id="part2">
-            <div class="cost-summary">
-                <div class="summary-header">
-                    <div class="summary-title-row">
-                        <div class="summary-title">Totaal per maand</div>
-                        <div class="summary-total">
-                            € <span id="monthly-total">0,00</span>
-                        </div>
-                    </div>
-                    <div id="price-caption" class="price-caption" style="display: none;"></div>
-                    <div class="summary-period" id="summary-period" style="display: none;">Voor 6 maanden</div>
-
-                    <div class="advantage-block" id="advantage-block" style="display: none;">
-                        <span id="advantage-amount">€0 voordeel in totaal</span>
-                        <span class="info-icon"><img src="final_assets/icons/i-icon-blue.svg" alt="info"></span>
+    <!-- Part 2: Cost Summary -->
+    <div class="part2" id="part2">
+        <div class="cost-summary">
+            <div class="summary-header">
+                <div class="summary-title-row">
+                    <div class="summary-title">Totaal per maand</div>
+                    <div class="summary-total">
+                        € <span id="monthly-total">0,00</span>
                     </div>
                 </div>
+                <div id="price-caption" class="price-caption" style="display: none;"></div>
+                <div class="summary-period" id="summary-period" style="display: none;">Voor 6 maanden</div>
 
-                <!-- Product Overview Accordion -->
-                <div class="product-overview-section">
-                    <div class="overview-toggle" id="overview-toggle" onclick="app.toggleProductOverview()">
-                        <span>Samenstelling van de prijs</span>
-                        <span class="toggle-arrow" id="toggle-arrow">▼</span>
-                    </div>
-                    <div class="product-overview-content" id="product-overview-content" style="display: none;">
-                        <!-- Content will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Verder naar
-                    bestellen</button>
-
-                <div class="save-for-later">
-                    <button class="save-btn">Bewaar voor later</button>
+                <div class="advantage-block" id="advantage-block" style="display: none;">
+                    <span id="advantage-amount">€0 voordeel in totaal</span>
+                    <span class="info-icon"><img src="final_assets/icons/i-icon-blue.svg" alt="info"></span>
                 </div>
             </div>
+
+            <!-- Product Overview Accordion -->
+            <div class="product-overview-section">
+                <div class="overview-toggle" id="overview-toggle" onclick="app.toggleProductOverview()">
+                    <span>Samenstelling van de prijs</span>
+                    <span class="toggle-arrow" id="toggle-arrow">▼</span>
+                </div>
+                <div class="product-overview-content" id="product-overview-content" style="display: none;">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <button class="order-btn" id="main-order-btn" onclick="app.handleOrderButton()">Verder naar
+                bestellen</button>
+
+            <div class="save-for-later">
+                <button class="save-btn">Bewaar voor later</button>
+            </div>
         </div>
+    </div>
     </div>
 
     <!-- Fixed Bottom Mobile Summary -->
@@ -499,7 +508,8 @@
             </div>
             <div class="sheet-footer confirmation-footer">
                 <button class="confirmation-keep-btn" onclick="app.keepEntertainmentBox()">Doorgaan met TV-box</button>
-                <button class="confirmation-remove-btn" onclick="app.removeEntertainmentBox()">Doorgaan zonder TV-box</button>
+                <button class="confirmation-remove-btn" onclick="app.removeEntertainmentBox()">Doorgaan zonder
+                    TV-box</button>
             </div>
         </div>
     </div>
@@ -528,7 +538,8 @@
                 </div>
             </div>
             <div class="sheet-footer">
-                <button class="streaming-tier-confirm-btn" id="streaming-tier-confirm-btn" onclick="app.confirmStreamingTierSelection()">Toevoegen</button>
+                <button class="streaming-tier-confirm-btn" id="streaming-tier-confirm-btn"
+                    onclick="app.confirmStreamingTierSelection()">Toevoegen</button>
             </div>
         </div>
     </div>
