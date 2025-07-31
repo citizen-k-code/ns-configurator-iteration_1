@@ -1886,20 +1886,20 @@ updateProductOverview() {
                 `;
             }
 
-            // Add Entertainment Box (either from TV or standalone)
+            // Add Entertainment Box (always use standalone data for pricing when enabled)
             if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
-                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === (this.state.tv.enabled ? this.state.tv.entertainmentBoxTier : 2));
-                if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                    let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
+                const entertainmentBoxData = this.data.products.entertainmentBox;
+                if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
+                    let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
 
-                    if (entertainmentBoxTier.discountValue !== undefined) {
-                        const discountedPrice = entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
-                        boxPriceHtml = `<span class="original-price">€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${entertainmentBoxTier.discountCopy.temporaryOnly}</span>`;
+                    if (entertainmentBoxData.discountValue !== undefined) {
+                        const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
+                        boxPriceHtml = `<span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>`;
                     }
 
                     overviewHtml += `
                         <div class="overview-item">
-                            <span class="overview-item-name">${entertainmentBoxTier.title}</span>
+                            <span class="overview-item-name">Entertainment Box</span>
                             <span class="overview-item-price">${boxPriceHtml}</span>
                         </div>
                     `;
