@@ -681,15 +681,15 @@ class UnifiedConfigurator {
 
             const isSelected = tier.id === this.state.internet.selectedTier;
             let finalPrice = tier.price;
-            let hasDiscount = false;
+            let hasTemporaryDiscount = false;
 
             if (tier.discountValue) {
                 finalPrice = tier.price - tier.discountValue;
-                hasDiscount = true;
+                hasTemporaryDiscount = true;
             }
 
             let subtitleContent = '';
-            if (hasDiscount) {
+            if (hasTemporaryDiscount) {
                 subtitleContent = `<div class="tier-subtitle promotional-price">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
             } else {
                 subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
@@ -843,7 +843,7 @@ class UnifiedConfigurator {
                 const isSelected = tier.id === simcard.selectedTier;
 
                 let subtitleContent = '';
-                if (discountCalc.hasDiscount) {
+                if (discountCalc.temporaryDiscountAmount > 0) {
                     subtitleContent = `<div class="tier-subtitle promotional-price">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
                 } else {
                     subtitleContent = `<div class="tier-subtitle">€${displayPrice.toFixed(2).replace('.', ',')}</div>`;
