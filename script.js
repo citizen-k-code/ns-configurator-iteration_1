@@ -1862,30 +1862,33 @@ updateProductOverview() {
             overviewHtml += `</div>`;
         }
 
-        // TV (including Entertainment Box when TV is enabled)
-        if (this.state.tv && this.state.tv.enabled) {
+        // TV (including Entertainment Box when TV is enabled OR Entertainment Box standalone)
+        if ((this.state.tv && this.state.tv.enabled) || (this.state.entertainmentBox && this.state.entertainmentBox.enabled)) {
             const tvData = this.data.products.tv;
             if (!tvData) return;
 
-            let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
+            overviewHtml += `<div class="overview-group"><div class="overview-group-title">TV</div>`;
 
-            if (tvData.discountValue) {
-                const discountedPrice = tvData.price - tvData.discountValue;
-                tvPriceHtml = `<span class="original-price">€${tvData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${tvData.discountCopy.temporaryOnly}</span>`;
-            }
+            // Add TV item only if TV is enabled
+            if (this.state.tv && this.state.tv.enabled) {
+                let tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
 
-            overviewHtml += `
-                <div class="overview-group">
-                    <div class="overview-group-title">TV</div>
+                if (tvData.discountValue) {
+                    const discountedPrice = tvData.price - tvData.discountValue;
+                    tvPriceHtml = `<span class="original-price">€${tvData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${tvData.discountCopy.temporaryOnly}</span>`;
+                }
+
+                overviewHtml += `
                     <div class="overview-item">
                         <span class="overview-item-name">TV</span>
                         <span class="overview-item-price">${tvPriceHtml}</span>
                     </div>
-            `;
+                `;
+            }
 
-            // Add Entertainment Box as part of TV section when TV is enabled
+            // Add Entertainment Box (either from TV or standalone)
             if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
-                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === (this.state.tv.enabled ? this.state.tv.entertainmentBoxTier : 2));
                 if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
                     let boxPriceHtml = `€${entertainmentBoxTier.price.toFixed(2).replace('.', ',')}`;
 
@@ -1906,28 +1909,7 @@ updateProductOverview() {
             overviewHtml += `</div>`;
         }
 
-        // Entertainment Box (independent section - only when not part of TV)
-        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled) {
-            const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData && entertainmentBoxData.price !== undefined) {
-                let boxPriceHtml = `€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}`;
-
-                if (entertainmentBoxData.discountValue) {
-                    const discountedPrice = entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                    boxPriceHtml = `<span class="original-price">€${entertainmentBoxData.price.toFixed(2).replace('.', ',')}</span><span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span><span class="discount-info">${entertainmentBoxData.discountCopy.temporaryOnly}</span>`;
-                }
-
-                overviewHtml += `
-                    <div class="overview-group">
-                        <div class="overview-group-title">Entertainment Box</div>
-                        <div class="overview-item">
-                            <span class="overview-item-name">Entertainment Box</span>
-                            <span class="overview-item-price">${boxPriceHtml}</span>
-                        </div>
-                    </div>
-                `;
-            }
-        }
+        
 
         // Fixed Phone
         if (this.state.fixedPhone && this.state.fixedPhone.enabled) {
