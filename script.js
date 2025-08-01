@@ -3439,8 +3439,11 @@ class UnifiedConfigurator {
         const tvEnabled = this.state.tv.enabled;
         const entertainmentEnabled = this.state.entertainment.enabled;
 
-        // Show the highlight when both TV and entertainment are enabled
-        if (tvEnabled && entertainmentEnabled) {
+        // Hide the highlight if TV card is not activated
+        if (!tvEnabled) {
+            highlightBlock.style.display = 'none';
+        } else if (tvEnabled && entertainmentEnabled) {
+            // Show the highlight when both TV and entertainment are enabled
             highlightBlock.style.display = 'block';
         } else {
             highlightBlock.style.display = 'none';
