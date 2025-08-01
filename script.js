@@ -3267,6 +3267,7 @@ updateProductOverview() {
                 if (entertainmentHubRadio) entertainmentHubRadio.checked = true;
                 if (separateAppsRadio) separateAppsRadio.checked = false;
             } else {
+                // Default to separate apps when Entertainment Box is not enabled
                 if (separateAppsRadio) separateAppsRadio.checked = true;
                 if (entertainmentHubRadio) entertainmentHubRadio.checked = false;
             }

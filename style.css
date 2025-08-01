@@ -131,18 +131,24 @@
 
 .hub-option input[type="radio"] {
     position: absolute;
-    opacity: 0;
+    top: 16px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
     cursor: pointer;
+    z-index: 1;
 }
 
 .hub-option-content {
     display: block;
-    padding: 16px;
+    padding: 16px 16px 16px 48px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
     background-color: white;
+    position: relative;
 }
 
 .hub-option input[type="radio"]:checked + .hub-option-content {
@@ -163,7 +169,7 @@
 }
 
 .entertainment-hub-option .hub-option-content {
-    padding: 20px;
+    padding: 20px 20px 20px 52px;
 }
 
 .hub-option-header {
