@@ -1725,7 +1725,8 @@ class UnifiedConfigurator {
             if (totalTemporaryDiscount > 0) {
                 mobileMonthlyTotalElement.style.color = '#F134F7';
                 const shortestDuration = this.getShortestTemporaryDiscountPeriod();
-                mobileCostLabel.textContent = `eerste ${shortestDuration} maanden`;
+                const durationText = shortestDuration === 1 ? '1 maand' : `${shortestDuration} maanden`;
+                mobileCostLabel.textContent = `eerste ${durationText}`;
             } else {
                 mobileMonthlyTotalElement.style.color = '#2D3648';
                 mobileCostLabel.textContent = 'per maand';
@@ -1768,7 +1769,8 @@ class UnifiedConfigurator {
 
         if (totalTemporaryDiscount > 0) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
-            summaryTitleElement.textContent = `Eerste ${shortestDuration} maanden`;
+            const durationText = shortestDuration === 1 ? '1 maand' : `${shortestDuration} maanden`;
+            summaryTitleElement.textContent = `Eerste ${durationText}`;
         } else {
             summaryTitleElement.textContent = 'Totaal per maand';
         }
