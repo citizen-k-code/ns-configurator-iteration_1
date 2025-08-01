@@ -3421,11 +3421,11 @@ class UnifiedConfigurator {
         const selectionSection = document.getElementById('entertainment-hub-selection-section');
         if (!selectionSection) return;
 
-        const hasSelectedServices = this.state.selectedEntertainmentServices.size > 0;
         const tvEnabled = this.state.tv.enabled;
+        const entertainmentEnabled = this.state.entertainment.enabled;
 
-        // Show the selection section only when streaming services are selected but TV is not enabled
-        if (hasSelectedServices && !tvEnabled) {
+        // Show the selection section when TV is not activated and entertainment is activated
+        if (!tvEnabled && entertainmentEnabled) {
             selectionSection.style.display = 'block';
         } else {
             selectionSection.style.display = 'none';
