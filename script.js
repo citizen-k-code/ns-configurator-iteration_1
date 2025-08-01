@@ -1725,8 +1725,8 @@ class UnifiedConfigurator {
             if (totalTemporaryDiscount > 0) {
                 mobileMonthlyTotalElement.style.color = '#F134F7';
                 const shortestDuration = this.getShortestTemporaryDiscountPeriod();
-                const durationText = shortestDuration === 1 ? '1 maand' : `${shortestDuration} maanden`;
-                mobileCostLabel.textContent = `eerste ${durationText}`;
+                const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
+                mobileCostLabel.textContent = `eerste ${shortestDuration} ${durationText}`;
             } else {
                 mobileMonthlyTotalElement.style.color = '#2D3648';
                 mobileCostLabel.textContent = 'per maand';
@@ -1769,8 +1769,8 @@ class UnifiedConfigurator {
 
         if (totalTemporaryDiscount > 0) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
-            const durationText = shortestDuration === 1 ? '1 maand' : `${shortestDuration} maanden`;
-            summaryTitleElement.textContent = `Eerste ${durationText}`;
+            const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
+            summaryTitleElement.textContent = `Eerste ${shortestDuration} ${durationText}`;
         } else {
             summaryTitleElement.textContent = 'Totaal per maand';
         }
