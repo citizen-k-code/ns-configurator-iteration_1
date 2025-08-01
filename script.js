@@ -2597,7 +2597,7 @@ updateProductOverview() {
         }
 
         // Remove any highlight blocks that might be inserted
-        const existingHighlight = productBlock.querySelector('.highlight-block).
+        const existingHighlight = productBlock.querySelector('.highlight-block');
         if (existingHighlight) {
             existingHighlight.remove();
         }
