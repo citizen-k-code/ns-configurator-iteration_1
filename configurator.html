@@ -372,7 +372,7 @@
                     </div>
 
                     <div class="advantage-block" id="advantage-block" style="display: none;">
-                        <span class="info-link">Bekijk je promoties</span>
+                        <span class="info-link">Bekijk je kortingen</span>
                         <span class="info-icon"><img src="final_assets/icons/i-icon-blue.svg" alt="info"></span>
                     </div>
                 </div>
@@ -403,12 +403,17 @@
         <div class="mobile-summary-content">
             <div class="mobile-cost-section" onclick="app.scrollToMainSummary()">
                 <div class="mobile-monthly-cost">
-                    €<span id="mobile-monthly-total">0,00</span>
+                    <div class="mobile-monthly-wrap">
+                        €<span id="mobile-monthly-total">0,00</span>
+                    </div>
                     <span class="mobile-cost-label" id="mobile-cost-label">per maand</span>
                 </div>
+
+                <!--
                 <div class="mobile-advantage" id="mobile-advantage" style="display: none;">
-                    <span id="mobile-advantage-amount">Bekijk je promoties</span>
+                    <span id="mobile-advantage-amount">Bekijk je kortingen</span>
                 </div>
+                -->
             </div>
             <button class="mobile-order-btn" id="mobile-order-btn"
                 onclick="app.handleMobileOrderButton()">Bestellen</button>

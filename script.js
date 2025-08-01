@@ -1749,12 +1749,12 @@ class UnifiedConfigurator {
         const mobileCostLabel = document.getElementById('mobile-cost-label');
         if (mobileMonthlyTotalElement && mobileCostLabel) {
             if (totalTemporaryDiscount > 0) {
-                mobileMonthlyTotalElement.style.color = '#F134F7';
+                mobileMonthlyTotalElement.parentElement.style.color = '#F134F7';
                 const shortestDuration = this.getShortestTemporaryDiscountPeriod();
                 const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
                 mobileCostLabel.textContent = `eerste ${shortestDuration} ${durationText}`;
             } else {
-                mobileMonthlyTotalElement.style.color = '#2D3648';
+                mobileMonthlyTotalElement.parentElement.style.color = '#2D3648';
                 mobileCostLabel.textContent = 'per maand';
             }
             mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
