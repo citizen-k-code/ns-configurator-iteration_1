@@ -887,8 +887,7 @@ class UnifiedConfigurator {
             }).join('');
 
             const deleteButton = this.state.mobile.simcards.length > 1 && index > 0 ?
-                `<button class="delete-simcard"```text
-onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
+                `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
 
             return `
                 <div class="simcard">
