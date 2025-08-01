@@ -1738,6 +1738,7 @@ class UnifiedConfigurator {
             // Color the price pink if there are temporary discounts
             if (totalTemporaryDiscount > 0) {
                 monthlyTotalElement.style.color = '#F134F7';
+            ```python
             } else {
                 monthlyTotalElement.style.color = '#2D3648';
             }
@@ -2596,7 +2597,7 @@ updateProductOverview() {
 
         // Also remove old closed state divs if they exist
         const existingClosedState = productBlock.querySelector('.product-closed-state');
-        if (existingClosed_state) {
+        if (existingClosedState) {
             existingClosedState.remove();
         }
 
