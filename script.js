@@ -887,7 +887,7 @@ class UnifiedConfigurator {
             }).join('');
 
             const deleteButton = this.state.mobile.simcards.length > 1 && index > 0 ?
-                `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
+                `<button class="delete-simcard"` onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
 
             return `
                 <div class="simcard">
@@ -2885,7 +2885,7 @@ updateProductOverview() {
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per maand: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
                     </div>
                 </div>
                 ` : ''}
@@ -2901,7 +2901,7 @@ updateProductOverview() {
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per maand: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
                     </div>
                 </div>
                 ` : ''}
