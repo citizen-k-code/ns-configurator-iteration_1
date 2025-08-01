@@ -1830,6 +1830,15 @@ body.config-page {
     text-decoration: underline;
     cursor: pointer;
     max-width: 85%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tooltip-link .info-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
 }
 
 /* Switch Toggle */
