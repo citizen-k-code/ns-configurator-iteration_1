@@ -1785,7 +1785,8 @@ class UnifiedConfigurator {
         const allPeriods = this.getAllTemporaryDiscountPeriods();
         const uniquePeriods = [...new Set(allPeriods)].sort((a, b) => a - b);
 
-        if (uniquePeriods.length <= 1) {
+        // Show tiers if there are any temporary discounts (even just 1 duration)
+        if (uniquePeriods.length === 0) {
             tiersContainer.style.display = 'none';
             return;
         }

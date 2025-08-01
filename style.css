@@ -3647,10 +3647,12 @@ html {
 
 .pricing-tier-price.temporary {
     color: #F134F7;
+    font-weight: 600;
 }
 
 .pricing-tier-price.final {
     color: #2D3648;
+    font-weight: 600;
 }
 
 /* cost summary */
