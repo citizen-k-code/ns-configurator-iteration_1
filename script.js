@@ -1655,11 +1655,11 @@ class UnifiedConfigurator {
             wifiPods: this.state.wifiPods
         });
 
-        // Check all temporary discount periods
+        // Check all temporary discount periods - only include if discount is actually applied
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
             console.log("Internet tier:", internetTier);
-            if (internetTier && internetTier.discountPeriod) {
+            if (internetTier && internetTier.discountPeriod && internetTier.discountValue) {
                 periods.push(internetTier.discountPeriod);
                 console.log("Added internet discount period:", internetTier.discountPeriod);
             }
@@ -1669,7 +1669,7 @@ class UnifiedConfigurator {
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 console.log(`Mobile tier ${index}:`, mobileTier);
-                if (mobileTier && mobileTier.discountPeriod) {
+                if (mobileTier && mobileTier.discountPeriod && mobileTier.discountValue) {
                     periods.push(mobileTier.discountPeriod);
                     console.log(`Added mobile discount period ${index}:`, mobileTier.discountPeriod);
                 }
@@ -1679,7 +1679,7 @@ class UnifiedConfigurator {
         if (this.state.tv.enabled) {
             const tvData = this.data.products.tv;
             console.log("TV data:", tvData);
-            if (tvData && tvData.discountPeriod) {
+            if (tvData && tvData.discountPeriod && tvData.discountValue) {
                 periods.push(tvData.discountPeriod);
                 console.log("Added TV discount period:", tvData.discountPeriod);
             }
@@ -1687,7 +1687,7 @@ class UnifiedConfigurator {
             if (tvData && tvData.entertainmentBox && tvData.entertainmentBox.tiers) {
                 const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
                 console.log("Entertainment box tier (from TV):", entertainmentBoxTier);
-                if (entertainmentBoxTier && entertainmentBoxTier.discountPeriod) {
+                if (entertainmentBoxTier && entertainmentBoxTier.discountPeriod && entertainmentBoxTier.discountValue) {
                     periods.push(entertainmentBoxTier.discountPeriod);
                     console.log("Added entertainment box discount period (from TV):", entertainmentBoxTier.discountPeriod);
                 }
@@ -1697,13 +1697,13 @@ class UnifiedConfigurator {
         if (this.state.entertainmentBox.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
             console.log("Standalone entertainment box data:", entertainmentBoxData);
-            if (entertainmentBoxData && entertainmentBoxData.discountPeriod) {
+            if (entertainmentBoxData && entertainmentBoxData.discountPeriod && entertainmentBoxData.discountValue) {
                 periods.push(entertainmentBoxData.discountPeriod);
                 console.log("Added standalone entertainment box discount period:", entertainmentBoxData.discountPeriod);
             }
         }
 
-        // WiFi-pods discount period
+        // WiFi-pods discount period - has special discount logic (free for period)
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
             const wifiPodsData = this.data.products.wifiPods;
             console.log("WiFi pods data:", wifiPodsData);
