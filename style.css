@@ -960,7 +960,7 @@
 }
 
 .promo-highlight {
-    background: linear-gradient(135deg, #F134F7 0%, #E91E63 100%);
+    background: #EDF0F7;
     border-radius: 8px;
     padding: 12px 16px;
     margin: 16px 0;
@@ -2237,7 +2237,7 @@ input:checked+.slider:before {
 }
 
 .summary-total {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
     color: #2D3648;
 }
@@ -2271,6 +2271,11 @@ input:checked+.slider:before {
     display: block;
     width: 24px;
     height: 24px;
+}
+
+.advantage-block .info-link {
+    font-weight: 400;
+    text-decoration: underline;
 }
 
 .cost-breakdown {
@@ -3700,15 +3705,15 @@ html {
 
 /* Temporary pricing tiers */
 .temporary-pricing-tiers {
-    margin-top: 12px;
+    margin: 8px 0 16px;
 }
 
 .pricing-tier {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
-    font-size: 14px;
+    margin-bottom: 0px;
+    font-size: 12px;
 }
 
 .pricing-tier-label {

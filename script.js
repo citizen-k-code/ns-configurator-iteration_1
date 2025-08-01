@@ -1292,8 +1292,8 @@ class UnifiedConfigurator {
         const discount = this.entertainmentData.discounts.entertainment_combo;
 
         // Apply discount if we already have enough products OR if we're adding the second service
-        const willHaveMinProducts = enabledProducts >= discount.minProducts || 
-                                   (enabledProducts === 1 && isAddingSecondService);
+        const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+            (enabledProducts === 1 && isAddingSecondService);
 
         if (discount.enabled && willHaveMinProducts) {
             return originalPrice * (1 - discount.percentage / 100);
@@ -1733,9 +1733,9 @@ class UnifiedConfigurator {
         if (monthlyTotalElement) {
             // Color the price pink if there are temporary discounts
             if (totalTemporaryDiscount > 0) {
-                monthlyTotalElement.style.color = '#F134F7';
+                monthlyTotalElement.parentElement.style.color = '#F134F7';
             } else {
-                monthlyTotalElement.style.color = '#2D3648';
+                monthlyTotalElement.parentElement.style.color = '#2D3648';
             }
             monthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
         }
@@ -1836,8 +1836,8 @@ class UnifiedConfigurator {
             cumulativePrice += totalExpiringDiscount;
 
             const isLastPeriod = index === uniquePeriods.length - 1;
-            const label = isLastPeriod ? 
-                `Je prijs na ${period} maanden` : 
+            const label = isLastPeriod ?
+                `Je prijs na ${period} maanden` :
                 `Je promoprijs na ${period} maanden`;
             const priceClass = isLastPeriod ? 'final' : 'temporary';
 
@@ -1953,7 +1953,7 @@ class UnifiedConfigurator {
         return expiringDiscounts;
     }
 
-updateProductOverview() {
+    updateProductOverview() {
         const overviewContent = document.getElementById('product-overview-content');
         if (!overviewContent || !this.data) return;
 
