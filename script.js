@@ -1650,53 +1650,79 @@ class UnifiedConfigurator {
         let shortestPeriod = 0;
         const periods = [];
 
+        console.log("=== DEBUG: Calculating shortest discount period ===");
+        console.log("Current state:", {
+            internet: this.state.internet,
+            mobile: this.state.mobile,
+            tv: this.state.tv,
+            entertainmentBox: this.state.entertainmentBox,
+            wifiPods: this.state.wifiPods
+        });
+
         // Check all temporary discount periods
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
-            if (internetTier.discountPeriod) {
+            console.log("Internet tier:", internetTier);
+            if (internetTier && internetTier.discountPeriod) {
                 periods.push(internetTier.discountPeriod);
+                console.log("Added internet discount period:", internetTier.discountPeriod);
             }
         }
 
         if (this.state.mobile.enabled) {
-            this.state.mobile.simcards.forEach((simcard) => {
+            this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                if (mobileTier.discountPeriod) {
+                console.log(`Mobile tier ${index}:`, mobileTier);
+                if (mobileTier && mobileTier.discountPeriod) {
                     periods.push(mobileTier.discountPeriod);
+                    console.log(`Added mobile discount period ${index}:`, mobileTier.discountPeriod);
                 }
             });
         }
 
         if (this.state.tv.enabled) {
             const tvData = this.data.products.tv;
-            if (tvData.discountPeriod) {
+            console.log("TV data:", tvData);
+            if (tvData && tvData.discountPeriod) {
                 periods.push(tvData.discountPeriod);
+                console.log("Added TV discount period:", tvData.discountPeriod);
             }
 
-            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-            if (entertainmentBoxTier && entertainmentBoxTier.discountPeriod) {
-                periods.push(entertainmentBoxTier.discountPeriod);
+            if (tvData && tvData.entertainmentBox && tvData.entertainmentBox.tiers) {
+                const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
+                console.log("Entertainment box tier (from TV):", entertainmentBoxTier);
+                if (entertainmentBoxTier && entertainmentBoxTier.discountPeriod) {
+                    periods.push(entertainmentBoxTier.discountPeriod);
+                    console.log("Added entertainment box discount period (from TV):", entertainmentBoxTier.discountPeriod);
+                }
             }
         }
 
         if (this.state.entertainmentBox.enabled) {
-            // Only add standalone Entertainment Box discount period when TV is not enabled
-            // When TV is enabled, Entertainment Box discount period is already added in TV section
             const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData.discountPeriod) {
+            console.log("Standalone entertainment box data:", entertainmentBoxData);
+            if (entertainmentBoxData && entertainmentBoxData.discountPeriod) {
                 periods.push(entertainmentBoxData.discountPeriod);
+                console.log("Added standalone entertainment box discount period:", entertainmentBoxData.discountPeriod);
             }
         }
 
         // WiFi-pods discount period
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
             const wifiPodsData = this.data.products.wifiPods;
+            console.log("WiFi pods data:", wifiPodsData);
             if (wifiPodsData && wifiPodsData.discountPeriod) {
                 periods.push(wifiPodsData.discountPeriod);
+                console.log("Added WiFi pods discount period:", wifiPodsData.discountPeriod);
             }
         }
 
-        return periods.length > 0 ? Math.min(...periods) : 0; // Return 0 if no periods found
+        const result = periods.length > 0 ? Math.min(...periods) : 0;
+        console.log("All discount periods found:", periods);
+        console.log("Shortest discount period calculated:", result);
+        console.log("=== END DEBUG ===");
+        
+        return result; // Return 0 if no periods found
     }
 
     updateCostSummary() {
@@ -1767,13 +1793,20 @@ class UnifiedConfigurator {
         const summaryTitleElement = document.getElementById('summary-title');
         if (!summaryTitleElement) return;
 
+        console.log("=== DEBUG: Updating summary title ===");
+        console.log("Total temporary discount:", totalTemporaryDiscount);
+
         if (totalTemporaryDiscount > 0) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
             const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
-            summaryTitleElement.textContent = `Eerste ${shortestDuration} ${durationText}`;
+            const titleText = `Eerste ${shortestDuration} ${durationText}`;
+            console.log("Setting summary title to:", titleText);
+            summaryTitleElement.textContent = titleText;
         } else {
+            console.log("No temporary discounts, setting title to: Totaal per maand");
             summaryTitleElement.textContent = 'Totaal per maand';
         }
+        console.log("=== END DEBUG ===");
     }
 
     updateTemporaryPricingTiers(currentTotal, totalTemporaryDiscount) {
