@@ -1706,6 +1706,7 @@ body.config-page {
 
 /* Section Groups */
 .section-group {
+    padding: 16px;
     margin-bottom: 24px;
 }
 
