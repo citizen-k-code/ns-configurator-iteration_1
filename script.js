@@ -627,12 +627,7 @@ class UnifiedConfigurator {
                 this.renderAvailableEntertainmentServices();
                 this.renderSelectedEntertainmentServices();
                 this.updateEntertainmentHubSelectionVisibility();
-
-                // Smooth scroll to ensure the product block is visible
-                setTimeout(() => {
-                    const productBlock = document.getElementById('entertainment-block');
-                    this.scrollToElementSmooth(productBlock);
-                }, 100);
+                this.updateTvBundleHighlight();
             } else {
                 if (content) content.style.display = 'none';
                 if (closedState) {
@@ -646,6 +641,7 @@ class UnifiedConfigurator {
                 // Render closed state for entertainment
                 this.renderProductClosedState('entertainment');
                 this.updateEntertainmentHubSelectionVisibility();
+                this.updateTvBundleHighlight();
             }
         }
         // Handle entertainment box toggle
@@ -2601,7 +2597,7 @@ updateProductOverview() {
         }
 
         // Remove any highlight blocks that might be inserted
-        const existingHighlight = productBlock.querySelector('.highlight-block');
+        const existingHighlight = productBlock.querySelector('.highlight-block');```text
         if (existingHighlight) {
             existingHighlight.remove();
         }
