@@ -887,7 +887,8 @@ class UnifiedConfigurator {
             }).join('');
 
             const deleteButton = this.state.mobile.simcards.length > 1 && index > 0 ?
-                `<button class="delete-simcard" onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
+                `<button class="delete-simcard"```text
+onclick="app.deleteSimcard(${simcard.id})">🗑️</button>` : '';
 
             return `
                 <div class="simcard">
@@ -1688,13 +1689,15 @@ class UnifiedConfigurator {
             }
         }
 
-
-
-        if (periods.length > 0) {
-            shortestPeriod = Math.min(...periods);
+        // WiFi-pods discount period
+        if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
+            const wifiPodsData = this.data.products.wifiPods;
+            if (wifiPodsData && wifiPodsData.discountPeriod) {
+                periods.push(wifiPodsData.discountPeriod);
+            }
         }
 
-        return shortestPeriod;
+        return periods.length > 0 ? Math.min(...periods) : 0; // Return 0 if no periods found
     }
 
     updateCostSummary() {
@@ -2955,7 +2958,7 @@ updateProductOverview() {
                 let titleText = '';
 
                 if (selectedServices.length === 1) {
-                    // Single service: use the service name
+                    // Single service: use the serviceName
                     const serviceName = this.getServiceDisplayName(selectedServices[0]);
                     titleText = `${serviceName} en al je lokale favorieten op één handige plek`;
                 } else if (selectedServices.length >= 2 && selectedServices.length <= 3) {
