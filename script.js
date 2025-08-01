@@ -2790,7 +2790,7 @@ updateProductOverview() {
             if (!this.state.internet.enabled) {
                 highlightClass = 'promo-highlight';
                 highlightTitle = 'Combovoordeel Internet + Mobiel';
-                highlightContent = 'Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet.';
+                highlightContent = 'Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet. <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">';
             }
             // Remove the else block that shows the blue combo discount banner when internet is enabled
 
@@ -2893,32 +2893,32 @@ updateProductOverview() {
 
             body.innerHTML = `
                 <div class="advantage-section">
-                    <h4>Overzicht van je kortingen</h4>
+                    <h4>Overzicht van je kortingen <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon"></h4>
                     <ul>
                         ${discountList}
                     </ul>
                 </div>
 
                 <div class="advantage-section">
-                    <h4>Je betaalt</h4>
+                    <h4>Je betaalt <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon"></h4>
                     <ul>
                         ${priceProgressionList}
                     </ul>
 
                     <div class="advantage-total">
-                        Totale korting: €${temporaryData.total.toFixed(2).replace('.', ',')}
+                        Totale korting: €${temporaryData.total.toFixed(2).replace('.', ',')} <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
 
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <h4>Overzicht van je combovoordelen:</h4>
+                    <h4>Overzicht van je combovoordelen: <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon"></h4>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
+                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong> <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
                 ` : ''}
@@ -2928,18 +2928,18 @@ updateProductOverview() {
             body.innerHTML = `
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <p>Je geniet van de volgende <strong>combovoordelen:</strong></p>
+                    <p>Je geniet van de volgende <strong>combovoordelen:</strong> <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon"></p>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
+                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong> <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
                 ` : ''}
 
-                <p><em>Promo alleen geldig voor nieuwe klanten</em></p>
+                <p><em>Promo alleen geldig voor nieuwe klanten</em> <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon"></p>
             `;
         }
 
