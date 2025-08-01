@@ -583,6 +583,8 @@ class UnifiedConfigurator {
 
                     // Update Entertainment Hub selection visibility
                     this.updateEntertainmentHubSelectionVisibility();
+                    // Update TV bundle highlight visibility
+                    this.updateTvBundleHighlight();
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
                 }
@@ -606,6 +608,8 @@ class UnifiedConfigurator {
                 } else if (productType === 'tv') {
                     // Update Entertainment Hub selection visibility when TV is disabled
                     this.updateEntertainmentHubSelectionVisibility();
+                    // Update TV bundle highlight visibility
+                    this.updateTvBundleHighlight();
                 }
                 // Render closed state for telecom products
                 this.renderProductClosedState(productType);
@@ -3437,13 +3441,9 @@ class UnifiedConfigurator {
         if (!highlightBlock) return;
 
         const tvEnabled = this.state.tv.enabled;
-        const entertainmentEnabled = this.state.entertainment.enabled;
 
-        // Hide the highlight if TV card is not activated
-        if (!tvEnabled) {
-            highlightBlock.style.display = 'none';
-        } else if (tvEnabled && entertainmentEnabled) {
-            // Show the highlight when both TV and entertainment are enabled
+        // Show the highlight when TV card is activated, hide when deactivated
+        if (tvEnabled) {
             highlightBlock.style.display = 'block';
         } else {
             highlightBlock.style.display = 'none';
