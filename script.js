@@ -1092,7 +1092,7 @@ class UnifiedConfigurator {
     */
 
     updateEntertainmentBoxInfo() {
-        ondeviceorientationabsolute.log("ent box update from TV ");
+        console.log("ent box update from TV ");
 
         const tier = this.data.products.tv.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
         const infoContainer = document.getElementById('entertainment-box-info');
@@ -1738,7 +1738,6 @@ class UnifiedConfigurator {
             // Color the price pink if there are temporary discounts
             if (totalTemporaryDiscount > 0) {
                 monthlyTotalElement.style.color = '#F134F7';
-            ```python
             } else {
                 monthlyTotalElement.style.color = '#2D3648';
             }
