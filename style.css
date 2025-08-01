@@ -151,7 +151,7 @@
     position: relative;
 }
 
-.hub-option input[type="radio"]:checked + .hub-option-content {
+.hub-option input[type="radio"]:checked+.hub-option-content {
     border-color: #2D3648;
     background-color: #f8f9fa;
 }
@@ -1234,7 +1234,10 @@
     left: 0;
     color: #28a745;
     font-weight: 60;
-}```python
+}
+
+```python
+
 /* TV Viewing Section */
 .tv-viewing-section {
     margin-top: 20px;
@@ -1706,8 +1709,7 @@ body.config-page {
 
 /* Section Groups */
 .section-group {
-    padding: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 40px;
 }
 
 .section-title {
@@ -3660,7 +3662,7 @@ html {
 .cost-summary-container {
     background-color: #f0f0f0;
     padding: 20px;
-border-radius: 5px;
+    border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     margin: 20px auto;
@@ -4188,6 +4190,7 @@ div.paragraph h5 {
     from {
         transform: translateX(100%);
     }
+
     to {
         transform: translateX(0);
     }
