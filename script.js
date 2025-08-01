@@ -1721,7 +1721,7 @@ class UnifiedConfigurator {
         console.log("All discount periods found:", periods);
         console.log("Shortest discount period calculated:", result);
         console.log("=== END DEBUG ===");
-        
+
         return result; // Return 0 if no periods found
     }
 
@@ -2596,7 +2596,7 @@ updateProductOverview() {
 
         // Also remove old closed state divs if they exist
         const existingClosedState = productBlock.querySelector('.product-closed-state');
-        if (existingClosedState) {
+        if (existingClosed_state) {
             existingClosedState.remove();
         }
 
@@ -3422,27 +3422,32 @@ updateProductOverview() {
     }
 
     updateEntertainmentHubSelectionVisibility() {
-        const hubSelectionSection = document.getElementById('entertainment-hub-selection-section');
-        const separateAppsRadio = document.getElementById('separate-apps-radio');
-        const entertainmentHubRadio = document.getElementById('entertainment-hub-radio');
+        const selectionSection = document.getElementById('entertainment-hub-selection-section');
+        if (!selectionSection) return;
 
-        if (!hubSelectionSection) return;
+        const hasSelectedServices = this.state.selectedEntertainmentServices.size > 0;
+        const tvEnabled = this.state.tv.enabled;
 
-        // Show the section only when entertainment is enabled AND TV is not enabled
-        if (this.state.entertainment.enabled && !this.state.tv.enabled) {
-            hubSelectionSection.style.display = 'block';
-
-            // Update radio button selection based on current Entertainment Box state
-            if (this.state.entertainmentBox.enabled) {
-                if (entertainmentHubRadio) entertainmentHubRadio.checked = true;
-                if (separateAppsRadio) separateAppsRadio.checked = false;
-            } else {
-                // Default to separate apps when Entertainment Box is not enabled
-                if (separateAppsRadio) separateAppsRadio.checked = true;
-                if (entertainmentHubRadio) entertainmentHubRadio.checked = false;
-            }
+        // Show the selection section only when streaming services are selected but TV is not enabled
+        if (hasSelectedServices && !tvEnabled) {
+            selectionSection.style.display = 'block';
         } else {
-            hubSelectionSection.style.display = 'none';
+            selectionSection.style.display = 'none';
+        }
+    }
+
+    updateTvBundleHighlight() {
+        const highlightBlock = document.getElementById('tv-bundle-highlight');
+        if (!highlightBlock) return;
+
+        const tvEnabled = this.state.tv.enabled;
+        const entertainmentEnabled = this.state.entertainment.enabled;
+
+        // Show the highlight when both TV and entertainment are enabled
+        if (tvEnabled && entertainmentEnabled) {
+            highlightBlock.style.display = 'block';
+        } else {
+            highlightBlock.style.display = 'none';
         }
     }
 }
