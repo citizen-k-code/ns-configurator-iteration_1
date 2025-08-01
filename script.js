@@ -294,7 +294,7 @@ class UnifiedConfigurator {
         // Entertainment Hub selection radio buttons
         const separateAppsRadio = document.getElementById('separate-apps-radio');
         const entertainmentHubRadio = document.getElementById('entertainment-hub-radio');
-        
+
         if (separateAppsRadio) {
             separateAppsRadio.addEventListener('change', (e) => {
                 if (e.target.checked) {
@@ -302,7 +302,7 @@ class UnifiedConfigurator {
                 }
             });
         }
-        
+
         if (entertainmentHubRadio) {
             entertainmentHubRadio.addEventListener('change', (e) => {
                 if (e.target.checked) {
@@ -580,7 +580,7 @@ class UnifiedConfigurator {
                             this.removeProductClosedState('entertainmentBox');
                         }
                     }
-                    
+
                     // Update Entertainment Hub selection visibility
                     this.updateEntertainmentHubSelectionVisibility();
                 } else if (productType === 'fixedPhone') {
@@ -1801,7 +1801,7 @@ class UnifiedConfigurator {
             const totalExpiringDiscount = expiringDiscounts.reduce((sum, d) => sum + d.discountValue, 0);
 
             cumulativePrice += totalExpiringDiscount;
-            
+
             const isLastPeriod = index === uniquePeriods.length - 1;
             const label = isLastPeriod ? 
                 `Je prijs na ${period} maanden` : 
@@ -2107,7 +2107,7 @@ updateProductOverview() {
             }
         }
 
-        
+
 
         // Entertainment services
         if (this.state.selectedEntertainmentServices && this.entertainmentData) {
@@ -2885,7 +2885,7 @@ updateProductOverview() {
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per jaar: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                        Extra voordeel per maand: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
                     </div>
                 </div>
                 ` : ''}
@@ -2901,7 +2901,7 @@ updateProductOverview() {
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per jaar: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
+                        Extra voordeel per maand: <strong>€${permanentData.total.toFixed(2).replace('.', ',')}</strong>
                     </div>
                 </div>
                 ` : ''}
@@ -3388,13 +3388,13 @@ updateProductOverview() {
         const hubSelectionSection = document.getElementById('entertainment-hub-selection-section');
         const separateAppsRadio = document.getElementById('separate-apps-radio');
         const entertainmentHubRadio = document.getElementById('entertainment-hub-radio');
-        
+
         if (!hubSelectionSection) return;
 
         // Show the section only when entertainment is enabled AND TV is not enabled
         if (this.state.entertainment.enabled && !this.state.tv.enabled) {
             hubSelectionSection.style.display = 'block';
-            
+
             // Update radio button selection based on current Entertainment Box state
             if (this.state.entertainmentBox.enabled) {
                 if (entertainmentHubRadio) entertainmentHubRadio.checked = true;
