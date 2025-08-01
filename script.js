@@ -1700,55 +1700,47 @@ class UnifiedConfigurator {
     updateCostSummary() {
         const { total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount } = this.calculateTotal();
 
+        // Update summary title and pricing tiers
+        this.updateSummaryTitle(totalTemporaryDiscount);
+        this.updateTemporaryPricingTiers(total, totalTemporaryDiscount);
+
         // Update main summary total
         const monthlyTotalElement = document.getElementById('monthly-total');
         if (monthlyTotalElement) {
+            // Color the price pink if there are temporary discounts
+            if (totalTemporaryDiscount > 0) {
+                monthlyTotalElement.style.color = '#F134F7';
+            } else {
+                monthlyTotalElement.style.color = '#2D3648';
+            }
             monthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
         }
 
-        // Update mobile summary total
+        // Update mobile summary
         const mobileMonthlyTotalElement = document.getElementById('mobile-monthly-total');
-        if (mobileMonthlyTotalElement) {
+        const mobileCostLabel = document.getElementById('mobile-cost-label');
+        if (mobileMonthlyTotalElement && mobileCostLabel) {
+            if (totalTemporaryDiscount > 0) {
+                mobileMonthlyTotalElement.style.color = '#F134F7';
+                const shortestDuration = this.getShortestTemporaryDiscountPeriod();
+                mobileCostLabel.textContent = `eerste ${shortestDuration} maanden`;
+            } else {
+                mobileMonthlyTotalElement.style.color = '#2D3648';
+                mobileCostLabel.textContent = 'per maand';
+            }
             mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
-        }
-
-        // Add caption below price if there are temporary discounts
-        const priceCaption = document.getElementById('price-caption');
-        const mobilePriceCaption = document.getElementById('mobile-price-caption');
-
-        console.log("Overview update = ", total, totalDiscount, totalPermanentDiscount, totalTemporaryDiscount);
-
-        if (totalTemporaryDiscount > 0) {
-            const shortestDuration = this.getShortestTemporaryDiscountPeriod();
-            const captionText = `gedurende ${shortestDuration} maanden`;
-
-            if (priceCaption) {
-                priceCaption.textContent = captionText;
-                priceCaption.style.display = 'block';
-            }
-
-            if (mobilePriceCaption) {
-                mobilePriceCaption.textContent = captionText;
-                mobilePriceCaption.style.display = 'block';
-            }
-        } else {
-            if (priceCaption) priceCaption.style.display = 'none';
-            if (mobilePriceCaption) mobilePriceCaption.style.display = 'none';
         }
 
         // Update advantage display
         const advantageBlock = document.getElementById('advantage-block');
         const mobileAdvantage = document.getElementById('mobile-advantage');
 
-        if (totalTemporaryDiscount > 0) {
-            const temporaryData = this.calculateTotalTemporaryDiscount();
-            const advantageText = `€${temporaryData.total.toFixed(2).replace('.', ',')} korting in totaal`;
-
+        if (totalTemporaryDiscount > 0 || totalPermanentDiscount > 0) {
             if (advantageBlock) {
                 advantageBlock.style.display = 'flex';
                 const advantageAmountElement = document.getElementById('advantage-amount');
                 if (advantageAmountElement) {
-                    advantageAmountElement.textContent = advantageText;
+                    advantageAmountElement.textContent = 'Bekijk je promoties';
                 }
             }
 
@@ -1756,26 +1748,7 @@ class UnifiedConfigurator {
                 mobileAdvantage.style.display = 'block';
                 const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
                 if (mobileAdvantageAmountElement) {
-                    mobileAdvantageAmountElement.textContent = advantageText;
-                }
-            }
-        } else if (totalPermanentDiscount > 0) {
-            // Show advantage block for permanent discounts only
-            const advantageText = `Bekijk je combovoordelen`;
-
-            if (advantageBlock) {
-                advantageBlock.style.display = 'flex';
-                const advantageAmountElement = document.getElementById('advantage-amount');
-                if (advantageAmountElement) {
-                    advantageAmountElement.textContent = advantageText;
-                }
-            }
-
-            if (mobileAdvantage) {
-                mobileAdvantage.style.display = 'block';
-                const mobileAdvantageAmountElement = document.getElementById('mobile-advantage-amount');
-                if (mobileAdvantageAmountElement) {
-                    mobileAdvantageAmountElement.textContent = advantageText;
+                    mobileAdvantageAmountElement.textContent = 'Bekijk je promoties';
                 }
             }
         } else {
@@ -1785,6 +1758,165 @@ class UnifiedConfigurator {
 
         // Update product overview
         this.updateProductOverview();
+    }
+
+    updateSummaryTitle(totalTemporaryDiscount) {
+        const summaryTitleElement = document.getElementById('summary-title');
+        if (!summaryTitleElement) return;
+
+        if (totalTemporaryDiscount > 0) {
+            const shortestDuration = this.getShortestTemporaryDiscountPeriod();
+            summaryTitleElement.textContent = `Eerste ${shortestDuration} maanden`;
+        } else {
+            summaryTitleElement.textContent = 'Totaal per maand';
+        }
+    }
+
+    updateTemporaryPricingTiers(currentTotal, totalTemporaryDiscount) {
+        const tiersContainer = document.getElementById('temporary-pricing-tiers');
+        if (!tiersContainer) return;
+
+        if (totalTemporaryDiscount === 0) {
+            tiersContainer.style.display = 'none';
+            return;
+        }
+
+        // Get all unique discount periods and sort them
+        const allPeriods = this.getAllTemporaryDiscountPeriods();
+        const uniquePeriods = [...new Set(allPeriods)].sort((a, b) => a - b);
+
+        if (uniquePeriods.length <= 1) {
+            tiersContainer.style.display = 'none';
+            return;
+        }
+
+        // Calculate price progression
+        let cumulativePrice = currentTotal;
+        const priceProgression = [];
+
+        uniquePeriods.forEach((period, index) => {
+            // Find all discounts that expire at this period
+            const expiringDiscounts = this.getExpiringDiscountsAtPeriod(period);
+            const totalExpiringDiscount = expiringDiscounts.reduce((sum, d) => sum + d.discountValue, 0);
+
+            cumulativePrice += totalExpiringDiscount;
+            
+            const isLastPeriod = index === uniquePeriods.length - 1;
+            const label = isLastPeriod ? 
+                `Je prijs na ${period} maanden` : 
+                `Je promoprijs na ${period} maanden`;
+            const priceClass = isLastPeriod ? 'final' : 'temporary';
+
+            priceProgression.push({
+                label: label,
+                price: cumulativePrice,
+                priceClass: priceClass
+            });
+        });
+
+        // Generate HTML for pricing tiers
+        const tiersHTML = priceProgression.map(tier => `
+            <div class="pricing-tier">
+                <div class="pricing-tier-label">${tier.label}</div>
+                <div class="pricing-tier-price ${tier.priceClass}">€ ${tier.price.toFixed(2).replace('.', ',')}</div>
+            </div>
+        `).join('');
+
+        tiersContainer.innerHTML = tiersHTML;
+        tiersContainer.style.display = 'block';
+    }
+
+    getAllTemporaryDiscountPeriods() {
+        const periods = [];
+
+        // Internet discount period
+        if (this.state.internet.enabled) {
+            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            if (internetTier.discountPeriod) {
+                periods.push(internetTier.discountPeriod);
+            }
+        }
+
+        // Mobile discount periods
+        if (this.state.mobile.enabled) {
+            this.state.mobile.simcards.forEach((simcard) => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (mobileTier.discountPeriod) {
+                    periods.push(mobileTier.discountPeriod);
+                }
+            });
+        }
+
+        // TV discount period
+        if (this.state.tv.enabled) {
+            const tvData = this.data.products.tv;
+            if (tvData.discountPeriod) {
+                periods.push(tvData.discountPeriod);
+            }
+        }
+
+        // WiFi-pods discount period
+        if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
+            const wifiPodsData = this.data.products.wifiPods;
+            if (wifiPodsData.discountPeriod) {
+                periods.push(wifiPodsData.discountPeriod);
+            }
+        }
+
+        return periods;
+    }
+
+    getExpiringDiscountsAtPeriod(period) {
+        const expiringDiscounts = [];
+
+        // Internet discount
+        if (this.state.internet.enabled) {
+            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            if (internetTier.discountPeriod === period) {
+                expiringDiscounts.push({
+                    product: 'Internet',
+                    discountValue: internetTier.discountValue
+                });
+            }
+        }
+
+        // Mobile discounts
+        if (this.state.mobile.enabled) {
+            this.state.mobile.simcards.forEach((simcard, index) => {
+                const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                if (mobileTier.discountPeriod === period) {
+                    expiringDiscounts.push({
+                        product: `Simkaart ${simcard.id}`,
+                        discountValue: mobileTier.discountValue
+                    });
+                }
+            });
+        }
+
+        // TV discount
+        if (this.state.tv.enabled) {
+            const tvData = this.data.products.tv;
+            if (tvData.discountPeriod === period) {
+                expiringDiscounts.push({
+                    product: 'TV',
+                    discountValue: tvData.discountValue
+                });
+            }
+        }
+
+        // WiFi-pods discount
+        if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
+            const wifiPodsData = this.data.products.wifiPods;
+            if (wifiPodsData.discountPeriod === period) {
+                const podsOriginalPrice = this.state.wifiPods.count * wifiPodsData.pricePerPod;
+                expiringDiscounts.push({
+                    product: 'WiFi-pods',
+                    discountValue: podsOriginalPrice
+                });
+            }
+        }
+
+        return expiringDiscounts;
     }
 
 updateProductOverview() {

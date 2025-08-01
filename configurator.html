@@ -388,16 +388,19 @@
         <div class="cost-summary">
             <div class="summary-header">
                 <div class="summary-title-row">
-                    <div class="summary-title">Totaal per maand</div>
+                    <div class="summary-title" id="summary-title">Totaal per maand</div>
                     <div class="summary-total">
                         € <span id="monthly-total">0,00</span>
                     </div>
                 </div>
-                <div id="price-caption" class="price-caption" style="display: none;"></div>
-                <div class="summary-period" id="summary-period" style="display: none;">Voor 6 maanden</div>
+                
+                <!-- Temporary discount pricing tiers -->
+                <div id="temporary-pricing-tiers" class="temporary-pricing-tiers" style="display: none;">
+                    <!-- Will be populated by JavaScript -->
+                </div>
 
                 <div class="advantage-block" id="advantage-block" style="display: none;">
-                    <span id="advantage-amount">€0 voordeel in totaal</span>
+                    <span id="advantage-amount">Bekijk je promoties</span>
                     <span class="info-icon"><img src="final_assets/icons/i-icon-blue.svg" alt="info"></span>
                 </div>
             </div>
@@ -429,11 +432,10 @@
             <div class="mobile-cost-section" onclick="app.scrollToMainSummary()">
                 <div class="mobile-monthly-cost">
                     €<span id="mobile-monthly-total">0,00</span>
-                    <span class="mobile-cost-label">per maand</span>
+                    <span class="mobile-cost-label" id="mobile-cost-label">per maand</span>
                 </div>
-                <div id="mobile-price-caption" class="mobile-price-caption" style="display: none;"></div>
                 <div class="mobile-advantage" id="mobile-advantage" style="display: none;">
-                    <span id="mobile-advantage-amount">€0 voordeel in totaal</span>
+                    <span id="mobile-advantage-amount">Bekijk je promoties</span>
                 </div>
             </div>
             <button class="mobile-order-btn" id="mobile-order-btn"

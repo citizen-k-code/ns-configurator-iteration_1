@@ -3624,6 +3624,35 @@ html {
     background-color: #1a2332;
 }
 
+/* Temporary pricing tiers */
+.temporary-pricing-tiers {
+    margin-top: 12px;
+}
+
+.pricing-tier {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.pricing-tier-label {
+    color: #717D96;
+}
+
+.pricing-tier-price {
+    font-weight: 600;
+}
+
+.pricing-tier-price.temporary {
+    color: #F134F7;
+}
+
+.pricing-tier-price.final {
+    color: #2D3648;
+}
+
 /* cost summary */
 .cost-summary-container {
     background-color: #f0f0f0;
