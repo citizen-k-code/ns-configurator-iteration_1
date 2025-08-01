@@ -188,9 +188,6 @@
       "title": "Entertainment Box",
       "summary": "<strong>Alles op één plek</strong>: zenders sport lokale en internationale apps, Zoek en ontdek <strong>over alle diensten</strong>, <strong>Persoonlijke aanbevelingen</strong> over al jouw diensten",
       "price": 5.00,
-      "discountValue": 5,
-      "discountPeriod": 3,
-      "promoName": "Gratis proberen",
       "discountCopy": {
         "temporaryOnly": "gedurende 3 maanden"
       },
