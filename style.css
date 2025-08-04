@@ -4040,8 +4040,8 @@ div.paragraph h5 {
 }
 
 .service-icon-large img {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
@@ -4054,10 +4054,10 @@ div.paragraph h5 {
 
 .tier-selection-subtitle {
     font-size: 14px;
-    color: #717D96;
-    margin-bottom: 20px;
-    text-decoration: underline;
-    cursor: pointer;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 8px;
+
 }
 
 .tier-selection-subtitle.hidden {
@@ -4156,6 +4156,7 @@ div.paragraph h5 {
     margin-top: 16px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -4173,7 +4174,6 @@ div.paragraph h5 {
 }
 
 .tier-sheet-discount-tag .discount-tag-text {
-    flex: 1;
     font-size: 14px;
     font-weight: 600;
     color: #2D3648;
@@ -4285,7 +4285,7 @@ div.paragraph h5 {
     }
 
     .tier-selection-subtitle {
-        margin-bottom: 24px;
+        margin-bottom: 16px;
     }
 
     .tier-selection-container {

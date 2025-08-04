@@ -3293,7 +3293,6 @@ class UnifiedConfigurator {
             if (hasDiscount) {
                 pricingHtml += `
                     <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        <span class="discount-tag-icon">🏷️</span>
                         <span class="discount-tag-text">5% permanente korting toegepast</span>
                         <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
