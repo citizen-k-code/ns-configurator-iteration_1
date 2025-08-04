@@ -105,12 +105,9 @@ class UnifiedConfigurator {
         const pageTitle = document.querySelector('.page-header h1');
         if (!pageTitle) return;
 
-        if (packParam && ['gamer', 'family', 'starter'].includes(packParam.toLowerCase())) {
-            const packName = packParam.toLowerCase();
-            const packDisplayName = packName === 'gamer' ? 'gamer' : 
-                                   packName === 'family' ? 'familie' : 
-                                   'starter';
-            pageTitle.textContent = `Pas je ${packDisplayName} pack aan`;
+        if (packParam && packParam.trim() !== '') {
+            const capitalizedPack = packParam.charAt(0).toUpperCase() + packParam.slice(1).toLowerCase();
+            pageTitle.textContent = `Pas je ${capitalizedPack}-pack aan`;
         } else {
             pageTitle.textContent = 'Pas je product aan';
         }
