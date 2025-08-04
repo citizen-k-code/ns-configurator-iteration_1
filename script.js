@@ -632,6 +632,17 @@ class UnifiedConfigurator {
                 this.renderSelectedEntertainmentServices();
                 this.updateEntertainmentHubSelectionVisibility();
                 this.updateTvBundleHighlight();
+
+                // Smooth scroll to ensure the product block is visible at the top of viewport
+                setTimeout(() => {
+                    const productBlock = document.getElementById('entertainment-block');
+                    if (productBlock) {
+                        productBlock.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 100);
             } else {
                 if (content) content.style.display = 'none';
                 if (closedState) {
