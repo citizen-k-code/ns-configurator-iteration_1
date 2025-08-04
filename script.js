@@ -944,8 +944,8 @@ class UnifiedConfigurator {
                         </div>
                         <div class="discount-info">${discountCopy}</div>
                         <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('permanentDiscount')">
-                            Combodiscount toegepast
-                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                            <span>Combokorting geactiveerd</span>
+                    <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
                     </div>
                 `;
@@ -955,8 +955,8 @@ class UnifiedConfigurator {
                     <div class="tier-price-container">
                         <div class="tier-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
                         <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('permanentDiscount')">
-                            Combodiscount toegepast
-                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                            <span>Combokorting geactiveerd</span>
+                    <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
                     </div>
                 `;
@@ -1237,7 +1237,7 @@ class UnifiedConfigurator {
                 <div class="tier-price-container">
                     <div class="tier-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        Combodiscount toegepast
+                        Combokorting geactiveerd
                         <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
@@ -1274,8 +1274,8 @@ class UnifiedConfigurator {
                 <div class="tier-price-container">
                     <div class="tier-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        Combodiscount toegepast
-                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        <span>Combokorting geactiveerd</span>
+                    <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
             `;
@@ -2386,7 +2386,7 @@ class UnifiedConfigurator {
                     <div class="selected-service-price-section">
                         <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
                         ${hasDiscount ? `
-                            <div class="entertainment-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                            <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
                                 <span>5% permanente korting toegepast</span>
                                 <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                             </div>
@@ -2505,8 +2505,8 @@ class UnifiedConfigurator {
                 <div class="service-price-container">
                     <div class="service-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        Combodiscount toegepast
-                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    <span>Combokorting geactiveerd</span>
+                    <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
             `;
@@ -2838,7 +2838,7 @@ class UnifiedConfigurator {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 const permanentDiscount = this.data.discounts.permanent;
                 if (permanentDiscount.enabled && permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
-                    bundleAdvantages.push(`<strong>50% korting</strong> op je ${index === 0 ? '1e' : index === 1 ? '2e' : `${index + 1}e`} mobiele abonnement (${mobileTier.title})`);
+                    bundleAdvantages.push(`<strong>50% korting</strong> op je ${index === 0 ? 'eerste' : index === 1 ? 'tweede' : `${index + 1}e`} mobiele abonnement (${mobileTier.title})`);
                 }
             });
         }
@@ -2846,14 +2846,14 @@ class UnifiedConfigurator {
         // Entertainment permanent discounts
         const enabledEntertainmentServices = this.getEnabledEntertainmentProductsCount();
         if (enabledEntertainmentServices >= 2) {
-            bundleAdvantages.push(`<strong>5% korting</strong> op je entertainment services door bundeling`);
+            bundleAdvantages.push(`<strong>5% korting</strong> op je streamingdiensten omdat je er 2 of meer combineert`);
         }
 
         const bundleAdvantagesList = bundleAdvantages.map(advantage =>
             `<li>${advantage}</li>`
         ).join('');
 
-        title.textContent = 'Jouw kortingen en voordelen';
+        title.textContent = 'Overzicht van je kortingen';
 
         if (hasTemporaryDiscounts) {
             // Show full advantage sheet with temporary discounts
@@ -2897,32 +2897,32 @@ class UnifiedConfigurator {
 
             body.innerHTML = `
                 <div class="advantage-section">
-                    <h4>Overzicht van je kortingen</h4>
+                    <h4>Tijdelijke kortingen</h4>
                     <ul>
                         ${discountList}
                     </ul>
                 </div>
 
                 <div class="advantage-section">
-                    <h4>Je betaalt</h4>
+                    <h4>Jouw prijs per maand</h4>
                     <ul>
                         ${priceProgressionList}
                     </ul>
 
                     <div class="advantage-total">
-                        Totale korting: €${temporaryData.total.toFixed(2).replace('.', ',')}
+                        Totale tijdelijke korting: €${temporaryData.total.toFixed(2).replace('.', ',')}
                     </div>
                 </div>
 
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <h4>Overzicht van je combovoordelen:</h4>
+                    <h4>Permanente kortingen</h4>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
+                        Permanente maandelijkse korting: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
                     </div>
                 </div>
                 ` : ''}
@@ -2932,13 +2932,13 @@ class UnifiedConfigurator {
             body.innerHTML = `
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <p>Je geniet van de volgende <strong>combovoordelen:</strong></p>
+                    <h4>Permanente kortingen</h4>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
 
                     <div class="advantage-extra">
-                        Extra voordeel per maand: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
+                        Permanente maandelijkse korting: <strong>€${(permanentData.total / 12).toFixed(2).replace('.', ',')}</strong>
                     </div>
                 </div>
                 ` : ''}

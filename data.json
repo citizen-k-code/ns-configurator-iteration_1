@@ -11,7 +11,7 @@
       "tiers": [
         {
           "id": 1,
-          "title": "200 Mbps",
+          "title": "Snel",
           "subtitle": "€50,00",
           "summary": "<strong>200 Mbps</strong> downloadsnelheid, <strong>20 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 50.00,
@@ -23,7 +23,7 @@
         },
         {
           "id": 2,
-          "title": "500 Mbps",
+          "title": "Supersnel",
           "subtitle": "€75,00",
           "summary": "<strong>500 Mbps</strong> downloadsnelheid, <strong>50 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 75.00,
@@ -38,7 +38,7 @@
         },
         {
           "id": 3,
-          "title": "2,5 Gbps",
+          "title": "Ultrasnel",
           "subtitle": "€85,00",
           "summary": "<strong>2,5 Gbps</strong> downloadsnelheid, <strong>200 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
           "price": 85.00,
