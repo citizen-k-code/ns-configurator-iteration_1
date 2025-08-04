@@ -541,7 +541,7 @@
     background-color: white;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    padding: 16px;
+    padding: 16px 16px 12px;
     margin-bottom: 16px;
 }
 
@@ -592,7 +592,7 @@
     font-size: 16px;
     font-weight: 600;
     color: #2D3648;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .selected-service-period {
@@ -947,6 +947,10 @@
     padding: 0 16px 16px;
 }
 
+.product-closed-content .promo-highlight{
+    margin-bottom: 0;
+}
+
 .product-closed-divider {
     height: 1px;
     background-color: #CBD2E0;
@@ -957,7 +961,7 @@
     color: #717D96;
     font-size: 14px;
     line-height: 1.4;
-    margin-bottom: 16px;
+    margin-bottom: 0;
     text-align: center;
 }
 
@@ -1742,13 +1746,25 @@ body.config-page {
     margin: 0;
 }
 
+.pack-banner{
+    display: none;
+    width: 100%;
+    height: 150px;
+    background-image: url(final_assets/starter.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius:16px;
+    margin-bottom: 16px;
+}
+
 /* Section Groups */
 .section-group {
     margin-bottom: 40px;
 }
 
 .section-title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 800;
     color: #2D3648;
     margin-bottom: 12px;
@@ -1774,6 +1790,7 @@ body.config-page {
 
 .product-header.clickable {
     cursor: pointer;
+    padding-bottom:8px;
 }
 
 .product-header.clickable:hover {
@@ -1802,7 +1819,7 @@ body.config-page {
     margin-bottom: 20px;
     text-decoration: underline;
     cursor: pointer;
-    max-width: 85%;
+    /*max-width: 85%;*/
     display: flex;
     align-items: center;
     gap: 6px;
