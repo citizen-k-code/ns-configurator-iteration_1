@@ -3385,10 +3385,11 @@ class UnifiedConfigurator {
                     
                     if (mobileTier && permanentDiscount.enabled && permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
                         originalPrice = mobileTier.price;
-                        const discountCalc = this.calculateMobileDiscount(mobileTier, 0);
-                        discountedPrice = discountCalc.finalPrice;
+                        const permanentDiscountAmount = mobileTier.price * (permanentDiscount.percentage / 100);
+                        discountedPrice = mobileTier.price - permanentDiscountAmount;
                         productName = mobileTier.title.toLowerCase();
                         discountName = `${permanentDiscount.percentage}% permanente korting`;
+                        const discountCalc = this.calculateMobileDiscount(mobileTier, 0);
                         hasTemporaryDiscount = discountCalc.temporaryDiscountAmount > 0;
                     }
                 }
