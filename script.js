@@ -113,12 +113,31 @@ class UnifiedConfigurator {
         }
     }
 
+    updatePackBanner(packParam) {
+        const packBanner = document.getElementById('pack-banner');
+        if (!packBanner) return;
+
+        if (packParam && packParam.trim() !== '') {
+            const packValue = packParam.toLowerCase();
+            packBanner.style.display = 'block';
+            packBanner.style.width = '100%';
+            packBanner.style.height = '150px';
+            packBanner.style.backgroundImage = `url('final_assets/${packValue}.jpg')`;
+            packBanner.style.backgroundSize = 'cover';
+            packBanner.style.backgroundPosition = 'center';
+            packBanner.style.backgroundRepeat = 'no-repeat';
+        } else {
+            packBanner.style.display = 'none';
+        }
+    }
+
     parseUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
 
         // Pack parameter: ?pack=gamer|family|starter
         const packParam = urlParams.get('pack');
         this.updatePageTitle(packParam);
+        this.updatePackBanner(packParam);
 
         // Internet: ?internet=2 (tier ID)
         const internetTier = urlParams.get('internet');
