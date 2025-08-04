@@ -3365,8 +3365,54 @@ class UnifiedConfigurator {
         const discountData = this.discountsData[discountType];
         if (!discountData) return;
 
-        title.textContent = discountData.title;
-        body.innerHTML = discountData.content;
+        let dynamicTitle = discountData.title;
+        let dynamicContent = discountData.content;
+
+        // Handle dynamic content for permanent discount
+        if (discountType === 'permanentDiscount') {
+            // Find the first mobile simcard with permanent discount to get pricing info
+            let originalPrice = 0;
+            let discountedPrice = 0;
+            let productName = '';
+            let discountName = '';
+            let hasTemporaryDiscount = false;
+
+            if (this.state.mobile.enabled && this.state.internet.enabled) {
+                const firstSimcard = this.state.mobile.simcards[0];
+                if (firstSimcard) {
+                    const mobileTier = this.data.products.mobile.tiers.find(t => t.id === firstSimcard.selectedTier);
+                    const permanentDiscount = this.data.discounts.permanent;
+                    
+                    if (mobileTier && permanentDiscount.enabled && permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
+                        originalPrice = mobileTier.price;
+                        const discountCalc = this.calculateMobileDiscount(mobileTier, 0);
+                        discountedPrice = discountCalc.finalPrice;
+                        productName = mobileTier.title.toLowerCase();
+                        discountName = `${permanentDiscount.percentage}% permanente korting`;
+                        hasTemporaryDiscount = discountCalc.temporaryDiscountAmount > 0;
+                    }
+                }
+            }
+
+            // Replace placeholders in title
+            dynamicTitle = dynamicTitle
+                .replace('##DISCOUNT_NAME##', discountName)
+                .replace('##PRODUCT_NAME##', productName);
+
+            // Replace placeholders in content
+            dynamicContent = dynamicContent
+                .replace('##ORIGINAL_PRICE##', originalPrice.toFixed(2).replace('.', ','))
+                .replace('##DISCOUNTED_PRICE##', discountedPrice.toFixed(2).replace('.', ','));
+
+            // Add temporary discount highlight if applicable
+            const temporaryHighlight = hasTemporaryDiscount ? 
+                "<div class='temporary-discount-highlight'><p>Daarbovenop geniet je van een tijdelijke extra korting dankzij de lopende promotie.</p></div>" : '';
+            
+            dynamicContent = dynamicContent.replace('##TEMPORARY_DISCOUNT_HIGHLIGHT##', temporaryHighlight);
+        }
+
+        title.textContent = dynamicTitle;
+        body.innerHTML = dynamicContent;
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';

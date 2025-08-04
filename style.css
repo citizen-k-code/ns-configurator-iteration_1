@@ -2095,6 +2095,31 @@ input:checked+.slider:before {
 }
 */
 
+/* Dynamic discount pricing styles */
+.discount-pricing-list {
+    margin: 16px 0;
+}
+
+.discount-pricing-item {
+    font-size: 16px;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.temporary-discount-highlight {
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    border-left: 4px solid #007bff;
+}
+
+.temporary-discount-highlight p {
+    margin: 0;
+    font-size: 14px;
+    color: #2D3648;
+}
+
 
 
 /* Mobile highlight block styles */
