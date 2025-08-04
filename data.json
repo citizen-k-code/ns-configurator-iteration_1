@@ -198,7 +198,7 @@
       }
     },
     "wifiPods": {
-      "title": "Wifi-pods",
+      "title": "Slimme wifi-pods",
       "tooltip": "Hoeveel wifi-pods heb ik nodig?",
       "closedState": {
         "summary": "Versterk je wifi met slimme wifi-pods<br>Vanaf <strong>€ ##PRICE##/maand</strong>",
