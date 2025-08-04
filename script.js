@@ -156,9 +156,18 @@ class UnifiedConfigurator {
         const wifiPodsParam = urlParams.get('wifipods');
         if (wifiPodsParam) {
             const wifiPodsCount = Math.min(parseInt(wifiPodsParam), 5);
-            this.state.internet.wifiPods = wifiPodsCount;
-            this.renderWifiPods();
-            this.updateCostSummary();
+            if (wifiPodsCount > 0) {
+                this.state.wifiPods.enabled = true;
+                this.state.wifiPods.count = wifiPodsCount;
+                const wifiPodsToggle = document.getElementById('wifi-pods-toggle');
+                const wifiPodsContent = document.getElementById('wifi-pods-content');
+                if (wifiPodsToggle && wifiPodsContent) {
+                    wifiPodsToggle.checked = true;
+                    wifiPodsContent.style.display = 'block';
+                    this.updateWifiPodsStandaloneInfo();
+                    this.removeProductClosedState('wifiPods');
+                }
+            }
         }
 
         // Mobile: ?mobile=2,3,1 (comma-separated tier IDs for each simcard)
