@@ -101,8 +101,27 @@ class UnifiedConfigurator {
         }
     }
 
+    updatePageTitle(packParam) {
+        const pageTitle = document.querySelector('.page-header h1');
+        if (!pageTitle) return;
+
+        if (packParam && ['gamer', 'family', 'starter'].includes(packParam.toLowerCase())) {
+            const packName = packParam.toLowerCase();
+            const packDisplayName = packName === 'gamer' ? 'gamer' : 
+                                   packName === 'family' ? 'familie' : 
+                                   'starter';
+            pageTitle.textContent = `Pas je ${packDisplayName} pack aan`;
+        } else {
+            pageTitle.textContent = 'Pas je product aan';
+        }
+    }
+
     parseUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
+
+        // Pack parameter: ?pack=gamer|family|starter
+        const packParam = urlParams.get('pack');
+        this.updatePageTitle(packParam);
 
         // Internet: ?internet=2 (tier ID)
         const internetTier = urlParams.get('internet');
