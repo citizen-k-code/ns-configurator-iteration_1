@@ -4283,6 +4283,35 @@ div.paragraph h5 {
     opacity: 0.6;
 }
 
+.welcome-gift-pricing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.welcome-gift-badge {
+    background-color: #2D3648;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.welcome-gift-pricing .discount-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #F134F7;
+}
+
+.welcome-gift-pricing .discount-price span {
+    font-size: 14px;
+    color: #717D96;
+    font-weight: 400;
+}
+
 .streaming-tier-sheet .sheet-footer {
     padding: 20px;
     border-top: 1px solid #E5E9F0;
