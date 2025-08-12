@@ -4213,16 +4213,6 @@ div.paragraph h5 {
     color: #CBD2E0;
 }
 
-.tier-selection-option .tier-price.promotional-price {
-    color: #F134F7;
-    font-weight: bold;
-}
-
-.tier-selection-option.active .tier-price.promotional-price {
-    color: #F134F7;
-    font-weight: bold;
-}
-
 .tier-details {
     margin-bottom: 20px;
 }
