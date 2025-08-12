@@ -965,7 +965,7 @@
 .promo-highlight {
     background: #D1FFD9;
     border-radius: 8px;
-    padding: 12px;
+    padding: 12px 16px;
     margin: 16px 0;
     color: white;
     font-size: 13px;
@@ -1030,7 +1030,7 @@
 }
 
 .entertainment-service-icon.cinema {
-    background-color: #FFD700;
+    background-color: #FFD23F;
     color: #2D3648;
 }
 
@@ -4298,25 +4298,6 @@ div.paragraph h5 {
     padding: 4px 8px;
     border-radius: 4px;
     white-space: nowrap;
-}
-
-/* Tier sheet specific pricing styles */
-.tier-pricing .price-with-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.tier-pricing .welcome-gift-badge {
-    background-color: #2D3648;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    flex-shrink: 0;
 }
 
 .welcome-gift-pricing .discount-price {
