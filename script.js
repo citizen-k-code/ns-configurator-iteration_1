@@ -2889,7 +2889,7 @@ class UnifiedConfigurator {
                 <div class="service-price-container">
                     <div class="service-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                    <span>Combokorting geactiveerd</span>
+                        <span>Combokorting geactiveerd</span>
                     <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
@@ -2984,7 +2984,7 @@ class UnifiedConfigurator {
             existingClosedState.remove();
         }
 
-        // Remove any highlight blocks that might be inserted
+        // Remove any highlight blocks if they exist
         const existingHighlight = productBlock.querySelector('.highlight-block');
         if (existingHighlight) {
             existingHighlight.remove();
@@ -3570,7 +3570,7 @@ class UnifiedConfigurator {
             container.innerHTML = `
                 <button class="tier-selection-option active" onclick="app.selectTempTier(1)">
                     <div class="tier-name">${this.getServiceDisplayName(serviceKey)}</div>
-                    <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="tier-price ${priceClass}">${priceText}</div>
                 </button>
             `;
         }
