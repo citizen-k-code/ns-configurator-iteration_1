@@ -1360,6 +1360,11 @@ class UnifiedConfigurator {
             }
         }
 
+        // Don't apply 5% discount if Welcome Gift is still available (no service has been assigned the gift yet)
+        if (this.state.welcomeGiftService === null) {
+            return originalPrice;
+        }
+
         const enabledProducts = this.getEnabledEntertainmentProductsCount();
         const discount = this.entertainmentData.discounts.entertainment_combo;
 
