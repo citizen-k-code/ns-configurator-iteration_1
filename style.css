@@ -755,10 +755,7 @@
 
 /* Available Entertainment Services */
 .available-entertainment-services {
-    /*
-    border-top: 1px solid #e0e0e0;
-    padding-top: 24px;
-    */
+    margin-top: 20px;
 }
 
 .available-services-header {
@@ -1064,7 +1061,7 @@
     height: 48px;
     background-color: #2D3648;
     border-radius: 8px;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iNCIgeT0iNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjEwIiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxNiIgcj0iMiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiHElaaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iNCIgeT0iNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjEwIiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxNiIgcj0iMiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 24px 24px;
@@ -1275,8 +1272,161 @@
     font-weight: 60;
 }
 
-```python
+/* CSS for Welcome Gift */
+.welcome-gift-container {
+    background-color: #FFEDAD !important;
+    border-radius: 12px;
+    padding: 16px;
+    margin: -12px; /* Adjusted to align with the grid gap */
+}
 
+.welcome-gift-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.welcome-gift-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #2D3648; /* Added color for icon */
+}
+
+.welcome-gift-text {
+    flex: 1;
+}
+
+.welcome-gift-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.welcome-gift-subtitle {
+    font-size: 14px;
+    color: #2D3648;
+    margin-bottom: 8px;
+}
+
+.welcome-gift-note {
+    font-size: 12px;
+    color: #717D96;
+}
+
+.welcome-gift-service {
+    background-color: #FFEDAD;
+    border-radius: 12px;
+}
+
+.welcome-gift-badge {
+    background-color: #2D3648;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.welcome-gift-discount-info {
+    margin-top: 8px;
+}
+
+.welcome-gift-discount-info .original-price {
+    font-size: 12px;
+    color: #717D96;
+    text-decoration: line-through;
+}
+
+.welcome-gift-discount-info .discount-info {
+    font-size: 12px;
+    color: #717D96;
+}
+
+/* CSS for Welcome Gift */
+.welcome-gift-container {
+    background-color: #FFEDAD !important;
+    border-radius: 12px;
+    padding: 16px;
+    margin: -12px; /* Adjusted to align with the grid gap */
+}
+
+.welcome-gift-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.welcome-gift-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #2D3648; /* Added color for icon */
+}
+
+.welcome-gift-text {
+    flex: 1;
+}
+
+.welcome-gift-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.welcome-gift-subtitle {
+    font-size: 14px;
+    color: #2D3648;
+    margin-bottom: 8px;
+}
+
+.welcome-gift-note {
+    font-size: 12px;
+    color: #717D96;
+}
+
+.welcome-gift-service {
+    background-color: #FFEDAD;
+    border-radius: 12px;
+}
+
+.welcome-gift-badge {
+    background-color: #2D3648;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.welcome-gift-discount-info {
+    margin-top: 8px;
+}
+
+.welcome-gift-discount-info .original-price {
+    font-size: 12px;
+    color: #717D96;
+    text-decoration: line-through;
+}
+
+.welcome-gift-discount-info .discount-info {
+    font-size: 12px;
+    color: #717D96;
+}
+
+/* End Welcome Gift Styles */
+
+/* Python */
 /* TV Viewing Section */
 .tv-viewing-section {
     margin-top: 20px;

@@ -61,6 +61,8 @@ class UnifiedConfigurator {
             },
             // Track selected entertainment services for the new interface
             selectedEntertainmentServices: new Set(),
+            // Welcome Gift state
+            welcomeGiftService: null, // Stores which service has the welcome gift
             // WiFi-pods standalone state
             wifiPods: {
                 enabled: false,
@@ -1342,7 +1344,22 @@ class UnifiedConfigurator {
         `;
     }
 
-    getEntertainmentDiscountedPrice(originalPrice, isAddingSecondService = false) {
+    getEntertainmentDiscountedPrice(originalPrice, isAddingSecondService = false, serviceKey = null, tier = null) {
+        // Check if this service has Welcome Gift
+        if (serviceKey && this.state.welcomeGiftService === serviceKey) {
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            if (serviceData) {
+                if (serviceData.tiers && tier) {
+                    const tierData = serviceData.tiers.find(t => t.id === tier);
+                    if (tierData && tierData.welcomeGift) {
+                        return tierData.welcomeGift.price;
+                    }
+                } else if (serviceData.welcomeGift) {
+                    return serviceData.welcomeGift.price;
+                }
+            }
+        }
+
         const enabledProducts = this.getEnabledEntertainmentProductsCount();
         const discount = this.entertainmentData.discounts.entertainment_combo;
 
@@ -1359,6 +1376,51 @@ class UnifiedConfigurator {
     getEnabledEntertainmentProductsCount() {
         return ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo']
             .filter(productId => this.state[productId].enabled).length;
+    }
+
+    getWelcomeGiftDiscountInfo(serviceKey) {
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        if (!serviceData) return '';
+
+        let welcomeGiftData;
+        if (serviceData.tiers) {
+            const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+            welcomeGiftData = tier ? tier.welcomeGift : null;
+        } else {
+            welcomeGiftData = serviceData.welcomeGift;
+        }
+
+        if (!welcomeGiftData) return '';
+
+        const originalPrice = serviceData.tiers ? 
+            serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier).price :
+            serviceData.price;
+
+        return `
+            <div class="welcome-gift-discount-info">
+                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
+            </div>
+        `;
+    }
+
+    assignWelcomeGift(serviceKey) {
+        // Only assign if no welcome gift has been assigned yet
+        if (this.state.welcomeGiftService === null) {
+            this.state.welcomeGiftService = serviceKey;
+        }
+    }
+
+    removeWelcomeGift(serviceKey) {
+        if (this.state.welcomeGiftService === serviceKey) {
+            this.state.welcomeGiftService = null;
+            // Assign welcome gift to next service if any exists
+            const selectedServices = Array.from(this.state.selectedEntertainmentServices);
+            const remainingServices = selectedServices.filter(s => s !== serviceKey);
+            if (remainingServices.length > 0) {
+                this.state.welcomeGiftService = remainingServices[0];
+            }
+        }
     }
 
     updateAllEntertainmentSubtitles() {
@@ -1519,9 +1581,9 @@ class UnifiedConfigurator {
         // Netflix
         if (this.state.netflix.enabled) {
             const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'netflix', this.state.netflix.selectedTier);
             total += discountedPrice;
-            if (hasComboDiscount) {
+            if (hasComboDiscount && this.state.welcomeGiftService !== 'netflix') {
                 totalDiscount += tier.price - discountedPrice;
             }
         }
@@ -1529,9 +1591,9 @@ class UnifiedConfigurator {
         // Streamz
         if (this.state.streamz.enabled) {
             const tier = this.entertainmentData.entertainment.streamz.tiers.find(t => t.id === this.state.streamz.selectedTier);
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'streamz', this.state.streamz.selectedTier);
             total += discountedPrice;
-            if (hasComboDiscount) {
+            if (hasComboDiscount && this.state.welcomeGiftService !== 'streamz') {
                 totalDiscount += tier.price - discountedPrice;
             }
         }
@@ -1539,36 +1601,36 @@ class UnifiedConfigurator {
         // HBO
         if (this.state.hbo.enabled) {
             const tier = this.entertainmentData.entertainment.hbo.tiers.find(t => t.id === this.state.hbo.selectedTier);
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'hbo', this.state.hbo.selectedTier);
             total += discountedPrice;
-            if (hasComboDiscount) {
+            if (hasComboDiscount && this.state.welcomeGiftService !== 'hbo') {
                 totalDiscount += tier.price - discountedPrice;
             }
         }
 
         // Disney
         if (this.state.disney.enabled) {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.disney.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.disney.price, false, 'disney');
             total += discountedPrice;
-            if (hasComboDiscount) {
+            if (hasComboDiscount && this.state.welcomeGiftService !== 'disney') {
                 totalDiscount += this.entertainmentData.entertainment.disney.price - discountedPrice;
             }
         }
 
         // Sport
         if (this.state.sport.enabled) {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.sport.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.sport.price, false, 'sport');
             total += discountedPrice;
-            if (hasComboDiscount) {
+            if (hasComboDiscount && this.state.welcomeGiftService !== 'sport') {
                 totalDiscount += this.entertainmentData.entertainment.sport.price - discountedPrice;
             }
         }
 
         // Cinema
         if (this.state.cinema.enabled) {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.cinema.price);
+            const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.cinema.price, false, 'cinema');
             total += discountedPrice;
-            if (hasComboDiscount) {
+            if (hasComboDiscount && this.state.welcomeGiftService !== 'cinema') {
                 totalDiscount += this.entertainmentData.entertainment.cinema.price - discountedPrice;
             }
         }
@@ -2344,16 +2406,42 @@ class UnifiedConfigurator {
             { key: 'cinema', name: 'Cinema', iconClass: 'cinema-icon' }
         ];
 
-        container.innerHTML = services
-            .filter(service => !this.state.selectedEntertainmentServices.has(service.key))
-            .map(service => {
-                const serviceData = this.entertainmentData.entertainment[service.key];
-                let priceText;
+        const hasWelcomeGift = this.state.welcomeGiftService !== null;
+        const availableServices = services.filter(service => !this.state.selectedEntertainmentServices.has(service.key));
 
-                // Check if this would be the second service to show discounted price
-                const currentlyEnabled = this.state.selectedEntertainmentServices.size;
-                const isSecondService = currentlyEnabled === 1;
+        // Add Welcome Gift header if no service has been selected yet
+        let welcomeGiftHeader = '';
+        if (!hasWelcomeGift && availableServices.length > 0) {
+            welcomeGiftHeader = `
+                <div class="welcome-gift-header">
+                    <div class="welcome-gift-icon">🎁</div>
+                    <div class="welcome-gift-text">
+                        <div class="welcome-gift-title">1 jaar gratis streamen!</div>
+                        <div class="welcome-gift-subtitle">Je krijgt 1 jaar lang een gigantische korting op 1 streamingdienst naar keuze</div>
+                        <div class="welcome-gift-note">Heb je al een account op 1 van deze diensten? Die kan je makkelijk overzetten.</div>
+                    </div>
+                </div>
+            `;
+        }
 
+        const servicesHtml = availableServices.map(service => {
+            const serviceData = this.entertainmentData.entertainment[service.key];
+            let priceText;
+
+            // Check if this would be the second service to show discounted price
+            const currentlyEnabled = this.state.selectedEntertainmentServices.size;
+            const isSecondService = currentlyEnabled === 1;
+
+            // Show Welcome Gift pricing if no welcome gift has been assigned yet
+            if (!hasWelcomeGift) {
+                if (serviceData.tiers) {
+                    const minWelcomePrice = Math.min(...serviceData.tiers.map(tier => tier.welcomeGift ? tier.welcomeGift.price : tier.price));
+                    priceText = `Vanaf € ${minWelcomePrice.toFixed(2).replace('.', ',')}`;
+                } else {
+                    const welcomePrice = serviceData.welcomeGift ? serviceData.welcomeGift.price : serviceData.price;
+                    priceText = `€ ${welcomePrice.toFixed(2).replace('.', ',')}`;
+                }
+            } else {
                 if (serviceData.tiers) {
                     const minPrice = Math.min(...serviceData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price, isSecondService)));
                     priceText = `Vanaf € ${minPrice.toFixed(2).replace('.', ',')}`;
@@ -2361,20 +2449,30 @@ class UnifiedConfigurator {
                     const discountPrice = this.getEntertainmentDiscountedPrice(serviceData.price, isSecondService);
                     priceText = `€ ${discountPrice.toFixed(2).replace('.', ',')}`;
                 }
+            }
 
-                const iconHtml = this.getServiceIcon(service.key);
+            const iconHtml = this.getServiceIcon(service.key);
 
-                return `
-                    <div class="available-service" onclick="app.addEntertainmentService('${service.key}')">
-                        <div class="service-icon ${service.iconClass}">${iconHtml}</div>
-                        <div class="available-service-content">
-                            <div class="available-service-name">${service.name}</div>
-                            <div class="available-service-price">${priceText}</div>
-                        </div>
-                        <div class="add-service-icon">+</div>
+            return `
+                <div class="available-service" onclick="app.addEntertainmentService('${service.key}')">
+                    <div class="service-icon ${service.iconClass}">${iconHtml}</div>
+                    <div class="available-service-content">
+                        <div class="available-service-name">${service.name}</div>
+                        <div class="available-service-price">${priceText}</div>
                     </div>
-                `;
-            }).join('');
+                    <div class="add-service-icon">+</div>
+                </div>
+            `;
+        }).join('');
+
+        // Apply Welcome Gift styling to container
+        if (!hasWelcomeGift && availableServices.length > 0) {
+            container.classList.add('welcome-gift-container');
+            container.innerHTML = welcomeGiftHeader + servicesHtml;
+        } else {
+            container.classList.remove('welcome-gift-container');
+            container.innerHTML = servicesHtml;
+        }
     }
 
     renderSelectedEntertainmentServices() {
@@ -2419,14 +2517,17 @@ class UnifiedConfigurator {
             const discountedPrice = this.getEntertainmentDiscountedPrice(price);
             const hasDiscount = discountedPrice < price;
 
+            const isWelcomeGift = this.state.welcomeGiftService === serviceKey;
+            
             const serviceElement = document.createElement('div');
-            serviceElement.className = 'selected-service-card';
+            serviceElement.className = `selected-service-card ${isWelcomeGift ? 'welcome-gift-service' : ''}`;
             serviceElement.innerHTML = `
                 <div class="selected-service-header">
                     <div class="service-icon ${iconClass}">${icon}</div>
                     <div class="selected-service-info">
                         <div class="selected-service-name">${serviceName}</div>
                         ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
+                        ${isWelcomeGift ? '<div class="welcome-gift-badge">Welkomstcadeau</div>' : ''}
                     </div>
                     <div class="selected-service-actions">
                         <button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>
@@ -2436,7 +2537,8 @@ class UnifiedConfigurator {
                 <div class="selected-service-pricing">
                     <div class="selected-service-price-section">
                         <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
-                        ${hasDiscount ? `
+                        ${isWelcomeGift ? this.getWelcomeGiftDiscountInfo(serviceKey) : ''}
+                        ${hasDiscount && !isWelcomeGift ? `
                             <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
                                 <span>5% permanente korting toegepast</span>
                                 <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
@@ -3363,6 +3465,9 @@ class UnifiedConfigurator {
         const serviceKey = this.currentStreamingService;
         const serviceData = this.entertainmentData.entertainment[serviceKey];
 
+        // Check if this is a new service (not editing)
+        const isNewService = !this.state.selectedEntertainmentServices.has(serviceKey);
+
         // Add or update service
         this.state.selectedEntertainmentServices.add(serviceKey);
         this.state[serviceKey].enabled = true;
@@ -3372,6 +3477,11 @@ class UnifiedConfigurator {
             this.state[serviceKey].selectedTier = this.tempSelectedTier;
         } else {
             this.state[serviceKey].selectedTier = 1; // Default tier for services without tiers
+        }
+
+        // Assign Welcome Gift if this is a new service and no gift has been assigned
+        if (isNewService) {
+            this.assignWelcomeGift(serviceKey);
         }
 
         // Close the sheet
@@ -3391,9 +3501,14 @@ class UnifiedConfigurator {
     removeStreamingServiceFromEdit() {
         if (!this.currentStreamingService) return;
 
+        const serviceKey = this.currentStreamingService;
+
+        // Handle Welcome Gift reassignment
+        this.removeWelcomeGift(serviceKey);
+
         // Remove the service
-        this.state.selectedEntertainmentServices.delete(this.currentStreamingService);
-        this.state[this.currentStreamingService].enabled = false;
+        this.state.selectedEntertainmentServices.delete(serviceKey);
+        this.state[serviceKey].enabled = false;
 
         // Close the sheet
         this.closeStreamingTierSheet();

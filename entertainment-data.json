@@ -2,84 +2,142 @@
   "entertainment": {
     "netflix": {
       "title": "Netflix",
+      "summary": "Bekijk series en films op Netflix",
+      "defaultTier": 1,
       "tiers": [
         {
           "id": 1,
           "title": "Basic",
-          "summary": "Max. 1 scherm, Kijk in HD-kwaliteit, Download op 1 apparaat",
-          "price": 9.99
+          "summary": "1 scherm tegelijk, SD-kwaliteit, Downloads mogelijk",
+          "price": 9.99,
+          "welcomeGift": {
+            "price": 0.00,
+            "discountValue": 9.99,
+            "duration": 12
+          }
         },
         {
           "id": 2,
-          "title": "Standaard",
-          "summary": "Max. 2 schermen, Kijk in Full HD-kwaliteit, Download op 2 apparaten",
-          "price": 14.99
+          "title": "Standard",
+          "summary": "2 schermen tegelijk, HD-kwaliteit, Downloads mogelijk",
+          "price": 15.99,
+          "welcomeGift": {
+            "price": 4.99,
+            "discountValue": 11.00,
+            "duration": 12
+          }
         },
         {
           "id": 3,
           "title": "Premium",
-          "summary": "Max. 4 schermen, Kijk in Ultra HD-kwaliteit, Download op 6 apparaten",
-          "price": 19.99
+          "summary": "4 schermen tegelijk, Ultra HD-kwaliteit, Downloads mogelijk",
+          "price": 19.99,
+          "welcomeGift": {
+            "price": 9.99,
+            "discountValue": 10.00,
+            "duration": 12
+          }
         }
-      ],
-      "defaultTier": 1
+      ]
     },
     "streamz": {
       "title": "Streamz",
+      "summary": "Bekijk series en films op Streamz",
+      "defaultTier": 1,
       "tiers": [
         {
           "id": 1,
           "title": "Basic",
-          "summary": "Max. 1 scherm, Max. 2 kijkprofielen, Met reclame, Geen downloads",
-          "price": 8.99
+          "summary": "1 scherm tegelijk, HD-kwaliteit, Downloads mogelijk",
+          "price": 10.99,
+          "welcomeGift": {
+            "price": 0.00,
+            "discountValue": 10.99,
+            "duration": 12
+          }
         },
         {
           "id": 2,
           "title": "Premium",
-          "summary": "Max. 4 schermen, Max. 5 kijkprofielen, Zonder reclame, Downloaden en offline kijken",
-          "price": 13.99
+          "summary": "4 schermen tegelijk, HD-kwaliteit, Downloads mogelijk",
+          "price": 13.99,
+          "welcomeGift": {
+            "price": 3.99,
+            "discountValue": 10.00,
+            "duration": 12
+          }
         },
         {
           "id": 3,
           "title": "Premium+",
-          "summary": "Alles van Streamz Premium, Toegang tot recente blockbusters, Zonder reclame, Downloaden en offline kijken",
-          "price": 21.99
+          "summary": "6 schermen tegelijk, Ultra HD-kwaliteit, Downloads mogelijk",
+          "price": 21.99,
+          "welcomeGift": {
+            "price": 11.99,
+            "discountValue": 10.00,
+            "duration": 12
+          }
         }
-      ],
-      "defaultTier": 1
+      ]
     },
     "disney": {
       "title": "Disney+",
-      "summary": "Max. 4 schermen, Kijk in 4K kwaliteit, Geniet van Dolby Atmos",
-      "price": 13.99
+      "summary": "Bekijk Disney content en meer",
+      "price": 13.29,
+      "welcomeGift": {
+        "price": 0.00,
+        "discountValue": 13.29,
+        "duration": 12
+      }
     },
     "sport": {
       "title": "Sport",
-      "summary": "Volg alle populaire sporten live, zowel uit België als internationaal, Voetbal - NBA - Tennis",
-      "price": 15.99
+      "summary": "Bekijk live sport",
+      "price": 15.20,
+      "welcomeGift": {
+        "price": 0.00,
+        "discountValue": 15.20,
+        "duration": 6
+      }
     },
     "cinema": {
       "title": "Cinema",
-      "summary": "De laatste kaskrakers, 3 extra filmkanalen met non-stop film",
-      "price": 26.99
+      "summary": "Huur of koop films",
+      "price": 26.65,
+      "welcomeGift": {
+        "price": 6.99,
+        "discountValue": 19.66,
+        "duration": 6
+      }
     },
     "hbo": {
       "title": "HBO Max",
+      "summary": "Bekijk HBO Max content",
+      "defaultTier": 1,
       "tiers": [
         {
           "id": 1,
           "title": "Basic",
-          "summary": "Max. 1 scherm, Kijk in HD-kwaliteit, Download op 1 apparaat",
-          "price": 5.99
+          "summary": "1 scherm tegelijk, HD-kwaliteit, Met advertenties",
+          "price": 5.69,
+          "welcomeGift": {
+            "price": 0.00,
+            "discountValue": 5.69,
+            "duration": 12
+          }
         },
         {
           "id": 2,
           "title": "Premium",
-          "summary": "Max. 3 schermen, Kijk in Ultra HD-kwaliteit, Download op 6 apparaten",
-          "price": 12.99
+          "summary": "3 schermen tegelijk, Ultra HD-kwaliteit, Geen advertenties",
+          "price": 12.99,
+          "welcomeGift": {
+            "price": 2.99,
+            "discountValue": 10.00,
+            "duration": 12
+          }
         }
-      ],
-      "defaultTier": 1
+      ]
     }
   },
   "discounts": {
