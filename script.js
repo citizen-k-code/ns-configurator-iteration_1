@@ -2508,7 +2508,7 @@ class UnifiedConfigurator {
                 priceText = `€${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
                 priceClass = 'promotional-price';
             } else {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id);
                 priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
             }
 
