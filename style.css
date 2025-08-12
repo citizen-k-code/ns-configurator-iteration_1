@@ -965,7 +965,7 @@
 .promo-highlight {
     background: #D1FFD9;
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 12px;
     margin: 16px 0;
     color: white;
     font-size: 13px;
@@ -4213,6 +4213,10 @@ div.paragraph h5 {
     color: #CBD2E0;
 }
 
+.tier-selection-option .tier-price.promotional-price {
+    color: #F134F7;
+}
+
 .tier-details {
     margin-bottom: 20px;
 }
@@ -4594,5 +4598,3 @@ div.paragraph h5 {
 
 
 }
-
-/* Adding some new code based on the design file*/
