@@ -107,7 +107,7 @@ class UnifiedConfigurator {
 
         if (packParam && packParam.trim() !== '') {
             const capitalizedPack = packParam.charAt(0).toUpperCase() + packParam.slice(1).toLowerCase();
-            pageTitle.textContent = `Pas je ${capitalizedPack}-pack aan`;
+            pageTitle.textContent = `Pas je combinatie aan`;
         } else {
             pageTitle.textContent = 'Pas je product aan';
         }
@@ -1103,11 +1103,12 @@ class UnifiedConfigurator {
         if (!infoContainer || !this.data) return;
 
         const tvData = this.data.products.tv;
+        const entertainmentData = this.data.products.entertainmentBox;
 
         const summaryItems = tvData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         // No temporary discount for TV anymore
-        const priceHtml = `<div class="tier-price">€ ${tvData.price.toFixed(2).replace('.', ',')}/maand</div>`;
+        const priceHtml = `<div class="tier-price">€ ${(tvData.price + entertainmentData.price).toFixed(2).replace('.', ',')}/maand</div>`;
 
         infoContainer.innerHTML = `
             <ul class="tier-details">
@@ -2146,7 +2147,7 @@ class UnifiedConfigurator {
                         </div>
                     `;
                 } else {
-                    tvPriceHtml = `€${tvData.price.toFixed(2).replace('.', ',')}`;
+                    tvPriceHtml = `€${(tvData.price).toFixed(2).replace('.', ',')}`;
                 }
 
                 overviewHtml += `
@@ -2166,7 +2167,7 @@ class UnifiedConfigurator {
 
                     overviewHtml += `
                         <div class="overview-item">
-                            <span class="overview-item-name">Entertainment Box</span>
+                            <span class="overview-item-name">Entertainment Hub</span>
                             <span class="overview-item-price">${boxPriceHtml}</span>
                         </div>
                     `;
@@ -2966,7 +2967,7 @@ class UnifiedConfigurator {
 
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <h4>Permanente kortingen</h4>
+                    <h4>Combokortingen</h4>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
@@ -2982,7 +2983,7 @@ class UnifiedConfigurator {
             body.innerHTML = `
                 ${bundleAdvantages.length > 0 ? `
                 <div class="advantage-section combo-advantage">
-                    <h4>Permanente kortingen</h4>
+                    <h4>Combokortingen</h4>
                     <ul>
                         ${bundleAdvantagesList}
                     </ul>
@@ -3431,7 +3432,7 @@ class UnifiedConfigurator {
                 if (firstSimcard) {
                     const mobileTier = this.data.products.mobile.tiers.find(t => t.id === firstSimcard.selectedTier);
                     const permanentDiscount = this.data.discounts.permanent;
-                    
+
                     if (mobileTier && permanentDiscount.enabled && permanentDiscount.conditions.applicableToTiers.includes(mobileTier.id)) {
                         originalPrice = mobileTier.price;
                         const permanentDiscountAmount = mobileTier.price * (permanentDiscount.percentage / 100);
@@ -3456,9 +3457,9 @@ class UnifiedConfigurator {
                 .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','));
 
             // Add temporary discount highlight if applicable
-            const temporaryHighlight = hasTemporaryDiscount ? 
+            const temporaryHighlight = hasTemporaryDiscount ?
                 "<div class='temporary-discount-highlight'><p>Daarbovenop geniet je van een tijdelijke extra korting dankzij de lopende promotie.</p></div>" : '';
-            
+
             dynamicContent = dynamicContent.replace('##TEMPORARY_DISCOUNT_HIGHLIGHT##', temporaryHighlight);
         }
 

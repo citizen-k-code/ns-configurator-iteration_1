@@ -2,7 +2,7 @@
 {
   "permanentDiscount": {
     "title": "##DISCOUNT_NAME## op ##PRODUCT_NAME##",
-    "content": "<p>Omdat je internet en mobiel combineert in een pack, krijg je je mobiel abonnement voor de helft van de prijs. En dat gedurende de looptijd van je contract.</p><div class='discount-pricing-list'><div class='discount-pricing-item'>Normale prijs: €##ORIGINAL_PRICE##</div><div class='discount-pricing-item'>Jouw korting: €##DISCOUNT_VALUE##</div></div>##TEMPORARY_DISCOUNT_HIGHLIGHT##"
+    "content": "<p>Omdat je internet en mobiel combineert in een pack, krijg je je mobiel abonnement voor de helft van de prijs. En dat gedurende de looptijd van je contract.</p><div class='discount-pricing-list'><div class='discount-pricing-item'>Normale prijs: €##ORIGINAL_PRICE##</div><div class='discount-pricing-item'><strong>Jouw korting: €##DISCOUNT_VALUE##</strong></div></div>##TEMPORARY_DISCOUNT_HIGHLIGHT##"
   },
   "entertainmentCombo": {
     "title": "5% permanente korting toegepast",

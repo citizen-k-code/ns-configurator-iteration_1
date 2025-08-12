@@ -12,9 +12,9 @@
         {
           "id": 1,
           "title": "Snel",
-          "subtitle": "€50,00",
+          "subtitle": "€53,00",
           "summary": "<strong>200 Mbps</strong> downloadsnelheid, <strong>20 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 50.00,
+          "price": 53.00,
           "discountCopy": {
             "temporaryOnly": "",
             "permanentOnly": "",
@@ -24,10 +24,10 @@
         {
           "id": 2,
           "title": "Supersnel",
-          "subtitle": "€75,00",
+          "subtitle": "€62,00",
           "summary": "<strong>500 Mbps</strong> downloadsnelheid, <strong>50 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 75.00,
-          "discountValue": 25.00,
+          "price": 62.00,
+          "discountValue": 9.00,
           "discountPeriod": 6,
           "promoName": "Webdeal",
           "discountCopy": {
@@ -39,9 +39,9 @@
         {
           "id": 3,
           "title": "Ultrasnel",
-          "subtitle": "€85,00",
+          "subtitle": "€82,00",
           "summary": "<strong>2,5 Gbps</strong> downloadsnelheid, <strong>200 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume",
-          "price": 85.00,
+          "price": 82.00,
           "discountCopy": {
             "temporaryOnly": "",
             "permanentOnly": "",
@@ -120,7 +120,7 @@
       "title": "TV",
       "tooltip": "Wat hoort er bij je tv-pakket?",
       "closedState": {
-        "summary": "Voeg een tv-pakket toe<br><strong>€ ##PRICE##/maand</strong>",
+        "summary": "Voeg een tv-pakket toe<br><strong>€ ##PRICE##/maans</strong>",
         "showHighlight": false,
         "highlight": null
       },
@@ -132,8 +132,8 @@
         "both": ""
       },
       "entertainmentBox": {
-        "title": "Wil je een Entertainment Box?",
-        "tooltip": "Ontdek onze Entertainment Box met Entertainment Services",
+        "title": "Wil je een Entertainment Hub?",
+        "tooltip": "Ontdek onze Entertainment Hub met Entertainment Services",
         "tiers": [
           {
             "id": 1,
@@ -161,12 +161,12 @@
       "title": "Vaste lijn",
       "tooltip": "",
       "closedState": {
-        "summary": "Voeg gratis een vaste telefonlijn toe",
+        "summary": "Voeg een vaste telefonlijn toe<br />€ ##PRICE##/maand",
         "showHighlight": false,
         "highlight": null
       },
-      "summary": "<strong>Gratis</strong> vaste lijn voor thuis, Behoud je huidige vast nummer of vraag een nieuw nummer aan",
-      "price": 0.00,
+      "summary": "Een <strong>vaste lijn</strong> voor thuis, Behoud je huidige vast nummer of vraag een nieuw nummer aan",
+      "price": 9.00,
       "discountCopy": {
         "temporaryOnly": "",
         "permanentOnly": "",
@@ -185,7 +185,7 @@
       }
     },
     "entertainmentBox": {
-      "title": "Entertainment Box",
+      "title": "Entertainment Hub",
       "summary": "<strong>Alles op één plek</strong>: zenders sport lokale en internationale apps, Zoek en ontdek <strong>over alle diensten</strong>, <strong>Persoonlijke aanbevelingen</strong> over al jouw diensten",
       "price": 5.00,
       "discountCopy": {
@@ -251,7 +251,7 @@
             }
         },
         "tv": {
-            "summary": "Voeg een TV-pakket toe<br /><strong>€ ##PRICE##/maand</strong>",
+            "summary": "Voeg een TV-pakket toe<br /><strong>€ ##PRICE##/maans</strong>",
             "highlight": null
         },
         "entertainment": {
@@ -263,7 +263,7 @@
             "showServiceIcons": true
         },
         "fixedPhone": {
-            "summary": "Voeg <strong>gratis</strong> een vaste telefoonlijn toe",
+            "summary": "Voeg een vaste telefoonlijn toe<br /><strong>€ ##PRICE##/maand</strong>",
             "highlight": null
         },
         "entertainmentBox": {
@@ -293,15 +293,15 @@
     },
     "tv_main": {
       "title": "Wat zit er in het tv-pakket",
-      "content": "<p>Geniet van meer dan 90 zenders waaronder alle zenders van VRT, VTM, Play, RTL, NPO, BBC, Discovery, National Geographic en de regionale zenders. </p><p>Tip: voor de klassieke tv-ervaring met afstandsbediening en zappen, selecteer je best ook de Entertainment box. Dit gebeurt automatisch als je TV-pakket kies.</p>"
+      "content": "<p>Geniet van meer dan 90 zenders waaronder alle zenders van VRT, VTM, Play, RTL, NPO, BBC, Discovery, National Geographic en de regionale zenders. </p>"
     },
     "tv_entertainment": {
       "title": "Alles over onze streamingdiensten",
       "content": "<div class='paragraph'><h4>Waarom streamingdiensten toevoegen?</h4><p>Zo kan je al je streamingdiensten beheren op één plek en krijg je 1 overzichtelijke factuur voor al je entertainment.</p></div><div class='paragraph'><h4>Heb je al een account op een streamingdienst</h4><p>Dan kan je je bestaande accounts van Netflix, Disney+, HBO Max en Apple TV eenvoudig overzetten.</p></div><div class='paragraph'><h4>Hoe beheer ik mijn diensten?</h4><p>Je pauzeert of stopt je streamingdiensten wanneer je wilt. Of wil je een streamingdienst toevoegen? Je doet het allemaal eenvoudig via je online klantenzone.</p></div>"
     },
     "entertainment_box": {
-      "title": "Waarom kiezen voor onze Entertainment box? ",
-      "content": "<p>De Entertainment Box is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot meer dan 90 tv-zenders, je favoriete streamingdiensten en radiozenders.</p></div><div class='paragraph'><h4>Geen gedoe meer met switchen tussen apps</h4><p>We bundelen alles van VRT MAX, VTM GO, GoPlay én je betalende streamingdiensten op één plek. Zo vind je jouw favoriete content zonder van app naar app te moeten springen.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je favoriete entertainment, recente opnames en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Box inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
+      "title": "Waarom kiezen voor onze Entertainment Hub? ",
+      "content": "<p>De Entertainment Hub is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot meer dan 90 tv-zenders, je favoriete streamingdiensten en radiozenders.</p></div><div class='paragraph'><h4>Geen gedoe meer met switchen tussen apps</h4><p>We bundelen alles van VRT MAX, VTM GO, GoPlay én je betalende streamingdiensten op één plek. Zo vind je jouw favoriete content zonder van app naar app te moeten springen.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je favoriete entertainment, recente opnames en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Hub inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
     },
     "permanent_promotion": {
       "title": "Permanent promotion",

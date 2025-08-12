@@ -46,10 +46,10 @@
                         </a>
                     </div>
                     <div class="nav-section">
-                        <div class="nav-section-title">Aanbod</div>
+                        <div class="nav-section-title">Producten</div>
                         <a href="packs.html" class="nav-link">
                             <span class="nav-link-icon">📦</span>
-                            <span class="nav-link-text">Packs</span>
+                            <span class="nav-link-text">Populaire combinaties</span>
                             <span class="nav-link-arrow">→</span>
                         </a>
                         <a href="configurator.html" class="nav-link">
@@ -67,210 +67,240 @@
         <div class="nav-overlay" id="nav-overlay"></div>
     </header>
 
-    <div class="homepage-container">
-        <!-- Header -->
-        <header class="homepage-header">
-            <div class="search-section">
-                <h1>Welkom bij Altijd Online</h1>
-                <p class="search-subtitle">Internet, mobiel, tv of streaming? Of allemaal? Jij kiest en betaalt alleen
-                    maar voor wat je gebruikt.</p>
+    <div class="page-container">
+        <div class="homepage-container">
+            <!-- Header -->
+            <header class="homepage-header">
+                <div class="search-section">
+                    <h1>Welkom bij Altijd Online</h1>
+                    <p class="search-subtitle">Er is geen standaardoplossing die voor iedereen werkt. <strong>Daarom
+                            kies jij zelf welke diensten je precies nodig hebt.</strong> En je past je diensten
+                        makkelijk aan wanneer je wil. </p>
 
-                <div class="search-options">
-                    <div class="search-option" data-product="internet">
-                        <span class="search-icon">📡</span>
-                        <div class="search-content">
-                            <div class="search-title">Internet</div>
-                            <a href="product-internet.html" class="search-description"
-                                onclick="event.stopPropagation()">Bekijk details</a>
+                    <div class="intro-wrap">
+                        <!-- Always included benefits section -->
+                        <div class="packs-benefits">
+                            <div class="benefits-icon">👍</div>
+                            <div class="benefits-content">
+                                <h4>Altijd inbegrepen</h4>
+                                <ul class="benefits-list">
+                                    <li><strong>Korting</strong> als je <strong>internet en mobiel</strong> combineert
+                                    </li>
+                                    <li><strong>Korting</strong> als je <strong>2 of meer streamingdiensten</strong>
+                                        neemt</li>
+                                    <li><strong>Flexibiliteit</strong> om je diensten aan te passen</li>
+                                    <li><strong>1</strong> overzichtelijke <strong>factuur</strong></li>
+                                </ul>
+                            </div>
                         </div>
-                        <input type="checkbox" class="search-checkbox" id="internet-checkbox">
+
+                        <!-- Select Container -->
+                        <div class="select-container">
+                            <h4>Wat heb je nodig?</h4>
+                            <div class="search-options">
+                                <div class="search-option" data-product="internet">
+                                    <span class="search-icon">📡</span>
+                                    <div class="search-content">
+                                        <div class="search-title">Internet</div>
+                                        <!--
+                                        <a href="product-internet.html" class="search-description"
+                                            onclick="event.stopPropagation()">Bekijk details</a>
+                                        -->
+                                    </div>
+                                    <input type="checkbox" class="search-checkbox" id="internet-checkbox">
+                                </div>
+
+                                <div class="search-option" data-product="mobile">
+                                    <span class="search-icon">📱</span>
+                                    <div class="search-content">
+                                        <div class="search-title">Mobiel</div>
+                                        <!--
+                                        <a href="product-mobile.html" class="search-description"
+                                            onclick="event.stopPropagation()">Bekijk details</a>
+                                        -->
+                                    </div>
+                                    <input type="checkbox" class="search-checkbox" id="mobile-checkbox">
+                                </div>
+
+                                <div class="search-option" data-product="entertainment">
+                                    <span class="search-icon">📺</span>
+                                    <div class="search-content">
+                                        <div class="search-title">Tv & Streamen</div>
+                                        <!--
+                                        <a href="product-entertainment.html" class="search-description"
+                                            onclick="event.stopPropagation()">Bekijk details</a>
+                                        -->
+                                    </div>
+                                    <input type="checkbox" class="search-checkbox" id="entertainment-checkbox">
+                                </div>
+                            </div>
+
+                            <button class="configurator-btn" onclick="navigateToConfigurator()">Ga verder met je
+                                keuze</button>
+                        </div>
+                        <!--End Select Container -->
                     </div>
 
-                    <div class="search-option" data-product="mobile">
-                        <span class="search-icon">📱</span>
-                        <div class="search-content">
-                            <div class="search-title">Mobiel</div>
-                            <a href="product-mobile.html" class="search-description"
-                                onclick="event.stopPropagation()">Bekijk details</a>
-                        </div>
-                        <input type="checkbox" class="search-checkbox" id="mobile-checkbox">
-                    </div>
 
-                    <div class="search-option" data-product="entertainment">
-                        <span class="search-icon">📺</span>
-                        <div class="search-content">
-                            <div class="search-title">Tv & Streamen</div>
-                            <a href="product-entertainment.html" class="search-description"
-                                onclick="event.stopPropagation()">Bekijk details</a>
-                        </div>
-                        <input type="checkbox" class="search-checkbox" id="entertainment-checkbox">
-                    </div>
+            </header>
+
+            <!-- Packs Section -->
+            <section class="packs-section">
+                <div class="section-header">
+                    <h3>Populaire combinaties</h3>
+                    <a href="packs.html" class="see-all-link">Overzicht</a>
                 </div>
 
-                <button class="configurator-btn" onclick="navigateToConfigurator()">Personaliseer je pack</button>
-            </div>
-
-
-        </header>
-
-        <!-- Packs Section -->
-        <section class="packs-section">
-            <div class="section-header">
-                <h2>Onze packs</h2>
-                <a href="packs.html" class="see-all-link">Alle packs</a>
-            </div>
-
-            <div class="packs-carousel-container">
-                <div class="swiper packs-swiper">
-                    <div class="swiper-wrapper">
-                        <!-- De starter -->
-                        <div class="swiper-slide">
-                            <div class="pack-card">
-                                <div class="pack-image">
-                                    <img src="final_assets/starter.jpg" alt="De starter pack">
-                                </div>
-                                <div class="pack-content">
-                                    <h3>De starter</h3>
-                                    <ul class="pack-features">
-                                        <li>Snel internet voor dagelijkse gebruik</li>
-                                        <li>1 of meer simkaarten met 15 GB data</li>
-                                        <li>Voeg populaire streamingdiensten toe</li>
-                                        <li>Maandelijk opzegbaar</li>
-                                    </ul>
-                                    <div class="pack-pricing">
-                                        <div class="pack-price">
-                                            <span class="price-label">Vanaf</span>
-                                            <span class="price-amount">€60,00</span>
-                                            <span class="price-period">/maand</span>
-                                        </div>
+                <div class="packs-carousel-container">
+                    <div class="swiper packs-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- De starter -->
+                            <div class="swiper-slide">
+                                <div class="pack-card">
+                                    <div class="pack-image">
+                                        <img src="final_assets/starter.jpg" alt="De starter pack">
                                     </div>
-                                    <a href="configurator.html?internet=2&mobile=2&entertainment=1&pack=starter" class="pack-btn">Ga
-                                        verder met het starter pack</a>
+                                    <div class="pack-content">
+                                        <div class="combi-header">
+                                            <h4>Combinatie 1</h4>
+                                            <p>Ideaal als je alleen of met twee woont.</p>
+                                        </div>
+                                        <ul class="pack-features">
+                                            <li>Snel internet voor dagelijkse gebruik</li>
+                                            <li>1 of meer simkaarten met 15 GB data</li>
+                                            <li>Voeg populaire streamingdiensten toe</li>
+                                            <li>Maandelijk opzegbaar</li>
+                                        </ul>
+                                        <div class="pack-pricing">
+                                            <div class="pack-price">
+                                                <span class="price-label">Vanaf</span>
+                                                <span class="price-amount">€60,00</span>
+                                                <span class="price-period">/maand</span>
+                                            </div>
+                                        </div>
+                                        <a href="configurator.html?internet=2&mobile=2&entertainment=1&pack=starter"
+                                            class="pack-btn">Ga
+                                            verder met combinatie 1</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- De gamer -->
+                            <div class="swiper-slide">
+                                <div class="pack-card">
+                                    <div class="pack-image">
+                                        <img src="final_assets/gamer.jpg" alt="De gamer pack">
+                                    </div>
+                                    <div class="pack-content">
+                                        <div class="combi-header">
+                                            <h4>Combinatie 2</h4>
+                                            <p>Voor wie ook fibersnel wil streamen en gamen.</p>
+                                        </div>
+                                        <ul class="pack-features">
+                                            <li>Supersnel internet</li>
+                                            <li>Mobiele data voor on-the-go gaming</li>
+                                            <li>Wifi-optimalisatie in huis</li>
+                                            <li>Maandelijk opzegbaar</li>
+                                        </ul>
+                                        <div class="pack-pricing">
+                                            <div class="pack-price">
+                                                <span class="price-label">Vanaf</span>
+                                                <span class="price-amount">€95,00</span>
+                                                <span class="price-period">/maand</span>
+                                            </div>
+                                        </div>
+                                        <a href="configurator.html?internet=3&mobile=3&wifipods=2&pack=gamer"
+                                            class="pack-btn">Ga
+                                            verder met combinatie 2</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- De familie -->
+                            <div class="swiper-slide">
+                                <div class="pack-card">
+                                    <div class="pack-image">
+                                        <img src="final_assets/familie.jpg" alt="De familie pack">
+                                    </div>
+                                    <div class="pack-content">
+                                        <div class="combi-header">
+                                            <h4>Combinatie 3</h4>
+                                            <p>Perfect voor het hele gezin.</p>
+                                        </div>
+                                        <ul class="pack-features">
+                                            <li>Internet voor iedereen</li>
+                                            <li>Wifi-optimalisatie in huis</li>
+                                            <li>2 of meer simkaarten</li>
+                                            <li>Tv via de tv-box</li>
+                                            <li>Streamingdiensten met korting</li>
+                                            <li>Maandelijk opzegbaar</li>
+                                        </ul>
+                                        <div class="pack-pricing">
+                                            <div class="pack-price">
+                                                <span class="price-label">Vanaf</span>
+                                                <span class="price-amount">€84,00</span>
+                                                <span class="price-period">/maand</span>
+                                            </div>
+                                        </div>
+                                        <a href="configurator.html?internet=2&mobile=2,2&wifipods=2&tv=1&entertainment=1&pack=familie"
+                                            class="pack-btn">Ga verder met combinatie 3</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- De gamer -->
-                        <div class="swiper-slide">
-                            <div class="pack-card">
-                                <div class="pack-image">
-                                    <img src="final_assets/gamer.jpg" alt="De gamer pack">
-                                </div>
-                                <div class="pack-content">
-                                    <h3>De gamer</h3>
-                                    <ul class="pack-features">
-                                        <li>Supersnel internet</li>
-                                        <li>Mobiele data voor on-the-go gaming</li>
-                                        <li>Wifi-optimalisatie in huis</li>
-                                        <li>Maandelijk opzegbaar</li>
-                                    </ul>
-                                    <div class="pack-pricing">
-                                        <div class="pack-price">
-                                            <span class="price-label">Vanaf</span>
-                                            <span class="price-amount">€95,00</span>
-                                            <span class="price-period">/maand</span>
-                                        </div>
-                                    </div>
-                                    <a href="configurator.html?internet=3&mobile=3&wifipods=2&pack=gamer" class="pack-btn">Ga
-                                        verder met het gamer pack</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- De familie -->
-                        <div class="swiper-slide">
-                            <div class="pack-card">
-                                <div class="pack-image">
-                                    <img src="final_assets/familie.jpg" alt="De familie pack">
-                                </div>
-                                <div class="pack-content">
-                                    <h3>De familie</h3>
-                                    <ul class="pack-features">
-                                        <li>Internet voor iedereen</li>
-                                        <li>Wifi-optimalisatie in huis</li>
-                                        <li>2 of meer simkaarten</li>
-                                        <li>Tv via de tv-box</li>
-                                        <li>Streamingdiensten met korting</li>
-                                        <li>Maandelijk opzegbaar</li>
-                                    </ul>
-                                    <div class="pack-pricing">
-                                        <div class="pack-price">
-                                            <span class="price-label">Vanaf</span>
-                                            <span class="price-amount">€84,00</span>
-                                            <span class="price-period">/maand</span>
-                                        </div>
-                                    </div>
-                                    <a href="configurator.html?internet=2&mobile=2,2&wifipods=2&tv=1&entertainment=1&pack=familie"
-                                        class="pack-btn">Ga verder met het familie pack</a>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Carousel dots for mobile -->
+                        <div class="swiper-pagination"></div>
                     </div>
+                </div>
+            </section>
 
-                    <!-- Carousel dots for mobile -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
+            <!-- Benefits Section -->
+            <section class="benefits-section">
+                <h2>Hier zit je goed</h2>
 
-            <!-- Always included benefits section -->
-            <div class="packs-benefits">
-                <div class="benefits-icon">💡</div>
-                <div class="benefits-content">
-                    <h4>Altijd inbegrepen in de packs</h4>
-                    <ul class="benefits-list">
-                        <li>Korting op meerdere simkaarten en extra diensten.</li>
-                        <li>Pas aan wat je wil, wanneer je wil.</li>
-                        <li>Alles op 1 overzichtelijke factuur.</li>
-                    </ul>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🔄</span>
+                    <div class="benefit-content">
+                        <h3>Hybride fiber-coaxnetwerk</h3>
+                        <p>Met een modern hybride fiber-coaxnetwerk surf je stabiel, snel en veilig.</p>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Benefits Section -->
-        <section class="benefits-section">
-            <h2>Hier zit je goed</h2>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📡</span>
+                    <div class="benefit-content">
+                        <h3>5G-dekking onderweg</h3>
+                        <p>Dankzij de 95% 5G-dekking in België, blijf je ook onderweg vlot verbonden.</p>
+                    </div>
+                </div>
 
-            <div class="benefit-item">
-                <span class="benefit-icon">🔄</span>
-                <div class="benefit-content">
-                    <h3>Hybride fiber-coaxnetwerk</h3>
-                    <p>Met een modern hybride fiber-coaxnetwerk surf je stabiel, snel en veilig.</p>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📞</span>
+                    <div class="benefit-content">
+                        <h3>Personaliseer je pack</h3>
+                        <p>Welke producten wil je bij ons afnemen?</p>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="benefit-item">
-                <span class="benefit-icon">📡</span>
-                <div class="benefit-content">
-                    <h3>5G-dekking onderweg</h3>
-                    <p>Dankzij de 95% 5G-dekking in België, blijf je ook onderweg vlot verbonden.</p>
+            <!-- Footer -->
+            <footer class="homepage-footer">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Logo</h4>
+                    </div>
+                    <div class="footer-section">
+                        <p>Copyright 2025 Altijd online.</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms & Conditions</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="benefit-item">
-                <span class="benefit-icon">📞</span>
-                <div class="benefit-content">
-                    <h3>Personaliseer je pack</h3>
-                    <p>Jij kiest wat er in je pack zit. Je betaalt dus nooit voor wat je niet gebruikt.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="homepage-footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Logo</h4>
-                </div>
-                <div class="footer-section">
-                    <p>Copyright 2025 Altijd online.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#">Cookie Policy</a>
-                </div>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </div>
     <script>
         // Session state management
