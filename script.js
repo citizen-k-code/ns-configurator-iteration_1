@@ -2792,7 +2792,10 @@ class UnifiedConfigurator {
             return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
         } else if (productType === 'tv') {
             const tvData = this.data.products.tv;
-            return tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            const tvPrice = tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
+            const entertainmentBoxPrice = entertainmentBoxData ? entertainmentBoxData.price : 0;
+            return tvPrice + entertainmentBoxPrice;
         } else if (productType === 'fixedPhone') {
             return this.data.products.fixedPhone.price;
         } else if (productType === 'entertainmentBox') {
