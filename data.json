@@ -120,7 +120,7 @@
       "title": "TV",
       "tooltip": "Wat hoort er bij je tv-pakket?",
       "closedState": {
-        "summary": "Voeg een tv-pakket toe<br><strong>€ ##PRICE##/maans</strong>",
+        "summary": "Voeg een tv-pakket toe<br><strong>€ ##PRICE##/maand</strong>",
         "showHighlight": false,
         "highlight": null
       },
@@ -251,7 +251,7 @@
             }
         },
         "tv": {
-            "summary": "Voeg een TV-pakket toe<br /><strong>€ ##PRICE##/maans</strong>",
+            "summary": "Voeg een TV-pakket toe<br /><strong>€ ##PRICE##/maand</strong>",
             "highlight": null
         },
         "entertainment": {
