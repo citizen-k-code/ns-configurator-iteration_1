@@ -4287,44 +4287,6 @@ div.paragraph h5 {
     opacity: 0.6;
 }
 
-.tier-pricing .price-display {
-    text-align: right;
-    margin-bottom: 8px;
-}
-
-.tier-pricing .price-display .welcome-gift-badge {
-    background-color: #2D3648;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    display: block;
-    margin-bottom: 8px;
-    text-align: center;
-}
-
-.tier-pricing .price-display .original-price {
-    font-size: 14px;
-    color: #717D96;
-    text-decoration: line-through;
-    margin-bottom: 4px;
-}
-
-.tier-pricing .price-display .discount-price {
-    font-size: 18px;
-    font-weight: 600;
-    color: #F134F7;
-}
-
-.tier-pricing .price-period {
-    font-size: 14px;
-    color: #717D96;
-    font-weight: 400;
-    text-align: right;
-}
-
 .welcome-gift-pricing {
     display: flex;
     align-items: center;
