@@ -647,7 +647,7 @@ class UnifiedConfigurator {
                         this.updateMobileHighlightBlock();
                     }
                 } else if (productType === 'tv') {
-                    // Update Entertainment Hub selection visibility when TV is disabled
+                    // Update Entertainment Hub selection visibility
                     this.updateEntertainmentHubSelectionVisibility();
                     // Update TV bundle highlight visibility
                     this.updateTvBundleHighlight();
@@ -2396,26 +2396,26 @@ class UnifiedConfigurator {
     openStreamingTierSheet(serviceKey) {
         this.currentStreamingService = serviceKey;
         this.isEditingStreamingService = false;
-        
+
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
         const sheet = document.getElementById('streaming-tier-sheet');
         const icon = document.getElementById('tier-sheet-icon');
         const title = document.getElementById('tier-sheet-title');
-        
+
         if (!overlay || !sheet || !icon || !title) return;
-        
+
         // Set service icon and title
         const serviceName = this.getServiceDisplayName(serviceKey);
         const iconClass = this.getServiceIconClass(serviceKey);
         const iconHtml = this.getServiceIcon(serviceKey);
-        
+
         icon.className = `service-icon-large ${iconClass}`;
         icon.innerHTML = iconHtml;
         title.textContent = serviceName;
-        
+
         // Render tier options
         this.renderStreamingTierOptions(serviceKey);
-        
+
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -2446,18 +2446,18 @@ class UnifiedConfigurator {
         if (!serviceData.tiers) {
             if (subtitleElement) subtitleElement.classList.add('hidden');
             container.style.display = 'none';
-            
+
             // Show service details for single-tier services
             const summaryItems = serviceData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
             detailsContainer.innerHTML = `<ul class="tier-details">${summaryItems}</ul>`;
-            
+
             // Show pricing with Welcome Gift if applicable
             let priceHtml;
-            
+
             if (isWelcomeGift && serviceData.welcomeGift) {
                 const originalPrice = serviceData.price;
                 const welcomePrice = serviceData.welcomeGift.price;
-                
+
                 priceHtml = `
                     <div class="tier-pricing">
                         <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
@@ -2471,7 +2471,7 @@ class UnifiedConfigurator {
             } else {
                 const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
                 const hasComboDiscount = discountedPrice < serviceData.price;
-                
+
                 if (hasComboDiscount) {
                     priceHtml = `
                         <div class="tier-pricing">
@@ -2486,7 +2486,7 @@ class UnifiedConfigurator {
                     priceHtml = `<div class="tier-pricing">€${serviceData.price.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
                 }
             }
-            
+
             pricingContainer.innerHTML = priceHtml;
             return;
         }
@@ -2501,12 +2501,12 @@ class UnifiedConfigurator {
         // Render tier options
         const tiersHtml = serviceData.tiers.map(tier => {
             const isSelected = tier.id === this.tempSelectedTier;
-            
+
             let priceText;
             if (isWelcomeGift && tier.welcomeGift) {
                 priceText = `€${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
             } else {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, isSecondService);
                 priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
             }
 
@@ -2519,7 +2519,7 @@ class UnifiedConfigurator {
         }).join('');
 
         container.innerHTML = tiersHtml;
-        
+
         // Update details and pricing for selected tier
         this.updateTierSheetDetails(serviceKey);
     }
@@ -2532,7 +2532,7 @@ class UnifiedConfigurator {
     updateTierSheetDetails(serviceKey) {
         const serviceData = this.entertainmentData.entertainment[serviceKey];
         const tier = serviceData.tiers ? serviceData.tiers.find(t => t.id === this.tempSelectedTier) : null;
-        
+
         const detailsContainer = document.getElementById('tier-sheet-details');
         const pricingContainer = document.getElementById('tier-sheet-pricing');
 
@@ -2557,20 +2557,20 @@ class UnifiedConfigurator {
 
         // Show tier/service details
         const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
-        detailsContainer.innerHTML = `<ul class="tier-details">${summaryItems}</ul>`;
+        detailsContainer.innerHTML = `<ul>${summaryItems}</ul>`;
 
         // Show pricing with Welcome Gift if applicable
-        let priceHtml;
-        
+        let pricingHtml;
+
         if (isWelcomeGift && welcomeGiftData) {
             const originalPrice = price;
             const welcomePrice = welcomeGiftData.price;
-            
+
             // Check if combo discount would also apply (Welcome Gift services count towards combo discount)
             const enabledCount = this.getEnabledEntertainmentProductsCount();
             const wouldHaveComboDiscount = enabledCount >= 2 || (enabledCount === 1 && !this.isEditingStreamingService);
-            
-            priceHtml = `
+
+            pricingHtml = `
                 <div class="tier-pricing">
                     <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
                     <div class="price-with-badge">
@@ -2589,9 +2589,9 @@ class UnifiedConfigurator {
         } else {
             const discountedPrice = this.getEntertainmentDiscountedPrice(price, false, serviceKey, this.tempSelectedTier);
             const hasComboDiscount = discountedPrice < price;
-            
+
             if (hasComboDiscount) {
-                priceHtml = `
+                pricingHtml = `
                     <div class="tier-pricing">
                         <div class="tier-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>
                         <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
@@ -2601,11 +2601,11 @@ class UnifiedConfigurator {
                     </div>
                 `;
             } else {
-                priceHtml = `<div class="tier-pricing">€${price.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
+                pricingHtml = `<div class="tier-pricing">€${price.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
             }
         }
-        
-        pricingContainer.innerHTML = priceHtml;
+
+        pricingContainer.innerHTML = pricingHtml;
     }
 
     confirmStreamingTierSelection() {
@@ -2613,7 +2613,7 @@ class UnifiedConfigurator {
 
         // Update the tier selection
         this.state[this.currentStreamingService].selectedTier = this.tempSelectedTier;
-        
+
         // Assign welcome gift if this is the first service
         if (this.state.welcomeGiftService === null) {
             this.assignWelcomeGift(this.currentStreamingService);
@@ -2622,7 +2622,7 @@ class UnifiedConfigurator {
         // Update displays
         this.renderSelectedEntertainmentServices();
         this.updateCostSummary();
-        
+
         // Close sheet
         this.closeStreamingTierSheet();
     }
@@ -2631,7 +2631,7 @@ class UnifiedConfigurator {
         // Add service to selected list
         this.state.selectedEntertainmentServices.add(serviceKey);
         this.state[serviceKey].enabled = true;
-        
+
         // Assign welcome gift if this is the first service
         if (this.state.welcomeGiftService === null) {
             this.assignWelcomeGift(serviceKey);
@@ -2653,7 +2653,7 @@ class UnifiedConfigurator {
 
     editStreamingService(serviceKey) {
         this.isEditingStreamingService = true;
-        
+
         // If service has tiers, open tier selection sheet
         const serviceData = this.entertainmentData.entertainment[serviceKey];
         if (serviceData && serviceData.tiers) {
@@ -2780,7 +2780,7 @@ class UnifiedConfigurator {
             const hasDiscount = discountedPrice < price;
 
             const isWelcomeGift = this.state.welcomeGiftService === serviceKey;
-            
+
             const serviceElement = document.createElement('div');
             serviceElement.className = `selected-service-card ${isWelcomeGift ? 'welcome-gift-service' : ''}`;
             serviceElement.innerHTML = `
@@ -2803,6 +2803,12 @@ class UnifiedConfigurator {
                         ${hasDiscount && !isWelcomeGift ? `
                             <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
                                 <span>5% permanente korting toegepast</span>
+                                <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                            </div>
+                        ` : ''}
+                        ${isWelcomeGift && selectedServices.length >= 2 ? `
+                            <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                                <span>5% permanente korting toegepast na welkomstperiode</span>
                                 <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                             </div>
                         ` : ''}
@@ -3607,7 +3613,7 @@ class UnifiedConfigurator {
         }
 
         // Update details and pricing for current tier
-        this.updateTierSheetDetails();
+        this.updateTierSheetDetails(serviceKey);
 
         // Update button layout based on editing mode
         if (isEditing) {
@@ -3666,16 +3672,21 @@ class UnifiedConfigurator {
             selectedOption.classList.add('active');
         }
 
-        this.updateTierSheetDetails();
+        this.updateTierSheetDetails(this.currentStreamingService);
     }
 
-    updateTierSheetDetails() {
-        const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
+    updateTierSheetDetails(serviceKey) {
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
 
-        const details = document.getElementById('tier-sheet-details');
-        const pricing = document.getElementById('tier-sheet-pricing');
+        const detailsContainer = document.getElementById('tier-sheet-details');
+        const pricingContainer = document.getElementById('tier-sheet-pricing');
 
-        let summary, price;
+        if (!detailsContainer || !pricingContainer) return;
+
+        // Check if this service would get the Welcome Gift
+        const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === serviceKey;
+
+        let summary, price, welcomeGiftData = null;
 
         if (serviceData.tiers && serviceData.tiers.length > 0) {
             // Service has tiers
@@ -3683,42 +3694,65 @@ class UnifiedConfigurator {
             if (!tier) return;
             summary = tier.summary;
             price = tier.price;
+            welcomeGiftData = tier.welcomeGift;
         } else {
             // Service without tiers
             summary = serviceData.summary;
             price = serviceData.price;
+            welcomeGiftData = serviceData.welcomeGift;
         }
 
-        if (details) {
-            const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
-            details.innerHTML = `<ul>${summaryItems}</ul>`;
-        }
+        // Show tier/service details
+        const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        detailsContainer.innerHTML = `<ul>${summaryItems}</ul>`;
 
-        if (pricing) {
-            // Check if we're adding the second service to show discounted price
-            const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
-            const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
+        // Show pricing with Welcome Gift if applicable
+        let pricingHtml;
 
-            const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
-            const hasDiscount = discountedPrice < price;
+        if (isWelcomeGift && welcomeGiftData) {
+            const originalPrice = price;
+            const welcomePrice = welcomeGiftData.price;
 
-            let pricingHtml = `
-                <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
-                <div class="price-period">/maand</div>
+            // Check if combo discount would also apply (Welcome Gift services count towards combo discount)
+            const enabledCount = this.getEnabledEntertainmentProductsCount();
+            const wouldHaveComboDiscount = enabledCount >= 2 || (enabledCount === 1 && !this.isEditingStreamingService);
+
+            pricingHtml = `
+                <div class="tier-pricing">
+                    <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="price-with-badge">
+                        <span class="welcome-gift-badge">Welkomstcadeau</span>
+                        <div class="discount-price">€${welcomePrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>
+                    </div>
+                    <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
+                    ${wouldHaveComboDiscount ? `
+                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                            <span class="discount-tag-text">5% permanente korting toegepast na welkomstperiode</span>
+                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        </div>
+                    ` : ''}
+                </div>
             `;
+        } else {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(price, false, serviceKey, this.tempSelectedTier);
+            const hasComboDiscount = discountedPrice < price;
 
-            // Add discount tag if entertainment combo discount is applied
-            if (hasDiscount) {
-                pricingHtml += `
-                    <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        <span class="discount-tag-text">5% permanente korting toegepast</span>
-                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+            if (hasComboDiscount) {
+                pricingHtml = `
+                    <div class="tier-pricing">
+                        <div class="tier-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>
+                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                            <span class="discount-tag-text">5% permanente korting toegepast</span>
+                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        </div>
                     </div>
                 `;
+            } else {
+                pricingHtml = `<div class="tier-pricing">€${price.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
             }
-
-            pricing.innerHTML = pricingHtml;
         }
+
+        pricingContainer.innerHTML = pricingHtml;
     }
 
     confirmStreamingTierSelection() {
@@ -3827,8 +3861,8 @@ class UnifiedConfigurator {
 
             // Replace placeholders in title
             dynamicTitle = dynamicTitle
-                .replace('##DISCOUNT_NAME##', discountName)
-                .replace('##PRODUCT_NAME##', productName);
+                .replace('##DISCOUNT_NAME##', discountName);
+            // The placeholder ##PRODUCT_NAME## in the title is not used in the original code, so it is ignored.
 
             // Replace placeholders in content
             const discountValue = originalPrice - discountedPrice;
