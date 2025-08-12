@@ -484,6 +484,286 @@ class UnifiedConfigurator {
         });
     }
 
+    updateHighlightBlocks() {
+        this.updateMobileHighlightBlock();
+        // Add other highlight block updates as needed
+    }
+
+    updateMobileHighlightBlock() {
+        const highlightBlock = document.getElementById('mobile-highlight');
+        if (!highlightBlock) return;
+
+        const isInternetEnabled = this.state.internet.enabled;
+        const isMobileEnabled = this.state.mobile.enabled;
+
+        // Show highlight when mobile is enabled but internet is not
+        if (isMobileEnabled && !isInternetEnabled) {
+            highlightBlock.style.display = 'block';
+        } else {
+            highlightBlock.style.display = 'none';
+        }
+    }
+
+    renderClosedStatesForDisabledProducts() {
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods'];
+        
+        allProducts.forEach(productId => {
+            if (this.state[productId] && !this.state[productId].enabled) {
+                this.renderProductClosedState(productId);
+            }
+        });
+    }
+
+    renderProductClosedState(productType) {
+        // Implementation for rendering closed state of products
+        const closedPrice = this.calculateClosedStatePrice(productType);
+        if (closedPrice > 0) {
+            const formattedPrice = `€${closedPrice.toFixed(2).replace('.', ',')}`;
+            // Update the closed state display with the calculated price
+            this.updateClosedStateDisplay(productType, formattedPrice);
+        }
+    }
+
+    removeProductClosedState(productType) {
+        // Remove closed state styling/content when product is enabled
+        let blockId;
+        if (productType === 'fixedPhone') {
+            blockId = 'fixed-phone-block';
+        } else if (productType === 'entertainmentBox') {
+            blockId = 'entertainment-box-block';
+        } else if (productType === 'wifiPods') {
+            blockId = 'wifi-pods-block';
+        } else {
+            blockId = `${productType}-block`;
+        }
+        
+        const closedState = document.getElementById(`${blockId}-closed-state`);
+        if (closedState) {
+            closedState.style.display = 'none';
+        }
+    }
+
+    calculateClosedStatePrice(productType) {
+        if (!this.data || !this.data.products) return 0;
+
+        if (productType === 'internet') {
+            const lowestTier = this.data.products.internet.tiers.reduce((min, tier) => {
+                const tierPrice = tier.discountValue ? tier.price - tier.discountValue : tier.price;
+                const minPrice = min.discountValue ? min.price - min.discountValue : min.price;
+                return tierPrice < minPrice ? tier : min;
+            });
+            return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
+        } else if (productType === 'tv') {
+            const tvData = this.data.products.tv;
+            const entertainmentBoxData = this.data.products.entertainmentBox;
+            const tvPrice = tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
+            const entertainmentBoxPrice = entertainmentBoxData ? entertainmentBoxData.price : 0;
+            return tvPrice + entertainmentBoxPrice;
+        } else if (productType === 'fixedPhone') {
+            return this.data.products.fixedPhone.price;
+        } else if (productType === 'entertainmentBox') {
+            return this.data.products.entertainmentBox ? this.data.products.entertainmentBox.price : 0;
+        } else if (productType === 'mobile') {
+            const lowestTier = this.data.products.mobile.tiers.reduce((min, tier) => {
+                const tierPrice = tier.discountValue ? tier.price - tier.discountValue : tier.price;
+                const minPrice = min.discountValue ? min.price - min.discountValue : min.price;
+                return tierPrice < minPrice ? tier : min;
+            });
+            return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
+        } else if (productType === 'wifiPods') {
+            return this.data.products.wifiPods ? this.data.products.wifiPods.pricePerPod : 0;
+        } else if (productType === 'entertainment') {
+            return 0; // Will be calculated based on selected services
+        }
+
+        return 0;
+    }
+
+    updateClosedStateDisplay(productType, formattedPrice) {
+        // Update the UI to show closed state with price
+        let blockId;
+        if (productType === 'fixedPhone') {
+            blockId = 'fixed-phone-block';
+        } else if (productType === 'entertainmentBox') {
+            blockId = 'entertainment-box-block';
+        } else if (productType === 'wifiPods') {
+            blockId = 'wifi-pods-block';
+        } else {
+            blockId = `${productType}-block`;
+        }
+        
+        const block = document.getElementById(blockId);
+        if (block) {
+            block.classList.add('closed-state');
+        }
+    }
+
+    renderAvailableEntertainmentServices() {
+        const container = document.getElementById('available-services-grid');
+        if (!container || !this.entertainmentData) return;
+
+        const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
+        const availableServices = services.filter(service => 
+            !this.state.selectedEntertainmentServices.has(service)
+        );
+
+        container.innerHTML = availableServices.map(serviceKey => {
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            if (!serviceData) return '';
+
+            const serviceName = this.getServiceDisplayName(serviceKey);
+            const serviceIcon = this.getServiceIcon(serviceKey);
+            const subtitle = this.getServiceSubtitle(serviceKey);
+
+            return `
+                <div class="service-card available" onclick="app.openStreamingTierSheet('${serviceKey}')">
+                    <div class="service-icon">${serviceIcon}</div>
+                    <div class="service-content">
+                        <div class="service-name">${serviceName}</div>
+                        <div class="service-subtitle" id="${serviceKey}-subtitle">${subtitle}</div>
+                    </div>
+                    <div class="service-action">+</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    renderSelectedEntertainmentServices() {
+        const container = document.getElementById('selected-services-container');
+        if (!container) return;
+
+        const selectedServices = Array.from(this.state.selectedEntertainmentServices);
+
+        if (selectedServices.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = selectedServices.map(serviceKey => {
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            if (!serviceData) return '';
+
+            const serviceName = this.getServiceDisplayName(serviceKey);
+            const serviceIcon = this.getServiceIcon(serviceKey);
+            
+            let selectedTierInfo = '';
+            let priceInfo = '';
+
+            // Get tier or service info
+            if (serviceData.tiers && serviceData.tiers.length > 0) {
+                const selectedTier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                selectedTierInfo = selectedTier ? selectedTier.title : '';
+                
+                const discountedPrice = this.getEntertainmentDiscountedPrice(selectedTier.price, false, serviceKey, this.state[serviceKey].selectedTier);
+                priceInfo = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+            } else {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
+                priceInfo = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+            }
+
+            return `
+                <div class="selected-service-card">
+                    <div class="service-icon">${serviceIcon}</div>
+                    <div class="service-content">
+                        <div class="service-name">${serviceName}</div>
+                        ${selectedTierInfo ? `<div class="service-tier">${selectedTierInfo}</div>` : ''}
+                    </div>
+                    <div class="selected-service-price-section">
+                        <div class="service-price">${priceInfo}</div>
+                    </div>
+                    <button class="service-edit-btn" onclick="app.editStreamingService('${serviceKey}')">Wijzig</button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    getServiceDisplayName(serviceKey) {
+        const names = {
+            netflix: 'Netflix',
+            streamz: 'Streamz',
+            disney: 'Disney+',
+            sport: 'Sport',
+            cinema: 'Cinema',
+            hbo: 'HBO Max'
+        };
+        return names[serviceKey] || serviceKey;
+    }
+
+    getServiceIcon(serviceKey) {
+        const icons = {
+            netflix: '<img src="final_assets/icons/Netflix.svg" alt="Netflix" />',
+            streamz: '<img src="final_assets/icons/Streamz.svg" alt="Streamz" />',
+            disney: '<img src="final_assets/icons/Disney.svg" alt="Disney+" />',
+            sport: '<img src="final_assets/icons/Sport.svg" alt="Sport" />',
+            cinema: '<img src="final_assets/icons/Cinema.svg" alt="Cinema" />',
+            hbo: '<img src="final_assets/icons/Hbo.svg" alt="HBO Max" />'
+        };
+        return icons[serviceKey] || '<img src="final_assets/icons/Placeholder.svg" alt="Service" />';
+    }
+
+    getServiceSubtitle(serviceKey) {
+        if (!this.entertainmentData) return '';
+        
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        if (!serviceData) return '';
+
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            const minPrice = Math.min(...serviceData.tiers.map(tier => 
+                this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id)
+            ));
+            return `Vanaf €${minPrice.toFixed(2).replace('.', ',')}`;
+        } else {
+            const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
+            return `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+        }
+    }
+
+    getServiceIconClass(serviceKey) {
+        return `service-icon-${serviceKey}`;
+    }
+
+    shouldShowEntertainmentBoxRecommendation() {
+        // Logic to determine if we should show the Entertainment Box recommendation
+        const hasEntertainmentServices = this.state.selectedEntertainmentServices.size > 0;
+        const hasEntertainmentBox = this.state.entertainmentBox.enabled;
+        const hasTv = this.state.tv.enabled;
+        
+        // Show recommendation if user has entertainment services but no Entertainment Box or TV
+        return hasEntertainmentServices && !hasEntertainmentBox && !hasTv;
+    }
+
+    openEntertainmentBoxRecommendation() {
+        // Open the Entertainment Box recommendation modal/sheet
+        const overlay = document.getElementById('entertainment-box-recommendation-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    shouldShowDeselectionConfirmation() {
+        // Check if deselecting Entertainment Box would affect selected streaming services
+        return this.state.selectedEntertainmentServices.size > 0;
+    }
+
+    openEntertainmentBoxDeselectionDialog() {
+        // Show confirmation dialog when trying to deselect Entertainment Box with active services
+        const overlay = document.getElementById('entertainment-box-deselection-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    openAdvantageBottomSheet() {
+        // Open the advantage/discount information sheet
+        const overlay = document.getElementById('advantage-sheet-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
     // Utility method to smoothly scroll element into view
     scrollToElementSmooth(element) {
         if (!element) return;
