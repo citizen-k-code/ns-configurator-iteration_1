@@ -20,10 +20,10 @@
           "id": 2,
           "title": "Standard",
           "summary": "2 schermen tegelijk, HD-kwaliteit, Downloads mogelijk",
-          "price": 15.99,
+          "price": 14.99,
           "welcomeGift": {
             "price": 4.99,
-            "discountValue": 11.00,
+            "discountValue": 10.00,
             "duration": 12
           }
         },
@@ -49,10 +49,10 @@
           "id": 1,
           "title": "Basic",
           "summary": "1 scherm tegelijk, HD-kwaliteit, Downloads mogelijk",
-          "price": 10.99,
+          "price": 8.99,
           "welcomeGift": {
             "price": 0.00,
-            "discountValue": 10.99,
+            "discountValue": 8.99,
             "duration": 12
           }
         },
@@ -83,30 +83,30 @@
     "disney": {
       "title": "Disney+",
       "summary": "Bekijk Disney content en meer",
-      "price": 13.29,
+      "price": 13.99,
       "welcomeGift": {
         "price": 0.00,
-        "discountValue": 13.29,
+        "discountValue": 13.99,
         "duration": 12
       }
     },
     "sport": {
       "title": "Sport",
       "summary": "Bekijk live sport",
-      "price": 15.20,
+      "price": 15.99,
       "welcomeGift": {
         "price": 0.00,
-        "discountValue": 15.20,
+        "discountValue": 15.99,
         "duration": 6
       }
     },
     "cinema": {
       "title": "Cinema",
       "summary": "Huur of koop films",
-      "price": 26.65,
+      "price": 26.99,
       "welcomeGift": {
         "price": 6.99,
-        "discountValue": 19.66,
+        "discountValue": 20.00,
         "duration": 6
       }
     },
@@ -119,10 +119,10 @@
           "id": 1,
           "title": "Basic",
           "summary": "1 scherm tegelijk, HD-kwaliteit, Met advertenties",
-          "price": 5.69,
+          "price": 5.99,
           "welcomeGift": {
             "price": 0.00,
-            "discountValue": 5.69,
+            "discountValue": 5.99,
             "duration": 12
           }
         },
