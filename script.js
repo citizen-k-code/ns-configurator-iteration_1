@@ -2766,20 +2766,51 @@ class UnifiedConfigurator {
 
             // Get tier information
             let tierName = '';
-            let price = serviceData.price || 0;
+            let originalPrice = serviceData.price || 0;
 
             if (serviceData.tiers) {
                 const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                 if (tier) {
                     tierName = tier.title;
-                    price = tier.price;
+                    originalPrice = tier.price;
                 }
             }
 
-            const discountedPrice = this.getEntertainmentDiscountedPrice(price, false, serviceKey, this.state[serviceKey].selectedTier);
-            const hasDiscount = discountedPrice < price;
-
+            const discountedPrice = this.getEntertainmentDiscountedPrice(originalPrice, false, serviceKey, this.state[serviceKey].selectedTier);
+            const hasComboDiscount = discountedPrice < originalPrice;
             const isWelcomeGift = this.state.welcomeGiftService === serviceKey;
+
+            let priceHtml = '';
+            
+            if (isWelcomeGift) {
+                // Welcome Gift service: Show welcome gift price with badge and discount info
+                priceHtml = `
+                    <div class="tier-price-container">
+                        <div class="price-with-badge">
+                            <span class="welcome-gift-badge">Welkomstcadeau</span>
+                            <div class="price-content">
+                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                                <div class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
+                            </div>
+                        </div>
+                        ${this.getWelcomeGiftDiscountInfo(serviceKey)}
+                    </div>
+                `;
+            } else if (hasComboDiscount) {
+                // Has combo discount: Show normal price
+                priceHtml = `
+                    <div class="tier-price-container">
+                        <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
+                    </div>
+                `;
+            } else {
+                // No discount: Show normal price
+                priceHtml = `
+                    <div class="tier-price-container">
+                        <div class="selected-service-price">€${originalPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
+                    </div>
+                `;
+            }
 
             const serviceElement = document.createElement('div');
             serviceElement.className = `selected-service-card ${isWelcomeGift ? 'welcome-gift-service' : ''}`;
@@ -2789,7 +2820,6 @@ class UnifiedConfigurator {
                     <div class="selected-service-info">
                         <div class="selected-service-name">${serviceName}</div>
                         ${tierName ? `<div class="selected-service-tier">${tierName}</div>` : ''}
-                        ${isWelcomeGift ? '<div class="welcome-gift-badge">Welkomstcadeau</div>' : ''}
                     </div>
                     <div class="selected-service-actions">
                         <button class="edit-service-btn" onclick="app.editStreamingService('${serviceKey}')" title="Wijzig plan">✏️</button>
@@ -2798,9 +2828,8 @@ class UnifiedConfigurator {
                 <div class="selected-service-divider"></div>
                 <div class="selected-service-pricing">
                     <div class="selected-service-price-section">
-                        <div class="selected-service-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span class="selected-service-period">/maand</span></div>
-                        ${isWelcomeGift ? this.getWelcomeGiftDiscountInfo(serviceKey) : ''}
-                        ${hasDiscount && !isWelcomeGift ? `
+                        ${priceHtml}
+                        ${hasComboDiscount && !isWelcomeGift ? `
                             <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
                                 <span>5% permanente korting toegepast</span>
                                 <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
@@ -3591,23 +3620,39 @@ class UnifiedConfigurator {
         // Render tier options or single option for services without tiers
         if (serviceData.tiers && serviceData.tiers.length > 0) {
             container.innerHTML = serviceData.tiers.map(tier => {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                let displayPrice, priceClass = '';
+                
+                if (isWelcomeGift && tier.welcomeGift) {
+                    displayPrice = tier.welcomeGift.price;
+                    priceClass = 'promotional-price';
+                } else {
+                    displayPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                }
+                
                 return `
                     <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}" 
                             onclick="app.selectTempTier(${tier.id})">
                         <div class="tier-name">${tier.title}</div>
-                        <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                        <div class="tier-price ${priceClass}">€ ${displayPrice.toFixed(2).replace('.', ',')}</div>
                     </button>
                 `;
             }).join('');
         } else {
             // For services without tiers, show a single option
-            const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+            let displayPrice, priceClass = '';
+            
+            if (isWelcomeGift && serviceData.welcomeGift) {
+                displayPrice = serviceData.welcomeGift.price;
+                priceClass = 'promotional-price';
+            } else {
+                displayPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+            }
+            
             this.tempSelectedTier = 1; // Default tier for services without tiers
             container.innerHTML = `
                 <button class="tier-selection-option active" onclick="app.selectTempTier(1)">
                     <div class="tier-name">${this.getServiceDisplayName(serviceKey)}</div>
-                    <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="tier-price ${priceClass}">€ ${displayPrice.toFixed(2).replace('.', ',')}</div>
                 </button>
             `;
         }
