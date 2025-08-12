@@ -2503,17 +2503,19 @@ class UnifiedConfigurator {
             const isSelected = tier.id === this.tempSelectedTier;
 
             let priceText;
+            let priceClass = '';
             if (isWelcomeGift && tier.welcomeGift) {
                 priceText = `€${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
+                priceClass = 'promotional-price';
             } else {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, isSecondService);
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
                 priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
             }
 
             return `
                 <div class="tier-selection-option ${isSelected ? 'active' : ''}" onclick="app.selectTierInSheet(${tier.id})">
                     <div class="tier-name">${tier.title}</div>
-                    <div class="tier-price">${priceText}</div>
+                    <div class="tier-price ${priceClass}">${priceText}</div>
                 </div>
             `;
         }).join('');
