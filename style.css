@@ -587,6 +587,31 @@
     text-align: right;
 }
 
+.selected-service-price-section .price-with-badge {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.selected-service-price-section .price-content {
+    text-align: right;
+}
+
+.selected-service-price-section .original-price {
+    font-size: 14px;
+    color: #717D96;
+    text-decoration: line-through;
+    margin-bottom: 2px;
+}
+
+.selected-service-price-section .discount-price {
+    font-weight: 600;
+    color: #F134F7;
+    font-size: 16px;
+}
+
 .selected-service-price {
     font-size: 16px;
     font-weight: 600;
