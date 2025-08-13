@@ -3797,6 +3797,22 @@ class UnifiedConfigurator {
             bundleAdvantages.push(`<strong>5% korting</strong> op je streamingdiensten omdat je er 2 of meer combineert`);
         }
 
+        // Datasim permanent discounts
+        if (this.state.datasim.enabled) {
+            const pricingInfo = this.calculateDatasimPricing();
+            if (pricingInfo.discountInfo.hasDiscount) {
+                const discounts = pricingInfo.discountInfo.discounts;
+                discounts.forEach(discount => {
+                    if (discount.type === 'internet') {
+                        bundleAdvantages.push(`<strong>50% korting</strong> op je datasim kaarten door Internet combinatie`);
+                    }
+                    if (discount.type === 'unlimited') {
+                        bundleAdvantages.push(`<strong>Eerste datasim gratis</strong> door Unlimited mobiel abonnement`);
+                    }
+                });
+            }
+        }
+
         const bundleAdvantagesList = bundleAdvantages.map(advantage =>
             `<li>${advantage}</li>`
         ).join('');
