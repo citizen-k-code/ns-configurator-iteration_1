@@ -213,12 +213,23 @@
       }
     },
     "security": {
-      "title": "Beveiliging uitgelegd",
-      "content": "<p>Onze beveiligingsoplossing beschermt al je apparaten tegen online bedreigingen.</p><h4>Wat zit erin?</h4><ul><li>Antivirus bescherming</li><li>Firewall</li><li>Anti-malware</li><li>Veilig browsen</li><li>Identiteitsbescherming</li></ul><p>Perfect voor het hele gezin om veilig online te blijven.</p>"
+      "title": "Beveiliging",
+      "summary": "Bescherm al je apparaten tegen online bedreigingen, Antivirus en firewall bescherming, Veilig browsen en identiteitsbescherming",
+      "price": 5.00,
+      "closedState": {
+        "summary": "Bescherm je digitale leven volledig<br /><strong>€ ##PRICE##/maand</strong>",
+        "highlight": null
+      }
     },
     "datasim": {
-      "title": "Wat is een datasim?",
-      "content": "<p>Een datasim is een speciale simkaart die alleen data gebruikt - geen bellen of sms'en mogelijk.</p><h4>Perfect voor:</h4><ul><li>Tablets en laptops</li><li>Smartwatches</li><li>IoT apparaten</li><li>Backup internet verbinding</li><li>Kinderen hun apparaten</li></ul><p>Je deelt gewoon je databundel van je hoofdabonnement. Handig, goedkoop en altijd verbonden!</p><div class='highlight'>Let op: Een datasim werkt alleen in combinatie met een mobiel abonnement.</div>"
+      "title": "Datasim",
+      "summary": "Deel je databundel met andere apparaten, Perfect voor tablets en smartwatches, Makkelijk beheer via je hoofdabonnement",
+      "pricePerSim": 5.00,
+      "maxSims": 5,
+      "closedState": {
+        "summary": "Voeg datasims toe voor je andere devices<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
+        "highlight": null
+      }
     }
   },
   "discounts": {
