@@ -776,7 +776,7 @@ class UnifiedConfigurator {
             }
 
             return `
-                <div class="tier-option ${isSelected ? 'active' : ''}" 
+                <div class="tier-option ${isSelected ? 'active' : ''}"
                      onclick="app.selectInternetTier(${tier.id})">
                     <div class="tier-title">${tier.title}</div>
                     ${subtitleContent}
@@ -930,7 +930,7 @@ class UnifiedConfigurator {
                 }
 
                 return `
-                    <div class="tier-option ${isSelected ? 'active' : ''}" 
+                    <div class="tier-option ${isSelected ? 'active' : ''}"
                          onclick="app.selectMobileTier(${simcard.id}, ${tier.id})">
                         <div class="tier-title">${tier.title}</div>
                         ${subtitleContent}
@@ -1128,7 +1128,7 @@ class UnifiedConfigurator {
         const tiers = this.data.products.tv.entertainmentBox.tiers;
 
         tiersContainer.innerHTML = tiers.map(tier => `
-            <div class="tier-option ${tier.id === this.state.tv.entertainmentBoxTier ? 'active' : ''}" 
+            <div class="tier-option ${tier.id === this.state.tv.entertainmentBoxTier ? 'active' : ''}"
                  onclick="app.selectEntertainmentBoxTier(${tier.id})">
                 <div class="tier-title">${tier.title}</div>
             </div>
@@ -1253,7 +1253,7 @@ class UnifiedConfigurator {
             subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
 
             return `
-                <div class="tier-option ${isSelected ? 'active' : ''}" 
+                <div class="tier-option ${isSelected ? 'active' : ''}"
                      onclick="app.selectEntertainmentTier('${productType}', ${tier.id})">
                     <div class="tier-title">${tier.title}</div>
                     ${subtitleContent}
@@ -1452,7 +1452,7 @@ class UnifiedConfigurator {
                 </div>
                 <div class="discount-info">gedurende ${welcomeGiftData.duration}  maanden</div>
                 ${comboDiscountTag}
-            </div> 
+            </div>
         `;
     }
 
@@ -2337,11 +2337,24 @@ class UnifiedConfigurator {
                         // Entertainment services only have permanent discounts, so never show pink styling
                         priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
                     } else {
-                        const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
-                        const hasDiscount = discountedPrice < serviceData.price;
+                        const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
+                        const isWelcomeGift = this.state.welcomeGiftService === serviceKey;
 
-                        // Entertainment services only have permanent discounts, so never show pink styling
-                        priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                        if (isWelcomeGift) {
+                            // Show pink styling and original price for Welcome Gift temporary discount
+                            priceHtml = `
+                                <div class="price-layout">
+                                    <div class="price-main">
+                                        <span class="original-price">€${serviceData.price.toFixed(2).replace('.', ',')}</span>
+                                        <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                                    </div>
+                                    <div class="discount-duration">gedurende ${serviceData.welcomeGift ? serviceData.welcomeGift.duration : '12'} maanden</div>
+                                </div>
+                            `;
+                        } else {
+                            // Regular pricing for non-Welcome Gift services
+                            priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                        }
                     }
 
                     overviewHtml += `
@@ -2388,12 +2401,6 @@ class UnifiedConfigurator {
         const tooltipData = this.data.tooltips[tooltipKey];
         if (!tooltipData) return;
 
-        const overlay = document.getElementById('sheet-overlay');
-        const title = document.getElementById('sheet-title');
-        const body = document.getElementById('sheet-body');
-
-        if (!overlay || !title || !body) return;
-
         let content = tooltipData.content;
 
         if (tooltipKey === 'permanent_promotion') {
@@ -2412,6 +2419,12 @@ class UnifiedConfigurator {
             </ul>
             <div class="highlight"> Totale tijdelijke korting: € ${temporaryData.total.toFixed(2).replace('.', ',')}</div>`;
         }
+
+        const title = document.getElementById('sheet-title');
+        const overlay = document.getElementById('sheet-overlay');
+        const body = document.getElementById('sheet-body');
+
+        if (!overlay || !title || !body) return;
 
         title.innerHTML = tooltipData.title;
         body.innerHTML = content;
@@ -2445,28 +2458,104 @@ class UnifiedConfigurator {
         }
     }
 
-    openStreamingTierSheet(serviceKey) {
+    openStreamingTierSheet(serviceKey, isEditing = false) {
+        console.log("open de sheet");
+
         this.currentStreamingService = serviceKey;
-        this.isEditingStreamingService = false;
+        this.isEditingStreamingService = isEditing;
 
+        // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
+        const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === serviceKey;
+
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
-        const sheet = document.getElementById('streaming-tier-sheet');
-        const icon = document.getElementById('tier-sheet-icon');
         const title = document.getElementById('tier-sheet-title');
+        const icon = document.getElementById('tier-sheet-icon');
+        const container = document.getElementById('tier-selection-container');
+        const details = document.getElementById('tier-sheet-details');
+        const pricing = document.getElementById('tier-sheet-pricing');
+        const confirmBtn = document.getElementById('streaming-tier-confirm-btn');
 
-        if (!overlay || !sheet || !icon || !title) return;
+        if (!overlay || !title || !icon || !container || !details || !pricing || !confirmBtn) return;
 
-        // Set service icon and title
-        const serviceName = this.getServiceDisplayName(serviceKey);
-        const iconClass = this.getServiceIconClass(serviceKey);
-        const iconHtml = this.getServiceIcon(serviceKey);
+        // Set service name and icon
+        title.textContent = this.getServiceDisplayName(serviceKey);
+        icon.innerHTML = this.getServiceIcon(serviceKey);
+        icon.className = `service-icon-large ${this.getServiceIconClass(serviceKey)}`;
 
-        icon.className = `service-icon-large ${iconClass}`;
-        icon.innerHTML = iconHtml;
-        title.textContent = serviceName;
+        // Set current selected tier or default
+        const currentTier = this.state[serviceKey].selectedTier || serviceData.defaultTier || 1;
+        this.tempSelectedTier = currentTier;
 
-        // Render tier options
-        this.renderStreamingTierOptions(serviceKey);
+        // Hide/show tier selection subtitle based on whether service has multiple tiers
+        const subtitle = document.querySelector('.tier-selection-subtitle');
+        if (subtitle) {
+            if (!serviceData.tiers || serviceData.tiers.length <= 1) {
+                subtitle.classList.add('hidden');
+            } else {
+                subtitle.classList.remove('hidden');
+            }
+        }
+
+        // Render tier options or single option for services without tiers
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            container.innerHTML = serviceData.tiers.map(tier => {
+
+                let priceText;
+                let priceClass = '';
+
+                if (isWelcomeGift && tier.welcomeGift) {
+                    priceText = `€${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
+                    priceClass = 'promotional-price';
+                } else {
+                    const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
+                    //this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id);
+
+                    priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                }
+
+                return `
+                    <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}"
+                            onclick="app.selectTempTier(${tier.id})">
+                        <div class="tier-name">${tier.title} </div>
+                        <div class="tier-price ${priceClass}">€ ${priceText}</div>
+                    </button>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = '';
+        }
+
+        // Update details and pricing for current tier
+        this.updateTierSheetDetails();
+
+        // Update button layout based on editing mode
+        if (isEditing) {
+            confirmBtn.style.display = 'none';
+
+            // Add dual button layout for editing
+            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
+            const existingDualButtons = footer.querySelector('.dual-button-layout');
+            if (!existingDualButtons) {
+                const dualButtonHtml = `
+                    <div class="dual-button-layout">
+                        <button class="streaming-tier-remove-btn" onclick="app.removeStreamingServiceFromEdit()">Verwijderen</button>
+                        <button class="streaming-tier-update-btn" onclick="app.confirmStreamingTierSelection()">Aanpassen</button>
+                    </div>
+                `;
+                footer.insertAdjacentHTML('afterbegin', dualButtonHtml);
+            }
+        } else {
+            confirmBtn.style.display = 'block';
+            confirmBtn.textContent = 'Toevoegen';
+
+            // Remove dual button layout if it exists
+            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
+            const existingDualButtons = footer.querySelector('.dual-button-layout');
+            if (existingDualButtons) {
+                existingDualButtons.remove();
+            }
+        }
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -2478,118 +2567,9 @@ class UnifiedConfigurator {
             overlay.style.display = 'none';
             document.body.style.overflow = '';
         }
-    }
-
-    renderStreamingTierOptions(serviceKey) {
-        const serviceData = this.entertainmentData.entertainment[serviceKey];
-        if (!serviceData) return;
-
-        const container = document.getElementById('tier-selection-container');
-        const detailsContainer = document.getElementById('tier-sheet-details');
-        const pricingContainer = document.getElementById('tier-sheet-pricing');
-        const subtitleElement = document.querySelector('.tier-selection-subtitle');
-
-        if (!container || !detailsContainer || !pricingContainer) return;
-
-        // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
-        const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === serviceKey;
-
-        // Hide subtitle if no tiers
-        if (!serviceData.tiers) {
-            if (subtitleElement) subtitleElement.classList.add('hidden');
-            container.style.display = 'none';
-
-            // Show service details for single-tier services
-            const summaryItems = serviceData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-            detailsContainer.innerHTML = `<ul class="tier-details">${summaryItems}</ul>`;
-
-            // Show pricing with Welcome Gift if applicable
-            let priceHtml;
-
-            if (isWelcomeGift && serviceData.welcomeGift) {
-                const originalPrice = serviceData.price;
-                const welcomeGiftData = serviceData.welcomeGift;
-                let finalWelcomePrice = welcomeGiftData.price;
-
-                // Check if entertainment combo discount should also apply
-                const enabledProducts = this.getEnabledEntertainmentProductsCount();
-                const discount = this.entertainmentData.discounts.entertainment_combo;
-                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
-                    (enabledProducts === 1 && !this.isEditingStreamingService);
-
-                if (discount.enabled && willHaveMinProducts) {
-                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
-                    finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
-                }
-
-                priceHtml = `
-                    <div class="tier-pricing">
-                        <div class="price-with-badge">
-                            <span class="welcome-gift-badge">Welkomstcadeau</span>
-                            <div class="price-content">
-                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
-                            </div>
-                        </div>
-                        <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
-                    </div>
-                `;
-            } else {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
-                priceHtml = `<div class="tier-pricing">€${discountedPrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
-            }
-
-            pricingContainer.innerHTML = priceHtml;
-            return;
-        }
-
-        // Show subtitle for tier-based services
-        if (subtitleElement) subtitleElement.classList.remove('hidden');
-        container.style.display = 'flex';
-
-        // Set initial selected tier
-        this.tempSelectedTier = this.state[serviceKey].selectedTier;
-
-        // Render tier options
-        const tiersHtml = serviceData.tiers.map(tier => {
-            const isSelected = tier.id === this.tempSelectedTier;
-
-            let priceText;
-            let priceClass = '';
-
-            if (isWelcomeGift && tier.welcomeGift) {
-                let finalWelcomePrice = tier.welcomeGift.price;
-
-                // Check if entertainment combo discount should also apply
-                const enabledProducts = this.getEnabledEntertainmentProductsCount();
-                const discount = this.entertainmentData.discounts.entertainment_combo;
-                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
-                    (enabledProducts === 1 && !this.isEditingStreamingService);
-
-                if (discount.enabled && willHaveMinProducts) {
-                    const comboDiscountAmount = tier.price * (discount.percentage / 100);
-                    finalWelcomePrice = Math.max(0, tier.welcomeGift.price - comboDiscountAmount);
-                }
-
-                priceText = `€${finalWelcomePrice.toFixed(2).replace('.', ',')}`;
-                priceClass = 'promotional-price';
-            } else {
-                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id);
-                priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
-            }
-
-            return `
-                <div class="tier-selection-option ${isSelected ? 'active' : ''}" onclick="app.selectTempTier(${tier.id})">
-                    <div class="tier-name">${tier.title}</div>
-                    <div class="tier-price ${priceClass}">${priceText}</div>
-                </div>
-            `;
-        }).join('');
-
-        container.innerHTML = tiersHtml;
-
-        // Update details and pricing for selected tier
-        this.updateTierSheetDetails();
+        this.currentStreamingService = null;
+        this.isEditingStreamingService = false;
+        this.tempSelectedTier = null;
     }
 
     selectTierInSheet(tierId) {
@@ -2678,13 +2658,7 @@ class UnifiedConfigurator {
                 const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
                 const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
 
-                let discountedPrice;
-                if (tier) {
-                    discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService, this.currentStreamingService, tier.id);
-                } else {
-                    discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService, this.currentStreamingService);
-                }
-                
+                const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
                 const hasDiscount = discountedPrice < price;
 
                 pricingHtml = `
@@ -2903,9 +2877,9 @@ class UnifiedConfigurator {
                             <div class="tier-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
                         </div>
                     </div>
-                </div> 
+                </div>
             `}
-                        
+
                 ${hasDiscount && !isWelcomeGift ? `
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
                         <span>5% permanente korting toegepast</span>
@@ -2975,7 +2949,7 @@ class UnifiedConfigurator {
             subtitleContent = `<div class="tier-subtitle">${priceText}</div>`;
 
             return `
-                        <div class="service-tier-option ${isSelected ? 'active' : ''}" 
+                        <div class="service-tier-option ${isSelected ? 'active' : ''}"
                              onclick="app.selectEntertainmentServiceTier('${serviceKey}', ${tier.id})">
                             <div class="tier-title">${tier.title}</div>
                             ${subtitleContent}
@@ -3087,7 +3061,7 @@ class UnifiedConfigurator {
                 entertainmentBoxBlock.style.backgroundColor = '';
             }, 1000);
         } else {
-            // If the entertainment box block doesn't exist on this page, 
+            // If the entertainment box block doesn't exist on this page,
             // redirect to configurator page with entertainment box enabled
             window.location.href = 'configurator.html?tv=1&box=1';
         }
@@ -3711,7 +3685,7 @@ class UnifiedConfigurator {
                 }
 
                 return `
-                    <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}" 
+                    <button class="tier-selection-option ${tier.id === currentTier ? 'active' : ''}"
                             onclick="app.selectTempTier(${tier.id})">
                         <div class="tier-name">${tier.title} </div>
                         <div class="tier-price ${priceClass}">€ ${priceText}</div>
@@ -3821,7 +3795,7 @@ class UnifiedConfigurator {
                 const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
                 const originalPrice = price;
 
-                // Calculate final Welcome Gift price directly from welcome gift data
+                // Calculate final Welcome Gift price
                 let finalWelcomePrice = welcomeGiftData.price;
 
                 // Check if entertainment combo discount should also apply to Welcome Gift
