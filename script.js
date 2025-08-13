@@ -668,13 +668,19 @@ class UnifiedConfigurator {
                 }, 100);
             } else {
                 if (content) content.style.display = 'none';
-                if (productType === 'mobile') {
-                    this.state.mobile.simcards = [];
-                    this.updateMobileHighlightBlock();
-                } else if (productType === 'internet') {
+                if (productType === 'internet') {
                     if (this.state.mobile.enabled) {
                         this.renderMobileSimcards();
                         this.updateMobileHighlightBlock();
+                    }
+                    if (this.state.datasim.enabled) {
+                        this.updateDatasimInfo();
+                    }
+                } else if (productType === 'mobile') {
+                    this.state.mobile.simcards = [];
+                    this.updateMobileHighlightBlock();
+                    if (this.state.datasim.enabled) {
+                        this.updateDatasimInfo();
                     }
                 } else if (productType === 'tv') {
                     // When TV is disabled, also disable Entertainment Box
