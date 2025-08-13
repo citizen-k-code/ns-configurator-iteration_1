@@ -1030,6 +1030,8 @@ class UnifiedConfigurator {
         const summaryItems = datasimData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
         let priceHtml;
+        let promoHighlightHtml = '';
+
         if (pricingInfo.discountInfo.hasDiscount) {
             const originalTotal = currentSims * datasimData.pricePerSim;
             priceHtml = `
@@ -1043,6 +1045,17 @@ class UnifiedConfigurator {
             `;
         } else {
             priceHtml = `<div class="tier-price">€ ${pricingInfo.total.toFixed(2).replace('.', ',')}/maand</div>`;
+            
+            // Add promo-highlight when no combo discount is applied
+            const closedStateData = this.data.closedStates.datasim;
+            if (closedStateData && closedStateData.highlight) {
+                promoHighlightHtml = `
+                    <div class="promo-highlight">
+                        <div class="highlight-title">${closedStateData.highlight.title}</div>
+                        <div class="highlight-content">${closedStateData.highlight.content}</div>
+                    </div>
+                `;
+            }
         }
 
         infoContainer.innerHTML = `
@@ -1050,6 +1063,7 @@ class UnifiedConfigurator {
                 ${summaryItems}
             </ul>
             ${priceHtml}
+            ${promoHighlightHtml}
         `;
 
         this.updateDatasimCounter();
