@@ -1608,7 +1608,7 @@ class UnifiedConfigurator {
             const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'netflix', this.state.netflix.selectedTier);
             total += discountedPrice;
-            
+
             // Separate Welcome Gift (temporary) from combo discount (permanent)
             if (this.state.welcomeGiftService === 'netflix') {
                 const welcomeGiftDiscount = tier.price - discountedPrice;
@@ -1623,7 +1623,7 @@ class UnifiedConfigurator {
             const tier = this.entertainmentData.entertainment.streamz.tiers.find(t => t.id === this.state.streamz.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'streamz', this.state.streamz.selectedTier);
             total += discountedPrice;
-            
+
             if (this.state.welcomeGiftService === 'streamz') {
                 const welcomeGiftDiscount = tier.price - discountedPrice;
                 totalTemporaryDiscount += welcomeGiftDiscount;
@@ -1637,7 +1637,7 @@ class UnifiedConfigurator {
             const tier = this.entertainmentData.entertainment.hbo.tiers.find(t => t.id === this.state.hbo.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'hbo', this.state.hbo.selectedTier);
             total += discountedPrice;
-            
+
             if (this.state.welcomeGiftService === 'hbo') {
                 const welcomeGiftDiscount = tier.price - discountedPrice;
                 totalTemporaryDiscount += welcomeGiftDiscount;
@@ -1650,7 +1650,7 @@ class UnifiedConfigurator {
         if (this.state.disney.enabled) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.disney.price, false, 'disney');
             total += discountedPrice;
-            
+
             if (this.state.welcomeGiftService === 'disney') {
                 const welcomeGiftDiscount = this.entertainmentData.entertainment.disney.price - discountedPrice;
                 totalTemporaryDiscount += welcomeGiftDiscount;
@@ -1663,7 +1663,7 @@ class UnifiedConfigurator {
         if (this.state.sport.enabled) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.sport.price, false, 'sport');
             total += discountedPrice;
-            
+
             if (this.state.welcomeGiftService === 'sport') {
                 const welcomeGiftDiscount = this.entertainmentData.entertainment.sport.price - discountedPrice;
                 totalTemporaryDiscount += welcomeGiftDiscount;
@@ -1676,7 +1676,7 @@ class UnifiedConfigurator {
         if (this.state.cinema.enabled) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.cinema.price, false, 'cinema');
             total += discountedPrice;
-            
+
             if (this.state.welcomeGiftService === 'cinema') {
                 const welcomeGiftDiscount = this.entertainmentData.entertainment.cinema.price - discountedPrice;
                 totalTemporaryDiscount += welcomeGiftDiscount;
@@ -1685,9 +1685,9 @@ class UnifiedConfigurator {
             }
         }
 
-        return { 
-            total, 
-            totalPermanentDiscount, 
+        return {
+            total,
+            totalPermanentDiscount,
             totalTemporaryDiscount,
             totalDiscount: totalPermanentDiscount + totalTemporaryDiscount
         };
@@ -1756,12 +1756,12 @@ class UnifiedConfigurator {
         if (this.state.welcomeGiftService && this.entertainmentData) {
             const serviceKey = this.state.welcomeGiftService;
             const serviceData = this.entertainmentData.entertainment[serviceKey];
-            
+
             if (serviceData) {
                 let welcomeGiftData;
                 let originalPrice;
                 let discountedPrice;
-                
+
                 if (serviceData.tiers) {
                     const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                     if (tier && tier.welcomeGift) {
@@ -1774,7 +1774,7 @@ class UnifiedConfigurator {
                     originalPrice = serviceData.price;
                     discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
                 }
-                
+
                 if (welcomeGiftData) {
                     const welcomeGiftDiscountValue = originalPrice - discountedPrice;
                     totalTemporaryDiscount += welcomeGiftDiscountValue * welcomeGiftData.duration;
@@ -1910,10 +1910,10 @@ class UnifiedConfigurator {
         if (this.state.welcomeGiftService && this.entertainmentData) {
             const serviceKey = this.state.welcomeGiftService;
             const serviceData = this.entertainmentData.entertainment[serviceKey];
-            
+
             if (serviceData) {
                 let welcomeGiftData;
-                
+
                 if (serviceData.tiers) {
                     const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                     if (tier && tier.welcomeGift) {
@@ -1922,7 +1922,7 @@ class UnifiedConfigurator {
                 } else if (serviceData.welcomeGift) {
                     welcomeGiftData = serviceData.welcomeGift;
                 }
-                
+
                 if (welcomeGiftData && welcomeGiftData.duration) {
                     periods.push(welcomeGiftData.duration);
                     console.log("Added Welcome Gift discount period:", welcomeGiftData.duration);
@@ -2011,7 +2011,7 @@ class UnifiedConfigurator {
 
         // Check if Welcome Gift is active (has temporary discount effect)
         const hasWelcomeGift = this.state.welcomeGiftService !== null;
-        
+
         if (totalTemporaryDiscount > 0 || hasWelcomeGift) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
             const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
@@ -2121,10 +2121,10 @@ class UnifiedConfigurator {
         if (this.state.welcomeGiftService && this.entertainmentData) {
             const serviceKey = this.state.welcomeGiftService;
             const serviceData = this.entertainmentData.entertainment[serviceKey];
-            
+
             if (serviceData) {
                 let welcomeGiftData;
-                
+
                 if (serviceData.tiers) {
                     const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                     if (tier && tier.welcomeGift) {
@@ -2133,7 +2133,7 @@ class UnifiedConfigurator {
                 } else if (serviceData.welcomeGift) {
                     welcomeGiftData = serviceData.welcomeGift;
                 }
-                
+
                 if (welcomeGiftData && welcomeGiftData.duration) {
                     periods.push(welcomeGiftData.duration);
                 }
@@ -2197,12 +2197,12 @@ class UnifiedConfigurator {
         if (this.state.welcomeGiftService && this.entertainmentData) {
             const serviceKey = this.state.welcomeGiftService;
             const serviceData = this.entertainmentData.entertainment[serviceKey];
-            
+
             if (serviceData) {
                 let welcomeGiftData;
                 let originalPrice;
                 let discountedPrice;
-                
+
                 if (serviceData.tiers) {
                     const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                     if (tier && tier.welcomeGift) {
@@ -2215,7 +2215,7 @@ class UnifiedConfigurator {
                     originalPrice = serviceData.price;
                     discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
                 }
-                
+
                 if (welcomeGiftData && welcomeGiftData.duration === period) {
                     const welcomeGiftDiscountValue = originalPrice - discountedPrice;
                     expiringDiscounts.push({
@@ -2757,7 +2757,7 @@ class UnifiedConfigurator {
                             <span class="welcome-gift-badge">Welkomstcadeau</span>
                             <div class="price-content">
                                 <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
+                                <div class="discount-price">€ ${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
                             </div>
                         </div>
                         <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
@@ -2783,8 +2783,7 @@ class UnifiedConfigurator {
                 const hasDiscount = discountedPrice < price;
 
                 pricingHtml = `
-                    <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
-                    <div class="price-period">/maand</div>
+                    <div class="price-display">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
                 `;
 
                 // Add discount tag if entertainment combo discount is applied
@@ -3796,13 +3795,13 @@ class UnifiedConfigurator {
                 let priceClass = '';
 
                 if (isWelcomeGift && tier.welcomeGift) {
-                    priceText = `€${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
+                    priceText = `${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
                     priceClass = 'promotional-price';
                 } else {
                     const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
                     //this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id);
 
-                    priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                    priceText = `${discountedPrice.toFixed(2).replace('.', ',')}`;
                 }
 
                 return `
@@ -3939,7 +3938,7 @@ class UnifiedConfigurator {
                             <span class="welcome-gift-badge">Welkomstcadeau</span>
                             <div class="price-content">
                                 <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
+                                <div class="discount-price">€ ${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
                             </div>
                         </div>
                         <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
@@ -3965,8 +3964,7 @@ class UnifiedConfigurator {
                 const hasDiscount = discountedPrice < price;
 
                 pricingHtml = `
-                    <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
-                    <div class="price-period">/maand</div>
+                    <div class="price-display">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
                 `;
 
                 // Add discount tag if entertainment combo discount is applied
