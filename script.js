@@ -2597,59 +2597,114 @@ class UnifiedConfigurator {
         this.renderStreamingTierOptions(this.currentStreamingService);
     }
 
-    updateTierSheetDetails(serviceKey) {
-        const serviceData = this.entertainmentData.entertainment[serviceKey];
-        const tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
+    updateTierSheetDetails() {
+        const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
 
-        if (!tier) return;
+        const details = document.getElementById('tier-sheet-details');
+        const pricing = document.getElementById('tier-sheet-pricing');
 
-        const detailsContainer = document.getElementById('tier-sheet-details');
-        const pricingContainer = document.getElementById('tier-sheet-pricing');
+        let summary, price, tier;
 
-        if (!detailsContainer || !pricingContainer) return;
-
-        // Show tier details
-        const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
-        detailsContainer.innerHTML = `<ul class="tier-details">${summaryItems}</ul>`;
-
-        // Show pricing with Welcome Gift if applicable
-        let priceHtml;
-        const isWelcomeGift = this.state.welcomeGiftService === null; // This would be the welcome gift service
-
-        if (isWelcomeGift && tier.welcomeGift) {
-            const originalPrice = tier.price;
-            const welcomePrice = tier.welcomeGift.price;
-
-            priceHtml = `
-                <div class="tier-pricing">
-                    <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                    <div class="welcome-gift-pricing">
-                        <span class="welcome-gift-badge">Welkomstcadeau</span>
-                        <div class="discount-price">€${welcomePrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>
-                    </div>
-                    <div class="discount-info">gedurende ${tier.welcomeGift.duration} maanden</div>
-                </div>
-            `;
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            // Service has tiers
+            tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
+            if (!tier) return;
+            summary = tier.summary;
+            price = tier.price;
         } else {
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-            const hasDiscount = discountedPrice < tier.price;
+            // Service without tiers
+            summary = serviceData.summary;
+            price = serviceData.price;
+        }
 
-            if (hasDiscount) {
-                priceHtml = `
+        if (details) {
+            const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
+            details.innerHTML = `<ul>${summaryItems}</ul>`;
+        }
+
+        if (pricing) {
+            // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
+            const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === this.currentStreamingService;
+
+            let pricingHtml;
+
+            if (isWelcomeGift && ((tier && tier.welcomeGift) || (!tier && serviceData.welcomeGift))) {
+                // Show Welcome Gift pricing with promo badge
+                const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
+                const originalPrice = price;
+
+                // Calculate final Welcome Gift price
+                let finalWelcomePrice = welcomeGiftData.price;
+
+                // Check if entertainment combo discount should also apply to Welcome Gift
+                const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                const discount = this.entertainmentData.discounts.entertainment_combo;
+                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+                    (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                if (discount.enabled && willHaveMinProducts) {
+                    // Apply 5% combo discount to the original price, then subtract from welcome gift price
+                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
+                    finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
+                }
+
+                const hasComboDiscount = discount.enabled && willHaveMinProducts;
+
+                pricingHtml = `
                     <div class="tier-pricing">
-                        <div class="tier-price">€${discountedPrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>
+                        <div class="price-with-badge">
+                            <span class="welcome-gift-badge">Welkomstcadeau</span>
+                            <div class="price-content">
+                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                                <div class="discount-price">€${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
+                            </div>
+                        </div>
+                        <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
+                `;
+
+                // Add combo discount tag if applicable
+                if (hasComboDiscount) {
+                    pricingHtml += `
                         <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
                             <span class="discount-tag-text">5% permanente korting toegepast</span>
                             <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
-                    </div>
-                `;
-            } else {
-                priceHtml = `<div class="tier-pricing">€${tier.price.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
-            }
-        }
+                    `;
+                }
 
-        pricingContainer.innerHTML = priceHtml;
+                pricingHtml += `</div>`;
+            } else {
+                // Regular pricing
+                const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
+                const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
+
+                let discountedPrice;
+                if (tier) {
+                    discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService, this.currentStreamingService, tier.id);
+                } else {
+                    discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService, this.currentStreamingService);
+                }
+                
+                const hasDiscount = discountedPrice < price;
+
+                pricingHtml = `
+                    <div class="price-display">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="price-period">/maand</div>
+                `;
+
+                // Add discount tag if entertainment combo discount is applied
+                if (hasDiscount) {
+                    pricingHtml += `
+                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                            <span class="discount-tag-text">5% permanente korting toegepast</span>
+                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        </div>
+                    `;
+                }
+            }
+
+            pricing.innerHTML = pricingHtml;
+        }
     }
 
     confirmStreamingTierSelection() {
