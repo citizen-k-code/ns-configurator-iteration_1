@@ -1397,16 +1397,46 @@ class UnifiedConfigurator {
         const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
         if (!serviceData.tiers) return;
 
+        // Check if this is the Welcome Gift service
+        const isWelcomeGift = this.isEditingStreamingService ? 
+            (this.state.welcomeGiftService === this.currentStreamingService) :
+            (this.state.welcomeGiftService === null);
+
         container.innerHTML = serviceData.tiers.map(tier => {
             const isSelected = tier.id === this.tempSelectedTier;
-            const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, true, this.currentStreamingService, tier.id);
-            const hasDiscount = discountedPrice < tier.price;
+            let priceText;
+            let priceClass = '';
+
+            if (isWelcomeGift && tier.welcomeGift) {
+                // For Welcome Gift, check if combo discount should also apply
+                let finalWelcomePrice = tier.welcomeGift.price;
+
+                const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                const discount = this.entertainmentData.discounts.entertainment_combo;
+                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+                    (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                if (discount.enabled && willHaveMinProducts) {
+                    const comboDiscountAmount = tier.price * (discount.percentage / 100);
+                    finalWelcomePrice = Math.max(0, tier.welcomeGift.price - comboDiscountAmount);
+                }
+
+                priceText = finalWelcomePrice.toFixed(2).replace('.', ',');
+                priceClass = 'promotional-price';
+            } else {
+                // Check if this would be the second service to show discounted price
+                const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
+                const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
+
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, isAddingSecondService, this.currentStreamingService, tier.id);
+                priceText = discountedPrice.toFixed(2).replace('.', ',');
+            }
 
             return `
                 <div class="tier-selection-option ${isSelected ? 'active' : ''}" 
                      onclick="app.selectTempTier(${tier.id})">
                     <div class="tier-name">${tier.title}</div>
-                    <div class="tier-price ${hasDiscount ? 'promotional-price' : ''}">€${discountedPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="tier-price ${priceClass}">€${priceText}</div>
                 </div>
             `;
         }).join('');
@@ -4095,8 +4125,12 @@ class UnifiedConfigurator {
         }
 
         if (pricing) {
-            // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
-            const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === this.currentStreamingService;
+            // Check if this is the Welcome Gift service
+            // For new services (not editing), check if no service has been assigned the gift yet
+            // For editing services, check if this specific service currently has the gift
+            const isWelcomeGift = this.isEditingStreamingService ? 
+                (this.state.welcomeGiftService === this.currentStreamingService) :
+                (this.state.welcomeGiftService === null);
 
             let pricingHtml;
 
