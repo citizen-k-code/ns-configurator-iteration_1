@@ -1430,6 +1430,55 @@
 
 /* End Welcome Gift Styles */
 
+/* Security Bottom Sheet Styles */
+.security-feature-list h4 {
+    color: #2D3648;
+    font-weight: 600;
+    margin: 20px 0 12px 0;
+    font-size: 16px;
+}
+
+.security-feature-list h4:first-child {
+    margin-top: 0;
+}
+
+.security-feature-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.security-feature-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #E5E9F0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.security-feature-list li:last-child {
+    border-bottom: none;
+}
+
+.security-feature-list li:before {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.security-feature-list strong {
+    color: #2D3648;
+    font-weight: 600;
+}
+
+.security-feature-list p {
+    color: #2D3648;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
 /* Python */
 /* TV Viewing Section */
 .tv-viewing-section {

@@ -4637,6 +4637,55 @@ class UnifiedConfigurator {
         }
     }
 
+    // Security bottom sheet methods
+    openSecurityBottomSheet() {
+        const overlay = document.getElementById('security-sheet-overlay');
+        const body = document.getElementById('security-sheet-body');
+
+        if (!overlay || !body) return;
+
+        // Get security data from data.json
+        const securityData = this.data?.products?.security;
+        
+        let content = '';
+        if (securityData && securityData.description) {
+            content = securityData.description;
+        } else {
+            // Fallback content if no description in data.json
+            content = `
+                <div class="security-feature-list">
+                    <h4>Bescherming voor al je apparaten</h4>
+                    <ul>
+                        <li><strong>Antivirus bescherming</strong> - Realtime bescherming tegen malware, virussen en andere bedreigingen</li>
+                        <li><strong>Firewall</strong> - Blokkeer ongewenste toegang tot je netwerk en apparaten</li>
+                        <li><strong>Veilig browsen</strong> - Waarschuwingen voor gevaarlijke websites en phishing-pogingen</li>
+                        <li><strong>Privacy bescherming</strong> - Bescherm je persoonlijke gegevens online</li>
+                        <li><strong>Automatische updates</strong> - Altijd de nieuwste beveiligingsfeatures</li>
+                    </ul>
+                    
+                    <h4>Voor maximaal 10 apparaten</h4>
+                    <p>Bescherm al je computers, smartphones en tablets met één abonnement. Werkt op Windows, Mac, Android en iOS.</p>
+                    
+                    <h4>24/7 ondersteuning</h4>
+                    <p>Onze beveiligingsexperts staan altijd klaar om je te helpen bij vragen of problemen.</p>
+                </div>
+            `;
+        }
+
+        body.innerHTML = content;
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeSecurityBottomSheet() {
+        const overlay = document.getElementById('security-sheet-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
     handleStreamingMethodSelection(method) {
         if (method === 'hub') {
             // Enable Entertainment Box when hub is selected

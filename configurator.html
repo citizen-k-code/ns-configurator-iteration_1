@@ -168,7 +168,7 @@
                         </label>
                     </div>
                     <div class="product-content" id="security-content" style="display: none;">
-                        <div class="tooltip-link" onclick="app.openTooltipSheet('security')">Wat zit er allemaal in
+                        <div class="tooltip-link" onclick="app.openSecurityBottomSheet()">Wat zit er allemaal in
                             beveiliging?
                             <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
                         </div>
@@ -635,6 +635,25 @@
             </div>
             <div class="sheet-footer">
                 <button class="sheet-close-footer-btn" onclick="app.closeComboDiscountSheet()">Sluiten</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Info Bottom Sheet -->
+    <div class="sheet-overlay" id="security-sheet-overlay" style="display: none;"
+        onclick="app.closeSecurityBottomSheet()">
+        <div class="tooltip-sheet" id="security-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeSecurityBottomSheet()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title">Wat zit er allemaal in beveiliging?</h3>
+                <div class="sheet-body" id="security-sheet-body">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.closeSecurityBottomSheet()">Sluiten</button>
             </div>
         </div>
     </div>
