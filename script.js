@@ -612,6 +612,9 @@ class UnifiedConfigurator {
                         this.renderMobileSimcards();
                         this.updateMobileHighlightBlock();
                     }
+                    if (this.state.datasim.enabled) {
+                        this.updateDatasimInfo();
+                    }
                 } else if (productType === 'mobile') {
                     this.state.mobile.simcards = [{
                         id: 1,
@@ -1015,12 +1018,26 @@ class UnifiedConfigurator {
         if (!infoContainer || !this.data) return;
 
         const datasimData = this.data.products.datasim;
+        const pricingInfo = this.calculateDatasimPricing();
         const currentSims = this.state.datasim.count;
-        const totalPrice = currentSims * datasimData.pricePerSim;
 
         const summaryItems = datasimData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
 
-        const priceHtml = `<div class="tier-price">€ ${totalPrice.toFixed(2).replace('.', ',')}/maand</div>`;
+        let priceHtml;
+        if (pricingInfo.discountInfo.hasDiscount) {
+            const originalTotal = currentSims * datasimData.pricePerSim;
+            priceHtml = `
+                <div class="tier-price-container">
+                    <div class="tier-price">€ ${pricingInfo.total.toFixed(2).replace('.', ',')}/maand</div>
+                    <div class="combo-discount-tag" onclick="app.openDatasimDiscountSheet()">
+                        <span>Combokorting geactiveerd</span>
+                        <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                    </div>
+                </div>
+            `;
+        } else {
+            priceHtml = `<div class="tier-price">€ ${pricingInfo.total.toFixed(2).replace('.', ',')}/maand</div>`;
+        }
 
         infoContainer.innerHTML = `
             <ul class="tier-details">
@@ -1169,6 +1186,9 @@ class UnifiedConfigurator {
         if (simcard) {
             simcard.selectedTier = tierId;
             this.renderMobileSimcards();
+            if (this.state.datasim.enabled) {
+                this.updateDatasimInfo();
+            }
             this.updateCostSummary();
         }
     }
@@ -1181,6 +1201,9 @@ class UnifiedConfigurator {
                 selectedTier: this.data.products.mobile.defaultTier
             });
             this.renderMobileSimcards();
+            if (this.state.datasim.enabled) {
+                this.updateDatasimInfo();
+            }
             this.updateCostSummary();
         }
     }
@@ -1188,6 +1211,9 @@ class UnifiedConfigurator {
     deleteSimcard(simcardId) {
         this.state.mobile.simcards = this.state.mobile.simcards.filter(s => s.id !== simcardId);
         this.renderMobileSimcards();
+        if (this.state.datasim.enabled) {
+            this.updateDatasimInfo();
+        }
         this.updateCostSummary();
     }
 
@@ -1219,6 +1245,75 @@ class UnifiedConfigurator {
             permanentDiscountAmount,
             temporaryDiscountAmount,
             originalPrice: tier.price
+        };
+    }
+
+    calculateDatasimDiscount() {
+        const datasimData = this.data.products.datasim;
+        const basePrice = datasimData.pricePerSim;
+        let discounts = [];
+        
+        // Check for internet discount (50% off each datasim)
+        const hasInternetDiscount = this.state.internet.enabled;
+        
+        // Check for unlimited mobile discount (first datasim free)
+        const hasUnlimitedMobile = this.state.mobile.enabled && 
+            this.state.mobile.simcards.some(simcard => {
+                const tier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                return tier && tier.id === 3; // Assuming tier 3 is unlimited
+            });
+
+        if (hasInternetDiscount) {
+            discounts.push({
+                type: 'internet',
+                description: '50% korting door Internet combinatie',
+                percentage: 50
+            });
+        }
+
+        if (hasUnlimitedMobile) {
+            discounts.push({
+                type: 'unlimited',
+                description: 'Eerste datasim gratis door Unlimited mobiel',
+                freeFirst: true
+            });
+        }
+
+        return {
+            basePrice,
+            discounts,
+            hasDiscount: discounts.length > 0
+        };
+    }
+
+    calculateDatasimPricing() {
+        const discountInfo = this.calculateDatasimDiscount();
+        const count = this.state.datasim.count;
+        let total = 0;
+        let prices = [];
+
+        for (let i = 0; i < count; i++) {
+            let price = discountInfo.basePrice;
+            
+            // Apply unlimited mobile discount to first datasim
+            if (i === 0 && discountInfo.discounts.some(d => d.type === 'unlimited')) {
+                price = 0;
+            } else {
+                // Apply internet discount
+                const internetDiscount = discountInfo.discounts.find(d => d.type === 'internet');
+                if (internetDiscount) {
+                    price = price * (1 - internetDiscount.percentage / 100);
+                }
+            }
+            
+            prices.push(price);
+            total += price;
+        }
+
+        return {
+            total,
+            prices,
+            discountInfo
         };
     }
 
@@ -1731,10 +1826,22 @@ class UnifiedConfigurator {
 
         // Datasim cost
         if (this.state.datasim.enabled) {
-            const datasimData = this.data.products.datasim;
+            const pricingInfo = this.calculateDatasimPricing();
             if (this.state.datasim.count > 0) {
-                const datasimPrice = this.state.datasim.count * datasimData.pricePerSim;
-                total += datasimPrice;
+                total += pricingInfo.total;
+                
+                // Add permanent discount for internet combo
+                const internetDiscount = pricingInfo.discountInfo.discounts.find(d => d.type === 'internet');
+                if (internetDiscount) {
+                    const originalPrice = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
+                    totalPermanentDiscount += originalPrice - pricingInfo.total;
+                }
+                
+                // Add permanent discount for unlimited mobile (first datasim free)
+                const unlimitedDiscount = pricingInfo.discountInfo.discounts.find(d => d.type === 'unlimited');
+                if (unlimitedDiscount) {
+                    totalPermanentDiscount += pricingInfo.discountInfo.basePrice;
+                }
             }
         }
 
@@ -2666,15 +2773,30 @@ class UnifiedConfigurator {
 
         // Datasim
         if (this.state.datasim && this.state.datasim.enabled) {
-            const datasimData = this.data.products.datasim;
-            if (datasimData && datasimData.pricePerSim !== undefined) {
-                const totalDatasimPrice = this.state.datasim.count * datasimData.pricePerSim;
+            const pricingInfo = this.calculateDatasimPricing();
+            if (pricingInfo.discountInfo.basePrice !== undefined) {
+                let priceHtml;
+                if (pricingInfo.discountInfo.hasDiscount) {
+                    const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
+                    priceHtml = `
+                        <div class="price-layout">
+                            <div class="price-main">
+                                <span class="original-price">€${originalTotal.toFixed(2).replace('.', ',')}</span>
+                                <span class="discount-price">€${pricingInfo.total.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            <div class="discount-duration">combokorting</div>
+                        </div>
+                    `;
+                } else {
+                    priceHtml = `€${pricingInfo.total.toFixed(2).replace('.', ',')}`;
+                }
+
                 overviewHtml += `
                     <div class="overview-group">
                         <div class="overview-group-title">Datasim</div>
                         <div class="overview-item">
                             <span class="overview-item-name">${this.state.datasim.count} Datasim${this.state.datasim.count > 1 ? 's' : ''}</span>
-                            <span class="overview-item-price">€${totalDatasimPrice.toFixed(2).replace('.', ',')}</span>
+                            <span class="overview-item-price">${priceHtml}</span>
                         </div>
                     </div>
                 `;
@@ -4323,6 +4445,52 @@ class UnifiedConfigurator {
 
         title.textContent = dynamicTitle;
         body.innerHTML = dynamicContent;
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    openDatasimDiscountSheet() {
+        const overlay = document.getElementById('combo-discount-sheet-overlay');
+        const title = document.getElementById('combo-discount-sheet-title');
+        const body = document.getElementById('combo-discount-sheet-body');
+
+        if (!overlay || !title || !body) return;
+
+        const pricingInfo = this.calculateDatasimPricing();
+        const discounts = pricingInfo.discountInfo.discounts;
+
+        title.textContent = 'Combokorting op Datasim';
+
+        let contentHtml = '<p>Je profiteert van de volgende kortingen op je datasim kaarten:</p><div class="advantage-section"><h4>Actieve kortingen</h4><ul>';
+
+        discounts.forEach(discount => {
+            contentHtml += `<li><strong>${discount.description}</strong></li>`;
+        });
+
+        contentHtml += '</ul></div>';
+
+        // Show pricing breakdown
+        contentHtml += '<div class="advantage-section"><h4>Prijsoverzicht</h4>';
+        
+        for (let i = 0; i < this.state.datasim.count; i++) {
+            const originalPrice = pricingInfo.discountInfo.basePrice;
+            const finalPrice = pricingInfo.prices[i];
+            const datasimNumber = i + 1;
+            
+            if (finalPrice === 0) {
+                contentHtml += `<div class="discount-pricing-item"><strong>Datasim ${datasimNumber}: Gratis</strong> (normaal €${originalPrice.toFixed(2).replace('.', ',')})</div>`;
+            } else if (finalPrice < originalPrice) {
+                contentHtml += `<div class="discount-pricing-item"><strong>Datasim ${datasimNumber}: €${finalPrice.toFixed(2).replace('.', ',')}</strong> (normaal €${originalPrice.toFixed(2).replace('.', ',')})</div>`;
+            } else {
+                contentHtml += `<div class="discount-pricing-item">Datasim ${datasimNumber}: €${finalPrice.toFixed(2).replace('.', ',')}</div>`;
+            }
+        }
+
+        const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
+        contentHtml += `</div><div class="advantage-total">Totale maandelijkse korting: €${(originalTotal - pricingInfo.total).toFixed(2).replace('.', ',')}</div>`;
+
+        body.innerHTML = contentHtml;
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
