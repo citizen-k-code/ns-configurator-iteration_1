@@ -1345,12 +1345,15 @@ class UnifiedConfigurator {
     }
 
     getEntertainmentDiscountedPrice(originalPrice, isAddingSecondService = false, serviceKey = null, tier = null) {
+
+        console.log("Checking Welcome Gift");
+
         // Check if this service has Welcome Gift
         if (serviceKey && this.state.welcomeGiftService === serviceKey) {
             const serviceData = this.entertainmentData.entertainment[serviceKey];
             if (serviceData) {
                 let welcomeGiftPrice;
-                
+
                 if (serviceData.tiers && tier) {
                     const tierData = serviceData.tiers.find(t => t.id === tier);
                     if (tierData && tierData.welcomeGift) {
@@ -1359,21 +1362,24 @@ class UnifiedConfigurator {
                 } else if (serviceData.welcomeGift) {
                     welcomeGiftPrice = serviceData.welcomeGift.price;
                 }
-                
+
+                console.log("Welcome Gift Price: ", welcomeGiftPrice);
+
                 if (welcomeGiftPrice !== undefined) {
+
                     // Check if entertainment combo discount should also apply to Welcome Gift
                     const enabledProducts = this.getEnabledEntertainmentProductsCount();
                     const discount = this.entertainmentData.discounts.entertainment_combo;
-                    
+
                     const willHaveMinProducts = enabledProducts >= discount.minProducts ||
                         (enabledProducts === 1 && isAddingSecondService);
-                    
+
                     if (discount.enabled && willHaveMinProducts) {
                         // Apply 5% combo discount to the original price, then subtract from welcome gift price
                         const comboDiscountAmount = originalPrice * (discount.percentage / 100);
                         return welcomeGiftPrice - comboDiscountAmount;
                     }
-                    
+
                     return welcomeGiftPrice;
                 }
             }
@@ -3737,10 +3743,10 @@ class UnifiedConfigurator {
                 // Show Welcome Gift pricing with promo badge
                 const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
                 const originalPrice = price;
-                
+
                 // Calculate final Welcome Gift price (including combo discount if applicable)
                 const finalWelcomePrice = this.getEntertainmentDiscountedPrice(originalPrice, false, this.currentStreamingService, this.tempSelectedTier);
-                
+
                 // Check if entertainment combo discount is also applied
                 const enabledProducts = this.getEnabledEntertainmentProductsCount();
                 const discount = this.entertainmentData.discounts.entertainment_combo;
