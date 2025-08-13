@@ -2438,11 +2438,25 @@ class UnifiedConfigurator {
                         const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
                         if (!tier) return;
 
-                        const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                        const hasDiscount = discountedPrice < tier.price;
+                        const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, this.state[serviceKey].selectedTier);
+                        const isWelcomeGift = this.state.welcomeGiftService === serviceKey;
 
-                        // Entertainment services only have permanent discounts, so never show pink styling
-                        priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                        if (isWelcomeGift) {
+                            // Show pink styling and original price for Welcome Gift temporary discount
+                            const welcomeGiftData = tier.welcomeGift;
+                            priceHtml = `
+                                <div class="price-layout">
+                                    <div class="price-main">
+                                        <span class="original-price">€${tier.price.toFixed(2).replace('.', ',')}</span>
+                                        <span class="discount-price">€${discountedPrice.toFixed(2).replace('.', ',')}</span>
+                                    </div>
+                                    <div class="discount-duration">gedurende ${welcomeGiftData ? welcomeGiftData.duration : '12'} maanden</div>
+                                </div>
+                            `;
+                        } else {
+                            // Regular pricing for non-Welcome Gift services
+                            priceHtml = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+                        }
                     } else {
                         const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
                         const isWelcomeGift = this.state.welcomeGiftService === serviceKey;
