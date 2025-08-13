@@ -647,6 +647,22 @@ class UnifiedConfigurator {
                         this.updateMobileHighlightBlock();
                     }
                 } else if (productType === 'tv') {
+                    // When TV is disabled, also disable Entertainment Box
+                    if (this.state.entertainmentBox.enabled) {
+                        this.state.entertainmentBox.enabled = false;
+                        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+                        const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+                        
+                        if (entertainmentBoxToggle) {
+                            entertainmentBoxToggle.checked = false;
+                        }
+                        if (entertainmentBoxContent) {
+                            entertainmentBoxContent.style.display = 'none';
+                        }
+                        
+                        this.renderProductClosedState('entertainmentBox');
+                    }
+                    
                     // Update Entertainment Hub selection visibility
                     this.updateEntertainmentHubSelectionVisibility();
                     // Update TV bundle highlight visibility
