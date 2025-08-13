@@ -213,30 +213,12 @@
       }
     },
     "security": {
-      "title": "Beveiliging",
-      "tooltip": "Wat zit er allemaal in beveiliging?",
-      "closedState": {
-        "summary": "Bescherm je digitale leven volledig gratis<br /><strong>€ ##PRICE##/maand</strong>",
-        "showHighlight": false,
-        "highlight": null
-      },
-      "summary": "<strong>Blokkering</strong> van verdachte gsm-nummers en sms'en, <strong>Bescherming</strong> tegen phishing op je wifi- en mobiel netwerk, <strong>Bescherming</strong> tegen hacking op je vast netwerk, <strong>Spamfilter</strong> voor je webmail",
-      "price": 0.00,
-      "discountCopy": {
-        "temporaryOnly": "",
-        "permanentOnly": "",
-        "both": ""
-      }
+      "title": "Beveiliging uitgelegd",
+      "content": "<p>Onze beveiligingsoplossing beschermt al je apparaten tegen online bedreigingen.</p><h4>Wat zit erin?</h4><ul><li>Antivirus bescherming</li><li>Firewall</li><li>Anti-malware</li><li>Veilig browsen</li><li>Identiteitsbescherming</li></ul><p>Perfect voor het hele gezin om veilig online te blijven.</p>"
     },
     "datasim": {
-      "title": "Datasim",
-      "summary": "Mobiele data voor je andere devices, ideaal voor je ipad",
-      "pricePerSim": 5.00,
-      "maxSims": 5,
-      "closedState": {
-        "summary": "Voeg datasims toe voor je andere devices<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
-        "highlight": null
-      }
+      "title": "Wat is een datasim?",
+      "content": "<p>Een datasim is een speciale simkaart die alleen data gebruikt - geen bellen of sms'en mogelijk.</p><h4>Perfect voor:</h4><ul><li>Tablets en laptops</li><li>Smartwatches</li><li>IoT apparaten</li><li>Backup internet verbinding</li><li>Kinderen hun apparaten</li></ul><p>Je deelt gewoon je databundel van je hoofdabonnement. Handig, goedkoop en altijd verbonden!</p><div class='highlight'>Let op: Een datasim werkt alleen in combinatie met een mobiel abonnement.</div>"
     }
   },
   "discounts": {
@@ -345,7 +327,7 @@
     },
     "datasim": {
       "title": "Wat kan je doen met een datasim?",
-      "content": "<p>Een datasim is perfect voor je tablet, laptop of andere apparaten die mobiele data nodig hebben. Je deelt je databundel niet met je hoofdsimkaart.</p><div class='paragraph'><h3>Wanneer is een datasim handig?</h3><ul><li>Voor je iPad of tablet onderweg</li><li>Voor je laptop als je geen wifi hebt</li><li>Voor smartwatches of andere wearables</li><li>Als backup internetverbinding</li></ul></div>"
+      "content": "<p>Een datasim is een speciale simkaart die alleen data gebruikt - geen bellen of sms'en mogelijk.</p><h4>Perfect voor:</h4><ul><li>Tablets en laptops</li><li>Smartwatches</li><li>IoT apparaten</li><li>Backup internet verbinding</li><li>Kinderen hun apparaten</li></ul><p>Je deelt gewoon je databundel van je hoofdabonnement. Handig, goedkoop en altijd verbonden!</p><div class='highlight'>Let op: Een datasim werkt alleen in combinatie met een mobiel abonnement.</div>"
     }
   }
 }
