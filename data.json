@@ -215,7 +215,7 @@
     "security": {
       "title": "Beveiliging",
       "summary": "Bescherm al je apparaten tegen online bedreigingen, Antivirus en firewall bescherming, Veilig browsen en identiteitsbescherming",
-      "price": 5.00,
+      "price": 0.00,
       "closedState": {
         "summary": "Bescherm je digitale leven volledig<br /><strong>€ ##PRICE##/maand</strong>",
         "highlight": null
