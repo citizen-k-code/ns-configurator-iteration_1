@@ -3795,12 +3795,27 @@ class UnifiedConfigurator {
                 let priceClass = '';
 
                 if (isWelcomeGift && tier.welcomeGift) {
-                    priceText = `${tier.welcomeGift.price.toFixed(2).replace('.', ',')}`;
+                    // For Welcome Gift, check if combo discount should also apply
+                    let finalWelcomePrice = tier.welcomeGift.price;
+                    
+                    const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                    const discount = this.entertainmentData.discounts.entertainment_combo;
+                    const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+                        (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                    if (discount.enabled && willHaveMinProducts) {
+                        const comboDiscountAmount = tier.price * (discount.percentage / 100);
+                        finalWelcomePrice = Math.max(0, tier.welcomeGift.price - comboDiscountAmount);
+                    }
+                    
+                    priceText = `${finalWelcomePrice.toFixed(2).replace('.', ',')}`;
                     priceClass = 'promotional-price';
                 } else {
-                    const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price);
-                    //this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id);
-
+                    // Check if this would be the second service to show discounted price
+                    const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
+                    const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
+                    
+                    const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, isAddingSecondService, serviceKey, tier.id);
                     priceText = `${discountedPrice.toFixed(2).replace('.', ',')}`;
                 }
 
