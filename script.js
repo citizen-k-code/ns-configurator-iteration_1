@@ -3092,133 +3092,6 @@ class UnifiedConfigurator {
         this.tempSelectedTier = null;
     }
 
-    selectTierInSheet(tierId) {
-        this.tempSelectedTier = tierId;
-        this.renderStreamingTierOptions(this.currentStreamingService);
-    }
-
-    updateTierSheetDetails() {
-        const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
-
-        const details = document.getElementById('tier-sheet-details');
-        const pricing = document.getElementById('tier-sheet-pricing');
-
-        let summary, price, tier;
-
-        if (serviceData.tiers && serviceData.tiers.length > 0) {
-            // Service has tiers
-            tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
-            if (!tier) return;
-            summary = tier.summary;
-            price = tier.price;
-        } else {
-            // Service without tiers
-            summary = serviceData.summary;
-            price = serviceData.price;
-        }
-
-        if (details) {
-            const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
-            details.innerHTML = `<ul>${summaryItems}</ul>`;
-        }
-
-        if (pricing) {
-            // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
-            const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === this.currentStreamingService;
-
-            let pricingHtml;
-
-            if (isWelcomeGift && ((tier && tier.welcomeGift) || (!tier && serviceData.welcomeGift))) {
-                // Show Welcome Gift pricing with promo badge
-                const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
-                const originalPrice = price;
-
-                // Calculate final Welcome Gift price
-                let finalWelcomePrice = welcomeGiftData.price;
-
-                // Check if entertainment combo discount should also apply to Welcome Gift
-                const enabledProducts = this.getEnabledEntertainmentProductsCount();
-                const discount = this.entertainmentData.discounts.entertainment_combo;
-                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
-                    (enabledProducts === 1 && !this.isEditingStreamingService);
-
-                if (discount.enabled && willHaveMinProducts) {
-                    // Apply 5% combo discount to the original price, then subtract from welcome gift price
-                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
-                    finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
-                }
-
-                const hasComboDiscount = discount.enabled && willHaveMinProducts;
-
-                pricingHtml = `
-                    <div class="tier-pricing">
-                        <div class="price-with-badge">
-                            <span class="welcome-gift-badge">Welkomstcadeau</span>
-                            <div class="price-content">
-                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€ ${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
-                            </div>
-                        </div>
-                        <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
-                `;
-
-                // Add combo discount tag if applicable
-                if (hasComboDiscount) {
-                    pricingHtml += `
-                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                            <span class="discount-tag-text">5% permanente korting toegepast</span>
-                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
-                        </div>
-                    `;
-                }
-
-                pricingHtml += `</div>`;
-            } else {
-                // Regular pricing
-                const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
-                const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
-
-                const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
-                const hasDiscount = discountedPrice < price;
-
-                pricingHtml = `
-                    <div class="price-display">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
-                `;
-
-                // Add discount tag if entertainment combo discount is applied
-                if (hasDiscount) {
-                    pricingHtml += `
-                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                            <span class="discount-tag-text">5% permanente korting toegepast</span>
-                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
-                        </div>
-                    `;
-                }
-            }
-
-            pricing.innerHTML = pricingHtml;
-        }
-    }
-
-    confirmStreamingTierSelection() {
-        if (!this.currentStreamingService) return;
-
-        // Update the tier selection
-        this.state[this.currentStreamingService].selectedTier = this.tempSelectedTier;
-
-        // Assign welcome gift if this is the first service
-        if (this.state.welcomeGiftService === null) {
-            this.assignWelcomeGift(this.currentStreamingService);
-        }
-
-        // Update displays
-        this.renderSelectedEntertainmentServices();
-        this.updateCostSummary();
-
-        // Close sheet
-        this.closeStreamingTierSheet();
-    }
-
     addEntertainmentService(serviceKey) {
         // Add service to selected list
         this.state.selectedEntertainmentServices.add(serviceKey);
@@ -4396,9 +4269,12 @@ class UnifiedConfigurator {
                 const willHaveMinProducts = enabledProducts >= discount.minProducts ||
                     (enabledProducts === 1 && !this.isEditingStreamingService);
 
+                // Calculate display original price (with combo discount if applicable)
+                let displayOriginalPrice = originalPrice;
                 if (discount.enabled && willHaveMinProducts) {
                     // Apply 5% combo discount to the original price, then subtract from welcome gift price
                     const comboDiscountAmount = originalPrice * (discount.percentage / 100);
+                    displayOriginalPrice = originalPrice - comboDiscountAmount;
                     finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
                 }
 
@@ -4409,7 +4285,7 @@ class UnifiedConfigurator {
                         <div class="price-with-badge">
                             <span class="welcome-gift-badge">Welkomstcadeau</span>
                             <div class="price-content">
-                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                                <div class="original-price">€ ${displayOriginalPrice.toFixed(2).replace('.', ',')}</div>
                                 <div class="discount-price">€ ${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
                             </div>
                         </div>
@@ -4646,7 +4522,7 @@ class UnifiedConfigurator {
 
         // Get security data from data.json
         const securityData = this.data?.products?.security;
-        
+
         let content = '';
         if (securityData && securityData.description) {
             content = securityData.description;
@@ -4662,10 +4538,10 @@ class UnifiedConfigurator {
                         <li><strong>Privacy bescherming</strong> - Bescherm je persoonlijke gegevens online</li>
                         <li><strong>Automatische updates</strong> - Altijd de nieuwste beveiligingsfeatures</li>
                     </ul>
-                    
+
                     <h4>Voor maximaal 10 apparaten</h4>
                     <p>Bescherm al je computers, smartphones en tablets met één abonnement. Werkt op Windows, Mac, Android en iOS.</p>
-                    
+
                     <h4>24/7 ondersteuning</h4>
                     <p>Onze beveiligingsexperts staan altijd klaar om je te helpen bij vragen of problemen.</p>
                 </div>
