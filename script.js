@@ -614,6 +614,9 @@ class UnifiedConfigurator {
                     }
                     if (this.state.datasim.enabled) {
                         this.updateDatasimInfo();
+                    } else {
+                        // Update closed state price for datasim when internet changes
+                        this.renderProductClosedState('datasim');
                     }
                 } else if (productType === 'mobile') {
                     this.state.mobile.simcards = [{
@@ -621,6 +624,10 @@ class UnifiedConfigurator {
                         selectedTier: this.data.products.mobile.defaultTier
                     }];
                     this.renderMobileSimcards();
+                    if (!this.state.datasim.enabled) {
+                        // Update closed state price for datasim when mobile changes
+                        this.renderProductClosedState('datasim');
+                    }
                 } else if (productType === 'tv') {
                     //this.state.tv.entertainmentBoxTier = this.data.products.tv.entertainmentBox.defaultTier;
                     this.updateTvInfo();
@@ -675,12 +682,18 @@ class UnifiedConfigurator {
                     }
                     if (this.state.datasim.enabled) {
                         this.updateDatasimInfo();
+                    } else {
+                        // Update closed state price for datasim when internet is disabled
+                        this.renderProductClosedState('datasim');
                     }
                 } else if (productType === 'mobile') {
                     this.state.mobile.simcards = [];
                     this.updateMobileHighlightBlock();
                     if (this.state.datasim.enabled) {
                         this.updateDatasimInfo();
+                    } else {
+                        // Update closed state price for datasim when mobile is disabled
+                        this.renderProductClosedState('datasim');
                     }
                 } else if (productType === 'tv') {
                     // When TV is disabled, also disable Entertainment Box
@@ -864,6 +877,10 @@ class UnifiedConfigurator {
         if (this.state.mobile.enabled) {
             this.renderMobileSimcards();
             this.updateMobileHighlightBlock();
+        }
+        if (!this.state.datasim.enabled) {
+            // Update closed state price for datasim when internet tier changes
+            this.renderProductClosedState('datasim');
         }
         this.updateCostSummary();
     }
@@ -1233,6 +1250,9 @@ class UnifiedConfigurator {
             this.renderMobileSimcards();
             if (this.state.datasim.enabled) {
                 this.updateDatasimInfo();
+            } else {
+                // Update closed state price for datasim when mobile tier changes
+                this.renderProductClosedState('datasim');
             }
             this.updateCostSummary();
         }
@@ -1248,6 +1268,9 @@ class UnifiedConfigurator {
             this.renderMobileSimcards();
             if (this.state.datasim.enabled) {
                 this.updateDatasimInfo();
+            } else {
+                // Update closed state price for datasim when mobile simcard is added
+                this.renderProductClosedState('datasim');
             }
             this.updateCostSummary();
         }
@@ -1258,6 +1281,9 @@ class UnifiedConfigurator {
         this.renderMobileSimcards();
         if (this.state.datasim.enabled) {
             this.updateDatasimInfo();
+        } else {
+            // Update closed state price for datasim when mobile simcard is deleted
+            this.renderProductClosedState('datasim');
         }
         this.updateCostSummary();
     }
