@@ -1742,6 +1742,12 @@ class UnifiedConfigurator {
         const discount = this.entertainmentData.discounts.entertainment_combo;
         const hasComboDiscount = discount.enabled && enabledProducts >= discount.minProducts;
 
+        // Calculate the original price to show (with combo discount applied if applicable)
+        let displayOriginalPrice = originalPrice;
+        if (hasComboDiscount) {
+            displayOriginalPrice = originalPrice * (1 - discount.percentage / 100);
+        }
+
         let comboDiscountTag = '';
         if (hasComboDiscount) {
             comboDiscountTag = `
@@ -1757,7 +1763,7 @@ class UnifiedConfigurator {
                 <div class="price-with-badge">
                     <span class="welcome-gift-badge">Welkomstcadeau</span>
                     <div class="price-content">
-                        <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                        <div class="original-price">€ ${displayOriginalPrice.toFixed(2).replace('.', ',')}</div>
                         <div class="discount-price">€ ${discountedPrice}/maand</div>
                     </div>
                 </div>
