@@ -2664,6 +2664,23 @@ class UnifiedConfigurator {
             }
         }
 
+        // Datasim
+        if (this.state.datasim && this.state.datasim.enabled) {
+            const datasimData = this.data.products.datasim;
+            if (datasimData && datasimData.pricePerSim !== undefined) {
+                const totalDatasimPrice = this.state.datasim.count * datasimData.pricePerSim;
+                overviewHtml += `
+                    <div class="overview-group">
+                        <div class="overview-group-title">Datasim</div>
+                        <div class="overview-item">
+                            <span class="overview-item-name">${this.state.datasim.count} Datasim${this.state.datasim.count > 1 ? 's' : ''}</span>
+                            <span class="overview-item-price">€${totalDatasimPrice.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         overviewContent.innerHTML = overviewHtml;
     }
 
