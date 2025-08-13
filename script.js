@@ -4139,15 +4139,20 @@ class UnifiedConfigurator {
                 const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
                 const originalPrice = price;
 
-                // Calculate final Welcome Gift price - use the discounted price from getEntertainmentDiscountedPrice
-                // which already handles Welcome Gift pricing correctly
-                const discountedPrice = this.getEntertainmentDiscountedPrice(originalPrice, false, this.currentStreamingService, tier ? tier.id : 1);
+                // Calculate Welcome Gift price for this specific tier
+                let welcomeGiftPrice = welcomeGiftData.price;
 
                 // Check if entertainment combo discount should also apply to Welcome Gift
                 const enabledProducts = this.getEnabledEntertainmentProductsCount();
                 const discount = this.entertainmentData.discounts.entertainment_combo;
                 const willHaveMinProducts = enabledProducts >= discount.minProducts ||
                     (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                if (discount.enabled && willHaveMinProducts) {
+                    // Apply 5% combo discount to the original price, then subtract from welcome gift price
+                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
+                    welcomeGiftPrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
+                }
 
                 const hasComboDiscount = discount.enabled && willHaveMinProducts;
 
@@ -4157,7 +4162,7 @@ class UnifiedConfigurator {
                             <span class="welcome-gift-badge">Welkomstcadeau</span>
                             <div class="price-content">
                                 <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
+                                <div class="discount-price">€ ${welcomeGiftPrice.toFixed(2).replace('.', ',')}/maand</div>
                             </div>
                         </div>
                         <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
