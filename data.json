@@ -297,7 +297,10 @@
         },
         "datasim": {
             "summary": "Voeg datasims toe voor je andere devices<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
-            "highlight": null
+            "highlight": {
+                "title": "Combovoordeel met Internet en Mobiel Onbeperkt",
+                "content": "Neem internet en krijg 50% op je datasim kaarten. Voeg een mobiel Onbeperkt abonnement toe en krijg de 1ste datasim volledig gratis."
+            }
         }
     },
   "modalTitles": {
