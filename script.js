@@ -2454,8 +2454,8 @@ class UnifiedConfigurator {
 
         if (!container || !detailsContainer || !pricingContainer) return;
 
-        // Check if this would be the Welcome Gift service (no service has been assigned yet)
-        const isWelcomeGift = this.state.welcomeGiftService === null;
+        // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
+        const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === serviceKey;
 
         // Hide subtitle if no tiers
         if (!serviceData.tiers) {
@@ -3542,8 +3542,8 @@ class UnifiedConfigurator {
         this.currentStreamingService = serviceKey;
         this.isEditingStreamingService = isEditing;
 
-        // Check if this would be the Welcome Gift service (no service has been assigned yet)
-        const isWelcomeGift = this.state.welcomeGiftService === null;
+        // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
+        const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === serviceKey;
 
         const serviceData = this.entertainmentData.entertainment[serviceKey];
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
@@ -3693,8 +3693,8 @@ class UnifiedConfigurator {
         }
 
         if (pricing) {
-            // Check if this would be the Welcome Gift service
-            const isWelcomeGift = this.state.welcomeGiftService === null;
+            // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
+            const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === this.currentStreamingService;
 
             let pricingHtml;
 
