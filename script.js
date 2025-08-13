@@ -4095,8 +4095,12 @@ class UnifiedConfigurator {
         }
 
         if (pricing) {
-            // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
-            const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === this.currentStreamingService;
+            // Check if this is the Welcome Gift service
+            // For new services (not editing), check if no service has been assigned the gift yet
+            // For editing services, check if this specific service currently has the gift
+            const isWelcomeGift = this.isEditingStreamingService ? 
+                (this.state.welcomeGiftService === this.currentStreamingService) :
+                (this.state.welcomeGiftService === null);
 
             let pricingHtml;
 
