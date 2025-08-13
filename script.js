@@ -1554,19 +1554,6 @@ class UnifiedConfigurator {
             } else {
                 total += tvData.price;
             }
-
-            // Entertainment Box cost
-            /*
-            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-            if (entertainmentBoxTier && entertainmentBoxTier.price !== undefined) {
-                if (entertainmentBoxTier.discountValue !== undefined) {
-                    total += entertainmentBoxTier.price - entertainmentBoxTier.discountValue;
-                    totalTemporaryDiscount += entertainmentBoxTier.discountValue;
-                } else {
-                    total += entertainmentBoxTier.price;
-                }
-            }
-            */
         }
 
         // Fixed Phone cost
@@ -1578,9 +1565,6 @@ class UnifiedConfigurator {
         // Entertainment Box cost (only when standalone - not part of TV)
         if (this.state.entertainmentBox.enabled) {
             const entertainmentBoxData = this.data.products.entertainmentBox;
-
-            console.log("entertainmentBoxData = ", entertainmentBoxData);
-
             // Always use base price without discount for Entertainment Box
             total += entertainmentBoxData.price;
         }
@@ -1595,24 +1579,12 @@ class UnifiedConfigurator {
                 totalTemporaryDiscount += podsOriginalPrice; // Full discount for promotional period
             }
         }
-        /*
-        if (this.state.entertainmentBox && this.state.entertainmentBox.enabled && (!this.state.tv || !this.state.tv.enabled)) {
-            const entertainmentBoxData = this.data.products.entertainmentBox;
-            if (entertainmentBoxData) {
-                if (entertainmentBoxData.discountValue) {
-                    total += entertainmentBoxData.price - entertainmentBoxData.discountValue;
-                    totalTemporaryDiscount += entertainmentBoxData.discountValue;
-                } else {
-                    total += entertainmentBoxData.price;
-                }
-            }
-        }
-        */
 
-        // Entertainment costs
+        // Entertainment costs - now properly handling Welcome Gift as temporary discount
         const entertainmentTotal = this.calculateEntertainmentTotal();
         total += entertainmentTotal.total;
-        totalPermanentDiscount += entertainmentTotal.totalDiscount;
+        totalPermanentDiscount += entertainmentTotal.totalPermanentDiscount;
+        totalTemporaryDiscount += entertainmentTotal.totalTemporaryDiscount;
 
         const totalDiscount = totalPermanentDiscount + totalTemporaryDiscount;
 
@@ -1626,7 +1598,8 @@ class UnifiedConfigurator {
 
     calculateEntertainmentTotal() {
         let total = 0;
-        let totalDiscount = 0;
+        let totalPermanentDiscount = 0;
+        let totalTemporaryDiscount = 0;
         const enabledProducts = this.getEnabledEntertainmentProductsCount();
         const hasComboDiscount = enabledProducts >= this.entertainmentData.discounts.entertainment_combo.minProducts;
 
@@ -1635,8 +1608,13 @@ class UnifiedConfigurator {
             const tier = this.entertainmentData.entertainment.netflix.tiers.find(t => t.id === this.state.netflix.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'netflix', this.state.netflix.selectedTier);
             total += discountedPrice;
-            if (hasComboDiscount && this.state.welcomeGiftService !== 'netflix') {
-                totalDiscount += tier.price - discountedPrice;
+            
+            // Separate Welcome Gift (temporary) from combo discount (permanent)
+            if (this.state.welcomeGiftService === 'netflix') {
+                const welcomeGiftDiscount = tier.price - discountedPrice;
+                totalTemporaryDiscount += welcomeGiftDiscount;
+            } else if (hasComboDiscount) {
+                totalPermanentDiscount += tier.price - discountedPrice;
             }
         }
 
@@ -1645,8 +1623,12 @@ class UnifiedConfigurator {
             const tier = this.entertainmentData.entertainment.streamz.tiers.find(t => t.id === this.state.streamz.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'streamz', this.state.streamz.selectedTier);
             total += discountedPrice;
-            if (hasComboDiscount && this.state.welcomeGiftService !== 'streamz') {
-                totalDiscount += tier.price - discountedPrice;
+            
+            if (this.state.welcomeGiftService === 'streamz') {
+                const welcomeGiftDiscount = tier.price - discountedPrice;
+                totalTemporaryDiscount += welcomeGiftDiscount;
+            } else if (hasComboDiscount) {
+                totalPermanentDiscount += tier.price - discountedPrice;
             }
         }
 
@@ -1655,8 +1637,12 @@ class UnifiedConfigurator {
             const tier = this.entertainmentData.entertainment.hbo.tiers.find(t => t.id === this.state.hbo.selectedTier);
             const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, 'hbo', this.state.hbo.selectedTier);
             total += discountedPrice;
-            if (hasComboDiscount && this.state.welcomeGiftService !== 'hbo') {
-                totalDiscount += tier.price - discountedPrice;
+            
+            if (this.state.welcomeGiftService === 'hbo') {
+                const welcomeGiftDiscount = tier.price - discountedPrice;
+                totalTemporaryDiscount += welcomeGiftDiscount;
+            } else if (hasComboDiscount) {
+                totalPermanentDiscount += tier.price - discountedPrice;
             }
         }
 
@@ -1664,8 +1650,12 @@ class UnifiedConfigurator {
         if (this.state.disney.enabled) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.disney.price, false, 'disney');
             total += discountedPrice;
-            if (hasComboDiscount && this.state.welcomeGiftService !== 'disney') {
-                totalDiscount += this.entertainmentData.entertainment.disney.price - discountedPrice;
+            
+            if (this.state.welcomeGiftService === 'disney') {
+                const welcomeGiftDiscount = this.entertainmentData.entertainment.disney.price - discountedPrice;
+                totalTemporaryDiscount += welcomeGiftDiscount;
+            } else if (hasComboDiscount) {
+                totalPermanentDiscount += this.entertainmentData.entertainment.disney.price - discountedPrice;
             }
         }
 
@@ -1673,8 +1663,12 @@ class UnifiedConfigurator {
         if (this.state.sport.enabled) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.sport.price, false, 'sport');
             total += discountedPrice;
-            if (hasComboDiscount && this.state.welcomeGiftService !== 'sport') {
-                totalDiscount += this.entertainmentData.entertainment.sport.price - discountedPrice;
+            
+            if (this.state.welcomeGiftService === 'sport') {
+                const welcomeGiftDiscount = this.entertainmentData.entertainment.sport.price - discountedPrice;
+                totalTemporaryDiscount += welcomeGiftDiscount;
+            } else if (hasComboDiscount) {
+                totalPermanentDiscount += this.entertainmentData.entertainment.sport.price - discountedPrice;
             }
         }
 
@@ -1682,12 +1676,21 @@ class UnifiedConfigurator {
         if (this.state.cinema.enabled) {
             const discountedPrice = this.getEntertainmentDiscountedPrice(this.entertainmentData.entertainment.cinema.price, false, 'cinema');
             total += discountedPrice;
-            if (hasComboDiscount && this.state.welcomeGiftService !== 'cinema') {
-                totalDiscount += this.entertainmentData.entertainment.cinema.price - discountedPrice;
+            
+            if (this.state.welcomeGiftService === 'cinema') {
+                const welcomeGiftDiscount = this.entertainmentData.entertainment.cinema.price - discountedPrice;
+                totalTemporaryDiscount += welcomeGiftDiscount;
+            } else if (hasComboDiscount) {
+                totalPermanentDiscount += this.entertainmentData.entertainment.cinema.price - discountedPrice;
             }
         }
 
-        return { total, totalDiscount };
+        return { 
+            total, 
+            totalPermanentDiscount, 
+            totalTemporaryDiscount,
+            totalDiscount: totalPermanentDiscount + totalTemporaryDiscount
+        };
     }
 
     calculateTotalTemporaryDiscount() {
@@ -1733,22 +1736,7 @@ class UnifiedConfigurator {
                     discountPeriod: tvData.discountPeriod
                 });
             }
-
-            // Entertainment Box temporary discount
-            const entertainmentBoxTier = tvData.entertainmentBox.tiers.find(t => t.id === this.state.tv.entertainmentBoxTier);
-            if (entertainmentBoxTier && entertainmentBoxTier.discountValue && entertainmentBoxTier.discountPeriod) {
-                totalTemporaryDiscount += entertainmentBoxTier.discountValue * entertainmentBoxTier.discountPeriod;
-                discountsInfo.push({
-                    product: 'Entertainment Box',
-                    discountValue: entertainmentBoxTier.discountValue,
-                    discountPeriod: entertainmentBoxTier.discountPeriod
-                });
-            }
         }
-
-        // Entertainment Box temporary discount (independent calculation) - removed as no discount is applied
-
-
 
         // Add WiFi pods standalone discount period
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
@@ -1761,6 +1749,41 @@ class UnifiedConfigurator {
                     discountValue: podsOriginalPrice,
                     discountPeriod: wifiPodsData.discountPeriod
                 });
+            }
+        }
+
+        // Welcome Gift temporary discount
+        if (this.state.welcomeGiftService && this.entertainmentData) {
+            const serviceKey = this.state.welcomeGiftService;
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            
+            if (serviceData) {
+                let welcomeGiftData;
+                let originalPrice;
+                let discountedPrice;
+                
+                if (serviceData.tiers) {
+                    const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                    if (tier && tier.welcomeGift) {
+                        welcomeGiftData = tier.welcomeGift;
+                        originalPrice = tier.price;
+                        discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, this.state[serviceKey].selectedTier);
+                    }
+                } else if (serviceData.welcomeGift) {
+                    welcomeGiftData = serviceData.welcomeGift;
+                    originalPrice = serviceData.price;
+                    discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
+                }
+                
+                if (welcomeGiftData) {
+                    const welcomeGiftDiscountValue = originalPrice - discountedPrice;
+                    totalTemporaryDiscount += welcomeGiftDiscountValue * welcomeGiftData.duration;
+                    discountsInfo.push({
+                        product: this.getServiceDisplayName(serviceKey),
+                        discountValue: welcomeGiftDiscountValue,
+                        discountPeriod: welcomeGiftData.duration
+                    });
+                }
             }
         }
 
