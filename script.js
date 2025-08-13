@@ -2099,6 +2099,32 @@ class UnifiedConfigurator {
             }
         }
 
+        // Datasim permanent discounts
+        if (this.state.datasim.enabled) {
+            const pricingInfo = this.calculateDatasimPricing();
+            if (pricingInfo.discountInfo.hasDiscount) {
+                const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
+                const monthlyDiscount = originalTotal - pricingInfo.total;
+                totalPermanentDiscount += monthlyDiscount * 12; // Annual amount
+                
+                const discounts = pricingInfo.discountInfo.discounts;
+                discounts.forEach(discount => {
+                    if (discount.type === 'internet') {
+                        discountsInfo.push({
+                            productName: 'Datasim kaarten',
+                            percentage: 50
+                        });
+                    }
+                    if (discount.type === 'unlimited') {
+                        discountsInfo.push({
+                            productName: 'Eerste datasim',
+                            percentage: 'gratis'
+                        });
+                    }
+                });
+            }
+        }
+
         return {
             total: totalPermanentDiscount,
             discounts: discountsInfo
