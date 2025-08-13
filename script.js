@@ -1338,7 +1338,7 @@ class UnifiedConfigurator {
 
     renderClosedStatesForDisabledProducts() {
         const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'freeSecurity', 'entertainment', 'entertainmentBox', 'wifiPods'];
-        
+
         allProducts.forEach(productType => {
             if (!this.state[productType].enabled) {
                 this.renderProductClosedState(productType);
@@ -1525,7 +1525,7 @@ class UnifiedConfigurator {
                 <div class="tier-price-container">
                     <div class="tier-price">€ ${discountPrice.toFixed(2).replace('.', ',')}/maand</div>
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        Combokorting geactiveerd
+                        <span>Combokorting geactiveerd</span>
                         <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
@@ -1748,8 +1748,8 @@ class UnifiedConfigurator {
             const minPrice = Math.min(...productData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price)));
             subtitleElement.textContent = `Vanaf €${minPrice.toFixed(2).replace('.', ',')}`;
         } else {
-            const discountPrice = this.getEntertainmentDiscountedPrice(productData.price);
-            subtitleElement.textContent = `€${discountPrice.toFixed(2).replace('.', ',')}`;
+            const discountedPrice = this.getEntertainmentDiscountedPrice(productData.price);
+            subtitleElement.textContent = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
         }
     }
 
@@ -2831,13 +2831,13 @@ class UnifiedConfigurator {
         if (!container || !this.entertainmentData) return;
 
         const services = ['netflix', 'streamz', 'disney', 'sport', 'cinema', 'hbo'];
-        
+
         container.innerHTML = services.map(serviceKey => {
             const serviceData = this.entertainmentData.entertainment[serviceKey];
             if (!serviceData) return '';
 
             const isSelected = this.state.selectedEntertainmentServices.has(serviceKey);
-            
+
             let priceText;
             if (serviceData.tiers) {
                 const minPrice = Math.min(...serviceData.tiers.map(tier => this.getEntertainmentDiscountedPrice(tier.price)));
@@ -2867,7 +2867,7 @@ class UnifiedConfigurator {
         if (!container) return;
 
         const selectedServices = Array.from(this.state.selectedEntertainmentServices);
-        
+
         if (selectedServices.length === 0) {
             container.innerHTML = '';
             container.style.display = 'none';
@@ -2890,14 +2890,14 @@ class UnifiedConfigurator {
         if (!serviceData) return '';
 
         const serviceName = this.getServiceDisplayName(serviceKey);
-        
+
         let contentHtml = '';
-        
+
         if (serviceData.tiers && serviceData.tiers.length > 1) {
             // Service with multiple tiers - show tier selector
             const currentTier = this.state[serviceKey].selectedTier || serviceData.defaultTier || 1;
             const selectedTier = serviceData.tiers.find(t => t.id === currentTier);
-            
+
             contentHtml = `
                 <div class="selected-service-content">
                     <div class="service-tier-selector">
@@ -3000,7 +3000,7 @@ class UnifiedConfigurator {
 
         // Check if this service should get the Welcome Gift
         const shouldGetWelcomeGift = this.state.welcomeGiftService === null;
-        
+
         if (shouldGetWelcomeGift) {
             this.assignWelcomeGift(serviceKey);
         }
@@ -3030,7 +3030,7 @@ class UnifiedConfigurator {
     removeEntertainmentService(serviceKey) {
         this.state[serviceKey].enabled = false;
         this.state.selectedEntertainmentServices.delete(serviceKey);
-        
+
         // Handle Welcome Gift removal
         this.removeWelcomeGift(serviceKey);
 
@@ -3166,13 +3166,13 @@ class UnifiedConfigurator {
         const currentTier = this.state[serviceKey].selectedTier || serviceData.defaultTier || 1;
         this.tempSelectedTier = currentTier;
 
-        // Hide/show tier selection subtitle based on whether service has multiple tiers
-        const subtitle = document.querySelector('.tier-selection-subtitle');
-        if (subtitle) {
+        // Hide/show tier selection based on whether service has multiple tiers
+        const tierSelectionContainer = document.getElementById('tier-selection-container');
+        if (tierSelectionContainer) {
             if (!serviceData.tiers || serviceData.tiers.length <= 1) {
-                subtitle.classList.add('hidden');
+                tierSelectionContainer.classList.add('hidden');
             } else {
-                subtitle.classList.remove('hidden');
+                tierSelectionContainer.classList.remove('hidden');
             }
         }
 
@@ -3275,10 +3275,16 @@ class UnifiedConfigurator {
             option.classList.remove('active');
         });
 
-        const selectedOption = document.querySelector(`.tier-selection-option:nth-child(${tierId})`);
+        // Find the corresponding button based on the tier ID
+        const selectedOption = Array.from(options).find(option => {
+            const tierIdMatch = option.onclick.toString().match(/app\.selectTempTier\((\d+)\)/);
+            return tierIdMatch && parseInt(tierIdMatch[1]) === tierId;
+        });
+
         if (selectedOption) {
             selectedOption.classList.add('active');
         }
+
 
         this.updateTierSheetDetails();
     }
@@ -3598,9 +3604,8 @@ class UnifiedConfigurator {
             highlightBlock.style.display = 'none';
         }
     }
-}
 
-// Bottom sheet and dialog methods
+    // Bottom sheet and dialog methods
     openAdvantageBottomSheet() {
         const overlay = document.getElementById('advantage-sheet-overlay');
         const title = document.getElementById('advantage-sheet-title');
@@ -3609,7 +3614,7 @@ class UnifiedConfigurator {
         if (!overlay || !title || !body) return;
 
         const { totalPermanentDiscount, totalTemporaryDiscount } = this.calculateTotal();
-        
+
         let content = '';
 
         if (totalPermanentDiscount > 0) {
@@ -3699,19 +3704,38 @@ class UnifiedConfigurator {
     }
 
     confirmStreamingTierSelection() {
-        if (this.currentStreamingService && this.tempSelectedTier) {
-            this.state[this.currentStreamingService].selectedTier = this.tempSelectedTier;
-            
-            if (this.isEditingStreamingService) {
-                this.renderSelectedEntertainmentServices();
-                this.refreshAllEntertainmentProductInfo();
-            }
-            
-            this.updateAllEntertainmentSubtitles();
-            this.updateCostSummary();
+        if (!this.currentStreamingService) return;
+
+        const serviceKey = this.currentStreamingService;
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+
+        // Check if this is a new service (not editing)
+        const isNewService = !this.state.selectedEntertainmentServices.has(serviceKey);
+
+        // Add or update service
+        this.state.selectedEntertainmentServices.add(serviceKey);
+        this.state[serviceKey].enabled = true;
+
+        // Set tier for services with tiers, or default tier for services without
+        if (serviceData.tiers && serviceData.tiers.length > 0) {
+            this.state[serviceKey].selectedTier = this.tempSelectedTier;
+        } else {
+            this.state[serviceKey].selectedTier = 1; // Default tier for services without tiers
         }
-        
+
+        // Assign Welcome Gift if this is a new service and no gift has been assigned
+        if (isNewService) {
+            this.assignWelcomeGift(serviceKey);
+        }
+
+        // Close the sheet
         this.closeStreamingTierSheet();
+
+        // Update UI
+        this.renderAvailableEntertainmentServices();
+        this.renderSelectedEntertainmentServices();
+        this.updateAllEntertainmentSubtitles();
+        this.updateCostSummary();
     }
 
     shouldShowEntertainmentBoxRecommendation() {
@@ -3719,7 +3743,7 @@ class UnifiedConfigurator {
         const hasSelectedServices = this.state.selectedEntertainmentServices.size > 0;
         const hasEntertainmentBox = this.state.entertainmentBox.enabled;
         const hasTv = this.state.tv.enabled;
-        
+
         return hasSelectedServices && !hasEntertainmentBox && !hasTv;
     }
 
@@ -3756,7 +3780,7 @@ class UnifiedConfigurator {
 
         this.updateCostSummary();
         this.closeEntertainmentBoxRecommendation();
-        
+
         // Continue to success page
         console.log('Order placed!', this.state);
         window.location.href = 'success.html';
@@ -3764,7 +3788,7 @@ class UnifiedConfigurator {
 
     continueWithoutEntertainmentBox() {
         this.closeEntertainmentBoxRecommendation();
-        
+
         // Continue to success page
         console.log('Order placed!', this.state);
         window.location.href = 'success.html';
