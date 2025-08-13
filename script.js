@@ -2117,6 +2117,29 @@ class UnifiedConfigurator {
             }
         }
 
+        // Welcome Gift discount period
+        if (this.state.welcomeGiftService && this.entertainmentData) {
+            const serviceKey = this.state.welcomeGiftService;
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            
+            if (serviceData) {
+                let welcomeGiftData;
+                
+                if (serviceData.tiers) {
+                    const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                    if (tier && tier.welcomeGift) {
+                        welcomeGiftData = tier.welcomeGift;
+                    }
+                } else if (serviceData.welcomeGift) {
+                    welcomeGiftData = serviceData.welcomeGift;
+                }
+                
+                if (welcomeGiftData && welcomeGiftData.duration) {
+                    periods.push(welcomeGiftData.duration);
+                }
+            }
+        }
+
         return periods;
     }
 
@@ -2167,6 +2190,39 @@ class UnifiedConfigurator {
                     product: 'WiFi-pods',
                     discountValue: podsOriginalPrice
                 });
+            }
+        }
+
+        // Welcome Gift discount
+        if (this.state.welcomeGiftService && this.entertainmentData) {
+            const serviceKey = this.state.welcomeGiftService;
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            
+            if (serviceData) {
+                let welcomeGiftData;
+                let originalPrice;
+                let discountedPrice;
+                
+                if (serviceData.tiers) {
+                    const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                    if (tier && tier.welcomeGift) {
+                        welcomeGiftData = tier.welcomeGift;
+                        originalPrice = tier.price;
+                        discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, this.state[serviceKey].selectedTier);
+                    }
+                } else if (serviceData.welcomeGift) {
+                    welcomeGiftData = serviceData.welcomeGift;
+                    originalPrice = serviceData.price;
+                    discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price, false, serviceKey);
+                }
+                
+                if (welcomeGiftData && welcomeGiftData.duration === period) {
+                    const welcomeGiftDiscountValue = originalPrice - discountedPrice;
+                    expiringDiscounts.push({
+                        product: this.getServiceDisplayName(serviceKey),
+                        discountValue: welcomeGiftDiscountValue
+                    });
+                }
             }
         }
 
