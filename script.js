@@ -70,6 +70,11 @@ class UnifiedConfigurator {
             wifiPods: {
                 enabled: false,
                 count: 1
+            },
+            // Datasim state
+            datasim: {
+                enabled: false,
+                count: 1
             }
         };
         this.init();
@@ -395,6 +400,14 @@ class UnifiedConfigurator {
             });
         }
 
+        // Datasim toggle (only if element exists)
+        const datasimToggle = document.getElementById('datasim-toggle');
+        if (datasimToggle) {
+            datasimToggle.addEventListener('change', (e) => {
+                this.toggleProduct('datasim', e.target.checked);
+            });
+        }
+
         // Product header click listeners
         this.setupProductHeaderListeners();
 
@@ -440,7 +453,8 @@ class UnifiedConfigurator {
             { id: 'entertainment', headerSelector: '#entertainment-block .product-header', toggleSelector: '#entertainment-toggle' },
             { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' },
             { id: 'wifiPods', headerSelector: '#wifi-pods-block .product-header', toggleSelector: '#wifi-pods-toggle' },
-            { id: 'security', headerSelector: '#security-block .product-header', toggleSelector: '#security-toggle' }
+            { id: 'security', headerSelector: '#security-block .product-header', toggleSelector: '#security-toggle' },
+            { id: 'datasim', headerSelector: '#datasim-block .product-header', toggleSelector: '#datasim-toggle' }
         ];
 
         allProducts.forEach(product => {
@@ -469,7 +483,7 @@ class UnifiedConfigurator {
     }
 
     updateProductHeaderStates() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security', 'datasim'];
 
         allProducts.forEach(productId => {
             let blockId;
@@ -771,6 +785,26 @@ class UnifiedConfigurator {
                 this.renderProductClosedState('wifiPods');
             }
         }
+        // Handle Datasim toggle
+        else if (productType === 'datasim') {
+            const content = document.getElementById('datasim-content');
+
+            if (enabled) {
+                this.removeProductClosedState('datasim');
+                if (content) content.style.display = 'block';
+                this.state.datasim.count = 1;
+                this.updateDatasimInfo();
+
+                // Smooth scroll to ensure the product block is visible
+                setTimeout(() => {
+                    const productBlock = document.getElementById('datasim-block');
+                    this.scrollToElementSmooth(productBlock);
+                }, 100);
+            } else {
+                if (content) content.style.display = 'none';
+                this.renderProductClosedState('datasim');
+            }
+        }
         // Individual entertainment services are handled within the entertainment interface
 
         this.updateProductHeaderStates();
@@ -936,6 +970,66 @@ class UnifiedConfigurator {
         `;
 
         this.updateWifiPodsStandaloneCounter();
+    }
+
+    // Datasim methods
+    increaseDatasim() {
+        const maxSims = this.data.products.datasim.maxSims;
+        if (this.state.datasim.count < maxSims) {
+            this.state.datasim.count++;
+            this.updateDatasimInfo();
+            this.updateDatasimCounter();
+            this.updateCostSummary();
+        }
+    }
+
+    decreaseDatasim() {
+        if (this.state.datasim.count > 1) {
+            this.state.datasim.count--;
+            this.updateDatasimInfo();
+            this.updateDatasimCounter();
+            this.updateCostSummary();
+        }
+    }
+
+    updateDatasimCounter() {
+        const counterElement = document.getElementById('datasim-count');
+        const decreaseBtn = document.getElementById('datasim-decrease');
+        const increaseBtn = document.getElementById('datasim-increase');
+
+        if (counterElement) {
+            counterElement.textContent = this.state.datasim.count;
+        }
+
+        if (decreaseBtn) {
+            decreaseBtn.disabled = this.state.datasim.count <= 1;
+        }
+
+        if (increaseBtn) {
+            increaseBtn.disabled = this.state.datasim.count >= this.data.products.datasim.maxSims;
+        }
+    }
+
+    updateDatasimInfo() {
+        const infoContainer = document.getElementById('datasim-info');
+        if (!infoContainer || !this.data) return;
+
+        const datasimData = this.data.products.datasim;
+        const currentSims = this.state.datasim.count;
+        const totalPrice = currentSims * datasimData.pricePerSim;
+
+        const summaryItems = datasimData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+
+        const priceHtml = `<div class="tier-price">€ ${totalPrice.toFixed(2).replace('.', ',')}/maand</div>`;
+
+        infoContainer.innerHTML = `
+            <ul class="tier-details">
+                ${summaryItems}
+            </ul>
+            ${priceHtml}
+        `;
+
+        this.updateDatasimCounter();
     }
 
     // Mobile methods
@@ -1632,6 +1726,15 @@ class UnifiedConfigurator {
                 const podsDiscountedPrice = 0; // Free for promotional period
                 total += podsDiscountedPrice;
                 totalTemporaryDiscount += podsOriginalPrice; // Full discount for promotional period
+            }
+        }
+
+        // Datasim cost
+        if (this.state.datasim.enabled) {
+            const datasimData = this.data.products.datasim;
+            if (this.state.datasim.count > 0) {
+                const datasimPrice = this.state.datasim.count * datasimData.pricePerSim;
+                total += datasimPrice;
             }
         }
 
@@ -3297,7 +3400,7 @@ class UnifiedConfigurator {
 
     // Add method to render closed states for all disabled products
     renderClosedStatesForDisabledProducts() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security', 'datasim'];
 
         allProducts.forEach(productType => {
             // Only render closed state if the product exists on the DOM and is disabled
@@ -3471,6 +3574,9 @@ class UnifiedConfigurator {
             return wifiPodsData.pricePerPod; // Price for 1 pod
         } else if (productType === 'security') {
             return this.data.products.security.price;
+        } else if (productType === 'datasim') {
+            const datasimData = this.data.products.datasim;
+            return datasimData.pricePerSim; // Price for 1 datasim
         }
         return 0;
     }
