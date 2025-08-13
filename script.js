@@ -30,6 +30,9 @@ class UnifiedConfigurator {
             fixedPhone: {
                 enabled: false
             },
+            security: {
+                enabled: false
+            },
             // Main entertainment toggle state
             entertainment: {
                 enabled: false
@@ -298,6 +301,13 @@ class UnifiedConfigurator {
             });
         }
 
+        const securityToggle = document.getElementById('security-toggle');
+        if (securityToggle) {
+            securityToggle.addEventListener('change', (e) => {
+                this.toggleProduct('security', e.target.checked);
+            });
+        }
+
         // TV Entertainment Box checkbox
         const tvEntertainmentBoxCheckbox = document.getElementById('tv-entertainment-box-checkbox');
         if (tvEntertainmentBoxCheckbox) {
@@ -429,7 +439,8 @@ class UnifiedConfigurator {
             { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' },
             { id: 'entertainment', headerSelector: '#entertainment-block .product-header', toggleSelector: '#entertainment-toggle' },
             { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' },
-            { id: 'wifiPods', headerSelector: '#wifi-pods-block .product-header', toggleSelector: '#wifi-pods-toggle' }
+            { id: 'wifiPods', headerSelector: '#wifi-pods-block .product-header', toggleSelector: '#wifi-pods-toggle' },
+            { id: 'security', headerSelector: '#security-block .product-header', toggleSelector: '#security-toggle' }
         ];
 
         allProducts.forEach(product => {
@@ -458,7 +469,7 @@ class UnifiedConfigurator {
     }
 
     updateProductHeaderStates() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
 
         allProducts.forEach(productId => {
             let blockId;
@@ -569,7 +580,7 @@ class UnifiedConfigurator {
         this.state[productType].enabled = enabled;
 
         // Handle telecom products
-        if (['internet', 'mobile', 'tv', 'fixedPhone'].includes(productType)) {
+        if (['internet', 'mobile', 'tv', 'fixedPhone', 'security'].includes(productType)) {
             const contentId = productType === 'fixedPhone' ? 'fixed-phone-content' : `${productType}-content`;
             const content = document.getElementById(contentId);
 
@@ -628,6 +639,8 @@ class UnifiedConfigurator {
                     this.updateTvBundleHighlight();
                 } else if (productType === 'fixedPhone') {
                     this.updateFixedPhoneInfo();
+                } else if (productType === 'security') {
+                    this.updateSecurityInfo();
                 }
 
                 // Smooth scroll to ensure the product block is visible
@@ -1250,6 +1263,26 @@ class UnifiedConfigurator {
         `;
     }
 
+    // Security methods
+    updateSecurityInfo() {
+        const securityData = this.data.products.security;
+        const infoContainer = document.getElementById('security-info');
+
+        if (!infoContainer) {
+            console.error('Security info container not found');
+            return;
+        }
+
+        const summaryItems = securityData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+
+        infoContainer.innerHTML = `
+            <ul class="tier-details">
+                ${summaryItems}
+            </ul>
+            <div class="tier-price">€ ${securityData.price.toFixed(2).replace('.', ',')}/maand</div>
+        `;
+    }
+
     // Entertainment methods
     renderEntertainmentTiers(productType) {
         const tiersContainer = document.getElementById(`${productType}-tiers`);
@@ -1576,6 +1609,12 @@ class UnifiedConfigurator {
         if (this.state.fixedPhone.enabled) {
             const phoneData = this.data.products.fixedPhone;
             total += phoneData.price;
+        }
+
+        // Security cost
+        if (this.state.security.enabled) {
+            const securityData = this.data.products.security;
+            total += securityData.price;
         }
 
         // Entertainment Box cost (only when standalone - not part of TV)
@@ -2432,6 +2471,22 @@ class UnifiedConfigurator {
             }
         }
 
+        // Security
+        if (this.state.security && this.state.security.enabled) {
+            const securityData = this.data.products.security;
+            if (securityData && securityData.price !== undefined) {
+                overviewHtml += `
+                    <div class="overview-group">
+                        <div class="overview-group-title">Beveiliging</div>
+                        <div class="overview-item">
+                            <span class="overview-item-name">Beveiliging</span>
+                            <span class="overview-item-price">€${securityData.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
 
 
         // Entertainment services
@@ -3240,7 +3295,7 @@ class UnifiedConfigurator {
 
     // Add method to render closed states for all disabled products
     renderClosedStatesForDisabledProducts() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
 
         allProducts.forEach(productType => {
             // Only render closed state if the product exists in the DOM and is disabled
@@ -3408,6 +3463,8 @@ class UnifiedConfigurator {
         } else if (productType === 'wifiPods') {
             const wifiPodsData = this.data.products.wifiPods;
             return wifiPodsData.pricePerPod; // Price for 1 pod
+        } else if (productType === 'security') {
+            return this.data.products.security.price;
         }
         return 0;
     }
