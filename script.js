@@ -1844,7 +1844,8 @@ class UnifiedConfigurator {
             mobile: this.state.mobile,
             tv: this.state.tv,
             entertainmentBox: this.state.entertainmentBox,
-            wifiPods: this.state.wifiPods
+            wifiPods: this.state.wifiPods,
+            welcomeGiftService: this.state.welcomeGiftService
         });
 
         // Check all temporary discount periods - only include if discount is actually applied
@@ -1902,6 +1903,30 @@ class UnifiedConfigurator {
             if (wifiPodsData && wifiPodsData.discountPeriod) {
                 periods.push(wifiPodsData.discountPeriod);
                 console.log("Added WiFi pods discount period:", wifiPodsData.discountPeriod);
+            }
+        }
+
+        // Welcome Gift discount period
+        if (this.state.welcomeGiftService && this.entertainmentData) {
+            const serviceKey = this.state.welcomeGiftService;
+            const serviceData = this.entertainmentData.entertainment[serviceKey];
+            
+            if (serviceData) {
+                let welcomeGiftData;
+                
+                if (serviceData.tiers) {
+                    const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
+                    if (tier && tier.welcomeGift) {
+                        welcomeGiftData = tier.welcomeGift;
+                    }
+                } else if (serviceData.welcomeGift) {
+                    welcomeGiftData = serviceData.welcomeGift;
+                }
+                
+                if (welcomeGiftData && welcomeGiftData.duration) {
+                    periods.push(welcomeGiftData.duration);
+                    console.log("Added Welcome Gift discount period:", welcomeGiftData.duration);
+                }
             }
         }
 
@@ -1984,7 +2009,10 @@ class UnifiedConfigurator {
         console.log("=== DEBUG: Updating summary title ===");
         console.log("Total temporary discount:", totalTemporaryDiscount);
 
-        if (totalTemporaryDiscount > 0) {
+        // Check if Welcome Gift is active (has temporary discount effect)
+        const hasWelcomeGift = this.state.welcomeGiftService !== null;
+        
+        if (totalTemporaryDiscount > 0 || hasWelcomeGift) {
             const shortestDuration = this.getShortestTemporaryDiscountPeriod();
             const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
             const titleText = `Eerste ${shortestDuration} ${durationText}`;
