@@ -1063,8 +1063,33 @@ class UnifiedConfigurator {
                 ${summaryItems}
             </ul>
             ${priceHtml}
-            ${promoHighlightHtml}
         `;
+
+        // Add promo-highlight below tooltip-link if no combo discount is applied
+        if (!pricingInfo.discountInfo.hasDiscount && promoHighlightHtml) {
+            const datasimContent = document.getElementById('datasim-content');
+            const tooltipLink = datasimContent.querySelector('.tooltip-link');
+            
+            // Remove any existing promo-highlight first
+            const existingPromo = datasimContent.querySelector('.promo-highlight');
+            if (existingPromo) {
+                existingPromo.remove();
+            }
+            
+            // Insert promo-highlight after tooltip-link
+            if (tooltipLink) {
+                tooltipLink.insertAdjacentHTML('afterend', promoHighlightHtml);
+            }
+        } else {
+            // Remove promo-highlight if combo discount is applied
+            const datasimContent = document.getElementById('datasim-content');
+            if (datasimContent) {
+                const existingPromo = datasimContent.querySelector('.promo-highlight');
+                if (existingPromo) {
+                    existingPromo.remove();
+                }
+            }
+        }
 
         this.updateDatasimCounter();
     }
