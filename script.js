@@ -3783,7 +3783,28 @@ class UnifiedConfigurator {
             return this.data.products.security?.price || 0;
         } else if (productType === 'datasim') {
             const datasimData = this.data.products.datasim;
-            return datasimData?.pricePerSim || 0;
+            if (!datasimData) return 0;
+            
+            let price = datasimData.pricePerSim;
+            
+            // Check for unlimited mobile discount (first datasim free)
+            const hasUnlimitedMobile = this.state.mobile.enabled && 
+                this.state.mobile.simcards.some(simcard => {
+                    const tier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
+                    return tier && tier.id === 3; // Assuming tier 3 is unlimited
+                });
+            
+            if (hasUnlimitedMobile) {
+                return 0; // First datasim is free
+            }
+            
+            // Check for internet discount (50% off)
+            const hasInternetDiscount = this.state.internet.enabled;
+            if (hasInternetDiscount) {
+                price = price * 0.5; // 50% discount
+            }
+            
+            return price;
         }
         return 0;
     }
