@@ -2846,21 +2846,8 @@ class UnifiedConfigurator {
         if (this.state.datasim && this.state.datasim.enabled) {
             const pricingInfo = this.calculateDatasimPricing();
             if (pricingInfo.discountInfo.basePrice !== undefined) {
-                let priceHtml;
-                if (pricingInfo.discountInfo.hasDiscount) {
-                    const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
-                    priceHtml = `
-                        <div class="price-layout">
-                            <div class="price-main">
-                                <span class="original-price">€${originalTotal.toFixed(2).replace('.', ',')}</span>
-                                <span class="discount-price">€${pricingInfo.total.toFixed(2).replace('.', ',')}</span>
-                            </div>
-                            <div class="discount-duration">combokorting</div>
-                        </div>
-                    `;
-                } else {
-                    priceHtml = `€${pricingInfo.total.toFixed(2).replace('.', ',')}`;
-                }
+                // Always show simple price format for datasim in overview
+                const priceHtml = `€${pricingInfo.total.toFixed(2).replace('.', ',')}`;
 
                 overviewHtml += `
                     <div class="overview-group">
