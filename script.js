@@ -1353,9 +1353,7 @@ class UnifiedConfigurator {
     // Streaming service tier selection methods
     selectTempTier(tierId) {
         this.tempSelectedTier = tierId;
-        this.renderStreamingTierSelection();
-        this.updateStreamingTierDetails();
-        this.updateStreamingTierPricing();
+        this.updateTierSheetDetails();
     }
 
     openStreamingTierSheet(serviceKey, isEditing = false) {
