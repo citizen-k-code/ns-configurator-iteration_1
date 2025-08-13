@@ -1398,7 +1398,7 @@ class UnifiedConfigurator {
         if (!serviceData.tiers) return;
 
         // Check if this is the Welcome Gift service
-        const isWelcomeGift = this.isEditingStreamingService ? 
+        const isWelcomeGift = this.isEditingStreamingService ?
             (this.state.welcomeGiftService === this.currentStreamingService) :
             (this.state.welcomeGiftService === null);
 
@@ -1499,7 +1499,7 @@ class UnifiedConfigurator {
             // Adding new service
             this.state[this.currentStreamingService].enabled = true;
             this.state.selectedEntertainmentServices.add(this.currentStreamingService);
-            
+
             // Assign welcome gift if this is the first service and no gift has been assigned
             if (this.state.welcomeGiftService === null) {
                 this.assignWelcomeGift(this.currentStreamingService);
@@ -1521,7 +1521,7 @@ class UnifiedConfigurator {
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
         overlay.style.display = 'none';
         document.body.style.overflow = '';
-        
+
         this.currentStreamingService = null;
         this.tempSelectedTier = null;
         this.isEditingStreamingService = false;
@@ -1602,6 +1602,7 @@ class UnifiedConfigurator {
     }
 
     updateEntertainmentProductInfo(productType) {
+
         if (!this.entertainmentData) return;
 
         const productData = this.entertainmentData.entertainment[productType];
@@ -1640,7 +1641,7 @@ class UnifiedConfigurator {
 
     getEntertainmentDiscountedPrice(originalPrice, isAddingSecondService = false, serviceKey = null, tier = null) {
 
-        console.log("Checking Welcome Gift");
+        console.log("Checking Welcome Gift", this.state);
 
         // Check if this service has Welcome Gift
         if (serviceKey && this.state.welcomeGiftService === serviceKey) {
@@ -4124,15 +4125,19 @@ class UnifiedConfigurator {
             details.innerHTML = `<ul>${summaryItems}</ul>`;
         }
 
+        console.log("hier bepalen we de initiële prijs:", price);
+
         if (pricing) {
             // Check if this is the Welcome Gift service
             // For new services (not editing), check if no service has been assigned the gift yet
             // For editing services, check if this specific service currently has the gift
-            const isWelcomeGift = this.isEditingStreamingService ? 
+            const isWelcomeGift = this.isEditingStreamingService ?
                 (this.state.welcomeGiftService === this.currentStreamingService) :
                 (this.state.welcomeGiftService === null);
 
             let pricingHtml;
+
+
 
             if (isWelcomeGift && ((tier && tier.welcomeGift) || (!tier && serviceData.welcomeGift))) {
                 // Show Welcome Gift pricing with promo badge
@@ -4313,7 +4318,7 @@ class UnifiedConfigurator {
             // Replace placeholders in title
             dynamicTitle = dynamicTitle
                 .replace('##DISCOUNT_NAME##', discountName);
-                //.replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
+            //.replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
 
             // Replace placeholders in content
             const discountValue = originalPrice - discountedPrice;
