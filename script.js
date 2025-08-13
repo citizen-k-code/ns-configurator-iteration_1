@@ -1349,13 +1349,32 @@ class UnifiedConfigurator {
         if (serviceKey && this.state.welcomeGiftService === serviceKey) {
             const serviceData = this.entertainmentData.entertainment[serviceKey];
             if (serviceData) {
+                let welcomeGiftPrice;
+                
                 if (serviceData.tiers && tier) {
                     const tierData = serviceData.tiers.find(t => t.id === tier);
                     if (tierData && tierData.welcomeGift) {
-                        return tierData.welcomeGift.price;
+                        welcomeGiftPrice = tierData.welcomeGift.price;
                     }
                 } else if (serviceData.welcomeGift) {
-                    return serviceData.welcomeGift.price;
+                    welcomeGiftPrice = serviceData.welcomeGift.price;
+                }
+                
+                if (welcomeGiftPrice !== undefined) {
+                    // Check if entertainment combo discount should also apply to Welcome Gift
+                    const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                    const discount = this.entertainmentData.discounts.entertainment_combo;
+                    
+                    const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+                        (enabledProducts === 1 && isAddingSecondService);
+                    
+                    if (discount.enabled && willHaveMinProducts) {
+                        // Apply 5% combo discount to the original price, then subtract from welcome gift price
+                        const comboDiscountAmount = originalPrice * (discount.percentage / 100);
+                        return welcomeGiftPrice - comboDiscountAmount;
+                    }
+                    
+                    return welcomeGiftPrice;
                 }
             }
         }
@@ -1401,6 +1420,21 @@ class UnifiedConfigurator {
             serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier).price :
             serviceData.price;
 
+        // Check if entertainment combo discount is also applied
+        const enabledProducts = this.getEnabledEntertainmentProductsCount();
+        const discount = this.entertainmentData.discounts.entertainment_combo;
+        const hasComboDiscount = discount.enabled && enabledProducts >= discount.minProducts;
+
+        let comboDiscountTag = '';
+        if (hasComboDiscount) {
+            comboDiscountTag = `
+                <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                    <span>5% permanente korting toegepast</span>
+                    <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                </div>
+            `;
+        }
+
         return `
             <div class="tier-price-container">
                 <div class="price-with-badge">
@@ -1411,6 +1445,7 @@ class UnifiedConfigurator {
                     </div>
                 </div>
                 <div class="discount-info">gedurende ${welcomeGiftData.duration}  maanden</div>
+                ${comboDiscountTag}
             </div> 
         `;
     }
@@ -3702,7 +3737,14 @@ class UnifiedConfigurator {
                 // Show Welcome Gift pricing with promo badge
                 const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
                 const originalPrice = price;
-                const welcomePrice = welcomeGiftData.price;
+                
+                // Calculate final Welcome Gift price (including combo discount if applicable)
+                const finalWelcomePrice = this.getEntertainmentDiscountedPrice(originalPrice, false, this.currentStreamingService, this.tempSelectedTier);
+                
+                // Check if entertainment combo discount is also applied
+                const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                const discount = this.entertainmentData.discounts.entertainment_combo;
+                const hasComboDiscount = discount.enabled && enabledProducts >= discount.minProducts;
 
                 pricingHtml = `
                     <div class="tier-pricing">
@@ -3710,12 +3752,23 @@ class UnifiedConfigurator {
                             <span class="welcome-gift-badge">Welkomstcadeau</span>
                             <div class="price-content">
                                 <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€${welcomePrice.toFixed(2).replace('.', ',')}/maand</div>
+                                <div class="discount-price">€${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
                             </div>
                         </div>
                         <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
-                    </div>
                 `;
+
+                // Add combo discount tag if applicable
+                if (hasComboDiscount) {
+                    pricingHtml += `
+                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
+                            <span class="discount-tag-text">5% permanente korting toegepast</span>
+                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
+                        </div>
+                    `;
+                }
+
+                pricingHtml += `</div>`;
             } else {
                 // Regular pricing
                 const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
