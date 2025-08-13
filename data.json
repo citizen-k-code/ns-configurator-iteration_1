@@ -173,6 +173,22 @@
         "both": ""
       }
     },
+    "freeSecurity": {
+      "title": "Free Security",
+      "tooltip": "",
+      "closedState": {
+        "summary": "Bescherm je digitale leven<br />€ ##PRICE##/maand",
+        "showHighlight": false,
+        "highlight": null
+      },
+      "summary": "<strong>Geavanceerde beveiliging</strong> voor al je apparaten, <strong>VPN-bescherming</strong> voor veilig surfen, <strong>Identiteitsbescherming</strong> tegen cybercriminaliteit",
+      "price": 5.00,
+      "discountCopy": {
+        "temporaryOnly": "",
+        "permanentOnly": "",
+        "both": ""
+      }
+    },
     "entertainment": {
       "title": "Entertainment",
       "closedState": {
@@ -277,6 +293,10 @@
                 "title": "Probeer het gratis uit",
                 "content": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil."
             }
+        },
+        "freeSecurity": {
+            "summary": "Bescherm je digitale leven<br /><strong>€ ##PRICE##/maand</strong>",
+            "highlight": null
         }
     },
   "modalTitles": {
