@@ -198,8 +198,19 @@
       }
     },
     "wifiPods": {
-      "title": "Wat is een slimme wifi-pod?",
-      "content": "<p>Een slimme wifi-pod is een uitbreiding van je internetnetwerk thuis. Je gebruikt het om je wifi-signaal te versterken op een plek waar je wifi minder sterk is. Zo krijg je overal in huis een stabiele en snelle verbinding.</p><div class='paragraph'><h3>Hoeveel slimme wifi-pods heb ik nodig?</h3><p>Je kies je aantal wifi-pods op basis van de grootte van je woning. Zo bereik je het verste punt vanaf je modem. Je kan altijd extra wifi-pods bijbestellen als dat nodig is.</p><ul><li><h5>1 wifi-pod</h5>Woning of groot appartement zonder verdiepingen.</li><li><h5>2 wifi-pods</h5>Woning of appartement met 1 verdieping.</li><li><h5>3 wifi-pods</h5>Grote woning met 2 verdiepingen.</li><li><h5>4 wifi-pods</h5>Grote woning met 3 or meer verdiepingen.</li></ul></div>"
+      "title": "Slimme wifi-pods",
+      "summary": "Versterk je wifi-signaal overal in huis, Tot 5 wifi-pods mogelijk, Draadloze installatie",
+      "pricePerPod": 3.00,
+      "maxPods": 5,
+      "discountPeriod": 3,
+      "promoName": "Gratis proberen",
+      "closedState": {
+        "summary": "Versterk je wifi met slimme wifi-pods<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
+        "highlight": {
+          "title": "Probeer het gratis uit",
+          "content": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil."
+        }
+      }
     },
     "security": {
       "title": "Beveiliging",
