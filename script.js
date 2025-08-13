@@ -4139,7 +4139,7 @@ class UnifiedConfigurator {
                 const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
                 const originalPrice = price;
 
-                // Calculate final Welcome Gift price
+                // Calculate final Welcome Gift price using the same logic as getEntertainmentDiscountedPrice
                 let finalWelcomePrice = welcomeGiftData.price;
 
                 // Check if entertainment combo discount should also apply to Welcome Gift
@@ -4180,11 +4180,11 @@ class UnifiedConfigurator {
 
                 pricingHtml += `</div>`;
             } else {
-                // Regular pricing
+                // Regular pricing - use the same logic as in getEntertainmentDiscountedPrice
                 const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
                 const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
 
-                const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
+                const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService, this.currentStreamingService, tier ? tier.id : 1);
                 const hasDiscount = discountedPrice < price;
 
                 pricingHtml = `
