@@ -374,6 +374,32 @@
                         <div class="tier-info" id="security-info"></div>
                     </div>
                 </div>
+
+                <!-- Datasim Product Card -->
+                <div class="product-card" id="datasim-block">
+                    <div class="product-header">
+                        <div class="product-title">
+                            <span>Datasim</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="datasim-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="product-content" id="datasim-content" style="display: none;">
+                        <div class="tooltip-link" onclick="app.openTooltipSheet('datasim')">Wat kan je doen met een datasim?
+                            <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
+                        </div>
+                        <div class="datasim-stepper">
+                            <button class="stepper-btn" onclick="app.decreaseDatasim()"
+                                id="datasim-decrease">−</button>
+                            <span class="stepper-value" id="datasim-count">1</span>
+                            <button class="stepper-btn" onclick="app.increaseDatasim()"
+                                id="datasim-increase">+</button>
+                        </div>
+                        <div class="tier-info" id="datasim-info"></div>
+                    </div>
+                </div>
             </div>
         </div>
 

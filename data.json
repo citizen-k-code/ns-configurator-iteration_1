@@ -227,6 +227,16 @@
         "permanentOnly": "",
         "both": ""
       }
+    },
+    "datasim": {
+      "title": "Datasim",
+      "summary": "Mobiele data voor je andere devices, ideaal voor je ipad",
+      "pricePerSim": 5.00,
+      "maxSims": 5,
+      "closedState": {
+        "summary": "Voeg datasims toe voor je andere devices<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
+        "highlight": null
+      }
     }
   },
   "discounts": {
@@ -291,6 +301,10 @@
         "security": {
             "summary": "Bescherm je digitale leven volledig gratis<br /><strong>€ ##PRICE##/maand</strong>",
             "highlight": null
+        },
+        "datasim": {
+            "summary": "Voeg datasims toe voor je andere devices<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
+            "highlight": null
         }
     },
   "modalTitles": {
@@ -328,6 +342,10 @@
     "wifi_pods": {
       "title": "Wat is een slimme wifi-pod?",
       "content": "<p>Een slimme wifi-pod is een uitbreiding van je internetnetwerk thuis. Je gebruikt het om je wifi-signaal te versterken op een plek waar je wifi minder sterk is. Zo krijg je overal in huis een stabiele en snelle verbinding.</p><div class='paragraph'><h3>Hoeveel slimme wifi-pods heb ik nodig?</h3><p>Je kies je aantal wifi-pods op basis van de grootte van je woning. Zo bereik je het verste punt vanaf je modem. Je kan altijd extra wifi-pods bijbestellen als dat nodig is.</p><ul><li><h5>1 wifi-pod</h5>Woning of groot appartement zonder verdiepingen.</li><li><h5>2 wifi-pods</h5>Woning of appartement met 1 verdieping.</li><li><h5>3 wifi-pods</h5>Grote woning met 2 verdiepingen.</li><li><h5>4 wifi-pods</h5>Grote woning met 3 or meer verdiepingen.</li></ul></div>"
+    },
+    "datasim": {
+      "title": "Wat kan je doen met een datasim?",
+      "content": "<p>Een datasim is perfect voor je tablet, laptop of andere apparaten die mobiele data nodig hebben. Je deelt je databundel niet met je hoofdsimkaart.</p><div class='paragraph'><h3>Wanneer is een datasim handig?</h3><ul><li>Voor je iPad of tablet onderweg</li><li>Voor je laptop als je geen wifi hebt</li><li>Voor smartwatches of andere wearables</li><li>Als backup internetverbinding</li></ul></div>"
     }
   }
 }

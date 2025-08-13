@@ -665,17 +665,17 @@ class UnifiedConfigurator {
                         this.state.entertainmentBox.enabled = false;
                         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
                         const entertainmentBoxContent = document.getElementById('entertainment-box-content');
-                        
+
                         if (entertainmentBoxToggle) {
                             entertainmentBoxToggle.checked = false;
                         }
                         if (entertainmentBoxContent) {
                             entertainmentBoxContent.style.display = 'none';
                         }
-                        
+
                         this.renderProductClosedState('entertainmentBox');
                     }
-                    
+
                     // Update Entertainment Hub selection visibility
                     this.updateEntertainmentHubSelectionVisibility();
                     // Update TV bundle highlight visibility
@@ -3267,6 +3267,8 @@ class UnifiedConfigurator {
             blockId = 'entertainment-box-block';
         } else if (productType === 'wifiPods') {
             blockId = 'wifi-pods-block';
+        } else if (productType === 'datasim') {
+            blockId = 'datasim-block';
         } else {
             blockId = `${productType}-block`;
         }
@@ -3298,7 +3300,7 @@ class UnifiedConfigurator {
         const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
 
         allProducts.forEach(productType => {
-            // Only render closed state if the product exists in the DOM and is disabled
+            // Only render closed state if the product exists on the DOM and is disabled
             let blockId;
             if (productType === 'fixedPhone') {
                 blockId = 'fixed-phone-block';
@@ -3306,6 +3308,8 @@ class UnifiedConfigurator {
                 blockId = 'entertainment-box-block';
             } else if (productType === 'wifiPods') {
                 blockId = 'wifi-pods-block';
+            } else if (productType === 'datasim') {
+                blockId = 'datasim-block';
             } else {
                 blockId = `${productType}-block`;
             }
@@ -3327,6 +3331,8 @@ class UnifiedConfigurator {
             blockId = 'entertainment-box-block';
         } else if (productType === 'wifiPods') {
             blockId = 'wifi-pods-block';
+        } else if (productType === 'datasim') {
+            blockId = 'datasim-block';
         } else {
             blockId = `${productType}-block`;
         }
@@ -3870,7 +3876,7 @@ class UnifiedConfigurator {
                 if (isWelcomeGift && tier.welcomeGift) {
                     // For Welcome Gift, check if combo discount should also apply
                     let finalWelcomePrice = tier.welcomeGift.price;
-                    
+
                     const enabledProducts = this.getEnabledEntertainmentProductsCount();
                     const discount = this.entertainmentData.discounts.entertainment_combo;
                     const willHaveMinProducts = enabledProducts >= discount.minProducts ||
@@ -3880,14 +3886,14 @@ class UnifiedConfigurator {
                         const comboDiscountAmount = tier.price * (discount.percentage / 100);
                         finalWelcomePrice = Math.max(0, tier.welcomeGift.price - comboDiscountAmount);
                     }
-                    
+
                     priceText = `${finalWelcomePrice.toFixed(2).replace('.', ',')}`;
                     priceClass = 'promotional-price';
                 } else {
                     // Check if this would be the second service to show discounted price
                     const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
                     const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
-                    
+
                     const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, isAddingSecondService, serviceKey, tier.id);
                     priceText = `${discountedPrice.toFixed(2).replace('.', ',')}`;
                 }
@@ -4176,8 +4182,8 @@ class UnifiedConfigurator {
 
             // Replace placeholders in title
             dynamicTitle = dynamicTitle
-                .replace('##DISCOUNT_NAME##', discountName)
-                .replace('##PRODUCT_NAME##', productName);
+                .replace('##DISCOUNT_NAME##', discountName);
+                //.replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
 
             // Replace placeholders in content
             const discountValue = originalPrice - discountedPrice;
@@ -4258,7 +4264,7 @@ class UnifiedConfigurator {
         // Show the selection section when TV is not activated and entertainment is activated
         if (!tvEnabled && entertainmentEnabled) {
             selectionSection.style.display = 'block';
-            
+
             // Always select "separate" radio button by default when section is shown
             const separateAppsRadio = document.getElementById('separate-apps-radio');
             if (separateAppsRadio) {
