@@ -1062,7 +1062,7 @@ class UnifiedConfigurator {
             `;
         } else {
             priceHtml = `<div class="tier-price">€ ${pricingInfo.total.toFixed(2).replace('.', ',')}/maand</div>`;
-            
+
             // Add promo-highlight when no combo discount is applied
             const closedStateData = this.data.closedStates.datasim;
             if (closedStateData && closedStateData.highlight) {
@@ -1086,13 +1086,13 @@ class UnifiedConfigurator {
         if (!pricingInfo.discountInfo.hasDiscount && promoHighlightHtml) {
             const datasimContent = document.getElementById('datasim-content');
             const tooltipLink = datasimContent.querySelector('.tooltip-link');
-            
+
             // Remove any existing promo-highlight first
             const existingPromo = datasimContent.querySelector('.promo-highlight');
             if (existingPromo) {
                 existingPromo.remove();
             }
-            
+
             // Insert promo-highlight after tooltip-link
             if (tooltipLink) {
                 tooltipLink.insertAdjacentHTML('afterend', promoHighlightHtml);
@@ -1323,12 +1323,12 @@ class UnifiedConfigurator {
         const datasimData = this.data.products.datasim;
         const basePrice = datasimData.pricePerSim;
         let discounts = [];
-        
+
         // Check for internet discount (50% off each datasim)
         const hasInternetDiscount = this.state.internet.enabled;
-        
+
         // Check for unlimited mobile discount (first datasim free)
-        const hasUnlimitedMobile = this.state.mobile.enabled && 
+        const hasUnlimitedMobile = this.state.mobile.enabled &&
             this.state.mobile.simcards.some(simcard => {
                 const tier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                 return tier && tier.id === 3; // Assuming tier 3 is unlimited
@@ -1365,7 +1365,7 @@ class UnifiedConfigurator {
 
         for (let i = 0; i < count; i++) {
             let price = discountInfo.basePrice;
-            
+
             // Apply unlimited mobile discount to first datasim
             if (i === 0 && discountInfo.discounts.some(d => d.type === 'unlimited')) {
                 price = 0;
@@ -1376,7 +1376,7 @@ class UnifiedConfigurator {
                     price = price * (1 - internetDiscount.percentage / 100);
                 }
             }
-            
+
             prices.push(price);
             total += price;
         }
@@ -1534,11 +1534,13 @@ class UnifiedConfigurator {
         }
 
         const summaryItems = securityData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+        const caption = securityData.caption ? `<div class="tier-caption">${securityData.caption}</div>` : '';
 
         infoContainer.innerHTML = `
-            <ul class="tier-details">
+            <ul class="tier-details security-details">
                 ${summaryItems}
             </ul>
+            ${caption}
             <div class="tier-price">€ ${securityData.price.toFixed(2).replace('.', ',')}/maand</div>
         `;
     }
@@ -1900,14 +1902,14 @@ class UnifiedConfigurator {
             const pricingInfo = this.calculateDatasimPricing();
             if (this.state.datasim.count > 0) {
                 total += pricingInfo.total;
-                
+
                 // Add permanent discount for internet combo
                 const internetDiscount = pricingInfo.discountInfo.discounts.find(d => d.type === 'internet');
                 if (internetDiscount) {
                     const originalPrice = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
                     totalPermanentDiscount += originalPrice - pricingInfo.total;
                 }
-                
+
                 // Add permanent discount for unlimited mobile (first datasim free)
                 const unlimitedDiscount = pricingInfo.discountInfo.discounts.find(d => d.type === 'unlimited');
                 if (unlimitedDiscount) {
@@ -2171,7 +2173,7 @@ class UnifiedConfigurator {
                 const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
                 const monthlyDiscount = originalTotal - pricingInfo.total;
                 totalPermanentDiscount += monthlyDiscount * 12; // Annual amount
-                
+
                 const discounts = pricingInfo.discountInfo.discounts;
                 discounts.forEach(discount => {
                     if (discount.type === 'internet') {
@@ -3810,26 +3812,26 @@ class UnifiedConfigurator {
         } else if (productType === 'datasim') {
             const datasimData = this.data.products.datasim;
             if (!datasimData) return 0;
-            
+
             let price = datasimData.pricePerSim;
-            
+
             // Check for unlimited mobile discount (first datasim free)
-            const hasUnlimitedMobile = this.state.mobile.enabled && 
+            const hasUnlimitedMobile = this.state.mobile.enabled &&
                 this.state.mobile.simcards.some(simcard => {
                     const tier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
                     return tier && tier.id === 3; // Assuming tier 3 is unlimited
                 });
-            
+
             if (hasUnlimitedMobile) {
                 return 0; // First datasim is free
             }
-            
+
             // Check for internet discount (50% off)
             const hasInternetDiscount = this.state.internet.enabled;
             if (hasInternetDiscount) {
                 price = price * 0.5; // 50% discount
             }
-            
+
             return price;
         }
         return 0;
@@ -4559,7 +4561,7 @@ class UnifiedConfigurator {
             // Replace placeholders in title
             dynamicTitle = dynamicTitle
                 .replace('##DISCOUNT_NAME##', discountName);
-                //.replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
+            //.replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
 
             // Replace placeholders in content
             const discountValue = originalPrice - discountedPrice;
@@ -4603,12 +4605,12 @@ class UnifiedConfigurator {
 
         // Show pricing breakdown
         contentHtml += '<div class="advantage-section"><h4>Prijsoverzicht</h4>';
-        
+
         for (let i = 0; i < this.state.datasim.count; i++) {
             const originalPrice = pricingInfo.discountInfo.basePrice;
             const finalPrice = pricingInfo.prices[i];
             const datasimNumber = i + 1;
-            
+
             if (finalPrice === 0) {
                 contentHtml += `<div class="discount-pricing-item"><strong>Datasim ${datasimNumber}: Gratis</strong> (normaal €${originalPrice.toFixed(2).replace('.', ',')})</div>`;
             } else if (finalPrice < originalPrice) {

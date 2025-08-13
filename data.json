@@ -215,6 +215,7 @@
     "security": {
       "title": "Beveiliging",
       "summary": "Bescherm al je apparaten tegen online bedreigingen, Antivirus en firewall bescherming, Veilig browsen en identiteitsbescherming",
+      "caption": "Als je Beveiliging bestelt, ga je akkoord met onze <a href='#' target='_blank'>algemene voorwaarden</a> en bevestig je dat je ons <a href='#' target='_blank'>privacybeleidvan 360 Security</a>  hebt gelezen.",
       "price": 0.00,
       "closedState": {
         "summary": "Bescherm je digitale leven volledig<br /><strong>€ ##PRICE##/maand</strong>",

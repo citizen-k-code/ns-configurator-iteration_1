@@ -915,8 +915,8 @@
 }
 
 .stepper-btn:hover:not(:disabled) {
-    background-color: #2D3648;
-    color: white;
+    /*background-color: #2D3648;*/
+    /*color: white;*/
     border-color: #2D3648;
 }
 
@@ -1127,7 +1127,7 @@
 
 .stepper-btn:hover:not(:disabled) {
     border-color: #2D3648;
-    background-color: #f8f9fa;
+    background-color: white;
 }
 
 .stepper-btn:disabled {
@@ -1277,7 +1277,8 @@
     background-color: #FFEDAD !important;
     border-radius: 12px;
     padding: 16px;
-    margin: -12px; /* Adjusted to align with the grid gap */
+    margin: -12px;
+    /* Adjusted to align with the grid gap */
 }
 
 .welcome-gift-header {
@@ -1291,7 +1292,8 @@
     font-size: 24px;
     flex-shrink: 0;
     margin-top: 2px;
-    color: #2D3648; /* Added color for icon */
+    color: #2D3648;
+    /* Added color for icon */
 }
 
 .welcome-gift-text {
@@ -1353,7 +1355,8 @@
     background-color: #FFEDAD !important;
     border-radius: 12px;
     padding: 16px;
-    margin: -12px; /* Adjusted to align with the grid gap */
+    margin: -12px;
+    /* Adjusted to align with the grid gap */
 }
 
 .welcome-gift-header {
@@ -1367,7 +1370,8 @@
     font-size: 24px;
     flex-shrink: 0;
     margin-top: 2px;
-    color: #2D3648; /* Added color for icon */
+    color: #2D3648;
+    /* Added color for icon */
 }
 
 .welcome-gift-text {
@@ -2102,7 +2106,13 @@ input:checked+.slider:before {
 
 .tier-details {
     list-style: none;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.tier-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .tier-details li {
@@ -2117,6 +2127,16 @@ input:checked+.slider:before {
     content: "»";
     position: absolute;
     left: 0;
+    color: #2D3648;
+}
+
+.tier-details.security-details {
+    margin-bottom: 15px;
+}
+
+.tier-caption {
+    margin-bottom: 20px;
+    font-size: 13px;
     color: #2D3648;
 }
 
@@ -2973,7 +2993,7 @@ html {
 .overview-item-price .discount-price {
     color: #F134F7;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .overview-item-price .discount-duration {
@@ -4217,30 +4237,7 @@ div.paragraph h5 {
     color: #F134F7;
 }
 
-.tier-details {
-    margin-bottom: 20px;
-}
 
-.tier-details ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.tier-details li {
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #2D3648;
-    position: relative;
-    padding-left: 15px;
-}
-
-.tier-details li:before {
-    content: "»";
-    position: absolute;
-    left: 0;
-    color: #2D3648;
-}
 
 .tier-pricing {
     font-weight: 600;
@@ -4520,8 +4517,9 @@ div.paragraph h5 {
     margin: 12px 0 12px;
 }
 
-.advantage-block, .configurator-btn{
-    cursor:pointer;
+.advantage-block,
+.configurator-btn {
+    cursor: pointer;
 }
 
 @media (min-width: 760px) {
