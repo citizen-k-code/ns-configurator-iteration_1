@@ -2570,6 +2570,118 @@ class UnifiedConfigurator {
     }
 */
 
+    renderStreamingTierOptions(serviceKey) {
+        const serviceData = this.entertainmentData.entertainment[serviceKey];
+        if (!serviceData) return;
+
+        const container = document.getElementById('tier-selection-container');
+        const detailsContainer = document.getElementById('tier-sheet-details');
+        const pricingContainer = document.getElementById('tier-sheet-pricing');
+        const subtitleElement = document.querySelector('.tier-selection-subtitle');
+
+        if (!container || !detailsContainer || !pricingContainer) return;
+
+        // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
+        const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === serviceKey;
+
+        // Hide subtitle if no tiers
+        if (!serviceData.tiers) {
+            if (subtitleElement) subtitleElement.classList.add('hidden');
+            container.style.display = 'none';
+
+            // Show service details for single-tier services
+            const summaryItems = serviceData.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+            detailsContainer.innerHTML = `<ul class="tier-details">${summaryItems}</ul>`;
+
+            // Show pricing with Welcome Gift if applicable
+            let priceHtml;
+
+            if (isWelcomeGift && serviceData.welcomeGift) {
+                const originalPrice = serviceData.price;
+                const welcomeGiftData = serviceData.welcomeGift;
+                let finalWelcomePrice = welcomeGiftData.price;
+
+                // Check if entertainment combo discount should also apply
+                const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                const discount = this.entertainmentData.discounts.entertainment_combo;
+                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+                    (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                if (discount.enabled && willHaveMinProducts) {
+                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
+                    finalWelcomePrice = welcomeGiftData.price - comboDiscountAmount;
+                }
+
+                priceHtml = `
+                    <div class="tier-pricing">
+                        <div class="price-with-badge">
+                            <span class="welcome-gift-badge">Welkomstcadeau</span>
+                            <div class="price-content">
+                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
+                                <div class="discount-price">€${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
+                            </div>
+                        </div>
+                        <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
+                    </div>
+                `;
+            } else {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(serviceData.price);
+                priceHtml = `<div class="tier-pricing">€${discountedPrice.toFixed(2).replace('.', ',')}<span>/maand</span></div>`;
+            }
+
+            pricingContainer.innerHTML = priceHtml;
+            return;
+        }
+
+        // Show subtitle for tier-based services
+        if (subtitleElement) subtitleElement.classList.remove('hidden');
+        container.style.display = 'flex';
+
+        // Set initial selected tier
+        this.tempSelectedTier = this.state[serviceKey].selectedTier;
+
+        // Render tier options
+        const tiersHtml = serviceData.tiers.map(tier => {
+            const isSelected = tier.id === this.tempSelectedTier;
+
+            let priceText;
+            let priceClass = '';
+
+            if (isWelcomeGift && tier.welcomeGift) {
+                let finalWelcomePrice = tier.welcomeGift.price;
+
+                // Check if entertainment combo discount should also apply
+                const enabledProducts = this.getEnabledEntertainmentProductsCount();
+                const discount = this.entertainmentData.discounts.entertainment_combo;
+                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
+                    (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                if (discount.enabled && willHaveMinProducts) {
+                    const comboDiscountAmount = tier.price * (discount.percentage / 100);
+                    finalWelcomePrice = tier.welcomeGift.price - comboDiscountAmount;
+                }
+
+                priceText = `€${finalWelcomePrice.toFixed(2).replace('.', ',')}`;
+                priceClass = 'promotional-price';
+            } else {
+                const discountedPrice = this.getEntertainmentDiscountedPrice(tier.price, false, serviceKey, tier.id);
+                priceText = `€${discountedPrice.toFixed(2).replace('.', ',')}`;
+            }
+
+            return `
+                <div class="tier-selection-option ${isSelected ? 'active' : ''}" onclick="app.selectTempTier(${tier.id})">
+                    <div class="tier-name">${tier.title}</div>
+                    <div class="tier-price ${priceClass}">${priceText}</div>
+                </div>
+            `;
+        }).join('');
+
+        container.innerHTML = tiersHtml;
+
+        // Update details and pricing for selected tier
+        this.updateTierSheetDetails();
+    }
+
     selectTierInSheet(tierId) {
         this.tempSelectedTier = tierId;
         this.renderStreamingTierOptions(this.currentStreamingService);
@@ -3744,13 +3856,22 @@ class UnifiedConfigurator {
                 const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
                 const originalPrice = price;
 
-                // Calculate final Welcome Gift price (including combo discount if applicable)
-                const finalWelcomePrice = this.getEntertainmentDiscountedPrice(originalPrice, false, this.currentStreamingService, this.tempSelectedTier);
+                // Calculate final Welcome Gift price directly from welcome gift data
+                let finalWelcomePrice = welcomeGiftData.price;
 
-                // Check if entertainment combo discount is also applied
+                // Check if entertainment combo discount should also apply to Welcome Gift
                 const enabledProducts = this.getEnabledEntertainmentProductsCount();
                 const discount = this.entertainmentData.discounts.entertainment_combo;
-                const hasComboDiscount = discount.enabled && enabledProducts >= discount.minProducts;
+                const willHaveMinProducts = enabledProducts >= discount.minProducts || 
+                    (enabledProducts === 1 && !this.isEditingStreamingService);
+
+                if (discount.enabled && willHaveMinProducts) {
+                    // Apply 5% combo discount to the original price, then subtract from welcome gift price
+                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
+                    finalWelcomePrice = welcomeGiftData.price - comboDiscountAmount;
+                }
+
+                const hasComboDiscount = discount.enabled && willHaveMinProducts;
 
                 pricingHtml = `
                     <div class="tier-pricing">
