@@ -4201,6 +4201,12 @@ class UnifiedConfigurator {
         // Show the selection section when TV is not activated and entertainment is activated
         if (!tvEnabled && entertainmentEnabled) {
             selectionSection.style.display = 'block';
+            
+            // Always select "separate" radio button by default when section is shown
+            const separateAppsRadio = document.getElementById('separate-apps-radio');
+            if (separateAppsRadio) {
+                separateAppsRadio.checked = true;
+            }
         } else {
             selectionSection.style.display = 'none';
         }
