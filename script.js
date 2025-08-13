@@ -70,6 +70,11 @@ class UnifiedConfigurator {
             wifiPods: {
                 enabled: false,
                 count: 1
+            },
+            // Data SIM state
+            datasim: {
+                enabled: false,
+                selectedTier: 1
             }
         };
         this.init();
@@ -262,6 +267,20 @@ class UnifiedConfigurator {
                 this.renderSelectedEntertainmentServices();
             }
         }
+
+        // Data SIM: ?datasim=1 (1 enables Data SIM)
+        const dataSimEnabled = urlParams.get('datasim');
+        if (dataSimEnabled === '1') {
+            this.state.datasim.enabled = true;
+            const dataSimToggle = document.getElementById('datasim-toggle');
+            const dataSimContent = document.getElementById('datasim-content');
+            if (dataSimToggle && dataSimContent) {
+                dataSimToggle.checked = true;
+                dataSimContent.style.display = 'block';
+                this.renderDataSimTiers();
+                this.updateDataSimInfo();
+            }
+        }
     }
 
     setupEventListeners() {
@@ -305,6 +324,13 @@ class UnifiedConfigurator {
         if (securityToggle) {
             securityToggle.addEventListener('change', (e) => {
                 this.toggleProduct('security', e.target.checked);
+            });
+        }
+
+        const dataSimToggle = document.getElementById('datasim-toggle');
+        if (dataSimToggle) {
+            dataSimToggle.addEventListener('change', (e) => {
+                this.toggleProduct('datasim', e.target.checked);
             });
         }
 
@@ -432,20 +458,28 @@ class UnifiedConfigurator {
     }
 
     setupProductHeaderListeners() {
-        const allProducts = [
-            { id: 'internet', headerSelector: '#internet-block .product-header', toggleSelector: '#internet-toggle' },
-            { id: 'mobile', headerSelector: '#mobile-block .product-header', toggleSelector: '#mobile-toggle' },
-            { id: 'tv', headerSelector: '#tv-block .product-header', toggleSelector: '#tv-toggle' },
-            { id: 'fixedPhone', headerSelector: '#fixed-phone-block .product-header', toggleSelector: '#fixed-phone-toggle' },
-            { id: 'entertainment', headerSelector: '#entertainment-block .product-header', toggleSelector: '#entertainment-toggle' },
-            { id: 'entertainmentBox', headerSelector: '#entertainment-box-block .product-header', toggleSelector: '#entertainment-box-toggle' },
-            { id: 'wifiPods', headerSelector: '#wifi-pods-block .product-header', toggleSelector: '#wifi-pods-toggle' },
-            { id: 'security', headerSelector: '#security-block .product-header', toggleSelector: '#security-toggle' }
-        ];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security', 'datasim'];
 
-        allProducts.forEach(product => {
-            const header = document.querySelector(product.headerSelector);
-            const toggle = document.querySelector(product.toggleSelector);
+        allProducts.forEach(productId => {
+            let headerSelector = `#{productId}-block .product-header`;
+            let toggleSelector = `#{productId}-toggle`;
+
+            if (productId === 'fixedPhone') {
+                headerSelector = '#fixed-phone-block .product-header';
+                toggleSelector = '#fixed-phone-toggle';
+            } else if (productId === 'entertainmentBox') {
+                headerSelector = '#entertainment-box-block .product-header';
+                toggleSelector = '#entertainment-box-toggle';
+            } else if (productId === 'wifiPods') {
+                headerSelector = '#wifi-pods-block .product-header';
+                toggleSelector = '#wifi-pods-toggle';
+            } else if (productId === 'datasim') {
+                headerSelector = '#datasim-block .product-header';
+                toggleSelector = '#datasim-toggle';
+            }
+
+            const header = document.querySelector(headerSelector);
+            const toggle = document.querySelector(toggleSelector);
 
             // Only set up listeners if both elements exist
             if (header && toggle) {
@@ -453,7 +487,7 @@ class UnifiedConfigurator {
                     // Don't toggle if clicking on the switch itself or if already enabled
                     if (!e.target.closest('.switch')) {
                         toggle.checked = !toggle.checked;
-                        this.toggleProduct(product.id, toggle.checked);
+                        this.toggleProduct(productId, toggle.checked);
                     }
                 });
 
@@ -469,7 +503,7 @@ class UnifiedConfigurator {
     }
 
     updateProductHeaderStates() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security', 'datasim'];
 
         allProducts.forEach(productId => {
             let blockId;
@@ -479,6 +513,8 @@ class UnifiedConfigurator {
                 blockId = 'entertainment-box-block';
             } else if (productId === 'wifiPods') {
                 blockId = 'wifi-pods-block';
+            } else if (productId === 'datasim') {
+                blockId = 'datasim-block';
             } else {
                 blockId = `${productId}-block`;
             }
@@ -580,8 +616,11 @@ class UnifiedConfigurator {
         this.state[productType].enabled = enabled;
 
         // Handle telecom products
-        if (['internet', 'mobile', 'tv', 'fixedPhone', 'security'].includes(productType)) {
-            const contentId = productType === 'fixedPhone' ? 'fixed-phone-content' : `${productType}-content`;
+        if (['internet', 'mobile', 'tv', 'fixedPhone', 'security', 'datasim'].includes(productType)) {
+            let contentId = `${productType}-content`;
+            if (productType === 'fixedPhone') contentId = 'fixed-phone-content';
+            if (productType === 'datasim') contentId = 'datasim-content';
+
             const content = document.getElementById(contentId);
 
             if (enabled) {
@@ -641,11 +680,17 @@ class UnifiedConfigurator {
                     this.updateFixedPhoneInfo();
                 } else if (productType === 'security') {
                     this.updateSecurityInfo();
+                } else if (productType === 'datasim') {
+                    this.state.datasim.selectedTier = this.data.products.datasim.defaultTier;
+                    this.renderDataSimTiers();
+                    this.updateDataSimInfo();
                 }
 
                 // Smooth scroll to ensure the product block is visible
                 setTimeout(() => {
-                    const blockId = productType === 'fixedPhone' ? 'fixed-phone-block' : `${productType}-block`;
+                    let blockId = `${productType}-block`;
+                    if (productType === 'fixedPhone') blockId = 'fixed-phone-block';
+                    if (productType === 'datasim') blockId = 'datasim-block';
                     const productBlock = document.getElementById(blockId);
                     this.scrollToElementSmooth(productBlock);
                 }, 100);
@@ -862,8 +907,6 @@ class UnifiedConfigurator {
             ${priceHtml}
         `;
     }
-
-    // WiFi-pods section methods removed - now using standalone WiFi-pods card
 
     // WiFi-pods standalone methods
     increaseWifiPodsStandalone() {
@@ -1149,30 +1192,6 @@ class UnifiedConfigurator {
         `;
     }
 
-    /*
-    renderEntertainmentBoxTiers() {
-        const tiersContainer = document.getElementById('entertainment-box-tiers');
-        if (!tiersContainer || !this.data) return;
-
-        const tiers = this.data.products.tv.entertainmentBox.tiers;
-
-        tiersContainer.innerHTML = tiers.map(tier => `
-            <div class="tier-option ${tier.id === this.state.tv.entertainmentBoxTier ? 'active' : ''}"
-                 onclick="app.selectEntertainmentBoxTier(${tier.id})">
-                <div class="tier-title">${tier.title}</div>
-            </div>
-        `).join('');
-
-        this.updateEntertainmentBoxInfo();
-    }
-
-    selectEntertainmentBoxTier(tierId) {
-        this.state.tv.entertainmentBoxTier = tierId;
-        this.renderEntertainmentBoxTiers();
-        this.updateCostSummary();
-    }
-    */
-
     updateEntertainmentBoxInfo() {
         console.log("ent box update from TV ");
 
@@ -1282,6 +1301,55 @@ class UnifiedConfigurator {
             <div class="tier-price">€ ${securityData.price.toFixed(2).replace('.', ',')}/maand</div>
         `;
     }
+
+    // Data SIM methods
+    renderDataSimTiers() {
+        const tiersContainer = document.getElementById('datasim-tiers');
+        if (!tiersContainer || !this.data) return;
+
+        const tiers = this.data.products.datasim.tiers;
+
+        tiersContainer.innerHTML = tiers.map(tier => {
+            const isSelected = tier.id === this.state.datasim.selectedTier;
+            const finalPrice = tier.price; // Assuming no discounts for datasim for now
+            const subtitleContent = `<div class="tier-subtitle">€${finalPrice.toFixed(2).replace('.', ',')}</div>`;
+
+            return `
+                <div class="tier-option ${isSelected ? 'active' : ''}"
+                     onclick="app.selectDataSimTier(${tier.id})">
+                    <div class="tier-title">${tier.title}</div>
+                    ${subtitleContent}
+                </div>
+            `;
+        }).join('');
+    }
+
+    selectDataSimTier(tierId) {
+        this.state.datasim.selectedTier = tierId;
+        this.renderDataSimTiers();
+        this.updateDataSimInfo();
+        this.updateCostSummary();
+    }
+
+    updateDataSimInfo() {
+        const infoContainer = document.getElementById('datasim-info');
+        if (!infoContainer || !this.data) return;
+
+        const tier = this.data.products.datasim.tiers.find(t => t.id === this.state.datasim.selectedTier);
+        if (!tier) return;
+
+        const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
+
+        const priceHtml = `<div class="tier-price">€ ${tier.price.toFixed(2).replace('.', ',')}/maand</div>`;
+
+        infoContainer.innerHTML = `
+            <ul class="tier-details">
+                ${summaryItems}
+            </ul>
+            ${priceHtml}
+        `;
+    }
+
 
     // Entertainment methods
     renderEntertainmentTiers(productType) {
@@ -1464,7 +1532,9 @@ class UnifiedConfigurator {
         let welcomeGiftData;
         if (serviceData.tiers) {
             const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
-            welcomeGiftData = tier ? tier.welcomeGift : null;
+            if (tier && tier.welcomeGift) {
+                welcomeGiftData = tier.welcomeGift;
+            }
         } else {
             welcomeGiftData = serviceData.welcomeGift;
         }
@@ -1635,6 +1705,14 @@ class UnifiedConfigurator {
             }
         }
 
+        // Data SIM cost
+        if (this.state.datasim.enabled) {
+            const dataSimTier = this.data.products.datasim.tiers.find(t => t.id === this.state.datasim.selectedTier);
+            if (dataSimTier) {
+                total += dataSimTier.price;
+            }
+        }
+
         // Entertainment costs - now properly handling Welcome Gift as temporary discount
         const entertainmentTotal = this.calculateEntertainmentTotal();
         total += entertainmentTotal.total;
@@ -1793,7 +1871,7 @@ class UnifiedConfigurator {
             }
         }
 
-        // Add WiFi pods standalone discount period
+        // WiFi pods discount period - has special discount logic (free for period)
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
             const wifiPodsData = this.data.products.wifiPods;
             if (wifiPodsData.discountPeriod) {
@@ -2453,6 +2531,21 @@ class UnifiedConfigurator {
             overviewHtml += `</div>`;
         }
 
+        // Data SIM
+        if (this.state.datasim && this.state.datasim.enabled) {
+            const dataSimTier = this.data.products.datasim.tiers.find(t => t.id === this.state.datasim.selectedTier);
+            if (dataSimTier && dataSimTier.price !== undefined) {
+                overviewHtml += `
+                    <div class="overview-group">
+                        <div class="overview-group-title">Data SIM</div>
+                        <div class="overview-item">
+                            <span class="overview-item-name">${dataSimTier.title}</span>
+                            <span class="overview-item-price">€${dataSimTier.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
 
         // Fixed Phone
@@ -2762,133 +2855,6 @@ class UnifiedConfigurator {
         this.currentStreamingService = null;
         this.isEditingStreamingService = false;
         this.tempSelectedTier = null;
-    }
-
-    selectTierInSheet(tierId) {
-        this.tempSelectedTier = tierId;
-        this.renderStreamingTierOptions(this.currentStreamingService);
-    }
-
-    updateTierSheetDetails() {
-        const serviceData = this.entertainmentData.entertainment[this.currentStreamingService];
-
-        const details = document.getElementById('tier-sheet-details');
-        const pricing = document.getElementById('tier-sheet-pricing');
-
-        let summary, price, tier;
-
-        if (serviceData.tiers && serviceData.tiers.length > 0) {
-            // Service has tiers
-            tier = serviceData.tiers.find(t => t.id === this.tempSelectedTier);
-            if (!tier) return;
-            summary = tier.summary;
-            price = tier.price;
-        } else {
-            // Service without tiers
-            summary = serviceData.summary;
-            price = serviceData.price;
-        }
-
-        if (details) {
-            const summaryItems = summary.split(', ').map(item => `<li>${item}</li>`).join('');
-            details.innerHTML = `<ul>${summaryItems}</ul>`;
-        }
-
-        if (pricing) {
-            // Check if this is the Welcome Gift service (either no service assigned yet OR this service currently has it)
-            const isWelcomeGift = this.state.welcomeGiftService === null || this.state.welcomeGiftService === this.currentStreamingService;
-
-            let pricingHtml;
-
-            if (isWelcomeGift && ((tier && tier.welcomeGift) || (!tier && serviceData.welcomeGift))) {
-                // Show Welcome Gift pricing with promo badge
-                const welcomeGiftData = tier ? tier.welcomeGift : serviceData.welcomeGift;
-                const originalPrice = price;
-
-                // Calculate final Welcome Gift price
-                let finalWelcomePrice = welcomeGiftData.price;
-
-                // Check if entertainment combo discount should also apply to Welcome Gift
-                const enabledProducts = this.getEnabledEntertainmentProductsCount();
-                const discount = this.entertainmentData.discounts.entertainment_combo;
-                const willHaveMinProducts = enabledProducts >= discount.minProducts ||
-                    (enabledProducts === 1 && !this.isEditingStreamingService);
-
-                if (discount.enabled && willHaveMinProducts) {
-                    // Apply 5% combo discount to the original price, then subtract from welcome gift price
-                    const comboDiscountAmount = originalPrice * (discount.percentage / 100);
-                    finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
-                }
-
-                const hasComboDiscount = discount.enabled && willHaveMinProducts;
-
-                pricingHtml = `
-                    <div class="tier-pricing">
-                        <div class="price-with-badge">
-                            <span class="welcome-gift-badge">Welkomstcadeau</span>
-                            <div class="price-content">
-                                <div class="original-price">€ ${originalPrice.toFixed(2).replace('.', ',')}</div>
-                                <div class="discount-price">€ ${finalWelcomePrice.toFixed(2).replace('.', ',')}/maand</div>
-                            </div>
-                        </div>
-                        <div class="discount-info">gedurende ${welcomeGiftData.duration} maanden</div>
-                `;
-
-                // Add combo discount tag if applicable
-                if (hasComboDiscount) {
-                    pricingHtml += `
-                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                            <span class="discount-tag-text">5% permanente korting toegepast</span>
-                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
-                        </div>
-                    `;
-                }
-
-                pricingHtml += `</div>`;
-            } else {
-                // Regular pricing
-                const currentlyEnabled = this.getEnabledEntertainmentProductsCount();
-                const isAddingSecondService = currentlyEnabled === 1 && !this.isEditingStreamingService;
-
-                const discountedPrice = this.getEntertainmentDiscountedPrice(price, isAddingSecondService);
-                const hasDiscount = discountedPrice < price;
-
-                pricingHtml = `
-                    <div class="price-display">€ ${discountedPrice.toFixed(2).replace('.', ',')}/maand</div>
-                `;
-
-                // Add discount tag if entertainment combo discount is applied
-                if (hasDiscount) {
-                    pricingHtml += `
-                        <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                            <span class="discount-tag-text">5% permanente korting toegepast</span>
-                            <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
-                        </div>
-                    `;
-                }
-            }
-
-            pricing.innerHTML = pricingHtml;
-        }
-    }
-
-    confirmStreamingTierSelection() {
-        if (!this.currentStreamingService) return;
-
-        // Update the tier selection
-        this.state[this.currentStreamingService].selectedTier = this.tempSelectedTier;
-
-        // Assign welcome gift if this is the first service
-        if (this.state.welcomeGiftService === null) {
-            this.assignWelcomeGift(this.currentStreamingService);
-        }
-
-        // Update displays
-        this.renderSelectedEntertainmentServices();
-        this.updateCostSummary();
-
-        // Close sheet
-        this.closeStreamingTierSheet();
     }
 
     addEntertainmentService(serviceKey) {
@@ -3297,7 +3263,7 @@ class UnifiedConfigurator {
 
     // Add method to render closed states for all disabled products
     renderClosedStatesForDisabledProducts() {
-        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security'];
+        const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security', 'datasim'];
 
         allProducts.forEach(productType => {
             // Only render closed state if the product exists on the DOM and is disabled
@@ -3954,23 +3920,6 @@ class UnifiedConfigurator {
         this.currentStreamingService = null;
         this.isEditingStreamingService = false;
         this.tempSelectedTier = null;
-    }
-
-    selectTempTier(tierId) {
-        this.tempSelectedTier = tierId;
-
-        // Update active state in UI
-        const options = document.querySelectorAll('.tier-selection-option');
-        options.forEach(option => {
-            option.classList.remove('active');
-        });
-
-        const selectedOption = document.querySelector(`.tier-selection-option:nth-child(${tierId})`);
-        if (selectedOption) {
-            selectedOption.classList.add('active');
-        }
-
-        this.updateTierSheetDetails();
     }
 
     updateTierSheetDetails() {
