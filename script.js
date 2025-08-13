@@ -1377,7 +1377,7 @@ class UnifiedConfigurator {
                     if (discount.enabled && willHaveMinProducts) {
                         // Apply 5% combo discount to the original price, then subtract from welcome gift price
                         const comboDiscountAmount = originalPrice * (discount.percentage / 100);
-                        return welcomeGiftPrice - comboDiscountAmount;
+                        return Math.max(0, welcomeGiftPrice - comboDiscountAmount);
                     }
 
                     return welcomeGiftPrice;
@@ -2519,7 +2519,7 @@ class UnifiedConfigurator {
 
                 if (discount.enabled && willHaveMinProducts) {
                     const comboDiscountAmount = originalPrice * (discount.percentage / 100);
-                    finalWelcomePrice = welcomeGiftData.price - comboDiscountAmount;
+                    finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
                 }
 
                 priceHtml = `
@@ -2568,7 +2568,7 @@ class UnifiedConfigurator {
 
                 if (discount.enabled && willHaveMinProducts) {
                     const comboDiscountAmount = tier.price * (discount.percentage / 100);
-                    finalWelcomePrice = tier.welcomeGift.price - comboDiscountAmount;
+                    finalWelcomePrice = Math.max(0, tier.welcomeGift.price - comboDiscountAmount);
                 }
 
                 priceText = `€${finalWelcomePrice.toFixed(2).replace('.', ',')}`;
@@ -3833,7 +3833,7 @@ class UnifiedConfigurator {
                 if (discount.enabled && willHaveMinProducts) {
                     // Apply 5% combo discount to the original price, then subtract from welcome gift price
                     const comboDiscountAmount = originalPrice * (discount.percentage / 100);
-                    finalWelcomePrice = welcomeGiftData.price - comboDiscountAmount;
+                    finalWelcomePrice = Math.max(0, welcomeGiftData.price - comboDiscountAmount);
                 }
 
                 const hasComboDiscount = discount.enabled && willHaveMinProducts;
