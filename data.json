@@ -2,7 +2,7 @@
   "products": {
     "internet": {
       "title": "Internet",
-      "tooltip": "Welke snelheid heb ik nodig?",
+      "tooltip": "Welke internetsnelheid heb ik nodig?",
       "closedState": {
         "summary": "Kies voor snelheden <strong>tot 2,5 Gbps</strong><br />Vanaf <strong>€ ##PRICE##/maand</strong>",
         "showHighlight": false,
@@ -198,25 +198,12 @@
       }
     },
     "wifiPods": {
-      "title": "Slimme wifi-pods",
-      "tooltip": "Hoeveel wifi-pods heb ik nodig?",
-      "closedState": {
-        "summary": "Versterk je wifi met slimme wifi-pods<br>Vanaf <strong>€ ##PRICE##/maand</strong>",
-        "showHighlight": false,
-        "highlight": null
-      },
-      "summary": "<strong>Versterk je wifi</strong> met slimme wifi-pods, <strong>Probeer het gratis uit</strong> gedurende 3 maanden, Tot <strong>5 wifi-pods</strong> mogelijk",
-      "pricePerPod": 3.00,
-      "maxPods": 5,
-      "discountValue": 3.00,
-      "discountPeriod": 3,
-      "promoName": "Gratis proberen",
-      "freeTrialText": "Je kan wifi-pods bijstellen of terugbrengen wanneer je wil.",
-      "discountCopy": {
-        "temporaryOnly": "gedurende 3 maanden",
-        "permanentOnly": "",
-        "both": ""
-      }
+      "title": "Wat is een slimme wifi-pod?",
+      "content": "<p>Een slimme wifi-pod is een uitbreiding van je internetnetwerk thuis. Je gebruikt het om je wifi-signaal te versterken op een plek waar je wifi minder sterk is. Zo krijg je overal in huis een stabiele en snelle verbinding.</p><div class='paragraph'><h3>Hoeveel slimme wifi-pods heb ik nodig?</h3><p>Je kies je aantal wifi-pods op basis van de grootte van je woning. Zo bereik je het verste punt vanaf je modem. Je kan altijd extra wifi-pods bijbestellen als dat nodig is.</p><ul><li><h5>1 wifi-pod</h5>Woning of groot appartement zonder verdiepingen.</li><li><h5>2 wifi-pods</h5>Woning of appartement met 1 verdieping.</li><li><h5>3 wifi-pods</h5>Grote woning met 2 verdiepingen.</li><li><h5>4 wifi-pods</h5>Grote woning met 3 or meer verdiepingen.</li></ul></div>"
+    },
+    "security": {
+      "title": "Wat zit er allemaal in beveiliging?",
+      "content": "<p>Onze beveiligingsdienst beschermt je digitale leven op alle niveaus. Van je mobiele verbindingen tot je thuisnetwerk.</p><div class='paragraph'><h4>Mobiele beveiliging</h4><ul><li><strong>Blokkering van verdachte gsm-nummers</strong> - Automatische detectie en blokkering van verdachte oproepen</li><li><strong>SMS-bescherming</strong> - Filtering van spam en phishing SMS-berichten</li></ul></div><div class='paragraph'><h4>Netwerkbeveiliging</h4><ul><li><strong>WiFi-bescherming</strong> - Real-time bescherming tegen phishing en malware op je draadloze netwerk</li><li><strong>Vast netwerk beveiliging</strong> - Geavanceerde bescherming tegen hackers en aanvallen op je thuisnetwerk</li></ul></div><div class='paragraph'><h4>E-mail beveiliging</h4><ul><li><strong>Spamfilter</strong> - Automatische filtering van ongewenste e-mails in je webmail</li></ul></div><div class='paragraph'><p><em>Deze beveiligingsdienst is volledig gratis inbegrepen bij al onze abonnementen.</em></p></div>"
     }
   },
   "discounts": {
@@ -289,7 +276,7 @@
     },
     "mobile": {
       "title": "Hoeveel mobiele data heb ik nodig",
-      "content": "<div class='paragraph'><h4>5 GB data</h4><p>Met 5 GB per maand kan je dagelijks:</p><ul><li>2,5 uur muziek beluisteren</li><li>40 min. video's kijken (bv. op Facebook, Instagram of TikTok), of</li><li>80 artikels lezen</li></ul></div><div class='paragraph'><h4>15 GB data</h4><p>Met 15 GB per maand kan je dagelijks:</p><ul><li>1 uur muziek beluisteren, of</li><li>2 uur video's streamen (bv. op Instagram of TikTok), of</li><li>650 websites bezoeken</li></ul></div><div class='paragraph'><h4>Unlimited data</h4><p>Je kan in België ongelimiteerd surfen (tot max. 300 GB per maand). Surf je meer? Dan doe je dat aan een verlaagde snelheid. In de EU-zone heb je 100 GB data.</p><p>Met Unlimited data kan je dagelijks:</p><ul><li>170 uur naar muziek luisteren, of</li><li>Non-stop video’s streamen, of</li><li>10.000 websites bezoeken</li></ul><p>Met Unlimited data kan je in de EU-zone dagelijks:</p><ul><li>Een hele dag naar muziek luisteren, of</li><li>11 uur video's streamen, of</li><li>3215 websites bezoeken</li></ul></div>"
+      "content": "<div class='paragraph'><h4>5 GB data</h4><p>Met 5 GB per maand kan je dagelijks:</p><ul><li>2,5 uur muziek beluisteren</li><li>40 min. video's kijken (bv. op Facebook, Instagram of TikTok), of</li><li>80 artikels lezen</li></ul></div><div class='paragraph'><h4>15 GB data</h4><p>Met 15 GB per maand kan je dagelijks:</p><ul><li>1 uur muziek beluisteren, of</li><li>2 uur video's streamen (bv. op Instagram of TikTok), of</li><li>650 websites bezoeken</li></ul></div><div class='paragraph'><h4>Unlimited data</h4><p>Je kan in België ongelimiteerd surfen (tot max. 300 GB per maand). Surf je meer? Dan doe je dat aan een verlaagde snelheid. In de EU-zone heb je 100 GB data.</p><p>Met Unlimited data kan je dagelijks:</p><ul><li>170 uur naar muziek luisteren, of</li><li>Non-stop video's streamen, of</li><li>10.000 websites bezoeken</li></ul><p>Met Unlimited data kan je in de EU-zone dagelijks:</p><ul><li>Een hele dag naar muziek luisteren, of</li><li>11 uur video's streamen, of</li><li>3215 websites bezoeken</li></ul></div>"
     },
     "tv_main": {
       "title": "Wat zit er in het tv-pakket",
@@ -313,7 +300,7 @@
     },
     "wifi_pods": {
       "title": "Wat is een slimme wifi-pod?",
-      "content": "<p>Een slimme wifi-pod is een uitbreiding van je internetnetwerk thuis. Je gebruikt het om je wifi-signaal te versterken op een plek waar je wifi minder sterk is. Zo krijg je overal in huis een stabiele en snelle verbinding.</p><div class='paragraph'><h3>Hoeveel slimme wifi-pods heb ik nodig?</h3><p>Je kies je aantal wifi-pods op basis van de grootte van je woning. Zo bereik je het verste punt vanaf je modem. Je kan altijd extra wifi-pods bijbestellen als dat nodig is.</p><ul><li><h5>1 wifi-pod</h5>Woning of groot appartement zonder verdiepingen.</li><li><h5>2 wifi-pods</h5>Woning of appartement met 1 verdieping.</li><li><h5>3 wifi-pods</h5>Grote woning met 2 verdiepingen.</li><li><h5>4 wifi-pods</h5>Grote woning met 3 of meer verdiepingen.</li></ul></div>"
+      "content": "<p>Een slimme wifi-pod is een uitbreiding van je internetnetwerk thuis. Je gebruikt het om je wifi-signaal te versterken op een plek waar je wifi minder sterk is. Zo krijg je overal in huis een stabiele en snelle verbinding.</p><div class='paragraph'><h3>Hoeveel slimme wifi-pods heb ik nodig?</h3><p>Je kies je aantal wifi-pods op basis van de grootte van je woning. Zo bereik je het verste punt vanaf je modem. Je kan altijd extra wifi-pods bijbestellen als dat nodig is.</p><ul><li><h5>1 wifi-pod</h5>Woning of groot appartement zonder verdiepingen.</li><li><h5>2 wifi-pods</h5>Woning of appartement met 1 verdieping.</li><li><h5>3 wifi-pods</h5>Grote woning met 2 verdiepingen.</li><li><h5>4 wifi-pods</h5>Grote woning met 3 or meer verdiepingen.</li></ul></div>"
     }
   }
 }
