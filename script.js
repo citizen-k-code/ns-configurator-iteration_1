@@ -461,8 +461,8 @@ class UnifiedConfigurator {
         const allProducts = ['internet', 'mobile', 'tv', 'fixedPhone', 'entertainment', 'entertainmentBox', 'wifiPods', 'security', 'datasim'];
 
         allProducts.forEach(productId => {
-            let headerSelector = `#{productId}-block .product-header`;
-            let toggleSelector = `#{productId}-toggle`;
+            let headerSelector = `#${productId}-block .product-header`;
+            let toggleSelector = `#${productId}-toggle`;
 
             if (productId === 'fixedPhone') {
                 headerSelector = '#fixed-phone-block .product-header';
