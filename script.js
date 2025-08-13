@@ -3642,6 +3642,9 @@ class UnifiedConfigurator {
 
         // Calculate price for summary
         let price = this.calculateClosedStatePrice(productType, null);
+        if (typeof price !== 'number' || isNaN(price)) {
+            price = 0;
+        }
         let summary = closedStateData.summary.replace('##PRICE##', price.toFixed(2).replace('.', ','));
 
         // Create closed state content
@@ -3699,23 +3702,30 @@ class UnifiedConfigurator {
 
     // Helper method to calculate price for closed state
     calculateClosedStatePrice(productType, tier) {
+        if (!this.data || !this.data.products) {
+            return 0;
+        }
+
         if (productType === 'internet') {
-            const lowestTier = this.data.products.internet.tiers[0];
+            const lowestTier = this.data.products.internet?.tiers?.[0];
+            if (!lowestTier) return 0;
             return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
         } else if (productType === 'mobile') {
-            const lowestTier = this.data.products.mobile.tiers[0];
+            const lowestTier = this.data.products.mobile?.tiers?.[0];
+            if (!lowestTier) return 0;
             return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
         } else if (productType === 'tv') {
             const tvData = this.data.products.tv;
             const entertainmentBoxData = this.data.products.entertainmentBox;
+            if (!tvData) return 0;
             const tvPrice = tvData.discountValue ? tvData.price - tvData.discountValue : tvData.price;
             const entertainmentBoxPrice = entertainmentBoxData ? entertainmentBoxData.price : 0;
             return tvPrice + entertainmentBoxPrice;
         } else if (productType === 'fixedPhone') {
-            return this.data.products.fixedPhone.price;
+            return this.data.products.fixedPhone?.price || 0;
         } else if (productType === 'entertainmentBox') {
             const standaloneData = this.data.products.entertainmentBox;
-            if (standaloneData) {
+            if (standaloneData && standaloneData.price !== undefined) {
                 return standaloneData.discountValue ? standaloneData.price - standaloneData.discountValue : standaloneData.price;
             }
             return 5.00; // fallback
@@ -3731,7 +3741,7 @@ class UnifiedConfigurator {
                         if (serviceData.tiers) {
                             const minTierPrice = Math.min(...serviceData.tiers.map(tier => tier.price));
                             lowestPrice = Math.min(lowestPrice, minTierPrice);
-                        } else {
+                        } else if (serviceData.price !== undefined) {
                             lowestPrice = Math.min(lowestPrice, serviceData.price);
                         }
                     }
@@ -3742,12 +3752,12 @@ class UnifiedConfigurator {
             return 5.99; // fallback
         } else if (productType === 'wifiPods') {
             const wifiPodsData = this.data.products.wifiPods;
-            return wifiPodsData.pricePerPod; // Price for 1 pod
+            return wifiPodsData?.pricePerPod || 0;
         } else if (productType === 'security') {
-            return this.data.products.security.price;
+            return this.data.products.security?.price || 0;
         } else if (productType === 'datasim') {
             const datasimData = this.data.products.datasim;
-            return datasimData.pricePerSim; // Price for 1 datasim
+            return datasimData?.pricePerSim || 0;
         }
         return 0;
     }
