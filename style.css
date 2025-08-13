@@ -1798,6 +1798,14 @@
     margin-top: 2px;
 }
 
+/* Consent text styling */
+.consent-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: 12px;
+    line-height: 1.4;
+}
+
 /* Responsive adjustments for entertainment */
 @media (max-width: 1023px) {
     .entertainment-card {
