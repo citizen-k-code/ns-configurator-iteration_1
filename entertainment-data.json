@@ -82,7 +82,7 @@
     },
     "disney": {
       "title": "Disney+",
-      "summary": "Bekijk Disney content en meer",
+      "summary": "Exclusieve Disney+ Originals, Streamen op 4 schermen tegelijk, Streamen in 4K-UHD, Kijk via je Telenet TV-box of de app",
       "price": 13.99,
       "welcomeGift": {
         "price": 0.00,
@@ -92,7 +92,7 @@
     },
     "sport": {
       "title": "Sport",
-      "summary": "Bekijk live sport",
+      "summary": "Een fantastisch aanbod aan live sport beschikbaar in de hele Europese Unie!, Een handige Sports-app, <p>Geniet van het beste uit de Premier League - UEFA Champions League - Europa en Conference League - Bundesliga - Eredivise - golf - tennis - hockey - cyclocross.</p>, Volg elke GP van de F1 exclusief vanuit polepositie.",
       "price": 15.99,
       "welcomeGift": {
         "price": 0.00,
@@ -102,7 +102,7 @@
     },
     "cinema": {
       "title": "Cinema",
-      "summary": "Huur of koop films",
+      "summary": "De strafste films én series!,Iedere maand nieuwe blockbusters,Toegang tot alle films en series van Netflix Premium,3 premium filmkanalen: Cinema, Action en Horror,Een grote selectie aan extra kanalen",
       "price": 26.99,
       "welcomeGift": {
         "price": 6.99,

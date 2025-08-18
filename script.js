@@ -4477,7 +4477,7 @@ class UnifiedConfigurator {
                         originalPrice = mobileTier.price;
                         const permanentDiscountAmount = mobileTier.price * (permanentDiscount.percentage / 100);
                         discountedPrice = mobileTier.price - permanentDiscountAmount;
-                        productName = mobileTier.title.toLowerCase();
+                        productName = mobileTier.title;
                         discountName = `${permanentDiscount.percentage}% permanente korting`;
                         const discountCalc = this.calculateMobileDiscount(mobileTier, 0);
                         hasTemporaryDiscount = discountCalc.temporaryDiscountAmount > 0;
@@ -4486,9 +4486,11 @@ class UnifiedConfigurator {
             }
 
             // Replace placeholders in title
+            console.log("Product Title:", productName);
+
             dynamicTitle = dynamicTitle
                 .replace('##DISCOUNT_NAME##', discountName)
-                .replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
+                .replace('##PRODUCT_NAME##', productName);
 
             // Replace placeholders in content
             const discountValue = originalPrice - discountedPrice;
