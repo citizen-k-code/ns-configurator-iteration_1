@@ -4414,6 +4414,34 @@ class UnifiedConfigurator {
         this.renderSelectedEntertainmentServices();
         this.updateAllEntertainmentSubtitles();
         this.updateCostSummary();
+
+        // Scroll to the newly added service card if it's a new service
+        if (isNewService) {
+            setTimeout(() => {
+                const selectedServicesContainer = document.getElementById('selected-entertainment-services');
+                if (selectedServicesContainer) {
+                    // Find the newly added service card (should be the last one added)
+                    const serviceCards = selectedServicesContainer.querySelectorAll('.selected-service-card');
+                    const newServiceCard = Array.from(serviceCards).find(card => {
+                        const serviceName = card.querySelector('.selected-service-name');
+                        return serviceName && serviceName.textContent === this.getServiceDisplayName(serviceKey);
+                    });
+
+                    if (newServiceCard) {
+                        newServiceCard.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    } else {
+                        // Fallback: scroll to the selected services container
+                        selectedServicesContainer.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            }, 100); // Small delay to ensure UI has been updated
+        }
     }
 
     editStreamingService(serviceKey) {
