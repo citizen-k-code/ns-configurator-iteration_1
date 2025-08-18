@@ -576,13 +576,13 @@ class UnifiedConfigurator {
 
     handleOrderButton() {
         // Check if we should show entertainment box recommendation
-        if (this.shouldShowEntertainmentBoxRecommendation()) {
-            this.openEntertainmentBoxRecommendation();
-        } else {
+        // if (this.shouldShowEntertainmentBoxRecommendation()) {
+        //     this.openEntertainmentBoxRecommendation();
+        // } else {
             // Directly go to success page
             console.log('Order placed!', this.state);
             window.location.href = 'success.html';
-        }
+        // }
     }
 
     handleMobileOrderButton() {
