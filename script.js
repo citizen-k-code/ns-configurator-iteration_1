@@ -4492,7 +4492,8 @@ class UnifiedConfigurator {
             const discountValue = originalPrice - discountedPrice;
             dynamicContent = dynamicContent
                 .replace('##ORIGINAL_PRICE##', originalPrice.toFixed(2).replace('.', ','))
-                .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','));
+                .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','))
+                .replace('##PRODUCT_NAME##', productName);
 
             // Add temporary discount highlight if applicable
             const temporaryHighlight = hasTemporaryDiscount ?
