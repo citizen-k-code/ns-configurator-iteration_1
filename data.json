@@ -76,9 +76,9 @@
         {
           "id": 1,
           "title": "Junior",
-          "subtitle": "€5,00",
+          "subtitle": "€10,00",
           "summary": "<strong>5 GB</strong> mobiele data, <strong>60 belminuten</strong> en <strong>200 SMS'en</strong>, <strong>1 jaar ChatLicense cadeau</strong>",
-          "price": 5.00,
+          "price": 10.00,
           "discountCopy": {
             "temporaryOnly": "Introductietarief",
             "permanentOnly": "Permanente korting",
