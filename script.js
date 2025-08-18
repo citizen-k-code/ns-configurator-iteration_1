@@ -1726,7 +1726,9 @@ class UnifiedConfigurator {
         let welcomeGiftData;
         if (serviceData.tiers) {
             const tier = serviceData.tiers.find(t => t.id === this.state[serviceKey].selectedTier);
-            welcomeGiftData = tier ? tier.welcomeGift : null;
+            if (tier && tier.welcomeGift) {
+                welcomeGiftData = tier.welcomeGift;
+            }
         } else {
             welcomeGiftData = serviceData.welcomeGift;
         }
@@ -4494,9 +4496,9 @@ class UnifiedConfigurator {
 
 
             dynamicContent = dynamicContent
-                .replace('##PRODUCT_NAME##', productName)
                 .replace('##ORIGINAL_PRICE##', originalPrice.toFixed(2).replace('.', ','))
-                .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','));
+                .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','))
+                .replace('##PRODUCT_NAME##', productName.charAt(0).toUpperCase() + productName.slice(1));
 
             // Add temporary discount highlight if applicable
             const temporaryHighlight = hasTemporaryDiscount ?
