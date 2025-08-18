@@ -269,11 +269,8 @@
             "highlight": null
         },
         "entertainment": {
-            "summary": "…en nog veel meer.<br />Vanaf <strong>€ ##PRICE##/maand</strong>",
-            "highlight": {
-                "title": "Combovoordeel Streaming",
-                "content": "Krijg 5% korting als je 2 of meer streamingdiensten combineert."
-            },
+            "summary": "<div class='gift-header'><span class='icon'>🎁</span><h3>1 jaar gratis streamen!</h3>Je krijgt 1 jaar lang een gigantische korting op 1 streamingdienst naar keuze<br /></div>",
+            "highlight": null,
             "showServiceIcons": true
         },
         "fixedPhone": {

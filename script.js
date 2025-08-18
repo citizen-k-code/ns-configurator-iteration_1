@@ -3586,14 +3586,13 @@ class UnifiedConfigurator {
                 <div class="product-closed-divider"></div>
         `;
 
-        // Add special content for entertainment (service icons)
+        // Start Welcomgift block
         if (productType === 'entertainment' && closedStateData.showServiceIcons) {
             closedStateHtml += `
-                <div class="entertainment-service-icons">
-                    <img src="final_assets/streaming_icon_row.svg" alt="streaming diensten" />
-                </div>
+                <div class="product-closed-welcomegift">
             `;
         }
+
 
         // Add special container for entertainment box
         if (productType === 'entertainmentBox' && closedStateData.showImage) {
@@ -3609,12 +3608,30 @@ class UnifiedConfigurator {
         // Add summary
         closedStateHtml += `<div class="product-closed-summary">${summary}</div>`;
 
+        // Add special content for entertainment (service icons)
+        if (productType === 'entertainment' && closedStateData.showServiceIcons) {
+            closedStateHtml += `
+                <div class="entertainment-service-icons">
+                    <img src="final_assets/streaming_icon_row.svg" alt="streaming diensten" />
+                </div>
+
+                <button class="gift-btn" id="gift-btn">Kies je welkomstcadeau</button>
+            `;
+        }
+
         // Add highlight if present
         if (closedStateData.highlight) {
             closedStateHtml += `
                 <div class="promo-highlight">
                     <div class="highlight-title">${closedStateData.highlight.title}</div>
                     <div class="highlight-content">${closedStateData.highlight.content}</div>
+                </div>
+            `;
+        }
+
+        // Close Welcomgift block
+        if (productType === 'entertainment' && closedStateData.showServiceIcons) {
+            closedStateHtml += `
                 </div>
             `;
         }

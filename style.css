@@ -994,7 +994,7 @@
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .entertainment-service-icon {
@@ -4569,6 +4569,47 @@ div.paragraph h5 {
 .advantage-block,
 .configurator-btn {
     cursor: pointer;
+}
+
+/**
+ * Welcome Gift  styling
+**/
+.product-closed-welcomegift {
+    background-color: #FFEDAD;
+    padding: 16px;
+    border-radius: 16px;
+}
+
+.gift-header {
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #2D3648;
+}
+
+.gift-header .icon {
+    font-size: 32px;
+}
+
+.gift-header h3 {
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+.gift-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #2D3648;
+    background-color: transparent;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+button.gift-btn:hover {
+    text-decoration: underline;
 }
 
 @media (min-width: 760px) {
