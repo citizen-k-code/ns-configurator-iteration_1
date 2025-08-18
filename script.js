@@ -3148,9 +3148,21 @@ class UnifiedConfigurator {
         const hasWelcomeGift = this.state.welcomeGiftService !== null;
         const availableServices = services.filter(service => !this.state.selectedEntertainmentServices.has(service.key));
 
-        // Add Welcome Gift header if no service has been selected yet
+        // Control visibility of available-services-header
+        const availableServicesHeader = document.querySelector('.available-services-header');
+        if (availableServicesHeader) {
+            if (!hasWelcomeGift) {
+                // Hide header when welcome gift is available (no service chosen yet)
+                availableServicesHeader.style.display = 'none';
+            } else {
+                // Show header after welcome gift has been chosen
+                availableServicesHeader.style.display = 'block';
+            }
+        }
+
+        // Add Welcome Gift header if a service has been selected but welcome gift is still available
         let welcomeGiftHeader = '';
-        if (!hasWelcomeGift && availableServices.length > 0) {
+        if (hasWelcomeGift && availableServices.length > 0) {
             welcomeGiftHeader = `
                 <div class="welcome-gift-header">
                     <div class="welcome-gift-icon">🎁</div>
