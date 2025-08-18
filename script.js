@@ -579,9 +579,9 @@ class UnifiedConfigurator {
         // if (this.shouldShowEntertainmentBoxRecommendation()) {
         //     this.openEntertainmentBoxRecommendation();
         // } else {
-            // Directly go to success page
-            console.log('Order placed!', this.state);
-            window.location.href = 'success.html';
+        // Directly go to success page
+        console.log('Order placed!', this.state);
+        window.location.href = 'success.html';
         // }
     }
 
@@ -4485,15 +4485,18 @@ class UnifiedConfigurator {
 
             // Replace placeholders in title
             dynamicTitle = dynamicTitle
-                .replace('##DISCOUNT_NAME##', discountName);
-            //.replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
+                .replace('##DISCOUNT_NAME##', discountName)
+                .replace('##PRODUCT_NAME##', productName); // product name is not in the title, but in content
 
             // Replace placeholders in content
             const discountValue = originalPrice - discountedPrice;
+
+
+
             dynamicContent = dynamicContent
+                .replace('##PRODUCT_NAME##', productName)
                 .replace('##ORIGINAL_PRICE##', originalPrice.toFixed(2).replace('.', ','))
-                .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','))
-                .replace('##PRODUCT_NAME##', productName);
+                .replace('##DISCOUNT_VALUE##', discountValue.toFixed(2).replace('.', ','));
 
             // Add temporary discount highlight if applicable
             const temporaryHighlight = hasTemporaryDiscount ?
