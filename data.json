@@ -124,7 +124,7 @@
         "showHighlight": false,
         "highlight": null
       },
-      "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> programma's herbekijken, Tot <strong>200 uur</strong> opnames in the cloud",
+      "summary": "<strong>90+</strong> kanalen, <strong>7 dagen</strong> programma's herbekijken, Tot <strong>200 uur</strong> opnames in the cloud, Inclusief <strong>box en afstandsbediening</strong>",
       "price": 14.00,
       "discountCopy": {
         "temporaryOnly": "",
@@ -185,8 +185,8 @@
       }
     },
     "entertainmentBox": {
-      "title": "Entertainment Hub",
-      "summary": "<strong>Alles op één plek</strong>: zenders sport lokale en internationale apps, Zoek en ontdek <strong>over alle diensten</strong>, <strong>Persoonlijke aanbevelingen</strong> over al jouw diensten",
+      "title": "Entertainment Box",
+      "summary": "Alle live-tv kanalen, sport, streamingdiensten en lokale apps <strong>samen op één plek</strong>, <strong>Flexibe</strong> en makkelijk tv en/of streaming diensten <strong>aan/uit zetten</strong> via onze shop, <strong>Vind snel wat jij wilt kijken:</strong> zoek en ontdek over alle streamingdiensten heen, <strong>Persoonlijke aanbevelingen</strong> op basis van jouw kijkgedrag",
       "price": 5.00,
       "discountCopy": {
         "temporaryOnly": "gedurende 3 maanden"
@@ -326,6 +326,10 @@
       "content": "<p>Wanneer je je streamingdiensten overzet naar Altijd Online verhuizen je gebruikersprofielen, kijkgeschiedenis en voorkeuren gewoon mee.<br />Je behoudt bovendien gewoon je login en wachtwoord.</p><p>Het enige wat jij hoeft te doen is je streamingdienst <strong>eerst bestellen</strong> en <strong>nadien activeren</strong> via je Altijd Online klantenzone.</p><p>De account bij je streamingdienst zelf wordt automatisch gepauzeerd. Zo betaal je nooit teveel.</p>"
     },
     "entertainment_box": {
+      "title": "Waarom kiezen voor onze Entertainment Box? ",
+      "content": "<p>De Entertainment Box is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot al je favoriete streamingdiensten, lokale apps en radiozenders.</p></div><div class='paragraph'><h4>Geen gedoe meer met switchen tussen apps</h4><p>We bundelen alles van VRT MAX, VTM GO, GoPlay én je betalende streamingdiensten op één plek. Zo vind je jouw favoriete content zonder van app naar app te moeten springen.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je wat je verder kan kijken, je favoriete shows en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Box inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
+    },
+    "entertainment_hub": {
       "title": "Waarom kiezen voor onze Entertainment Hub? ",
       "content": "<p>De Entertainment Hub is de plek waar al je zenders en streamingdiensten verzameld worden, zodat je sneller dan ooit vindt wat jij wil zien.</p><div class='paragraph'><h4>Al je entertainment op één plek</h4><p>Vanuit één platform heb je toegang tot meer dan 90 tv-zenders, je favoriete streamingdiensten en radiozenders.</p></div><div class='paragraph'><h4>Geen gedoe meer met switchen tussen apps</h4><p>We bundelen alles van VRT MAX, VTM GO, GoPlay én je betalende streamingdiensten op één plek. Zo vind je jouw favoriete content zonder van app naar app te moeten springen.</p></div><div class='paragraph'><h4>Wat jij graag kijkt, staat al voor je klaar</h4><p>Op je startpagina zie je in één oogopslag je favoriete entertainment, recente opnames en streamingapps.</p></div><div class='paragraph'><h4>Altijd mee met de recentste series en films</h4><p>De Entertainment Hub inspireert je dagelijks met persoonlijke aanbevelingen en de populairste programma’s van het moment.</p></div>"
     },
