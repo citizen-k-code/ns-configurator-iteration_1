@@ -2923,6 +2923,16 @@ class UnifiedConfigurator {
         }
     }
 
+
+    toggleShortcut(product) {
+        // Activate the toggle
+        const toggle = document.getElementById(product + '-toggle');
+        if (toggle) {
+            toggle.checked = true;
+            this.toggleProduct(product, true);
+        }
+    }
+
     openTooltipSheet(tooltipKey) {
         const tooltipData = this.data.tooltips[tooltipKey];
         if (!tooltipData) return;
@@ -3162,15 +3172,13 @@ class UnifiedConfigurator {
 
         // Add Welcome Gift header if a service has been selected but welcome gift is still available
         let welcomeGiftHeader = '';
-        if (hasWelcomeGift && availableServices.length > 0) {
+        if (!hasWelcomeGift && availableServices.length > 0) {
             welcomeGiftHeader = `
-                <div class="welcome-gift-header">
-                    <div class="welcome-gift-icon">🎁</div>
-                    <div class="welcome-gift-text">
-                        <div class="welcome-gift-title">1 jaar gratis streamen!</div>
-                        <div class="welcome-gift-subtitle">Je krijgt 1 jaar lang een gigantische korting op 1 streamingdienst naar keuze</div>
-                        <div class="welcome-gift-note">Heb je al een account op 1 van deze diensten? Die kan je makkelijk overzetten.</div>
-                    </div>
+                <div class="gift-header">
+                    <div class="icon">🎁</div>
+                    <h3>1 jaar gratis streamen!</h3>
+                    <div class="welcome-gift-subtitle">Je krijgt 1 jaar lang een gigantische korting op 1 streamingdienst naar keuze</div>
+                    <div class="streaming-note">Ben je al geabonneerd op één van deze streamingdiensten? Je kan die makkelijk overzetten. <span class="content-link" onclick="app.openTooltipSheet('merge_entertainment')">Meer weten?</span></div>
                 </div>
             `;
         }
@@ -3211,12 +3219,18 @@ class UnifiedConfigurator {
         }).join('');
 
         // Apply Welcome Gift styling to container
+        console.log("Welcomegift bepalen");
+
         if (!hasWelcomeGift && availableServices.length > 0) {
             container.classList.add('welcome-gift-container');
             container.innerHTML = welcomeGiftHeader + servicesHtml;
+
+            console.log("Ik plaats de content er");
         } else {
             container.classList.remove('welcome-gift-container');
             container.innerHTML = servicesHtml;
+
+            console.log("Geen content nodig");
         }
     }
 
@@ -3601,7 +3615,7 @@ class UnifiedConfigurator {
         // Start Welcomgift block
         if (productType === 'entertainment' && closedStateData.showServiceIcons) {
             closedStateHtml += `
-                <div class="product-closed-welcomegift">
+                <div class="product-closed-welcomegift" onclick="app.toggleShortcut('entertainment')">
             `;
         }
 
@@ -3627,7 +3641,7 @@ class UnifiedConfigurator {
                     <img src="final_assets/streaming_icon_row.svg" alt="streaming diensten" />
                 </div>
 
-                <button class="gift-btn" id="gift-btn">Kies je welkomstcadeau</button>
+                <button class="gift-btn">Kies je welkomstcadeau</button>
             `;
         }
 
@@ -3660,21 +3674,6 @@ class UnifiedConfigurator {
 
         // Insert the closed state content
         productBlock.insertAdjacentHTML('beforeend', closedStateHtml);
-
-        // Add event listener for gift button if it exists
-        if (productType === 'entertainment') {
-            const giftBtn = productBlock.querySelector('#gift-btn');
-            if (giftBtn) {
-                giftBtn.addEventListener('click', () => {
-                    // Activate the entertainment toggle
-                    const entertainmentToggle = document.getElementById('entertainment-toggle');
-                    if (entertainmentToggle) {
-                        entertainmentToggle.checked = true;
-                        this.toggleProduct('entertainment', true);
-                    }
-                });
-            }
-        }
     }
 
     // Helper method to calculate price for closed state

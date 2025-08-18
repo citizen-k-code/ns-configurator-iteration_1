@@ -1274,7 +1274,7 @@
 
 /* CSS for Welcome Gift */
 .welcome-gift-container {
-    background-color: #FFEDAD !important;
+    background-color: #FFF6D2 !important;
     border-radius: 12px;
     padding: 16px;
     margin: -12px;
@@ -1313,13 +1313,25 @@
     margin-bottom: 8px;
 }
 
-.welcome-gift-note {
-    font-size: 12px;
-    color: #717D96;
+.streaming-note {
+    font-size: 14px;
+    text-align: center;
+    color: #2D3648;
+}
+
+.gift-header .streaming-note {
+    background-color: white;
+    padding: 8px;
+    border-radius: 7px;
+}
+
+span.content-link {
+    display: inline-block;
+    text-decoration: underline;
 }
 
 .welcome-gift-service {
-    background-color: #FFEDAD;
+    background-color: #FFF6D2;
     border-radius: 12px;
 }
 
@@ -1352,7 +1364,7 @@
 
 /* CSS for Welcome Gift */
 .welcome-gift-container {
-    background-color: #FFEDAD !important;
+    background-color: #FFF6D2 !important;
     border-radius: 12px;
     padding: 16px;
     margin: -12px;
@@ -1391,13 +1403,8 @@
     margin-bottom: 8px;
 }
 
-.welcome-gift-note {
-    font-size: 12px;
-    color: #717D96;
-}
-
 .welcome-gift-service {
-    background-color: #FFEDAD;
+    background-color: #FFF6D2;
     border-radius: 12px;
 }
 
@@ -4575,7 +4582,7 @@ div.paragraph h5 {
  * Welcome Gift  styling
 **/
 .product-closed-welcomegift {
-    background-color: #FFEDAD;
+    background-color: #FFF6D2;
     padding: 16px;
     border-radius: 16px;
 }
@@ -4584,6 +4591,7 @@ div.paragraph h5 {
     margin-bottom: 12px;
     font-size: 16px;
     color: #2D3648;
+    text-align: center;
 }
 
 .gift-header .icon {
@@ -4610,6 +4618,14 @@ div.paragraph h5 {
 
 button.gift-btn:hover {
     text-decoration: underline;
+}
+
+.welcome-gift-container .gift-header .icon {
+    font-size: 24px;
+}
+
+.welcome-gift-container .gift-header h3 {
+    font-size: 20px;
 }
 
 @media (min-width: 760px) {
