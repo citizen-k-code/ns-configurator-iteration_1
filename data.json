@@ -237,10 +237,10 @@
     "permanent": {
       "enabled": true,
       "percentage": 50,
-      "description": "Permanent promotion",
+      "description": "50% discount on mobile when combined with internet",
       "conditions": {
         "requiresInternet": true,
-        "applicableToTiers": [2, 3]
+        "applicableToTiers": [1, 2, 3]
       }
     },
     "temporary": {
