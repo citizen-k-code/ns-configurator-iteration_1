@@ -4427,17 +4427,40 @@ class UnifiedConfigurator {
                         return serviceName && serviceName.textContent === this.getServiceDisplayName(serviceKey);
                     });
 
-                    if (newServiceCard) {
-                        newServiceCard.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    } else {
-                        // Fallback: scroll to the selected services container
-                        selectedServicesContainer.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                    let targetElement = newServiceCard || selectedServicesContainer;
+                    
+                    if (targetElement) {
+                        // Calculate the target position accounting for fixed navigation
+                        const elementRect = targetElement.getBoundingClientRect();
+                        const currentScrollY = window.pageYOffset;
+                        const targetY = currentScrollY + elementRect.top - 80; // 80px offset for fixed navigation
+
+                        // Custom smooth scroll with ease-out animation
+                        const startY = currentScrollY;
+                        const distance = targetY - startY;
+                        const duration = 800; // Slower animation (800ms)
+                        let startTime = null;
+
+                        function easeOutCubic(t) {
+                            return 1 - Math.pow(1 - t, 3);
+                        }
+
+                        function animateScroll(currentTime) {
+                            if (startTime === null) startTime = currentTime;
+                            const timeElapsed = currentTime - startTime;
+                            const progress = Math.min(timeElapsed / duration, 1);
+                            
+                            const easedProgress = easeOutCubic(progress);
+                            const currentY = startY + (distance * easedProgress);
+                            
+                            window.scrollTo(0, currentY);
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(animateScroll);
+                            }
+                        }
+
+                        requestAnimationFrame(animateScroll);
                     }
                 }
             }, 100); // Small delay to ensure UI has been updated
