@@ -3648,6 +3648,21 @@ class UnifiedConfigurator {
 
         // Insert the closed state content
         productBlock.insertAdjacentHTML('beforeend', closedStateHtml);
+
+        // Add event listener for gift button if it exists
+        if (productType === 'entertainment') {
+            const giftBtn = productBlock.querySelector('#gift-btn');
+            if (giftBtn) {
+                giftBtn.addEventListener('click', () => {
+                    // Activate the entertainment toggle
+                    const entertainmentToggle = document.getElementById('entertainment-toggle');
+                    if (entertainmentToggle) {
+                        entertainmentToggle.checked = true;
+                        this.toggleProduct('entertainment', true);
+                    }
+                });
+            }
+        }
     }
 
     // Helper method to calculate price for closed state
