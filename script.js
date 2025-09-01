@@ -3554,6 +3554,11 @@ class UnifiedConfigurator {
             if (houseNumberAutocomplete && !houseNumberInput.contains(e.target) && !houseNumberAutocomplete.contains(e.target)) {
                 houseNumberAutocomplete.style.display = 'none';
             }
+
+            const boxAutocomplete = document.getElementById('box-autocomplete');
+            if (boxAutocomplete && !busInput.contains(e.target) && !boxAutocomplete.contains(e.target)) {
+                boxAutocomplete.style.display = 'none';
+            }
         });
 
         // Store selected geo ID when postcode is selected
@@ -3601,8 +3606,92 @@ class UnifiedConfigurator {
                 houseNumberAutocomplete.style.display = 'none';
             }
 
-            // Remove focus from house number input
-            houseNumberInput.blur();
+            // Focus on bus input field
+            busInput.focus();
+        };
+
+        // Box input event listener
+        busInput.addEventListener('input', async (e) => {
+            const value = e.target.value.trim();
+
+            if (!selectedGeoId || !streetInput.value.trim() || !houseNumberInput.value.trim()) return;
+
+            // Create or get box autocomplete container
+            let boxAutocomplete = document.getElementById('box-autocomplete');
+            if (!boxAutocomplete) {
+                boxAutocomplete = document.createElement('div');
+                boxAutocomplete.id = 'box-autocomplete';
+                boxAutocomplete.className = 'autocomplete-list';
+                boxAutocomplete.style.display = 'none';
+                // Append to the autocomplete-container, not the form-group
+                const autocompleteContainer = busInput.closest('.autocomplete-container');
+                if (autocompleteContainer) {
+                    autocompleteContainer.appendChild(boxAutocomplete);
+                } else {
+                    busInput.parentNode.appendChild(boxAutocomplete);
+                }
+            }
+
+            if (value.length < 1) {
+                boxAutocomplete.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/unit?municipalityGeoId=${selectedGeoId}&streetName=${encodeURIComponent(streetInput.value.trim())}&houseNumber=${encodeURIComponent(houseNumberInput.value.trim())}&searchTerm=${encodeURIComponent(value)}`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    this.renderBoxAutocomplete(data, boxAutocomplete);
+                    boxAutocomplete.style.display = 'block';
+                } else {
+                    boxAutocomplete.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching box suggestions:', error);
+                boxAutocomplete.style.display = 'none';
+            }
+        });
+
+        // Handle keyboard navigation for box
+        let boxSelectedIndex = -1;
+        busInput.addEventListener('keydown', (e) => {
+            const boxAutocomplete = document.getElementById('box-autocomplete');
+            if (!boxAutocomplete) return;
+
+            const items = boxAutocomplete.querySelectorAll('.autocomplete-item');
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                boxSelectedIndex = Math.min(boxSelectedIndex + 1, items.length - 1);
+                this.updateAutocompleteSelection(items, boxSelectedIndex);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                boxSelectedIndex = Math.max(boxSelectedIndex - 1, -1);
+                this.updateAutocompleteSelection(items, boxSelectedIndex);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (boxSelectedIndex >= 0 && items[boxSelectedIndex]) {
+                    items[boxSelectedIndex].click();
+                }
+            } else if (e.key === 'Escape') {
+                boxAutocomplete.style.display = 'none';
+                boxSelectedIndex = -1;
+            }
+        });
+
+        // Store selected box value and geo ID
+        this.onBoxSelected = (geoId, unit) => {
+            busInput.value = unit;
+            // Store the box geo ID for potential future use
+            this.selectedBoxGeoId = geoId;
+            const boxAutocomplete = document.getElementById('box-autocomplete');
+            if (boxAutocomplete) {
+                boxAutocomplete.style.display = 'none';
+            }
+
+            // Remove focus from box input
+            busInput.blur();
         };
     }
 
@@ -3637,6 +3726,18 @@ class UnifiedConfigurator {
         const html = data.map((item, index) => `
             <div class="autocomplete-item" onclick="app.onHouseNumberSelected('${item.houseNumber}')">
                 ${item.houseNumber}
+            </div>
+        `).join('');
+
+        container.innerHTML = html;
+    }
+
+    renderBoxAutocomplete(data, container) {
+        if (!container) return;
+
+        const html = data.map((item, index) => `
+            <div class="autocomplete-item" onclick="app.onBoxSelected('${item.geoId}', '${item.unit}')">
+                ${item.unit}
             </div>
         `).join('');
 
