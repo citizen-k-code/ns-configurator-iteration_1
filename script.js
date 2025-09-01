@@ -424,6 +424,9 @@ class UnifiedConfigurator {
                 this.openAdvantageBottomSheet();
             });
         }
+
+        // Address form listeners setup
+        this.setupAddressFormListeners();
     }
 
     setupMobileSummaryObserver() {
@@ -2479,14 +2482,6 @@ class UnifiedConfigurator {
             });
         }
 
-        // TV discount period
-        if (this.state.tv.enabled) {
-            const tvData = this.data.products.tv;
-            if (tvData.discountPeriod) {
-                periods.push(tvData.discountPeriod);
-            }
-        }
-
         // WiFi-pods discount period
         if (this.state.wifiPods.enabled && this.state.wifiPods.count > 0) {
             const wifiPodsData = this.data.products.wifiPods;
@@ -2546,17 +2541,6 @@ class UnifiedConfigurator {
                     });
                 }
             });
-        }
-
-        // TV discount
-        if (this.state.tv.enabled) {
-            const tvData = this.data.products.tv;
-            if (tvData.discountPeriod === period) {
-                expiringDiscounts.push({
-                    product: 'TV',
-                    discountValue: tvData.discountValue
-                });
-            }
         }
 
         // WiFi-pods discount
@@ -3339,19 +3323,191 @@ class UnifiedConfigurator {
     }
 
     // Address Form Methods
+    setupAddressFormListeners() {
+        const postcodeInput = document.getElementById('postcode');
+        const streetInput = document.getElementById('street');
+        const houseNumberInput = document.getElementById('house-number');
+        const busInput = document.getElementById('bus');
+        const autocompleteList = document.getElementById('postcode-autocomplete');
+
+        if (!postcodeInput || !streetInput || !houseNumberInput || !busInput || !autocompleteList) return;
+
+        let selectedGeoId = null;
+        let autocompleteTimeout = null;
+
+        // Set initial focus on postcode input when form opens
+        setTimeout(() => {
+            postcodeInput.focus();
+        }, 100);
+
+        // Handle postcode input and autocomplete
+        postcodeInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.trim();
+
+            // Clear previous timeout
+            if (autocompleteTimeout) {
+                clearTimeout(autocompleteTimeout);
+            }
+
+            if (searchTerm.length < 2) {
+                autocompleteList.style.display = 'none';
+                return;
+            }
+
+            // Debounce API calls
+            autocompleteTimeout = setTimeout(() => {
+                this.fetchCitySuggestions(searchTerm, autocompleteList, postcodeInput, streetInput);
+            }, 300);
+        });
+
+        // Handle keyboard navigation in autocomplete
+        postcodeInput.addEventListener('keydown', (e) => {
+            const items = autocompleteList.querySelectorAll('.autocomplete-item');
+            const selected = autocompleteList.querySelector('.autocomplete-item.selected');
+            let selectedIndex = Array.from(items).indexOf(selected);
+
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    selectedIndex = selectedIndex < items.length - 1 ? selectedIndex + 1 : 0;
+                    this.updateAutocompleteSelection(items, selectedIndex);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    selectedIndex = selectedIndex > 0 ? selectedIndex - 1 : items.length - 1;
+                    this.updateAutocompleteSelection(items, selectedIndex);
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    if (selected) {
+                        this.selectAutocompleteItem(selected, postcodeInput, streetInput, autocompleteList);
+                    }
+                    break;
+                case 'Escape':
+                    autocompleteList.style.display = 'none';
+                    break;
+            }
+        });
+
+        // Hide autocomplete when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!postcodeInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+                autocompleteList.style.display = 'none';
+            }
+        });
+    }
+
+    async fetchCitySuggestions(searchTerm, autocompleteList, postcodeInput, streetInput) {
+        try {
+            const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/city?searchTerm=${encodeURIComponent(searchTerm)}`);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                this.renderAutocompleteList(data, autocompleteList, postcodeInput, streetInput);
+            } else {
+                autocompleteList.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error fetching city suggestions:', error);
+            autocompleteList.style.display = 'none';
+        }
+    }
+
+    renderAutocompleteList(suggestions, autocompleteList, postcodeInput, streetInput) {
+        autocompleteList.innerHTML = suggestions.map((suggestion, index) => {
+            const displayText = `${suggestion.zipCode} - ${suggestion.subMunicipality}`;
+            return `
+                <div class="autocomplete-item ${index === 0 ? 'selected' : ''}"
+                     data-geo-id="${suggestion.geoId}"
+                     data-display-text="${displayText}">
+                    ${displayText}
+                </div>
+            `;
+        }).join('');
+
+        // Add click listeners to autocomplete items
+        autocompleteList.querySelectorAll('.autocomplete-item').forEach(item => {
+            item.addEventListener('click', () => {
+                this.selectAutocompleteItem(item, postcodeInput, streetInput, autocompleteList);
+            });
+        });
+
+        autocompleteList.style.display = 'block';
+    }
+
+    updateAutocompleteSelection(items, selectedIndex) {
+        items.forEach((item, index) => {
+            item.classList.toggle('selected', index === selectedIndex);
+        });
+    }
+
+    selectAutocompleteItem(item, postcodeInput, streetInput, autocompleteList) {
+        const displayText = item.dataset.displayText;
+        const geoId = item.dataset.geoId;
+
+        // Set the input value
+        postcodeInput.value = displayText;
+
+        // Store the geoId for later use
+        postcodeInput.dataset.geoId = geoId;
+
+        // Hide autocomplete
+        autocompleteList.style.display = 'none';
+
+        // Enable and focus street input
+        streetInput.disabled = false;
+        streetInput.focus();
+
+        // Update form group styling
+        const streetFormGroup = streetInput.closest('.form-group');
+        if (streetFormGroup) {
+            streetFormGroup.classList.remove('disabled');
+        }
+    }
+
     openAddressForm() {
         const overlay = document.getElementById('address-form-overlay');
         if (overlay) {
             overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+
+            // Reset form state
+            const form = document.getElementById('address-form');
+            if (form) {
+                form.reset();
+
+                // Disable all fields except postcode
+                const streetInput = document.getElementById('street');
+                const houseNumberInput = document.getElementById('house-number');
+                const busInput = document.getElementById('bus');
+
+                if (streetInput) {
+                    streetInput.disabled = true;
+                    streetInput.closest('.form-group')?.classList.add('disabled');
+                }
+                if (houseNumberInput) {
+                    houseNumberInput.disabled = true;
+                    houseNumberInput.closest('.form-group')?.classList.add('disabled');
+                }
+                if (busInput) {
+                    busInput.disabled = true;
+                    busInput.closest('.form-group')?.classList.add('disabled');
+                }
+            }
+
+            // Set up listeners if not already done
+            this.setupAddressFormListeners();
         }
     }
 
     closeAddressForm() {
         const overlay = document.getElementById('address-form-overlay');
+        const autocompleteList = document.getElementById('postcode-autocomplete');
+
         if (overlay) {
             overlay.style.display = 'none';
-            document.body.style.overflow = '';
+        }
+        if (autocompleteList) {
+            autocompleteList.style.display = 'none';
         }
     }
 
@@ -3433,7 +3589,7 @@ class UnifiedConfigurator {
         // Format address display
         const address = this.addressData.address;
         const fullAddress = `${address.street} ${address.houseNumber}${address.bus ? ' bus ' + address.bus : ''}, ${address.postcode}`;
-        
+
         addressDisplay.innerHTML = `
             <div class="address-line">${fullAddress}</div>
             <div class="address-subline">Alles gevonden</div>
@@ -4698,7 +4854,7 @@ class UnifiedConfigurator {
 
         title.textContent = 'Combokorting op Datasim';
 
-        let contentHtml = '<p>Je profiteert van de volgende kortingen op je datasim kaarten:</p><div class="advantage-section"><h4>Actieve kortingen</h4><ul>';
+        let contentHtml = '<p>Je profiteert van de volgende kortingen op je datasim kaarten:</div><div class="advantage-section"><h4>Actieve kortingen</h4><ul>';
 
         discounts.forEach(discount => {
             contentHtml += `<li><strong>${discount.description}</strong></li>`;

@@ -709,22 +709,25 @@
                     <form id="address-form" onsubmit="app.submitAddressForm(event)">
                         <div class="form-group">
                             <label for="postcode">Postcode of stad</label>
-                            <input type="text" id="postcode" name="postcode" placeholder="Bijv. 2800 of Mechelen" required>
+                            <div class="autocomplete-container">
+                                <input type="text" id="postcode" name="postcode" placeholder="Bijv. 2800 of Mechelen" required autocomplete="off">
+                                <div class="autocomplete-list" id="postcode-autocomplete" style="display: none;"></div>
+                            </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="street">Straat</label>
-                            <input type="text" id="street" name="street" placeholder="Straatnaam" required>
+                            <input type="text" id="street" name="street" placeholder="Straatnaam" required disabled>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="house-number">Huisnummer</label>
-                                <input type="text" id="house-number" name="house-number" placeholder="Nr." required>
+                                <input type="text" id="house-number" name="house-number" placeholder="Nr." required disabled>
                             </div>
                             <div class="form-group">
                                 <label for="bus">Bus</label>
-                                <input type="text" id="bus" name="bus" placeholder="Optioneel">
+                                <input type="text" id="bus" name="bus" placeholder="Optioneel" disabled>
                             </div>
                         </div>
                     </form>
