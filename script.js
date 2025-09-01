@@ -3328,141 +3328,184 @@ class UnifiedConfigurator {
         const streetInput = document.getElementById('street');
         const houseNumberInput = document.getElementById('house-number');
         const busInput = document.getElementById('bus');
-        const autocompleteList = document.getElementById('postcode-autocomplete');
+        const postcodeAutocomplete = document.getElementById('postcode-autocomplete');
 
-        if (!postcodeInput || !streetInput || !houseNumberInput || !busInput || !autocompleteList) return;
+        if (!postcodeInput || !streetInput || !postcodeAutocomplete) return;
 
         let selectedGeoId = null;
-        let autocompleteTimeout = null;
+        let currentSelectedIndex = -1;
+        let autocompleteResults = [];
+        let streetAutocompleteResults = [];
+        let streetSelectedIndex = -1;
 
-        // Set initial focus on postcode input when form opens
+        // Initially disable all fields except postcode
+        streetInput.disabled = true;
+        houseNumberInput.disabled = true;
+        busInput.disabled = true;
+
+        // Focus on postcode input when form opens
         setTimeout(() => {
             postcodeInput.focus();
         }, 100);
 
-        // Handle postcode input and autocomplete
-        postcodeInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.trim();
+        // Postcode input event listener
+        postcodeInput.addEventListener('input', async (e) => {
+            const value = e.target.value.trim();
 
-            // Clear previous timeout
-            if (autocompleteTimeout) {
-                clearTimeout(autocompleteTimeout);
-            }
-
-            if (searchTerm.length < 2) {
-                autocompleteList.style.display = 'none';
+            if (value.length < 2) {
+                postcodeAutocomplete.style.display = 'none';
                 return;
             }
 
-            // Debounce API calls
-            autocompleteTimeout = setTimeout(() => {
-                this.fetchCitySuggestions(searchTerm, autocompleteList, postcodeInput, streetInput);
-            }, 300);
+            try {
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/city?searchTerm=${encodeURIComponent(value)}`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    autocompleteResults = data;
+                    this.renderPostcodeAutocomplete(data);
+                    postcodeAutocomplete.style.display = 'block';
+                    currentSelectedIndex = -1;
+                } else {
+                    postcodeAutocomplete.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching postcode suggestions:', error);
+                postcodeAutocomplete.style.display = 'none';
+            }
         });
 
-        // Handle keyboard navigation in autocomplete
+        // Handle keyboard navigation for postcode
         postcodeInput.addEventListener('keydown', (e) => {
-            const items = autocompleteList.querySelectorAll('.autocomplete-item');
-            const selected = autocompleteList.querySelector('.autocomplete-item.selected');
-            let selectedIndex = Array.from(items).indexOf(selected);
+            const items = postcodeAutocomplete.querySelectorAll('.autocomplete-item');
 
-            switch (e.key) {
-                case 'ArrowDown':
-                    e.preventDefault();
-                    selectedIndex = selectedIndex < items.length - 1 ? selectedIndex + 1 : 0;
-                    this.updateAutocompleteSelection(items, selectedIndex);
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    selectedIndex = selectedIndex > 0 ? selectedIndex - 1 : items.length - 1;
-                    this.updateAutocompleteSelection(items, selectedIndex);
-                    break;
-                case 'Enter':
-                    e.preventDefault();
-                    if (selected) {
-                        this.selectAutocompleteItem(selected, postcodeInput, streetInput, autocompleteList);
-                    }
-                    break;
-                case 'Escape':
-                    autocompleteList.style.display = 'none';
-                    break;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentSelectedIndex = Math.min(currentSelectedIndex + 1, items.length - 1);
+                this.updateAutocompleteSelection(items, currentSelectedIndex);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentSelectedIndex = Math.max(currentSelectedIndex - 1, -1);
+                this.updateAutocompleteSelection(items, currentSelectedIndex);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentSelectedIndex >= 0 && items[currentSelectedIndex]) {
+                    items[currentSelectedIndex].click();
+                }
+            } else if (e.key === 'Escape') {
+                postcodeAutocomplete.style.display = 'none';
+                currentSelectedIndex = -1;
             }
         });
 
-        // Hide autocomplete when clicking outside
+        // Street input event listener
+        streetInput.addEventListener('input', async (e) => {
+            const value = e.target.value.trim();
+
+            if (!selectedGeoId) return;
+
+            // Create or get street autocomplete container
+            let streetAutocomplete = document.getElementById('street-autocomplete');
+            if (!streetAutocomplete) {
+                streetAutocomplete = document.createElement('div');
+                streetAutocomplete.id = 'street-autocomplete';
+                streetAutocomplete.className = 'autocomplete-list';
+                streetAutocomplete.style.display = 'none';
+                streetInput.parentNode.appendChild(streetAutocomplete);
+            }
+
+            if (value.length < 2) {
+                streetAutocomplete.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/street?municipalityGeoId=${selectedGeoId}&searchTerm=${encodeURIComponent(value)}`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    streetAutocompleteResults = data;
+                    this.renderStreetAutocomplete(data, streetAutocomplete);
+                    streetAutocomplete.style.display = 'block';
+                    streetSelectedIndex = -1;
+                } else {
+                    streetAutocomplete.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching street suggestions:', error);
+                streetAutocomplete.style.display = 'none';
+            }
+        });
+
+        // Handle keyboard navigation for street
+        streetInput.addEventListener('keydown', (e) => {
+            const streetAutocomplete = document.getElementById('street-autocomplete');
+            if (!streetAutocomplete) return;
+
+            const items = streetAutocomplete.querySelectorAll('.autocomplete-item');
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                streetSelectedIndex = Math.min(streetSelectedIndex + 1, items.length - 1);
+                this.updateAutocompleteSelection(items, streetSelectedIndex);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                streetSelectedIndex = Math.max(streetSelectedIndex - 1, -1);
+                this.updateAutocompleteSelection(items, streetSelectedIndex);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (streetSelectedIndex >= 0 && items[streetSelectedIndex]) {
+                    items[streetSelectedIndex].click();
+                }
+            } else if (e.key === 'Escape') {
+                streetAutocomplete.style.display = 'none';
+                streetSelectedIndex = -1;
+            }
+        });
+
+        // Click outside to close autocomplete
         document.addEventListener('click', (e) => {
-            if (!postcodeInput.contains(e.target) && !autocompleteList.contains(e.target)) {
-                autocompleteList.style.display = 'none';
+            if (!postcodeInput.contains(e.target) && !postcodeAutocomplete.contains(e.target)) {
+                postcodeAutocomplete.style.display = 'none';
+            }
+
+            const streetAutocomplete = document.getElementById('street-autocomplete');
+            if (streetAutocomplete && !streetInput.contains(e.target) && !streetAutocomplete.contains(e.target)) {
+                streetAutocomplete.style.display = 'none';
             }
         });
-    }
 
-    async fetchCitySuggestions(searchTerm, autocompleteList, postcodeInput, streetInput) {
-        try {
-            const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/city?searchTerm=${encodeURIComponent(searchTerm)}`);
-            const data = await response.json();
+        // Store selected geo ID when postcode is selected
+        this.onPostcodeSelected = (geoId, displayValue) => {
+            selectedGeoId = geoId;
+            postcodeInput.value = displayValue;
+            postcodeAutocomplete.style.display = 'none';
 
-            if (data && data.length > 0) {
-                this.renderAutocompleteList(data, autocompleteList, postcodeInput, streetInput);
-            } else {
-                autocompleteList.style.display = 'none';
+            // Enable and focus street input
+            streetInput.disabled = false;
+            streetInput.focus();
+
+            // Clear street value and disable other fields
+            streetInput.value = '';
+            houseNumberInput.disabled = true;
+            busInput.disabled = true;
+            houseNumberInput.value = '';
+            busInput.value = '';
+        };
+
+        // Store selected street value
+        this.onStreetSelected = (streetValue) => {
+            streetInput.value = streetValue;
+            const streetAutocomplete = document.getElementById('street-autocomplete');
+            if (streetAutocomplete) {
+                streetAutocomplete.style.display = 'none';
             }
-        } catch (error) {
-            console.error('Error fetching city suggestions:', error);
-            autocompleteList.style.display = 'none';
-        }
-    }
 
-    renderAutocompleteList(suggestions, autocompleteList, postcodeInput, streetInput) {
-        autocompleteList.innerHTML = suggestions.map((suggestion, index) => {
-            const displayText = `${suggestion.zipCode} - ${suggestion.subMunicipality}`;
-            return `
-                <div class="autocomplete-item ${index === 0 ? 'selected' : ''}"
-                     data-geo-id="${suggestion.geoId}"
-                     data-display-text="${displayText}">
-                    ${displayText}
-                </div>
-            `;
-        }).join('');
-
-        // Add click listeners to autocomplete items
-        autocompleteList.querySelectorAll('.autocomplete-item').forEach(item => {
-            item.addEventListener('click', () => {
-                this.selectAutocompleteItem(item, postcodeInput, streetInput, autocompleteList);
-            });
-        });
-
-        autocompleteList.style.display = 'block';
-    }
-
-    updateAutocompleteSelection(items, selectedIndex) {
-        items.forEach((item, index) => {
-            item.classList.toggle('selected', index === selectedIndex);
-        });
-    }
-
-    selectAutocompleteItem(item, postcodeInput, streetInput, autocompleteList) {
-        const displayText = item.dataset.displayText;
-        const geoId = item.dataset.geoId;
-
-        // Set the input value
-        postcodeInput.value = displayText;
-
-        // Store the geoId for later use
-        postcodeInput.dataset.geoId = geoId;
-
-        // Hide autocomplete
-        autocompleteList.style.display = 'none';
-
-        // Enable and focus street input
-        streetInput.disabled = false;
-        streetInput.focus();
-
-        // Update form group styling
-        const streetFormGroup = streetInput.closest('.form-group');
-        if (streetFormGroup) {
-            streetFormGroup.classList.remove('disabled');
-        }
+            // Enable house number and bus fields, focus on house number
+            houseNumberInput.disabled = false;
+            busInput.disabled = false;
+            houseNumberInput.focus();
+        };
     }
 
     openAddressForm() {
@@ -3501,13 +3544,17 @@ class UnifiedConfigurator {
 
     closeAddressForm() {
         const overlay = document.getElementById('address-form-overlay');
-        const autocompleteList = document.getElementById('postcode-autocomplete');
+        const postcodeAutocomplete = document.getElementById('postcode-autocomplete');
+        const streetAutocomplete = document.getElementById('street-autocomplete');
 
         if (overlay) {
             overlay.style.display = 'none';
         }
-        if (autocompleteList) {
-            autocompleteList.style.display = 'none';
+        if (postcodeAutocomplete) {
+            postcodeAutocomplete.style.display = 'none';
+        }
+        if (streetAutocomplete) {
+            streetAutocomplete.style.display = 'none';
         }
     }
 
@@ -4511,8 +4558,7 @@ class UnifiedConfigurator {
             confirmBtn.textContent = 'Toevoegen';
 
             // Remove dual button layout if it exists
-            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
-            const existingDualButtons = footer.querySelector('.dual-button-layout');
+            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-sheet').querySelector('.dual-button-layout');
             if (existingDualButtons) {
                 existingDualButtons.remove();
             }
