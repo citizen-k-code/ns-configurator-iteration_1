@@ -3905,17 +3905,26 @@ class UnifiedConfigurator {
         }
 
         // Get form data
-        const postcode = document.getElementById('postcode').value;
-        const street = document.getElementById('street').value;
-        const houseNumber = document.getElementById('house-number').value;
-        const bus = document.getElementById('bus').value;
+        const postcodeValue = document.getElementById('postcode').value;
+        const streetValue = document.getElementById('street').value;
+        const houseNumberValue = document.getElementById('house-number').value;
+        const busValue = document.getElementById('bus').value;
+
+        // Parse postcode to extract zipcode and submunicipality
+        const postcodeParts = postcodeValue.split(' - ');
+        const zipCode = postcodeParts[0] || '';
+        const subMunicipality = postcodeParts[1] || '';
+
+        // Create full address string in the required format
+        const fullAddress = `${streetValue} ${houseNumberValue}${busValue ? ' ' + busValue : ''}, ${zipCode} ${subMunicipality}`;
 
         // Create address object
         this.addressData.address = {
-            postcode: postcode,
-            street: street,
-            houseNumber: houseNumber,
-            bus: bus
+            postcode: postcodeValue,
+            street: streetValue,
+            houseNumber: houseNumberValue,
+            bus: busValue,
+            fullAddress: fullAddress
         };
 
         // Generate random result
@@ -3974,9 +3983,8 @@ class UnifiedConfigurator {
         inputState.style.display = 'none';
         resultState.style.display = 'block';
 
-        // Format address display
-        const address = this.addressData.address;
-        const fullAddress = `${address.street} ${address.houseNumber}${address.bus ? ' bus ' + address.bus : ''}, ${address.postcode}`;
+        // Format address display using the stored full address
+        const fullAddress = this.addressData.address.fullAddress;
 
         addressDisplay.innerHTML = `
             <div class="address-line">${fullAddress}</div>
