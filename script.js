@@ -3337,6 +3337,7 @@ class UnifiedConfigurator {
         let autocompleteResults = [];
         let streetAutocompleteResults = [];
         let streetSelectedIndex = -1;
+        let houseNumberSelectedIndex = -1;
 
         // Initially disable all fields except postcode
         streetInput.disabled = true;
@@ -3443,6 +3444,43 @@ class UnifiedConfigurator {
             }
         });
 
+        // House number input event listener
+        houseNumberInput.addEventListener('input', async (e) => {
+            const value = e.target.value.trim();
+
+            if (!selectedGeoId || !streetInput.value.trim()) return;
+
+            // Create or get house number autocomplete container
+            let houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
+            if (!houseNumberAutocomplete) {
+                houseNumberAutocomplete = document.createElement('div');
+                houseNumberAutocomplete.id = 'housenumber-autocomplete';
+                houseNumberAutocomplete.className = 'autocomplete-list';
+                houseNumberAutocomplete.style.display = 'none';
+                houseNumberInput.parentNode.appendChild(houseNumberAutocomplete);
+            }
+
+            if (value.length < 1) {
+                houseNumberAutocomplete.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/number?municipalityGeoId=${selectedGeoId}&streetName=${encodeURIComponent(streetInput.value.trim())}&searchTerm=${encodeURIComponent(value)}`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    this.renderHouseNumberAutocomplete(data, houseNumberAutocomplete);
+                    houseNumberAutocomplete.style.display = 'block';
+                } else {
+                    houseNumberAutocomplete.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching house number suggestions:', error);
+                houseNumberAutocomplete.style.display = 'none';
+            }
+        });
+
         // Handle keyboard navigation for street
         streetInput.addEventListener('keydown', (e) => {
             const streetAutocomplete = document.getElementById('street-autocomplete');
@@ -3469,6 +3507,32 @@ class UnifiedConfigurator {
             }
         });
 
+        // Handle keyboard navigation for house number
+        houseNumberInput.addEventListener('keydown', (e) => {
+            const houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
+            if (!houseNumberAutocomplete) return;
+
+            const items = houseNumberAutocomplete.querySelectorAll('.autocomplete-item');
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                houseNumberSelectedIndex = Math.min(houseNumberSelectedIndex + 1, items.length - 1);
+                this.updateAutocompleteSelection(items, houseNumberSelectedIndex);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                houseNumberSelectedIndex = Math.max(houseNumberSelectedIndex - 1, -1);
+                this.updateAutocompleteSelection(items, houseNumberSelectedIndex);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (houseNumberSelectedIndex >= 0 && items[houseNumberSelectedIndex]) {
+                    items[houseNumberSelectedIndex].click();
+                }
+            } else if (e.key === 'Escape') {
+                houseNumberAutocomplete.style.display = 'none';
+                houseNumberSelectedIndex = -1;
+            }
+        });
+
         // Click outside to close autocomplete
         document.addEventListener('click', (e) => {
             if (!postcodeInput.contains(e.target) && !postcodeAutocomplete.contains(e.target)) {
@@ -3478,6 +3542,11 @@ class UnifiedConfigurator {
             const streetAutocomplete = document.getElementById('street-autocomplete');
             if (streetAutocomplete && !streetInput.contains(e.target) && !streetAutocomplete.contains(e.target)) {
                 streetAutocomplete.style.display = 'none';
+            }
+
+            const houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
+            if (houseNumberAutocomplete && !houseNumberInput.contains(e.target) && !houseNumberAutocomplete.contains(e.target)) {
+                houseNumberAutocomplete.style.display = 'none';
             }
         });
 
@@ -3517,6 +3586,18 @@ class UnifiedConfigurator {
             busInput.closest('.form-group')?.classList.remove('disabled');
             houseNumberInput.focus();
         };
+
+        // Store selected house number value
+        this.onHouseNumberSelected = (houseNumber) => {
+            houseNumberInput.value = houseNumber;
+            const houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
+            if (houseNumberAutocomplete) {
+                houseNumberAutocomplete.style.display = 'none';
+            }
+
+            // Focus on bus input field
+            busInput.focus();
+        };
     }
 
     renderPostcodeAutocomplete(data) {
@@ -3538,6 +3619,18 @@ class UnifiedConfigurator {
         const html = data.map((streetName, index) => `
             <div class="autocomplete-item" onclick="app.onStreetSelected('${streetName}')">
                 ${streetName}
+            </div>
+        `).join('');
+
+        container.innerHTML = html;
+    }
+
+    renderHouseNumberAutocomplete(data, container) {
+        if (!container) return;
+
+        const html = data.map((item, index) => `
+            <div class="autocomplete-item" onclick="app.onHouseNumberSelected('${item.houseNumber}')">
+                ${item.houseNumber}
             </div>
         `).join('');
 
