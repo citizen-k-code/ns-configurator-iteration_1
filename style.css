@@ -4770,100 +4770,103 @@ button.gift-btn:hover {
 }
 
 .address-display {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.address-content {
+    flex: 1;
 }
 
 .address-line {
     font-size: 16px;
     font-weight: 600;
     color: #2D3648;
-    margin-bottom: 4px;
+    margin-bottom: 0;
 }
 
-.address-subline {
-    font-size: 14px;
+.address-change-link {
+    font-size: 12px;
     color: #717D96;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
 }
 
-.address-result {
-    margin-bottom: 16px;
-}
-
-.result-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.result-badge.full {
-    background-color: #D1FFD9;
+.address-change-link:hover {
     color: #2D3648;
 }
 
-.result-badge.light {
-    background-color: #FFF3CD;
-    color: #856404;
+.address-result {
+    border-radius: 12px;
+    padding: 16px;
 }
 
-.result-badge.medium {
-    background-color: #D1ECF1;
-    color: #0C5460;
+.address-result.full {
+    background-color: #F6D1FF;
 }
 
-.result-icon {
-    width: 16px;
-    height: 16px;
+.address-result.medium {
+    background-color: #FED7AD;
+}
+
+.address-result.light {
+    background-color: #FFEDAD;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.result-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+}
+
+.result-checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: #28a745;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
     color: white;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-.result-icon.full {
-    background-color: #28a745;
-}
-
-.result-icon.light {
-    background-color: #ffc107;
-}
-
-.result-icon.medium {
-    background-color: #17a2b8;
-}
-
-.result-text {
+.result-description {
     font-size: 14px;
     color: #2D3648;
     line-height: 1.4;
+    margin-bottom: 12px;
 }
 
-.result-details {
-    font-size: 13px;
+.result-info-link {
+    font-size: 12px;
     color: #717D96;
-    margin-top: 4px;
-}
-
-.address-change-btn {
-    padding: 8px 16px;
-    background-color: transparent;
-    border: 1px solid #CBD2E0;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #717D96;
+    text-decoration: underline;
     cursor: pointer;
-    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.address-change-btn:hover {
-    border-color: #2D3648;
+.result-info-link:hover {
     color: #2D3648;
+}
+
+.result-info-link .info-icon {
+    width: 12px;
+    height: 12px;
 }
 
 /* Address Form Styles */

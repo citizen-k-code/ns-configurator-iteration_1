@@ -3791,6 +3791,84 @@ class UnifiedConfigurator {
         }
     }
 
+    openAddressFormPrefilled() {
+        const overlay = document.getElementById('address-form-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+
+            // Prefill form with existing address data
+            if (this.addressData.address) {
+                const postcodeInput = document.getElementById('postcode');
+                const streetInput = document.getElementById('street');
+                const houseNumberInput = document.getElementById('house-number');
+                const busInput = document.getElementById('bus');
+
+                if (postcodeInput) postcodeInput.value = this.addressData.address.postcode || '';
+                if (streetInput) {
+                    streetInput.value = this.addressData.address.street || '';
+                    streetInput.disabled = false;
+                    streetInput.closest('.form-group')?.classList.remove('disabled');
+                }
+                if (houseNumberInput) {
+                    houseNumberInput.value = this.addressData.address.houseNumber || '';
+                    houseNumberInput.disabled = false;
+                    houseNumberInput.closest('.form-group')?.classList.remove('disabled');
+                }
+                if (busInput) {
+                    busInput.value = this.addressData.address.bus || '';
+                    busInput.disabled = false;
+                    busInput.closest('.form-group')?.classList.remove('disabled');
+                }
+            }
+
+            // Set up listeners if not already done
+            this.setupAddressFormListeners();
+        }
+    }
+
+    openInternetSpeedInfo() {
+        const overlay = document.getElementById('sheet-overlay');
+        const title = document.getElementById('sheet-title');
+        const body = document.getElementById('sheet-body');
+
+        if (!overlay || !title || !body) return;
+
+        const result = this.addressData.result;
+        let content = '';
+
+        if (result.type === 'full') {
+            content = `
+                <h4>HFC Netwerk (tot 2,5 Gbps)</h4>
+                <p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p>
+                
+                <h4>100% Glasvezelnetwerk (tot 10 Gbps)</h4>
+                <p>Ons nieuwste glasvezelnetwerk biedt ultrasnelle internetsnelheden tot 10 Gbps voor de meest veeleisende gebruikers.</p>
+                
+                <p><strong>Beide opties zijn beschikbaar op jouw adres!</strong></p>
+            `;
+        } else if (result.type === 'medium') {
+            content = `
+                <h4>HFC Netwerk (tot 2,5 Gbps)</h4>
+                <p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p>
+                
+                <p>Perfect voor streaming in 4K, online gaming, en thuiswerken met meerdere apparaten tegelijkertijd.</p>
+            `;
+        } else if (result.type === 'light') {
+            content = `
+                <h4>HFC Netwerk (tot 1 Gbps)</h4>
+                <p>Ons HFC netwerk biedt stabiele internetverbindingen tot 1 Gbps op jouw adres.</p>
+                
+                <p>Ideaal voor dagelijks internetgebruik, streaming in HD/4K, en thuiswerken.</p>
+            `;
+        }
+
+        title.innerHTML = 'Internetsnelheden op jouw adres';
+        body.innerHTML = content;
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
     closeAddressForm() {
         const overlay = document.getElementById('address-form-overlay');
         const postcodeAutocomplete = document.getElementById('postcode-autocomplete');
@@ -3987,19 +4065,37 @@ class UnifiedConfigurator {
         const fullAddress = this.addressData.address.fullAddress;
 
         addressDisplay.innerHTML = `
-            <div class="address-line">${fullAddress}</div>
-            <div class="address-subline">Alles gevonden</div>
+            <div class="address-content">
+                <div class="address-line">${fullAddress}</div>
+            </div>
+            <div class="address-change-link" onclick="app.openAddressFormPrefilled()">wijzig adres</div>
         `;
 
-        // Format result display
+        // Format result display with new structure
         const result = this.addressData.result;
+        const resultTitles = {
+            'full': 'Alles gevonden',
+            'medium': 'Internet tot 2,5 Gbps',
+            'light': 'Internet tot 1 Gbps'
+        };
+        
+        const resultDescriptions = {
+            'full': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen of zelfs 100% voor Fiber gaan, waar je tot 10 Gbps kan surfen.',
+            'medium': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen.',
+            'light': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 1 Gbps surfen.'
+        };
+
+        addressResult.className = `address-result ${result.type}`;
         addressResult.innerHTML = `
-            <div class="result-badge ${result.type}">
-                <div class="result-icon ${result.type}">${result.icon}</div>
-                <span>${result.title}</span>
+            <div class="result-header">
+                <div class="result-checkmark">✓</div>
+                <div class="result-title">${resultTitles[result.type]}</div>
             </div>
-            <div class="result-text">${result.description}</div>
-            <div class="result-details">${result.details}</div>
+            <div class="result-description">${resultDescriptions[result.type]}</div>
+            <div class="result-info-link" onclick="app.openInternetSpeedInfo()">
+                Meer info
+                <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
+            </div>
         `;
     }
 
