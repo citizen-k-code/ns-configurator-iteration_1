@@ -3508,6 +3508,41 @@ class UnifiedConfigurator {
         };
     }
 
+    renderPostcodeAutocomplete(data) {
+        const postcodeAutocomplete = document.getElementById('postcode-autocomplete');
+        if (!postcodeAutocomplete) return;
+
+        const html = data.map((item, index) => `
+            <div class="autocomplete-item" onclick="app.onPostcodeSelected('${item.geoId}', '${item.zipCode} - ${item.subMunicipality}')">
+                ${item.zipCode} - ${item.subMunicipality}
+            </div>
+        `).join('');
+
+        postcodeAutocomplete.innerHTML = html;
+    }
+
+    renderStreetAutocomplete(data, container) {
+        if (!container) return;
+
+        const html = data.map((streetName, index) => `
+            <div class="autocomplete-item" onclick="app.onStreetSelected('${streetName}')">
+                ${streetName}
+            </div>
+        `).join('');
+
+        container.innerHTML = html;
+    }
+
+    updateAutocompleteSelection(items, selectedIndex) {
+        items.forEach((item, index) => {
+            if (index === selectedIndex) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
     openAddressForm() {
         const overlay = document.getElementById('address-form-overlay');
         if (overlay) {
