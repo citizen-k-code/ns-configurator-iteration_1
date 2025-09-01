@@ -9,11 +9,7 @@ class UnifiedConfigurator {
         this.addressData = {
             hasAddress: false,
             address: null,
-            result: null,
-            selectedGeoId: null,
-            selectedZipCode: null,
-            selectedSubMunicipality: null,
-            selectedStreet: null
+            result: null
         };
         this.state = {
             // Telecom state
@@ -101,7 +97,6 @@ class UnifiedConfigurator {
             this.updateAllEntertainmentSubtitles();
             this.renderClosedStatesForDisabledProducts();
             this.updateCostSummary();
-            this.setupAddressFormListeners(); // Add listener for address form
         } catch (error) {
             console.error('Error initializing configurator:', error);
         }
@@ -2057,7 +2052,7 @@ class UnifiedConfigurator {
         // Internet temporary discount
         if (this.state.internet.enabled) {
             const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
-            if (internetTier.discountPeriod && internetTier.discountValue) {
+            if (internetTier.discountValue && internetTier.discountPeriod) {
                 totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
                 discountsInfo.push({
                     product: 'Internet',
@@ -2071,7 +2066,7 @@ class UnifiedConfigurator {
         if (this.state.mobile.enabled) {
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                if (mobileTier.discountPeriod && mobileTier.discountValue) {
+                if (mobileTier.discountValue && mobileTier.discountPeriod) {
                     totalTemporaryDiscount += mobileTier.discountValue * mobileTier.discountPeriod;
                     discountsInfo.push({
                         product: `Simkaart ${simcard.id}`,
@@ -2085,7 +2080,7 @@ class UnifiedConfigurator {
         // TV temporary discount
         if (this.state.tv.enabled) {
             const tvData = this.data.products.tv;
-            if (tvData.discountPeriod && tvData.discountValue) {
+            if (tvData.discountValue && tvData.discountPeriod) {
                 totalTemporaryDiscount += tvData.discountValue * tvData.discountPeriod;
                 discountsInfo.push({
                     product: 'TV',
@@ -3361,38 +3356,34 @@ class UnifiedConfigurator {
     }
 
     submitAddressForm(event) {
-        if (event) event.preventDefault();
-
-        // Check if all required fields are filled
-        const houseNumber = document.getElementById('house-number').value;
-        if (!this.addressData.selectedGeoId || !this.addressData.selectedStreet || !houseNumber) {
-            alert('Vul alle verplichte velden in.');
-            return;
+        if (event) {
+            event.preventDefault();
         }
 
-        // Get bus value
+        // Get form data
+        const postcode = document.getElementById('postcode').value;
+        const street = document.getElementById('street').value;
+        const houseNumber = document.getElementById('house-number').value;
         const bus = document.getElementById('bus').value;
 
-        // Generate random result
-        const results = ['full', 'light', 'medium'];
-        const randomResult = results[Math.floor(Math.random() * results.length)];
-
-        // Update address data
-        this.addressData.hasAddress = true;
+        // Create address object
         this.addressData.address = {
-            postcode: this.addressData.selectedZipCode,
-            city: this.addressData.selectedSubMunicipality,
-            street: this.addressData.selectedStreet,
+            postcode: postcode,
+            street: street,
             houseNumber: houseNumber,
-            bus: bus ? ` bus ${bus}` : ''
-        };
-        this.addressData.result = {
-            type: randomResult
+            bus: bus
         };
 
-        // Close form and update display
-        this.closeAddressForm();
+        // Generate random result
+        this.addressData.result = this.generateRandomAddressResult();
+        this.addressData.hasAddress = true;
+
+        // Update UI
         this.updateAddressDisplay();
+        this.closeAddressForm();
+
+        // Clear form
+        document.getElementById('address-form').reset();
     }
 
     generateRandomAddressResult() {
@@ -3426,63 +3417,38 @@ class UnifiedConfigurator {
     updateAddressDisplay() {
         const inputState = document.getElementById('adrescheck-input-state');
         const resultState = document.getElementById('adrescheck-result-state');
+        const addressDisplay = document.getElementById('address-display');
+        const addressResult = document.getElementById('address-result');
 
-        if (this.addressData.hasAddress && this.addressData.address && this.addressData.result) {
-            // Show result state
-            if (inputState) inputState.style.display = 'none';
-            if (resultState) resultState.style.display = 'block';
-
-            // Update address display
-            const addressDisplay = document.getElementById('address-display');
-            if (addressDisplay) {
-                addressDisplay.innerHTML = `
-                    <div class="address-line">${this.addressData.address.street} ${this.addressData.address.houseNumber}${this.addressData.address.bus ? this.addressData.address.bus : ''}</div>
-                    <div class="address-subline">${this.addressData.address.postcode} ${this.addressData.address.city}</div>
-                `;
-            }
-
-            // Update result display
-            const addressResult = document.getElementById('address-result');
-            if (addressResult) {
-                let resultClass = '';
-                let resultIcon = '';
-                let resultText = '';
-                let resultDetails = '';
-
-                switch (this.addressData.result.type) {
-                    case 'full':
-                        resultClass = 'full';
-                        resultIcon = '✓';
-                        resultText = 'Internet tot 1 Gbps';
-                        resultDetails = 'Je kan genieten van ons volledige netwerk aan maximale snelheid.';
-                        break;
-                    case 'light':
-                        resultClass = 'light';
-                        resultIcon = '⚠';
-                        resultText = 'Internet tot 1 Gbps';
-                        resultDetails = 'Je kan genieten van ons HFC netwerk aan maximale snelheid.';
-                        break;
-                    case 'medium':
-                        resultClass = 'medium';
-                        resultIcon = 'ℹ';
-                        resultText = 'Internet tot 2,5 Gbps';
-                        resultDetails = 'Je kan genieten van ons netwerk aan zeer hoge snelheid.';
-                        break;
-                }
-
-                addressResult.innerHTML = `
-                    <div class="result-badge ${resultClass}">
-                        <div class="result-icon ${resultClass}">${resultIcon}</div>
-                        ${resultText}
-                    </div>
-                    <div class="result-details">${resultDetails}</div>
-                `;
-            }
-        } else {
-            // Show input state
-            if (inputState) inputState.style.display = 'block';
-            if (resultState) resultState.style.display = 'none';
+        if (!this.addressData.hasAddress) {
+            inputState.style.display = 'block';
+            resultState.style.display = 'none';
+            return;
         }
+
+        // Hide input state, show result state
+        inputState.style.display = 'none';
+        resultState.style.display = 'block';
+
+        // Format address display
+        const address = this.addressData.address;
+        const fullAddress = `${address.street} ${address.houseNumber}${address.bus ? ' bus ' + address.bus : ''}, ${address.postcode}`;
+        
+        addressDisplay.innerHTML = `
+            <div class="address-line">${fullAddress}</div>
+            <div class="address-subline">Alles gevonden</div>
+        `;
+
+        // Format result display
+        const result = this.addressData.result;
+        addressResult.innerHTML = `
+            <div class="result-badge ${result.type}">
+                <div class="result-icon ${result.type}">${result.icon}</div>
+                <span>${result.title}</span>
+            </div>
+            <div class="result-text">${result.description}</div>
+            <div class="result-details">${result.details}</div>
+        `;
     }
 
     getServiceIconClass(serviceKey) {
@@ -4576,7 +4542,7 @@ class UnifiedConfigurator {
                     // Find the newly added service card (should be the last one added)
                     const serviceCards = selectedServicesContainer.querySelectorAll('.selected-service-card');
                     const newServiceCard = Array.from(serviceCards).find(card => {
-                                const serviceName = card.querySelector('.selected-service-name');
+                        const serviceName = card.querySelector('.selected-service-name');
                         return serviceName && serviceName.textContent === this.getServiceDisplayName(serviceKey);
                     });
 
@@ -4758,7 +4724,7 @@ class UnifiedConfigurator {
         }
 
         const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
-        contentHtml += '</div><div class="advantage-total">Totale maandelijkse korting: €${(originalTotal - pricingInfo.total).toFixed(2).replace('.', ',')}</div>';
+        contentHtml += `</div><div class="advantage-total">Totale maandelijkse korting: €${(originalTotal - pricingInfo.total).toFixed(2).replace('.', ',')}</div>`;
 
         body.innerHTML = contentHtml;
 
