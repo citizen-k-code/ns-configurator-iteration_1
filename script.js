@@ -6,6 +6,7 @@ class UnifiedConfigurator {
         this.currentStreamingService = null;
         this.isEditingStreamingService = false;
         this.tempSelectedTier = null;
+        this.selectedGeoId = null;
         this.addressData = {
             hasAddress: false,
             address: null,
@@ -88,6 +89,7 @@ class UnifiedConfigurator {
     async init() {
         try {
             await this.loadData();
+            this.loadAddressFromStorage();
             this.parseUrlParameters();
             this.setupEventListeners();
             this.setupMobileSummaryObserver();
@@ -115,6 +117,37 @@ class UnifiedConfigurator {
         } catch (error) {
             console.error('Error loading data:', error);
         }
+    }
+
+    saveAddressToStorage() {
+        if (this.addressData.address) {
+            localStorage.setItem('address_data', JSON.stringify({
+                address: this.addressData.address,
+                result: this.addressData.result,
+                selectedGeoId: this.selectedGeoId,
+                hasAddress: this.addressData.hasAddress
+            }));
+        }
+    }
+
+    loadAddressFromStorage() {
+        const savedAddress = localStorage.getItem('address_data');
+        if (savedAddress) {
+            try {
+                const parsedData = JSON.parse(savedAddress);
+                this.addressData.address = parsedData.address;
+                this.addressData.result = parsedData.result;
+                this.addressData.hasAddress = parsedData.hasAddress;
+                this.selectedGeoId = parsedData.selectedGeoId;
+            } catch (error) {
+                console.error('Error parsing saved address data:', error);
+                localStorage.removeItem('address_data');
+            }
+        }
+    }
+
+    clearAddressFromStorage() {
+        localStorage.removeItem('address_data');
     }
 
     updatePageTitle(packParam) {
@@ -3565,6 +3598,12 @@ class UnifiedConfigurator {
             postcodeInput.value = displayValue;
             postcodeAutocomplete.style.display = 'none';
 
+            // Store updated address data immediately
+            if (this.addressData.address) {
+                this.addressData.address.postcode = displayValue;
+                this.saveAddressToStorage();
+            }
+
             // Enable and focus street input
             streetInput.disabled = false;
             streetInput.closest('.form-group')?.classList.remove('disabled');
@@ -3588,6 +3627,15 @@ class UnifiedConfigurator {
                 streetAutocomplete.style.display = 'none';
             }
 
+            // Update stored address data
+            if (this.addressData.address) {
+                this.addressData.address.street = streetValue;
+                // Clear house number and bus when street changes
+                this.addressData.address.houseNumber = '';
+                this.addressData.address.bus = '';
+                this.saveAddressToStorage();
+            }
+
             // Enable house number and bus fields, focus on house number
             houseNumberInput.disabled = false;
             houseNumberInput.closest('.form-group')?.classList.remove('disabled');
@@ -3602,6 +3650,12 @@ class UnifiedConfigurator {
             const houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
             if (houseNumberAutocomplete) {
                 houseNumberAutocomplete.style.display = 'none';
+            }
+
+            // Update stored address data
+            if (this.addressData.address) {
+                this.addressData.address.houseNumber = houseNumber;
+                this.saveAddressToStorage();
             }
 
             // Remove focus from house number input
@@ -3686,6 +3740,12 @@ class UnifiedConfigurator {
             const boxAutocomplete = document.getElementById('box-autocomplete');
             if (boxAutocomplete) {
                 boxAutocomplete.style.display = 'none';
+            }
+
+            // Update stored address data
+            if (this.addressData.address) {
+                this.addressData.address.bus = unit;
+                this.saveAddressToStorage();
             }
 
             // Remove focus from box input
@@ -3812,15 +3872,46 @@ class UnifiedConfigurator {
                 if (houseNumberInput) houseNumberInput.value = this.addressData.address.houseNumber || '';
                 if (busInput) busInput.value = this.addressData.address.bus || '';
 
-                // Set the selectedGeoId if we have postcode data
-                if (this.addressData.address.postcode) {
-                    // Extract potential geoId or set a flag that form is prefilled
-                    this.selectedGeoId = 'prefilled'; // This allows other fields to work
+                // Restore the selectedGeoId from stored data - this is crucial for API calls
+                if (this.selectedGeoId) {
+                    // selectedGeoId is already restored from localStorage in loadAddressFromStorage
+                    console.log('Restored selectedGeoId:', this.selectedGeoId);
+                } else if (this.addressData.address.postcode) {
+                    // If for some reason selectedGeoId is missing, try to get it from the postcode
+                    this.lookupGeoIdFromPostcode(this.addressData.address.postcode);
                 }
             }
 
             // Add focus and input event listeners for clear button functionality
             this.setupClearButtonListeners();
+        }
+    }
+
+    async lookupGeoIdFromPostcode(postcodeValue) {
+        try {
+            // Extract zipcode from the stored postcode format "1000 - Brussels"
+            const zipCode = postcodeValue.split(' - ')[0];
+            const subMunicipality = postcodeValue.split(' - ')[1];
+            
+            const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/city?searchTerm=${encodeURIComponent(zipCode)}`);
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                // Find the exact match for the stored postcode
+                const exactMatch = data.find(item => 
+                    item.zipCode === zipCode && item.subMunicipality === subMunicipality
+                );
+                
+                if (exactMatch) {
+                    this.selectedGeoId = exactMatch.geoId;
+                    console.log('Looked up selectedGeoId:', this.selectedGeoId);
+                } else {
+                    // Fallback to first result if exact match not found
+                    this.selectedGeoId = data[0].geoId;
+                }
+            }
+        } catch (error) {
+            console.error('Error looking up geoId from postcode:', error);
         }
     }
 
@@ -3952,6 +4043,14 @@ class UnifiedConfigurator {
                 
                 // Reset selectedGeoId since postcode was cleared
                 this.selectedGeoId = null;
+                
+                // Clear from localStorage
+                this.clearAddressFromStorage();
+                this.addressData = {
+                    hasAddress: false,
+                    address: null,
+                    result: null
+                };
             } else if (inputId === 'street') {
                 const houseNumberInput = document.getElementById('house-number');
                 const busInput = document.getElementById('bus');
@@ -3966,6 +4065,30 @@ class UnifiedConfigurator {
                     busInput.value = '';
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
+                }
+                
+                // Update stored address data
+                if (this.addressData.address) {
+                    this.addressData.address.street = '';
+                    this.addressData.address.houseNumber = '';
+                    this.addressData.address.bus = '';
+                    this.saveAddressToStorage();
+                }
+            } else {
+                // Update individual field in stored address data
+                if (this.addressData.address) {
+                    const fieldMap = {
+                        'postcode': 'postcode',
+                        'street': 'street',
+                        'house-number': 'houseNumber',
+                        'bus': 'bus'
+                    };
+                    
+                    const fieldName = fieldMap[inputId];
+                    if (fieldName) {
+                        this.addressData.address[fieldName] = '';
+                        this.saveAddressToStorage();
+                    }
                 }
             }
         }
@@ -4000,12 +4123,17 @@ class UnifiedConfigurator {
             street: streetValue,
             houseNumber: houseNumberValue,
             bus: busValue,
-            fullAddress: fullAddress
+            fullAddress: fullAddress,
+            zipCode: zipCode,
+            subMunicipality: subMunicipality
         };
 
         // Generate random result
         this.addressData.result = this.generateRandomAddressResult();
         this.addressData.hasAddress = true;
+
+        // Save to localStorage
+        this.saveAddressToStorage();
 
         // Update UI
         this.updateAddressDisplay();
