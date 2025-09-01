@@ -3598,10 +3598,9 @@ class UnifiedConfigurator {
             postcodeInput.value = displayValue;
             postcodeAutocomplete.style.display = 'none';
 
-            // Store updated address data immediately
+            // Update temporary address data but don't save to localStorage yet
             if (this.addressData.address) {
                 this.addressData.address.postcode = displayValue;
-                this.saveAddressToStorage();
             }
 
             // Enable and focus street input
@@ -3627,13 +3626,12 @@ class UnifiedConfigurator {
                 streetAutocomplete.style.display = 'none';
             }
 
-            // Update stored address data
+            // Update temporary address data but don't save to localStorage yet
             if (this.addressData.address) {
                 this.addressData.address.street = streetValue;
                 // Clear house number and bus when street changes
                 this.addressData.address.houseNumber = '';
                 this.addressData.address.bus = '';
-                this.saveAddressToStorage();
             }
 
             // Enable house number and bus fields, focus on house number
@@ -3652,10 +3650,9 @@ class UnifiedConfigurator {
                 houseNumberAutocomplete.style.display = 'none';
             }
 
-            // Update stored address data
+            // Update temporary address data but don't save to localStorage yet
             if (this.addressData.address) {
                 this.addressData.address.houseNumber = houseNumber;
-                this.saveAddressToStorage();
             }
 
             // Remove focus from house number input
@@ -3742,10 +3739,9 @@ class UnifiedConfigurator {
                 boxAutocomplete.style.display = 'none';
             }
 
-            // Update stored address data
+            // Update temporary address data but don't save to localStorage yet
             if (this.addressData.address) {
                 this.addressData.address.bus = unit;
-                this.saveAddressToStorage();
             }
 
             // Remove focus from box input
@@ -4046,15 +4042,14 @@ class UnifiedConfigurator {
                     busInput.closest('.form-group')?.classList.add('disabled');
                 }
                 
-                // Update stored address data
+                // Update temporary address data but don't save to localStorage yet
                 if (this.addressData.address) {
                     this.addressData.address.street = '';
                     this.addressData.address.houseNumber = '';
                     this.addressData.address.bus = '';
-                    this.saveAddressToStorage();
                 }
             } else {
-                // Update individual field in stored address data
+                // Update individual field in temporary address data but don't save to localStorage yet
                 if (this.addressData.address) {
                     const fieldMap = {
                         'postcode': 'postcode',
@@ -4066,7 +4061,6 @@ class UnifiedConfigurator {
                     const fieldName = fieldMap[inputId];
                     if (fieldName) {
                         this.addressData.address[fieldName] = '';
-                        this.saveAddressToStorage();
                     }
                 }
             }
@@ -4083,10 +4077,17 @@ class UnifiedConfigurator {
         }
 
         // Get form data
-        const postcodeValue = document.getElementById('postcode').value;
-        const streetValue = document.getElementById('street').value;
-        const houseNumberValue = document.getElementById('house-number').value;
-        const busValue = document.getElementById('bus').value;
+        const postcodeValue = document.getElementById('postcode').value.trim();
+        const streetValue = document.getElementById('street').value.trim();
+        const houseNumberValue = document.getElementById('house-number').value.trim();
+        const busValue = document.getElementById('bus').value.trim();
+
+        // Validate mandatory fields
+        if (!postcodeValue || !streetValue || !houseNumberValue) {
+            // Show error or prevent submission - all mandatory fields must be filled
+            console.log('All mandatory fields (postcode, street, house number) must be filled');
+            return;
+        }
 
         // Parse postcode to extract zipcode and submunicipality
         const postcodeParts = postcodeValue.split(' - ');
@@ -4111,7 +4112,7 @@ class UnifiedConfigurator {
         this.addressData.result = this.generateRandomAddressResult();
         this.addressData.hasAddress = true;
 
-        // Save to localStorage
+        // Only save to localStorage when all mandatory fields are properly filled
         this.saveAddressToStorage();
 
         // Update UI
