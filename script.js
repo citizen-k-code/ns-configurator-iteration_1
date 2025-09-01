@@ -3411,7 +3411,13 @@ class UnifiedConfigurator {
                 streetAutocomplete.id = 'street-autocomplete';
                 streetAutocomplete.className = 'autocomplete-list';
                 streetAutocomplete.style.display = 'none';
-                streetInput.parentNode.appendChild(streetAutocomplete);
+                // Append to the autocomplete-container, not the form-group
+                const autocompleteContainer = streetInput.closest('.autocomplete-container');
+                if (autocompleteContainer) {
+                    autocompleteContainer.appendChild(streetAutocomplete);
+                } else {
+                    streetInput.parentNode.appendChild(streetAutocomplete);
+                }
             }
 
             if (value.length < 2) {
@@ -3483,12 +3489,15 @@ class UnifiedConfigurator {
 
             // Enable and focus street input
             streetInput.disabled = false;
+            streetInput.closest('.form-group')?.classList.remove('disabled');
             streetInput.focus();
 
             // Clear street value and disable other fields
             streetInput.value = '';
             houseNumberInput.disabled = true;
+            houseNumberInput.closest('.form-group')?.classList.add('disabled');
             busInput.disabled = true;
+            busInput.closest('.form-group')?.classList.add('disabled');
             houseNumberInput.value = '';
             busInput.value = '';
         };
@@ -3503,7 +3512,9 @@ class UnifiedConfigurator {
 
             // Enable house number and bus fields, focus on house number
             houseNumberInput.disabled = false;
+            houseNumberInput.closest('.form-group')?.classList.remove('disabled');
             busInput.disabled = false;
+            busInput.closest('.form-group')?.classList.remove('disabled');
             houseNumberInput.focus();
         };
     }

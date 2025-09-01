@@ -4952,16 +4952,12 @@ button.gift-btn:hover {
     color: #2D3648;
 }
 
-.form-group input:disabled {
+.form-group.disabled label {
+    color: #CBD2E0;
+}
+
+.form-group.disabled input {
     background-color: #F8F9FA;
     color: #CBD2E0;
     cursor: not-allowed;
-}
-
-.form-group label {
-    transition: color 0.2s ease;
-}
-
-.form-group.disabled label {
-    color: #CBD2E0;
 }
