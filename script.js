@@ -3344,11 +3344,6 @@ class UnifiedConfigurator {
         houseNumberInput.disabled = true;
         busInput.disabled = true;
 
-        // Focus on postcode input when form opens
-        setTimeout(() => {
-            postcodeInput.focus();
-        }, 100);
-
         // Add focus and input event listeners for clear button functionality
         this.setupClearButtonListeners();
 
