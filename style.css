@@ -4727,3 +4727,9 @@ button.gift-btn:hover {
     }
 
 }
+
+/* Hide security and datasim blocks */
+#security-block,
+#datasim-block {
+    display: none !important;
+}
