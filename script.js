@@ -6,6 +6,11 @@ class UnifiedConfigurator {
         this.currentStreamingService = null;
         this.isEditingStreamingService = false;
         this.tempSelectedTier = null;
+        this.addressData = {
+            hasAddress: false,
+            address: null,
+            result: null
+        };
         this.state = {
             // Telecom state
             internet: {
@@ -86,6 +91,7 @@ class UnifiedConfigurator {
             this.parseUrlParameters();
             this.setupEventListeners();
             this.setupMobileSummaryObserver();
+            this.updateAddressDisplay();
             this.updateHighlightBlocks();
             this.updateProductHeaderStates();
             this.updateAllEntertainmentSubtitles();
@@ -3330,6 +3336,119 @@ class UnifiedConfigurator {
             'hbo': 'HBO Max'
         };
         return names[serviceKey] || serviceKey;
+    }
+
+    // Address Form Methods
+    openAddressForm() {
+        const overlay = document.getElementById('address-form-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeAddressForm() {
+        const overlay = document.getElementById('address-form-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    submitAddressForm(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        // Get form data
+        const postcode = document.getElementById('postcode').value;
+        const street = document.getElementById('street').value;
+        const houseNumber = document.getElementById('house-number').value;
+        const bus = document.getElementById('bus').value;
+
+        // Create address object
+        this.addressData.address = {
+            postcode: postcode,
+            street: street,
+            houseNumber: houseNumber,
+            bus: bus
+        };
+
+        // Generate random result
+        this.addressData.result = this.generateRandomAddressResult();
+        this.addressData.hasAddress = true;
+
+        // Update UI
+        this.updateAddressDisplay();
+        this.closeAddressForm();
+
+        // Clear form
+        document.getElementById('address-form').reset();
+    }
+
+    generateRandomAddressResult() {
+        const results = [
+            {
+                type: 'full',
+                title: 'Alles kan op jouw adres',
+                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
+                details: 'Surf tot 2,5 Gbps',
+                icon: '✓'
+            },
+            {
+                type: 'light',
+                title: 'Internet tot 1 Gbps',
+                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
+                details: 'Surf tot 1 Gbps',
+                icon: '⚠'
+            },
+            {
+                type: 'medium',
+                title: 'Internet tot 2,5 Gbps',
+                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
+                details: 'Surf tot 2,5 Gbps',
+                icon: '✓'
+            }
+        ];
+
+        return results[Math.floor(Math.random() * results.length)];
+    }
+
+    updateAddressDisplay() {
+        const inputState = document.getElementById('adrescheck-input-state');
+        const resultState = document.getElementById('adrescheck-result-state');
+        const addressDisplay = document.getElementById('address-display');
+        const addressResult = document.getElementById('address-result');
+
+        if (!this.addressData.hasAddress) {
+            inputState.style.display = 'block';
+            resultState.style.display = 'none';
+            return;
+        }
+
+        // Hide input state, show result state
+        inputState.style.display = 'none';
+        resultState.style.display = 'block';
+
+        // Format address display
+        const address = this.addressData.address;
+        const fullAddress = `${address.street} ${address.houseNumber}${address.bus ? ' bus ' + address.bus : ''}, ${address.postcode}`;
+        
+        addressDisplay.innerHTML = `
+            <div class="address-line">${fullAddress}</div>
+            <div class="address-subline">Alles gevonden</div>
+        `;
+
+        // Format result display
+        const result = this.addressData.result;
+        addressResult.innerHTML = `
+            <div class="result-badge ${result.type}">
+                <div class="result-icon ${result.type}">${result.icon}</div>
+                <span>${result.title}</span>
+            </div>
+            <div class="result-text">${result.description}</div>
+            <div class="result-details">${result.details}</div>
+        `;
     }
 
     getServiceIconClass(serviceKey) {

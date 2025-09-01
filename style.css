@@ -4733,3 +4733,181 @@ button.gift-btn:hover {
 #datasim-block {
     display: none !important;
 }
+
+/* Adrescheck Section */
+.adrescheck-section {
+    margin-bottom: 32px;
+}
+
+.adrescheck-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.adrescheck-description {
+    font-size: 14px;
+    color: #717D96;
+    margin-bottom: 16px;
+}
+
+.address-input-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: white;
+    border: 1px solid #CBD2E0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2D3648;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s ease;
+}
+
+.address-input-btn:hover {
+    border-color: #2D3648;
+}
+
+.address-display {
+    margin-bottom: 12px;
+}
+
+.address-line {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 4px;
+}
+
+.address-subline {
+    font-size: 14px;
+    color: #717D96;
+}
+
+.address-result {
+    margin-bottom: 16px;
+}
+
+.result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.result-badge.full {
+    background-color: #D1FFD9;
+    color: #2D3648;
+}
+
+.result-badge.light {
+    background-color: #FFF3CD;
+    color: #856404;
+}
+
+.result-badge.medium {
+    background-color: #D1ECF1;
+    color: #0C5460;
+}
+
+.result-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+}
+
+.result-icon.full {
+    background-color: #28a745;
+}
+
+.result-icon.light {
+    background-color: #ffc107;
+}
+
+.result-icon.medium {
+    background-color: #17a2b8;
+}
+
+.result-text {
+    font-size: 14px;
+    color: #2D3648;
+    line-height: 1.4;
+}
+
+.result-details {
+    font-size: 13px;
+    color: #717D96;
+    margin-top: 4px;
+}
+
+.address-change-btn {
+    padding: 8px 16px;
+    background-color: transparent;
+    border: 1px solid #CBD2E0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #717D96;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.address-change-btn:hover {
+    border-color: #2D3648;
+    color: #2D3648;
+}
+
+/* Address Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #CBD2E0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2D3648;
+    background-color: white;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2D3648;
+}
+
+.form-group input::placeholder {
+    color: #717D96;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-row .form-group:last-child {
+    flex: 0.6;
+}

@@ -81,6 +81,34 @@
                 <!-- Pack banner will be populated by JavaScript -->
             </div>
 
+            <!-- Adrescheck Section -->
+            <div class="adrescheck-section">
+                <h2 class="section-title">Adrescheck</h2>
+                
+                <!-- Address Input State (shown when no address entered) -->
+                <div class="adrescheck-input-state" id="adrescheck-input-state">
+                    <div class="adrescheck-card">
+                        <div class="adrescheck-description">
+                            Kijk welk aanbod we hebben voor jouw adres.
+                        </div>
+                        <button class="address-input-btn" onclick="app.openAddressForm()">Geef je adres in</button>
+                    </div>
+                </div>
+
+                <!-- Address Result State (shown after address is entered) -->
+                <div class="adrescheck-result-state" id="adrescheck-result-state" style="display: none;">
+                    <div class="adrescheck-card">
+                        <div class="address-display" id="address-display">
+                            <!-- Address will be populated by JavaScript -->
+                        </div>
+                        <div class="address-result" id="address-result">
+                            <!-- Result will be populated by JavaScript -->
+                        </div>
+                        <button class="address-change-btn" onclick="app.openAddressForm()">Wijzig adres</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Surfen & Bellen Section -->
             <div class="section-group">
                 <h2 class="section-title">Surfen & bellen</h2>
@@ -665,6 +693,45 @@
             </div>
             <div class="sheet-footer">
                 <button class="sheet-close-footer-btn" onclick="app.closeSecurityBottomSheet()">Sluiten</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Address Form Bottom Sheet -->
+    <div class="sheet-overlay" id="address-form-overlay" style="display: none;" onclick="app.closeAddressForm()">
+        <div class="tooltip-sheet" id="address-form-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-header">
+                <button class="sheet-close-btn" onclick="app.closeAddressForm()">×</button>
+            </div>
+            <div class="sheet-content">
+                <h3 class="sheet-title">Geef je adres in</h3>
+                <div class="sheet-body">
+                    <form id="address-form" onsubmit="app.submitAddressForm(event)">
+                        <div class="form-group">
+                            <label for="postcode">Postcode of stad</label>
+                            <input type="text" id="postcode" name="postcode" placeholder="Bijv. 2800 of Mechelen" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="street">Straat</label>
+                            <input type="text" id="street" name="street" placeholder="Straatnaam" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="house-number">Huisnummer</label>
+                                <input type="text" id="house-number" name="house-number" placeholder="Nr." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bus">Bus</label>
+                                <input type="text" id="bus" name="bus" placeholder="Optioneel">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="sheet-footer">
+                <button class="sheet-close-footer-btn" onclick="app.submitAddressForm(event)">Sluiten</button>
             </div>
         </div>
     </div>
