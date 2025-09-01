@@ -3457,7 +3457,13 @@ class UnifiedConfigurator {
                 houseNumberAutocomplete.id = 'housenumber-autocomplete';
                 houseNumberAutocomplete.className = 'autocomplete-list';
                 houseNumberAutocomplete.style.display = 'none';
-                houseNumberInput.parentNode.appendChild(houseNumberAutocomplete);
+                // Append to the autocomplete-container, not the form-group
+                const autocompleteContainer = houseNumberInput.closest('.autocomplete-container');
+                if (autocompleteContainer) {
+                    autocompleteContainer.appendChild(houseNumberAutocomplete);
+                } else {
+                    houseNumberInput.parentNode.appendChild(houseNumberAutocomplete);
+                }
             }
 
             if (value.length < 1) {
@@ -3595,8 +3601,8 @@ class UnifiedConfigurator {
                 houseNumberAutocomplete.style.display = 'none';
             }
 
-            // Focus on bus input field
-            busInput.focus();
+            // Remove focus from house number input
+            houseNumberInput.blur();
         };
     }
 

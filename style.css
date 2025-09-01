@@ -4928,7 +4928,7 @@ button.gift-btn:hover {
     border-radius: 0 0 8px 8px;
     max-height: 200px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 1001;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
