@@ -4961,3 +4961,45 @@ button.gift-btn:hover {
     color: #CBD2E0;
     cursor: not-allowed;
 }
+
+.clear-input-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #CBD2E0;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s ease;
+}
+
+.clear-input-btn:hover {
+    background-color: #717D96;
+}
+
+.address-submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #2D3648;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.address-submit-btn:hover {
+    background-color: #1a2332;
+}

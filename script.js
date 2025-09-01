@@ -3349,6 +3349,9 @@ class UnifiedConfigurator {
             postcodeInput.focus();
         }, 100);
 
+        // Add focus and input event listeners for clear button functionality
+        this.setupClearButtonListeners();
+
         // Postcode input event listener
         postcodeInput.addEventListener('input', async (e) => {
             const value = e.target.value.trim();
@@ -3606,8 +3609,8 @@ class UnifiedConfigurator {
                 houseNumberAutocomplete.style.display = 'none';
             }
 
-            // Focus on bus input field
-            busInput.focus();
+            // Remove focus from house number input
+            houseNumberInput.blur();
         };
 
         // Box input event listener
@@ -3801,6 +3804,93 @@ class UnifiedConfigurator {
         }
         if (streetAutocomplete) {
             streetAutocomplete.style.display = 'none';
+        }
+    }
+
+    setupClearButtonListeners() {
+        const inputs = ['postcode', 'street', 'house-number', 'bus'];
+        
+        inputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            const clearBtn = document.getElementById(`${inputId}-clear`);
+            
+            if (input && clearBtn) {
+                // Show/hide clear button based on input value and focus
+                const toggleClearButton = () => {
+                    if (input.value.length > 0 && document.activeElement === input) {
+                        clearBtn.style.display = 'flex';
+                    } else {
+                        clearBtn.style.display = 'none';
+                    }
+                };
+
+                input.addEventListener('input', toggleClearButton);
+                input.addEventListener('focus', toggleClearButton);
+                input.addEventListener('blur', () => {
+                    // Add small delay to allow click on clear button
+                    setTimeout(() => {
+                        clearBtn.style.display = 'none';
+                    }, 100);
+                });
+            }
+        });
+    }
+
+    clearInput(inputId) {
+        const input = document.getElementById(inputId);
+        const clearBtn = document.getElementById(`${inputId}-clear`);
+        
+        if (input) {
+            input.value = '';
+            input.focus();
+            
+            // Hide autocomplete if open
+            const autocompleteId = inputId === 'house-number' ? 'housenumber-autocomplete' : `${inputId}-autocomplete`;
+            const autocomplete = document.getElementById(autocompleteId);
+            if (autocomplete) {
+                autocomplete.style.display = 'none';
+            }
+            
+            // Reset dependent fields if clearing postcode or street
+            if (inputId === 'postcode') {
+                const streetInput = document.getElementById('street');
+                const houseNumberInput = document.getElementById('house-number');
+                const busInput = document.getElementById('bus');
+                
+                if (streetInput) {
+                    streetInput.value = '';
+                    streetInput.disabled = true;
+                    streetInput.closest('.form-group')?.classList.add('disabled');
+                }
+                if (houseNumberInput) {
+                    houseNumberInput.value = '';
+                    houseNumberInput.disabled = true;
+                    houseNumberInput.closest('.form-group')?.classList.add('disabled');
+                }
+                if (busInput) {
+                    busInput.value = '';
+                    busInput.disabled = true;
+                    busInput.closest('.form-group')?.classList.add('disabled');
+                }
+            } else if (inputId === 'street') {
+                const houseNumberInput = document.getElementById('house-number');
+                const busInput = document.getElementById('bus');
+                
+                if (houseNumberInput) {
+                    houseNumberInput.value = '';
+                    houseNumberInput.disabled = true;
+                    houseNumberInput.closest('.form-group')?.classList.add('disabled');
+                }
+                if (busInput) {
+                    busInput.value = '';
+                    busInput.disabled = true;
+                    busInput.closest('.form-group')?.classList.add('disabled');
+                }
+            }
+        }
+        
+        if (clearBtn) {
+            clearBtn.style.display = 'none';
         }
     }
 

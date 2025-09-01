@@ -710,7 +710,8 @@
                         <div class="form-group">
                             <label for="postcode">Postcode of stad</label>
                             <div class="autocomplete-container">
-                                <input type="text" id="postcode" name="postcode" placeholder="Bijv. 2800 of Mechelen" required autocomplete="off">
+                                <input type="text" id="postcode" name="postcode" required autocomplete="off">
+                                <div class="clear-input-btn" id="postcode-clear" onclick="app.clearInput('postcode')" style="display: none;">×</div>
                                 <div class="autocomplete-list" id="postcode-autocomplete" style="display: none;"></div>
                             </div>
                         </div>
@@ -718,7 +719,8 @@
                         <div class="form-group disabled">
                             <label for="street">Straat</label>
                             <div class="autocomplete-container">
-                                <input type="text" id="street" name="street" placeholder="Straatnaam" required disabled>
+                                <input type="text" id="street" name="street" required disabled>
+                                <div class="clear-input-btn" id="street-clear" onclick="app.clearInput('street')" style="display: none;">×</div>
                             </div>
                         </div>
 
@@ -726,21 +728,22 @@
                             <div class="form-group disabled">
                                 <label for="house-number">Huisnummer</label>
                                 <div class="autocomplete-container">
-                                    <input type="text" id="house-number" name="house-number" placeholder="Nr." required disabled>
+                                    <input type="text" id="house-number" name="house-number" required disabled>
+                                    <div class="clear-input-btn" id="house-number-clear" onclick="app.clearInput('house-number')" style="display: none;">×</div>
                                 </div>
                             </div>
                             <div class="form-group disabled">
                                 <label for="bus">Bus</label>
                                 <div class="autocomplete-container">
-                                    <input type="text" id="bus" name="bus" placeholder="Optioneel" disabled>
+                                    <input type="text" id="bus" name="bus" disabled>
+                                    <div class="clear-input-btn" id="bus-clear" onclick="app.clearInput('bus')" style="display: none;">×</div>
                                 </div>
                             </div>
                         </div>
+
+                        <button type="submit" class="address-submit-btn">Check mijn adres</button>
                     </form>
                 </div>
-            </div>
-            <div class="sheet-footer">
-                <button class="sheet-close-footer-btn" onclick="app.submitAddressForm(event)">Sluiten</button>
             </div>
         </div>
     </div>
