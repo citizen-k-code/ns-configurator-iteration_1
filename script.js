@@ -3332,7 +3332,7 @@ class UnifiedConfigurator {
 
         if (!postcodeInput || !streetInput || !postcodeAutocomplete) return;
 
-        let selectedGeoId = null;
+        this.selectedGeoId = null;
         let currentSelectedIndex = -1;
         let autocompleteResults = [];
         let streetAutocompleteResults = [];
@@ -3406,7 +3406,7 @@ class UnifiedConfigurator {
         streetInput.addEventListener('input', async (e) => {
             const value = e.target.value.trim();
 
-            if (!selectedGeoId) return;
+            if (!this.selectedGeoId) return;
 
             // Create or get street autocomplete container
             let streetAutocomplete = document.getElementById('street-autocomplete');
@@ -3430,7 +3430,7 @@ class UnifiedConfigurator {
             }
 
             try {
-                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/street?municipalityGeoId=${selectedGeoId}&searchTerm=${encodeURIComponent(value)}`);
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/street?municipalityGeoId=${this.selectedGeoId}&searchTerm=${encodeURIComponent(value)}`);
                 const data = await response.json();
 
                 if (data && data.length > 0) {
@@ -3451,7 +3451,7 @@ class UnifiedConfigurator {
         houseNumberInput.addEventListener('input', async (e) => {
             const value = e.target.value.trim();
 
-            if (!selectedGeoId || !streetInput.value.trim()) return;
+            if (!this.selectedGeoId || !streetInput.value.trim()) return;
 
             // Create or get house number autocomplete container
             let houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
@@ -3475,7 +3475,7 @@ class UnifiedConfigurator {
             }
 
             try {
-                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/number?municipalityGeoId=${selectedGeoId}&streetName=${encodeURIComponent(streetInput.value.trim())}&searchTerm=${encodeURIComponent(value)}`);
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/number?municipalityGeoId=${this.selectedGeoId}&streetName=${encodeURIComponent(streetInput.value.trim())}&searchTerm=${encodeURIComponent(value)}`);
                 const data = await response.json();
 
                 if (data && data.length > 0) {
@@ -3566,7 +3566,7 @@ class UnifiedConfigurator {
 
         // Store selected geo ID when postcode is selected
         this.onPostcodeSelected = (geoId, displayValue) => {
-            selectedGeoId = geoId;
+            this.selectedGeoId = geoId;
             postcodeInput.value = displayValue;
             postcodeAutocomplete.style.display = 'none';
 
@@ -3617,7 +3617,7 @@ class UnifiedConfigurator {
         busInput.addEventListener('input', async (e) => {
             const value = e.target.value.trim();
 
-            if (!selectedGeoId || !streetInput.value.trim() || !houseNumberInput.value.trim()) return;
+            if (!this.selectedGeoId || !streetInput.value.trim() || !houseNumberInput.value.trim()) return;
 
             // Create or get box autocomplete container
             let boxAutocomplete = document.getElementById('box-autocomplete');
@@ -3641,7 +3641,7 @@ class UnifiedConfigurator {
             }
 
             try {
-                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/unit?municipalityGeoId=${selectedGeoId}&streetName=${encodeURIComponent(streetInput.value.trim())}&houseNumber=${encodeURIComponent(houseNumberInput.value.trim())}&searchTerm=${encodeURIComponent(value)}`);
+                const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/unit?municipalityGeoId=${this.selectedGeoId}&streetName=${encodeURIComponent(streetInput.value.trim())}&houseNumber=${encodeURIComponent(houseNumberInput.value.trim())}&searchTerm=${encodeURIComponent(value)}`);
                 const data = await response.json();
 
                 if (data && data.length > 0) {
@@ -3857,6 +3857,7 @@ class UnifiedConfigurator {
                 const houseNumberInput = document.getElementById('house-number');
                 const busInput = document.getElementById('bus');
                 
+                // Clear and disable all dependent fields
                 if (streetInput) {
                     streetInput.value = '';
                     streetInput.disabled = true;
@@ -3872,10 +3873,14 @@ class UnifiedConfigurator {
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
                 }
+                
+                // Reset selectedGeoId since postcode was cleared
+                this.selectedGeoId = null;
             } else if (inputId === 'street') {
                 const houseNumberInput = document.getElementById('house-number');
                 const busInput = document.getElementById('bus');
                 
+                // Clear and disable house number and bus fields
                 if (houseNumberInput) {
                     houseNumberInput.value = '';
                     houseNumberInput.disabled = true;
