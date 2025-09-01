@@ -1055,7 +1055,7 @@ class UnifiedConfigurator {
                 <div class="tier-price-container">
                     <div class="tier-price">€ ${pricingInfo.total.toFixed(2).replace('.', ',')}/maand</div>
                     <div class="combo-discount-tag" onclick="app.openDatasimDiscountSheet()">
-                        <span>Combokorting geactiveerd</span>
+                        <span>50% combokorting actief</span>
                         <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 </div>
@@ -1198,7 +1198,7 @@ class UnifiedConfigurator {
                         </div>
                         <div class="discount-info">${discountCopy}</div>
                         <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('permanentDiscount')">
-                            <span>Combokorting geactiveerd</span>
+                            <span>50% combokorting actief</span>
                     <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
                     </div>
@@ -1209,7 +1209,7 @@ class UnifiedConfigurator {
                     <div class="tier-price-container">
                         <div class="tier-price">€ ${finalPrice.toFixed(2).replace('.', ',')}/maand</div>
                         <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('permanentDiscount')">
-                            <span>Combokorting geactiveerd</span>
+                            <span>50% combokorting actief</span>
                     <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
                     </div>
@@ -1754,7 +1754,7 @@ class UnifiedConfigurator {
         if (hasComboDiscount) {
             comboDiscountTag = `
                 <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                    <span>5% permanente korting toegepast</span>
+                    <span>5% combokorting actief</span>
                     <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                 </div>
             `;
@@ -3308,7 +3308,7 @@ class UnifiedConfigurator {
 
                 ${hasDiscount && !isWelcomeGift ? `
                     <div class="combo-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                        <span>5% permanente korting toegepast</span>
+                        <span>5% combokorting actief</span>
                         <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                     </div>
                 ` : ''}
@@ -3776,7 +3776,7 @@ class UnifiedConfigurator {
 
             if (!this.state.internet.enabled) {
                 highlightClass = 'promo-highlight';
-                highlightTitle = 'Combovoordeel Internet + Mobiel';
+                highlightTitle = 'Combokorting Internet + Mobiel';
                 highlightContent = 'Je mobiele abonnement <strong>aan 50%</strong>, als je het combineert met internet.';
             }
             // Remove the else block that shows the blue combo discount banner when internet is enabled
@@ -4347,7 +4347,7 @@ class UnifiedConfigurator {
                 if (hasComboDiscount) {
                     pricingHtml += `
                         <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                            <span class="discount-tag-text">5% permanente korting toegepast</span>
+                            <span class="discount-tag-text">5% combokorting actief</span>
                             <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
                     `;
@@ -4370,7 +4370,7 @@ class UnifiedConfigurator {
                 if (hasDiscount) {
                     pricingHtml += `
                         <div class="tier-sheet-discount-tag" onclick="app.openComboDiscountSheet('entertainmentCombo')">
-                            <span class="discount-tag-text">5% permanente korting toegepast</span>
+                            <span class="discount-tag-text">5% combokorting actief</span>
                             <img src="final_assets/icons/i-icon-blue.svg" alt="info" class="info-icon">
                         </div>
                     `;
@@ -4428,7 +4428,7 @@ class UnifiedConfigurator {
                     });
 
                     let targetElement = newServiceCard || selectedServicesContainer;
-                    
+
                     if (targetElement) {
                         // Calculate the target position accounting for fixed navigation
                         const elementRect = targetElement.getBoundingClientRect();
@@ -4438,7 +4438,7 @@ class UnifiedConfigurator {
                         // Custom smooth scroll with ease-out animation
                         const startY = currentScrollY;
                         const distance = targetY - startY;
-                        const duration = 800; // Slower animation (800ms)
+                        const duration = 300; // Slower animation (800ms)
                         let startTime = null;
 
                         function easeOutCubic(t) {
@@ -4449,12 +4449,12 @@ class UnifiedConfigurator {
                             if (startTime === null) startTime = currentTime;
                             const timeElapsed = currentTime - startTime;
                             const progress = Math.min(timeElapsed / duration, 1);
-                            
+
                             const easedProgress = easeOutCubic(progress);
                             const currentY = startY + (distance * easedProgress);
-                            
+
                             window.scrollTo(0, currentY);
-                            
+
                             if (progress < 1) {
                                 requestAnimationFrame(animateScroll);
                             }

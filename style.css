@@ -155,6 +155,12 @@
     gap: 12px;
 }
 
+.hub-option-subtitle {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
 .hub-option {
     position: relative;
 }
@@ -195,7 +201,7 @@
 
 .hub-option-caption {
     font-size: 14px;
-    color: #717D96;
+    color: #2D3648;
 }
 
 .entertainment-hub-option .hub-option-content {
@@ -2030,7 +2036,7 @@ body.config-page {
 }
 
 .tooltip-link {
-    color: #717D96;
+    color: #4A5468;
     font-size: 14px;
     margin-bottom: 20px;
     text-decoration: underline;
