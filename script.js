@@ -88,6 +88,7 @@ class UnifiedConfigurator {
     async init() {
         try {
             await this.loadData();
+            this.loadAddressFromLocalStorage();
             this.parseUrlParameters();
             this.setupEventListeners();
             this.setupMobileSummaryObserver();
@@ -99,6 +100,34 @@ class UnifiedConfigurator {
             this.updateCostSummary();
         } catch (error) {
             console.error('Error initializing configurator:', error);
+        }
+    }
+
+    saveAddressToLocalStorage() {
+        try {
+            localStorage.setItem('altijdOnlineAddress', JSON.stringify(this.addressData));
+        } catch (error) {
+            console.error('Error saving address to localStorage:', error);
+        }
+    }
+
+    loadAddressFromLocalStorage() {
+        try {
+            const savedAddress = localStorage.getItem('altijdOnlineAddress');
+            if (savedAddress) {
+                const parsedAddress = JSON.parse(savedAddress);
+                this.addressData = { ...this.addressData, ...parsedAddress };
+                
+                // Restore API variables if they exist
+                if (this.addressData.address && this.addressData.address.geoId) {
+                    this.selectedGeoId = this.addressData.address.geoId;
+                }
+                if (this.addressData.address && this.addressData.address.boxGeoId) {
+                    this.selectedBoxGeoId = this.addressData.address.boxGeoId;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading address from localStorage:', error);
         }
     }
 
@@ -3570,14 +3599,17 @@ class UnifiedConfigurator {
             streetInput.closest('.form-group')?.classList.remove('disabled');
             streetInput.focus();
 
-            // Clear street value and disable other fields
-            streetInput.value = '';
-            houseNumberInput.disabled = true;
-            houseNumberInput.closest('.form-group')?.classList.add('disabled');
-            busInput.disabled = true;
-            busInput.closest('.form-group')?.classList.add('disabled');
-            houseNumberInput.value = '';
-            busInput.value = '';
+            // Only clear street value and disable other fields if this is a new selection
+            // (not when prefilling from localStorage)
+            if (!this.addressData.address || this.addressData.address.postcode !== displayValue) {
+                streetInput.value = '';
+                houseNumberInput.disabled = true;
+                houseNumberInput.closest('.form-group')?.classList.add('disabled');
+                busInput.disabled = true;
+                busInput.closest('.form-group')?.classList.add('disabled');
+                houseNumberInput.value = '';
+                busInput.value = '';
+            }
         };
 
         // Store selected street value
@@ -3812,11 +3844,9 @@ class UnifiedConfigurator {
                 if (houseNumberInput) houseNumberInput.value = this.addressData.address.houseNumber || '';
                 if (busInput) busInput.value = this.addressData.address.bus || '';
 
-                // Set the selectedGeoId if we have postcode data
-                if (this.addressData.address.postcode) {
-                    // Extract potential geoId or set a flag that form is prefilled
-                    this.selectedGeoId = 'prefilled'; // This allows other fields to work
-                }
+                // Restore the saved selectedGeoId and selectedBoxGeoId from addressData
+                this.selectedGeoId = this.addressData.address.geoId || null;
+                this.selectedBoxGeoId = this.addressData.address.boxGeoId || null;
             }
 
             // Add focus and input event listeners for clear button functionality
@@ -3832,33 +3862,7 @@ class UnifiedConfigurator {
         if (!overlay || !title || !body) return;
 
         const result = this.addressData.result;
-        let content = '';
-
-        if (result.type === 'full') {
-            content = `
-                <h4>HFC Netwerk (tot 2,5 Gbps)</h4>
-                <p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p>
-                
-                <h4>100% Glasvezelnetwerk (tot 10 Gbps)</h4>
-                <p>Ons nieuwste glasvezelnetwerk biedt ultrasnelle internetsnelheden tot 10 Gbps voor de meest veeleisende gebruikers.</p>
-                
-                <p><strong>Beide opties zijn beschikbaar op jouw adres!</strong></p>
-            `;
-        } else if (result.type === 'medium') {
-            content = `
-                <h4>HFC Netwerk (tot 2,5 Gbps)</h4>
-                <p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p>
-                
-                <p>Perfect voor streaming in 4K, online gaming, en thuiswerken met meerdere apparaten tegelijkertijd.</p>
-            `;
-        } else if (result.type === 'light') {
-            content = `
-                <h4>HFC Netwerk (tot 1 Gbps)</h4>
-                <p>Ons HFC netwerk biedt stabiele internetverbindingen tot 1 Gbps op jouw adres.</p>
-                
-                <p>Ideaal voor dagelijks internetgebruik, streaming in HD/4K, en thuiswerken.</p>
-            `;
-        }
+        const content = result.moreInfoContent || 'Geen extra informatie beschikbaar.';
 
         title.innerHTML = 'Internetsnelheden op jouw adres';
         body.innerHTML = content;
@@ -3994,18 +3998,25 @@ class UnifiedConfigurator {
         // Create full address string in the required format
         const fullAddress = `${streetValue} ${houseNumberValue}${busValue ? ' ' + busValue : ''}, ${zipCode} ${subMunicipality}`;
 
-        // Create address object
+        // Create address object with API variables preserved
         this.addressData.address = {
             postcode: postcodeValue,
             street: streetValue,
             houseNumber: houseNumberValue,
             bus: busValue,
-            fullAddress: fullAddress
+            fullAddress: fullAddress,
+            zipCode: zipCode,
+            subMunicipality: subMunicipality,
+            geoId: this.selectedGeoId,
+            boxGeoId: this.selectedBoxGeoId
         };
 
         // Generate random result
         this.addressData.result = this.generateRandomAddressResult();
         this.addressData.hasAddress = true;
+
+        // Save address data to localStorage
+        this.saveAddressToLocalStorage();
 
         // Update UI
         this.updateAddressDisplay();
@@ -4016,31 +4027,17 @@ class UnifiedConfigurator {
     }
 
     generateRandomAddressResult() {
-        const results = [
-            {
-                type: 'full',
-                title: 'Alles kan op jouw adres',
-                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
-                details: 'Surf tot 2,5 Gbps',
-                icon: '✓'
-            },
-            {
-                type: 'light',
-                title: 'Internet tot 1 Gbps',
-                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
-                details: 'Surf tot 1 Gbps',
-                icon: '⚠'
-            },
-            {
-                type: 'medium',
-                title: 'Internet tot 2,5 Gbps',
-                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
-                details: 'Surf tot 2,5 Gbps',
-                icon: '✓'
-            }
-        ];
-
-        return results[Math.floor(Math.random() * results.length)];
+        const resultTypes = ['full', 'medium', 'light'];
+        const randomType = resultTypes[Math.floor(Math.random() * resultTypes.length)];
+        
+        const resultConfig = this.data.addressCheck.results[randomType];
+        
+        return {
+            type: randomType,
+            title: resultConfig.title,
+            description: resultConfig.description,
+            moreInfoContent: resultConfig.moreInfoContent
+        };
     }
 
     updateAddressDisplay() {
@@ -4071,25 +4068,14 @@ class UnifiedConfigurator {
 
         // Format result display with new structure
         const result = this.addressData.result;
-        const resultTitles = {
-            'full': 'Alles gevonden',
-            'medium': 'Internet tot 2,5 Gbps',
-            'light': 'Internet tot 1 Gbps'
-        };
-        
-        const resultDescriptions = {
-            'full': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen of zelfs 100% voor Fiber gaan, waar je tot 10 Gbps kan surfen.',
-            'medium': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen.',
-            'light': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 1 Gbps surfen.'
-        };
 
         addressResult.className = `address-result ${result.type}`;
         addressResult.innerHTML = `
             <div class="result-header">
                 <div class="result-checkmark">✓</div>
-                <div class="result-title">${resultTitles[result.type]}</div>
+                <div class="result-title">${result.title}</div>
             </div>
-            <div class="result-description">${resultDescriptions[result.type]}</div>
+            <div class="result-description">${result.description}</div>
             <div class="result-info-link" onclick="app.openInternetSpeedInfo()">
                 Meer info
                 <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
