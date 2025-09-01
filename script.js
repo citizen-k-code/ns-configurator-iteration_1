@@ -3798,26 +3798,29 @@ class UnifiedConfigurator {
                 const houseNumberInput = document.getElementById('house-number');
                 const busInput = document.getElementById('bus');
 
+                // Enable all fields first
+                [streetInput, houseNumberInput, busInput].forEach(input => {
+                    if (input) {
+                        input.disabled = false;
+                        input.closest('.form-group')?.classList.remove('disabled');
+                    }
+                });
+
+                // Then prefill the values
                 if (postcodeInput) postcodeInput.value = this.addressData.address.postcode || '';
-                if (streetInput) {
-                    streetInput.value = this.addressData.address.street || '';
-                    streetInput.disabled = false;
-                    streetInput.closest('.form-group')?.classList.remove('disabled');
-                }
-                if (houseNumberInput) {
-                    houseNumberInput.value = this.addressData.address.houseNumber || '';
-                    houseNumberInput.disabled = false;
-                    houseNumberInput.closest('.form-group')?.classList.remove('disabled');
-                }
-                if (busInput) {
-                    busInput.value = this.addressData.address.bus || '';
-                    busInput.disabled = false;
-                    busInput.closest('.form-group')?.classList.remove('disabled');
+                if (streetInput) streetInput.value = this.addressData.address.street || '';
+                if (houseNumberInput) houseNumberInput.value = this.addressData.address.houseNumber || '';
+                if (busInput) busInput.value = this.addressData.address.bus || '';
+
+                // Set the selectedGeoId if we have postcode data
+                if (this.addressData.address.postcode) {
+                    // Extract potential geoId or set a flag that form is prefilled
+                    this.selectedGeoId = 'prefilled'; // This allows other fields to work
                 }
             }
 
-            // Set up listeners if not already done
-            this.setupAddressFormListeners();
+            // Add focus and input event listeners for clear button functionality
+            this.setupClearButtonListeners();
         }
     }
 
