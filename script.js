@@ -3923,36 +3923,15 @@ class UnifiedConfigurator {
         if (!overlay || !title || !body) return;
 
         const result = this.addressData.result;
-        let content = '';
-
-        if (result.type === 'full') {
-            content = `
-                <h4>HFC Netwerk (tot 2,5 Gbps)</h4>
-                <p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p>
-                
-                <h4>100% Glasvezelnetwerk (tot 10 Gbps)</h4>
-                <p>Ons nieuwste glasvezelnetwerk biedt ultrasnelle internetsnelheden tot 10 Gbps voor de meest veeleisende gebruikers.</p>
-                
-                <p><strong>Beide opties zijn beschikbaar op jouw adres!</strong></p>
-            `;
-        } else if (result.type === 'medium') {
-            content = `
-                <h4>HFC Netwerk (tot 2,5 Gbps)</h4>
-                <p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p>
-                
-                <p>Perfect voor streaming in 4K, online gaming, en thuiswerken met meerdere apparaten tegelijkertijd.</p>
-            `;
-        } else if (result.type === 'light') {
-            content = `
-                <h4>HFC Netwerk (tot 1 Gbps)</h4>
-                <p>Ons HFC netwerk biedt stabiele internetverbindingen tot 1 Gbps op jouw adres.</p>
-                
-                <p>Ideaal voor dagelijks internetgebruik, streaming in HD/4K, en thuiswerken.</p>
-            `;
+        const resultConfig = this.data.addressResults[result.type];
+        
+        if (!resultConfig || !resultConfig.moreInfoContent) {
+            console.error('Address result configuration not found for type:', result.type);
+            return;
         }
 
-        title.innerHTML = 'Internetsnelheden op jouw adres';
-        body.innerHTML = content;
+        title.innerHTML = resultConfig.moreInfoContent.title;
+        body.innerHTML = resultConfig.moreInfoContent.content;
 
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -4197,27 +4176,22 @@ class UnifiedConfigurator {
             <div class="address-change-link" onclick="app.openAddressFormPrefilled()">wijzig adres</div>
         `;
 
-        // Format result display with new structure
+        // Format result display with new structure using data from data.json
         const result = this.addressData.result;
-        const resultTitles = {
-            'full': 'Alles gevonden',
-            'medium': 'Internet tot 2,5 Gbps',
-            'light': 'Internet tot 1 Gbps'
-        };
+        const resultConfig = this.data.addressResults[result.type];
         
-        const resultDescriptions = {
-            'full': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen of zelfs 100% voor Fiber gaan, waar je tot 10 Gbps kan surfen.',
-            'medium': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen.',
-            'light': 'Jij kan zowel op ons HFC netwerk aan snelheden tot 1 Gbps surfen.'
-        };
+        if (!resultConfig) {
+            console.error('Address result configuration not found for type:', result.type);
+            return;
+        }
 
         addressResult.className = `address-result ${result.type}`;
         addressResult.innerHTML = `
             <div class="result-header">
                 <div class="result-checkmark">✓</div>
-                <div class="result-title">${resultTitles[result.type]}</div>
+                <div class="result-title">${resultConfig.title}</div>
             </div>
-            <div class="result-description">${resultDescriptions[result.type]}</div>
+            <div class="result-description">${resultConfig.description}</div>
             <div class="result-info-link" onclick="app.openInternetSpeedInfo()">
                 Meer info
                 <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">

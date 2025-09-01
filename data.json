@@ -304,6 +304,35 @@
   "modalTitles": {
     "multipleServices": "Al je streaming services"
   },
+  "addressResults": {
+    "full": {
+      "title": "Alles gevonden",
+      "description": "Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen of zelfs 100% voor Fiber gaan, waar je tot 10 Gbps kan surfen.",
+      "backgroundColor": "#F6D1FF",
+      "moreInfoContent": {
+        "title": "Internetsnelheden op jouw adres",
+        "content": "<h4>HFC Netwerk (tot 2,5 Gbps)</h4><p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p><h4>100% Glasvezelnetwerk (tot 10 Gbps)</h4><p>Ons nieuwste glasvezelnetwerk biedt ultrasnelle internetsnelheden tot 10 Gbps voor de meest veeleisende gebruikers.</p><p><strong>Beide opties zijn beschikbaar op jouw adres!</strong></p>"
+      }
+    },
+    "medium": {
+      "title": "Internet tot 2,5 Gbps",
+      "description": "Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen.",
+      "backgroundColor": "#FED7AD",
+      "moreInfoContent": {
+        "title": "Internetsnelheden op jouw adres",
+        "content": "<h4>HFC Netwerk (tot 2,5 Gbps)</h4><p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p><p>Perfect voor streaming in 4K, online gaming, en thuiswerken met meerdere apparaten tegelijkertijd.</p>"
+      }
+    },
+    "light": {
+      "title": "Internet tot 1 Gbps",
+      "description": "Jij kan zowel op ons HFC netwerk aan snelheden tot 1 Gbps surfen.",
+      "backgroundColor": "#FFEDAD",
+      "moreInfoContent": {
+        "title": "Internetsnelheden op jouw adres",
+        "content": "<h4>HFC Netwerk (tot 1 Gbps)</h4><p>Ons HFC netwerk biedt stabiele internetverbindingen tot 1 Gbps op jouw adres.</p><p>Ideaal voor dagelijks internetgebruik, streaming in HD/4K, en thuiswerken.</p>"
+      }
+    }
+  },
   "tooltips": {
     "internet": {
       "title": "Welke internetsnelheid heb ik nodig?",
