@@ -49,6 +49,50 @@
           }
         }
       ],
+      "fiberTiers": [
+        {
+          "id": 1,
+          "title": "Supersnel",
+          "subtitle": "€65,00",
+          "summary": "<strong>1 Gbps</strong> downloadsnelheid, <strong>100 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume, <strong>100% Glasvezel</strong>",
+          "price": 65.00,
+          "discountValue": 10.00,
+          "discountPeriod": 3,
+          "promoName": "Fiber intro",
+          "discountCopy": {
+            "temporaryOnly": "gedurende 3 maanden",
+            "permanentOnly": "",
+            "both": ""
+          }
+        },
+        {
+          "id": 2,
+          "title": "Ultrasnel",
+          "subtitle": "€85,00",
+          "summary": "<strong>5 Gbps</strong> downloadsnelheid, <strong>500 Mbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume, <strong>100% Glasvezel</strong>",
+          "price": 85.00,
+          "discountValue": 15.00,
+          "discountPeriod": 6,
+          "promoName": "Fiber deal",
+          "discountCopy": {
+            "temporaryOnly": "gedurende 6 maanden",
+            "permanentOnly": "",
+            "both": ""
+          }
+        },
+        {
+          "id": 3,
+          "title": "Fibermegasnel",
+          "subtitle": "€120,00",
+          "summary": "<strong>10 Gbps</strong> downloadsnelheid, <strong>1 Gbps</strong> uploadsnelheid, <strong>Onbeperkt</strong> downloadvolume, <strong>100% Glasvezel</strong>",
+          "price": 120.00,
+          "discountCopy": {
+            "temporaryOnly": "",
+            "permanentOnly": "",
+            "both": ""
+          }
+        }
+      ],
       "defaultTier": 1,
       "wifiPods": {
         "title": "Versterk je wifi met slimme wifi-pods",
