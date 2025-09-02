@@ -899,7 +899,13 @@ class UnifiedConfigurator {
         const tiersContainer = document.getElementById('internet-tiers');
         if (!tiersContainer || !this.data) return;
 
-        const tiers = this.data.products.internet.tiers;
+        // Choose tiers based on address result
+        let tiers;
+        if (this.addressData.result && this.addressData.result.type === 'full') {
+            tiers = this.data.products.internet.fiberTiers;
+        } else {
+            tiers = this.data.products.internet.tiers;
+        }
 
         tiersContainer.innerHTML = tiers.map(tier => {
 
@@ -950,7 +956,15 @@ class UnifiedConfigurator {
         const infoContainer = document.getElementById('internet-info');
         if (!infoContainer || !this.data) return;
 
-        const tier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+        // Choose tiers based on address result
+        let tiers;
+        if (this.addressData.result && this.addressData.result.type === 'full') {
+            tiers = this.data.products.internet.fiberTiers;
+        } else {
+            tiers = this.data.products.internet.tiers;
+        }
+
+        const tier = tiers.find(t => t.id === this.state.internet.selectedTier);
         if (!tier) return;
 
         const summaryItems = tier.summary.split(', ').map(item => `<li>${item}</li>`).join('');
@@ -1904,7 +1918,15 @@ class UnifiedConfigurator {
 
         // Internet cost
         if (this.state.internet.enabled) {
-            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            // Choose tiers based on address result
+            let tiers;
+            if (this.addressData.result && this.addressData.result.type === 'full') {
+                tiers = this.data.products.internet.fiberTiers;
+            } else {
+                tiers = this.data.products.internet.tiers;
+            }
+            
+            const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountValue) {
                 total += internetTier.price - internetTier.discountValue;
                 totalTemporaryDiscount += internetTier.discountValue;
@@ -2106,7 +2128,15 @@ class UnifiedConfigurator {
 
         // Internet temporary discount
         if (this.state.internet.enabled) {
-            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            // Choose tiers based on address result
+            let tiers;
+            if (this.addressData.result && this.addressData.result.type === 'full') {
+                tiers = this.data.products.internet.fiberTiers;
+            } else {
+                tiers = this.data.products.internet.tiers;
+            }
+            
+            const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountValue && internetTier.discountPeriod) {
                 totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
                 discountsInfo.push({
@@ -2283,7 +2313,15 @@ class UnifiedConfigurator {
 
         // Check all temporary discount periods - only include if discount is actually applied
         if (this.state.internet.enabled) {
-            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            // Choose tiers based on address result
+            let tiers;
+            if (this.addressData.result && this.addressData.result.type === 'full') {
+                tiers = this.data.products.internet.fiberTiers;
+            } else {
+                tiers = this.data.products.internet.tiers;
+            }
+            
+            const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             console.log("Internet tier:", internetTier);
             if (internetTier && internetTier.discountPeriod && internetTier.discountValue) {
                 periods.push(internetTier.discountPeriod);
@@ -2573,7 +2611,15 @@ class UnifiedConfigurator {
 
         // Internet discount
         if (this.state.internet.enabled) {
-            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            // Choose tiers based on address result
+            let tiers;
+            if (this.addressData.result && this.addressData.result.type === 'full') {
+                tiers = this.data.products.internet.fiberTiers;
+            } else {
+                tiers = this.data.products.internet.tiers;
+            }
+            
+            const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountPeriod === period) {
                 expiringDiscounts.push({
                     product: 'Internet',
@@ -2651,7 +2697,15 @@ class UnifiedConfigurator {
 
         // Internet
         if (this.state.internet && this.state.internet.enabled) {
-            const internetTier = this.data.products.internet.tiers.find(t => t.id === this.state.internet.selectedTier);
+            // Choose tiers based on address result
+            let tiers;
+            if (this.addressData.result && this.addressData.result.type === 'full') {
+                tiers = this.data.products.internet.fiberTiers;
+            } else {
+                tiers = this.data.products.internet.tiers;
+            }
+            
+            const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (!internetTier) return;
 
             let priceHtml;
@@ -4142,6 +4196,14 @@ class UnifiedConfigurator {
 
         // Update UI
         this.updateAddressDisplay();
+        
+        // If internet is enabled and address result is "full", switch to fiber tiers and select tier 2
+        if (this.state.internet.enabled && this.addressData.result.type === 'full') {
+            this.state.internet.selectedTier = 2; // Default to second fiber tier
+            this.renderInternetTiers();
+            this.updateInternetInfo();
+        }
+        
         this.closeAddressForm();
 
         // Scroll to the address card
@@ -4589,7 +4651,15 @@ class UnifiedConfigurator {
         }
 
         if (productType === 'internet') {
-            const lowestTier = this.data.products.internet?.tiers?.[0];
+            // Choose tiers based on address result
+            let tiers;
+            if (this.addressData.result && this.addressData.result.type === 'full') {
+                tiers = this.data.products.internet.fiberTiers;
+            } else {
+                tiers = this.data.products.internet.tiers;
+            }
+            
+            const lowestTier = tiers?.[0];
             if (!lowestTier) return 0;
             return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;
         } else if (productType === 'mobile') {
