@@ -99,8 +99,27 @@ class UnifiedConfigurator {
             this.updateAllEntertainmentSubtitles();
             this.renderClosedStatesForDisabledProducts();
             this.updateCostSummary();
+
+            // Disable zoom on mobile devices
+            this.disableMobileZoom();
         } catch (error) {
             console.error('Error initializing configurator:', error);
+        }
+    }
+
+    disableMobileZoom() {
+        // Check if running on a mobile device
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            // Create a meta tag to disable zooming
+            let metaViewport = document.querySelector('meta[name="viewport"]');
+            if (!metaViewport) {
+                metaViewport = document.createElement('meta');
+                metaViewport.setAttribute('name', 'viewport');
+                document.head.appendChild(metaViewport);
+            }
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
         }
     }
 
@@ -3119,14 +3138,14 @@ class UnifiedConfigurator {
         }
 
         overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('no-scroll');
     }
 
     closeStreamingTierSheet() {
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
         if (overlay) {
             overlay.style.display = 'none';
-            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
         }
         this.currentStreamingService = null;
         this.isEditingStreamingService = false;
@@ -3888,16 +3907,16 @@ class UnifiedConfigurator {
             // Extract zipcode from the stored postcode format "1000 - Brussels"
             const zipCode = postcodeValue.split(' - ')[0];
             const subMunicipality = postcodeValue.split(' - ')[1];
-            
+
             const response = await fetch(`https://api.prd.telenet.be/omapi-query/public/address/v1/suggest/city?searchTerm=${encodeURIComponent(zipCode)}`);
             const data = await response.json();
-            
+
             if (data && data.length > 0) {
                 // Find the exact match for the stored postcode
-                const exactMatch = data.find(item => 
+                const exactMatch = data.find(item =>
                     item.zipCode === zipCode && item.subMunicipality === subMunicipality
                 );
-                
+
                 if (exactMatch) {
                     this.selectedGeoId = exactMatch.geoId;
                     console.log('Looked up selectedGeoId:', this.selectedGeoId);
@@ -3920,7 +3939,7 @@ class UnifiedConfigurator {
 
         const result = this.addressData.result;
         const resultConfig = this.data.addressResults[result.type];
-        
+
         if (!resultConfig || !resultConfig.moreInfoContent) {
             console.error('Address result configuration not found for type:', result.type);
             return;
@@ -3951,11 +3970,11 @@ class UnifiedConfigurator {
 
     setupClearButtonListeners() {
         const inputs = ['postcode', 'street', 'house-number', 'bus'];
-        
+
         inputs.forEach(inputId => {
             const input = document.getElementById(inputId);
             const clearBtn = document.getElementById(`${inputId}-clear`);
-            
+
             if (input && clearBtn) {
                 // Show/hide clear button based on input value and focus
                 const toggleClearButton = () => {
@@ -3981,24 +4000,24 @@ class UnifiedConfigurator {
     clearInput(inputId) {
         const input = document.getElementById(inputId);
         const clearBtn = document.getElementById(`${inputId}-clear`);
-        
+
         if (input) {
             input.value = '';
             input.focus();
-            
+
             // Hide autocomplete if open
             const autocompleteId = inputId === 'house-number' ? 'housenumber-autocomplete' : `${inputId}-autocomplete`;
             const autocomplete = document.getElementById(autocompleteId);
             if (autocomplete) {
                 autocomplete.style.display = 'none';
             }
-            
+
             // Reset dependent fields if clearing postcode or street
             if (inputId === 'postcode') {
                 const streetInput = document.getElementById('street');
                 const houseNumberInput = document.getElementById('house-number');
                 const busInput = document.getElementById('bus');
-                
+
                 // Clear and disable all dependent fields
                 if (streetInput) {
                     streetInput.value = '';
@@ -4015,10 +4034,10 @@ class UnifiedConfigurator {
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
                 }
-                
+
                 // Reset selectedGeoId since postcode was cleared
                 this.selectedGeoId = null;
-                
+
                 // Clear from localStorage
                 this.clearAddressFromStorage();
                 this.addressData = {
@@ -4029,7 +4048,7 @@ class UnifiedConfigurator {
             } else if (inputId === 'street') {
                 const houseNumberInput = document.getElementById('house-number');
                 const busInput = document.getElementById('bus');
-                
+
                 // Clear and disable house number and bus fields
                 if (houseNumberInput) {
                     houseNumberInput.value = '';
@@ -4041,7 +4060,7 @@ class UnifiedConfigurator {
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
                 }
-                
+
                 // Update temporary address data but don't save to localStorage yet
                 if (this.addressData.address) {
                     this.addressData.address.street = '';
@@ -4057,7 +4076,7 @@ class UnifiedConfigurator {
                         'house-number': 'houseNumber',
                         'bus': 'bus'
                     };
-                    
+
                     const fieldName = fieldMap[inputId];
                     if (fieldName) {
                         this.addressData.address[fieldName] = '';
@@ -4065,7 +4084,7 @@ class UnifiedConfigurator {
                 }
             }
         }
-        
+
         if (clearBtn) {
             clearBtn.style.display = 'none';
         }
@@ -4180,7 +4199,7 @@ class UnifiedConfigurator {
         // Format result display with new structure using data from data.json
         const result = this.addressData.result;
         const resultConfig = this.data.addressResults[result.type];
-        
+
         if (!resultConfig) {
             console.error('Address result configuration not found for type:', result.type);
             return;
@@ -4996,6 +5015,76 @@ class UnifiedConfigurator {
         this.updateCostSummary();
     }
 
+    // Entertainment Box Deselection Confirmation methods
+    shouldShowDeselectionConfirmation() {
+        // Show confirmation if TV is enabled OR if user has streaming services selected
+        const hasTv = this.state.tv.enabled;
+        const hasStreamingServices = this.state.selectedEntertainmentServices.size > 0;
+
+        return hasTv || hasStreamingServices;
+    }
+
+    openEntertainmentBoxDeselectionDialog() {
+        const overlay = document.getElementById('entertainment-box-deselection-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeEntertainmentBoxDeselectionDialog() {
+        const overlay = document.getElementById('entertainment-box-deselection-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    keepEntertainmentBox() {
+        // Close the dialog and keep Entertainment Box selected
+        this.closeEntertainmentBoxDeselectionDialog();
+        // Ensure the toggle and checkbox remain checked
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.checked = true;
+        }
+        if (tvCheckbox && this.state.tv.enabled) {
+            tvCheckbox.checked = true;
+        }
+    }
+
+    removeEntertainmentBox() {
+        // Close the dialog and proceed with deselecting Entertainment Box
+        this.closeEntertainmentBoxDeselectionDialog();
+
+        // Disable Entertainment Box
+        this.state.entertainmentBox.enabled = false;
+        const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
+        const entertainmentBoxContent = document.getElementById('entertainment-box-content');
+        const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+        const warningHighlight = document.getElementById('warning-highlight');
+
+        if (entertainmentBoxToggle) {
+            entertainmentBoxToggle.checked = false;
+        }
+        if (entertainmentBoxContent) {
+            entertainmentBoxContent.style.display = 'none';
+        }
+        if (tvCheckbox && this.state.tv.enabled) {
+            tvCheckbox.checked = false;
+        }
+        if (warningHighlight) {
+            warningHighlight.style.display = 'block';
+        }
+
+        // Render closed state and update UI
+        this.renderProductClosedState('entertainmentBox');
+        this.updateProductHeaderStates();
+        this.updateCostSummary();
+    }
+
     // Streaming tier selection bottom sheet methods
     openStreamingTierSheet(serviceKey, isEditing = false) {
         console.log("open de sheet");
@@ -5053,6 +5142,7 @@ class UnifiedConfigurator {
                         (enabledProducts === 1 && !this.isEditingStreamingService);
 
                     if (discount.enabled && willHaveMinProducts) {
+                        // Apply 5% combo discount to the original price, then subtract from welcome gift price
                         const comboDiscountAmount = tier.price * (discount.percentage / 100);
                         finalWelcomePrice = Math.max(0, tier.welcomeGift.price - comboDiscountAmount);
                     }
@@ -5104,21 +5194,22 @@ class UnifiedConfigurator {
             confirmBtn.textContent = 'Toevoegen';
 
             // Remove dual button layout if it exists
-            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-sheet').querySelector('.dual-button-layout');
+            const footer = document.getElementById('streaming-tier-sheet').querySelector('.sheet-footer');
+            const existingDualButtons = footer.querySelector('.dual-button-layout');
             if (existingDualButtons) {
                 existingDualButtons.remove();
             }
         }
 
         overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('no-scroll');
     }
 
     closeStreamingTierSheet() {
         const overlay = document.getElementById('streaming-tier-sheet-overlay');
         if (overlay) {
             overlay.style.display = 'none';
-            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
         }
         this.currentStreamingService = null;
         this.isEditingStreamingService = false;
