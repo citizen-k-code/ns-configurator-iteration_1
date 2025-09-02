@@ -3010,14 +3010,14 @@ class UnifiedConfigurator {
         body.innerHTML = content;
 
         overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('no-scroll');
     }
 
     closeTooltipSheet() {
         const overlay = document.getElementById('sheet-overlay');
         if (overlay) {
             overlay.style.display = 'none';
-            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
         }
     }
 
@@ -3026,7 +3026,7 @@ class UnifiedConfigurator {
         const overlay = document.getElementById('entertainment-sheet-overlay');
         if (overlay) {
             overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
         }
     }
 
@@ -3034,7 +3034,7 @@ class UnifiedConfigurator {
         const overlay = document.getElementById('entertainment-sheet-overlay');
         if (overlay) {
             overlay.style.display = 'none';
-            document.body.style.overflow = '';
+            document.body.classList.remove('no-scroll');
         }
     }
 
@@ -3831,6 +3831,7 @@ class UnifiedConfigurator {
         const overlay = document.getElementById('address-form-overlay');
         if (overlay) {
             overlay.style.display = 'flex';
+            document.body.classList.add('no-scroll');
 
             // Reset form state
             const form = document.getElementById('address-form');
@@ -3865,6 +3866,7 @@ class UnifiedConfigurator {
         const overlay = document.getElementById('address-form-overlay');
         if (overlay) {
             overlay.style.display = 'flex';
+            document.body.classList.add('no-scroll');
 
             // Prefill form with existing address data
             if (this.addressData.address) {
@@ -3959,6 +3961,7 @@ class UnifiedConfigurator {
 
         if (overlay) {
             overlay.style.display = 'none';
+            document.body.classList.remove('no-scroll');
         }
         if (postcodeAutocomplete) {
             postcodeAutocomplete.style.display = 'none';
