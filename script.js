@@ -3868,6 +3868,9 @@ class UnifiedConfigurator {
             overlay.style.display = 'flex';
             document.body.classList.add('no-scroll');
 
+            // Always reload address data from localStorage to ensure we have the original stored values
+            this.loadAddressFromStorage();
+
             // Prefill form with existing address data
             if (this.addressData.address) {
                 const postcodeInput = document.getElementById('postcode');
