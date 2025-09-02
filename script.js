@@ -4141,6 +4141,17 @@ class UnifiedConfigurator {
         this.updateAddressDisplay();
         this.closeAddressForm();
 
+        // Scroll to the address card
+        setTimeout(() => {
+            const addressSection = document.querySelector('.adrescheck-section');
+            if (addressSection) {
+                addressSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }, 100); // Small delay to ensure the form is closed first
+
         // Clear form
         document.getElementById('address-form').reset();
     }
