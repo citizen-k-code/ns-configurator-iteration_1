@@ -4036,22 +4036,33 @@ class UnifiedConfigurator {
             const clearBtn = document.getElementById(`${inputId}-clear`);
 
             if (input && clearBtn) {
+                // Remove existing event listeners to avoid duplicates
+                clearBtn.replaceWith(clearBtn.cloneNode(true));
+                const newClearBtn = document.getElementById(`${inputId}-clear`);
+
                 // Show/hide clear button based on input value and focus
                 const toggleClearButton = () => {
                     if (input.value.length > 0 && document.activeElement === input) {
-                        clearBtn.style.display = 'flex';
+                        newClearBtn.style.display = 'flex';
                     } else {
-                        clearBtn.style.display = 'none';
+                        newClearBtn.style.display = 'none';
                     }
                 };
+
+                // Add click event listener to clear button
+                newClearBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clearInput(inputId);
+                });
 
                 input.addEventListener('input', toggleClearButton);
                 input.addEventListener('focus', toggleClearButton);
                 input.addEventListener('blur', () => {
                     // Add small delay to allow click on clear button
                     setTimeout(() => {
-                        clearBtn.style.display = 'none';
-                    }, 100);
+                        newClearBtn.style.display = 'none';
+                    }, 150);
                 });
             }
         });
