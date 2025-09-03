@@ -709,7 +709,7 @@
                         <div class="form-group">
                             <label for="postcode">Postcode of stad</label>
                             <div class="autocomplete-container">
-                                <input type="text" id="postcode" name="postcode" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other">
+                                <input type="text" id="postcode" name="postcode" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
                                 <div class="clear-input-btn" id="postcode-clear" style="display: none;">×</div>
                                 <div class="autocomplete-list" id="postcode-autocomplete" style="display: none;"></div>
                             </div>
@@ -718,7 +718,7 @@
                         <div class="form-group disabled">
                             <label for="street">Straat</label>
                             <div class="autocomplete-container">
-                                <input type="text" id="street" name="street" required disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other">
+                                <input type="text" id="street" name="street" required disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
                                 <div class="clear-input-btn" id="street-clear" style="display: none;">×</div>
                             </div>
                         </div>
@@ -727,14 +727,14 @@
                             <div class="form-group disabled">
                                 <label for="house-number">Huisnummer</label>
                                 <div class="autocomplete-container">
-                                    <input type="text" id="house-number" name="house-number" required disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other">
+                                    <input type="text" id="house-number" name="house-number" required disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
                                     <div class="clear-input-btn" id="house-number-clear" style="display: none;">×</div>
                                 </div>
                             </div>
                             <div class="form-group disabled">
                                 <label for="bus">Bus</label>
                                 <div class="autocomplete-container">
-                                    <input type="text" id="bus" name="bus" disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other">
+                                    <input type="text" id="bus" name="bus" disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
                                     <div class="clear-input-btn" id="bus-clear" style="display: none;">×</div>
                                 </div>
                             </div>
