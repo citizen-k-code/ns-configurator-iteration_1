@@ -3956,8 +3956,8 @@ class UnifiedConfigurator {
                 }
             }
 
-            // Add focus and input event listeners for clear button functionality
-            this.setupClearButtonListeners();
+            // Set up listeners if not already done
+            this.setupAddressFormListeners();
         }
     }
 
