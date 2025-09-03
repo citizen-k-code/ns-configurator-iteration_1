@@ -4197,9 +4197,13 @@ class UnifiedConfigurator {
         // Update UI
         this.updateAddressDisplay();
         
-        // If internet is enabled and address result is "full", switch to fiber tiers and select tier 2
-        if (this.state.internet.enabled && this.addressData.result.type === 'full') {
-            this.state.internet.selectedTier = 2; // Default to second fiber tier
+        // Update internet tiers if internet is enabled (regardless of address result)
+        if (this.state.internet.enabled) {
+            // If address result is "full", switch to fiber tiers and select tier 2
+            if (this.addressData.result.type === 'full') {
+                this.state.internet.selectedTier = 2; // Default to second fiber tier
+            }
+            // Re-render tiers and update info to reflect the new address result
             this.renderInternetTiers();
             this.updateInternetInfo();
         }
