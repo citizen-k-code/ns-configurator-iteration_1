@@ -5014,3 +5014,65 @@ button.gift-btn:hover {
 .address-submit-btn:hover {
     background-color: #1a2332;
 }
+
+/* Address Form Bottom Sheet */
+.address-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.address-form-sheet {
+    background-color: white;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    height: 90vh;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease-out;
+}
+
+.address-form-sheet .sheet-header {
+    padding: 16px 20px 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.address-form-sheet .sheet-content {
+    flex: 1;
+    padding: 0 20px 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.address-form-sheet .sheet-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2D3648;
+    margin-bottom: 16px;
+}
+
+.address-form-sheet .sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.address-form-sheet .sheet-footer {
+    padding: 20px;
+    border-top: 1px solid #E5E9F0;
+    flex-shrink: 0;
+    background: white;
+    position: sticky;
+    bottom: 0;
+}

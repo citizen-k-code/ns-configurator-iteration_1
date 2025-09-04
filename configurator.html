@@ -699,7 +699,7 @@
 
     <!-- Address Form Bottom Sheet -->
     <div class="sheet-overlay" id="address-form-overlay" style="display: none;" onclick="app.closeAddressForm()">
-        <div class="tooltip-sheet" id="address-form-sheet" onclick="event.stopPropagation()">
+        <div class="tooltip-sheet address-form-sheet" id="address-form-sheet" onclick="event.stopPropagation()">
             <div class="sheet-header">
                 <button class="sheet-close-btn" onclick="app.closeAddressForm()">×</button>
             </div>
@@ -740,10 +740,11 @@
                                 </div>
                             </div>
                         </div>
-
-                        <button type="submit" class="address-submit-btn">Check mijn adres</button>
                     </form>
                 </div>
+            </div>
+            <div class="sheet-footer">
+                <button type="submit" form="address-form" class="address-submit-btn">Check mijn adres</button>
             </div>
         </div>
     </div>
