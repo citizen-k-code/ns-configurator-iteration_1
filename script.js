@@ -4237,31 +4237,14 @@ class UnifiedConfigurator {
     }
 
     generateRandomAddressResult() {
-        const results = [
-            {
-                type: 'full',
-                title: 'Alles kan op jouw adres',
-                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
-                details: 'Surf tot 2,5 Gbps',
-                icon: '✓'
-            },
-            {
-                type: 'light',
-                title: 'Internet tot 1 Gbps',
-                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
-                details: 'Surf tot 1 Gbps',
-                icon: '⚠'
-            },
-            {
-                type: 'medium',
-                title: 'Internet tot 2,5 Gbps',
-                description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
-                details: 'Surf tot 2,5 Gbps',
-                icon: '✓'
-            }
-        ];
-
-        return results[Math.floor(Math.random() * results.length)];
+        // For testing purposes, always return 'full' type (Fiber)
+        return {
+            type: 'full',
+            title: 'Alles kan op jouw adres',
+            description: 'Je kan zowel op ons HFC netwerk als aangesloten worden op ons 100% kopervrij glasvezelnetwerk.',
+            details: 'Surf tot 2,5 Gbps',
+            icon: '✓'
+        };
     }
 
     updateAddressDisplay() {
