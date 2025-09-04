@@ -81,32 +81,7 @@
                 <!-- Pack banner will be populated by JavaScript -->
             </div>
 
-            <!-- Adrescheck Section -->
-            <div class="adrescheck-section">
-                <h2 class="section-title">Adrescheck</h2>
-
-                <!-- Address Input State (shown when no address entered) -->
-                <div class="adrescheck-input-state" id="adrescheck-input-state">
-                    <div class="adrescheck-card">
-                        <div class="adrescheck-description">
-                            Kijk welk aanbod we hebben voor jouw adres.
-                        </div>
-                        <button class="address-input-btn" onclick="app.openAddressForm()">Geef je adres in</button>
-                    </div>
-                </div>
-
-                <!-- Address Result State (shown after address is entered) -->
-                <div class="adrescheck-result-state" id="adrescheck-result-state" style="display: none;">
-                    <div class="adrescheck-card">
-                        <div class="address-display" id="address-display">
-                            <!-- Address will be populated by JavaScript -->
-                        </div>
-                        <div class="address-result" id="address-result">
-                            <!-- Result will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
             <!-- Surfen & Bellen Section -->
             <div class="section-group">
@@ -128,6 +103,32 @@
                             nodig?
                             <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
                         </div>
+
+                        <!-- Address Check Section -->
+                        <div class="adrescheck-section">
+                            <!-- Address Input State (shown when no address entered) -->
+                            <div class="adrescheck-input-state" id="adrescheck-input-state">
+                                <div class="adrescheck-card">
+                                    <div class="adrescheck-description">
+                                        Kijk welk aanbod we hebben voor jouw adres.
+                                    </div>
+                                    <button class="address-input-btn" onclick="app.openAddressForm()">Geef je adres in</button>
+                                </div>
+                            </div>
+
+                            <!-- Address Result State (shown after address is entered) -->
+                            <div class="adrescheck-result-state" id="adrescheck-result-state" style="display: none;">
+                                <div class="adrescheck-card">
+                                    <div class="address-display" id="address-display">
+                                        <!-- Address will be populated by JavaScript -->
+                                    </div>
+                                    <div class="address-result" id="address-result">
+                                        <!-- Result will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="tier-selector" id="internet-tiers"></div>
                         <div class="tier-info" id="internet-info"></div>
                     </div>
