@@ -183,7 +183,8 @@ class UnifiedConfigurator {
         const subMunicipality = postcodeParts[1] || '';
 
         try {
-            const apiUrl = `https://api.prd.telenet.be/ocapi/public/api/contact-service/v1/contact/addresses?postalCode=${encodeURIComponent(postalCode)}&municipality=${encodeURIComponent(subMunicipality)}&street=${encodeURIComponent(streetValue)}&houseNumber=${encodeURIComponent(houseNumber)}&boxNumber=&subHouseNumber=&fields=id,houseNumber,subHouseNumber,boxNumber,country`;
+            const originalApiUrl = `https://api.prd.telenet.be/ocapi/public/api/contact-service/v1/contact/addresses?postalCode=${encodeURIComponent(postalCode)}&municipality=${encodeURIComponent(subMunicipality)}&street=${encodeURIComponent(streetValue)}&houseNumber=${encodeURIComponent(houseNumber)}&boxNumber=&subHouseNumber=&fields=id,houseNumber,subHouseNumber,boxNumber,country`;
+            const apiUrl = `https://corsproxy.io/?${encodeURIComponent(originalApiUrl)}`;
             
             const response = await fetch(apiUrl);
             const data = await response.json();
