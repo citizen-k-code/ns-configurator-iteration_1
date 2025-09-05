@@ -200,7 +200,13 @@ class UnifiedConfigurator {
                 if (busInput) {
                     busInput.disabled = false;
                     busInput.closest('.form-group')?.classList.remove('disabled');
-                    busInput.focus();
+                    
+                    // Ensure keyboard shows on mobile by using setTimeout and click event
+                    setTimeout(() => {
+                        busInput.focus();
+                        // Trigger click to ensure mobile keyboard appears
+                        busInput.click();
+                    }, 100);
                 }
             } else {
                 // Disable box number field and focus on submit button
