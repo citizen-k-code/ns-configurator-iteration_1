@@ -350,18 +350,18 @@
   },
   "addressResults": {
     "full": {
-      "title": "Alles gevonden",
-      "description": "Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen of zelfs 100% voor Fiber gaan, waar je tot 10 Gbps kan surfen.",
+      "title": "Surf op 100% Fiber tot 10 Gbps",
+      "description": "We komen gratis fiber bij jou thuis installeren. Dit proces kan enkele weken duren.",
       "backgroundColor": "#F6D1FF",
       "moreInfoContent": {
-        "title": "Internetsnelheden op jouw adres",
-        "content": "<h4>HFC Netwerk (tot 2,5 Gbps)</h4><p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p><h4>100% Glasvezelnetwerk (tot 10 Gbps)</h4><p>Ons nieuwste glasvezelnetwerk biedt ultrasnelle internetsnelheden tot 10 Gbps voor de meest veeleisende gebruikers.</p><p><strong>Beide opties zijn beschikbaar op jouw adres!</strong></p>"
+        "title": "Fiber installatie bij je thuis",
+        "content": "<p>Met fiber kan je kiezen voor de zotste snelheden tot 10 Gbps. Onze technici hebben een 2 tot 3 weken nodig om alles professioneel te kunnen aansluiten waarna van de ultrasnelle verbinding kan genieten.</p><h4>Waarom voor fiber kiezen?</h4><ul><li>Downloadsnelheden tot 10 Gbps en uploadsnelheden tot 1 Gbps</li><li>Het meest stabiele en duurzame netwerk</li><li>Gratis installatie en aansluiting</li><li>Dezelfde prijs voor je abonnement</li><li>Inclusief gratis wifi check-up voor een optimale verbinding</li></ul>"
       }
     },
     "medium": {
       "title": "Internet tot 2,5 Gbps",
       "description": "Jij kan zowel op ons HFC netwerk aan snelheden tot 2,5 Gbps surfen.",
-      "backgroundColor": "#FED7AD",
+      "backgroundColor": "#FFEDAD",
       "moreInfoContent": {
         "title": "Internetsnelheden op jouw adres",
         "content": "<h4>HFC Netwerk (tot 2,5 Gbps)</h4><p>Ons HFC netwerk combineert glasvezel en coaxkabel voor betrouwbare internetverbindingen tot 2,5 Gbps.</p><p>Perfect voor streaming in 4K, online gaming, en thuiswerken met meerdere apparaten tegelijkertijd.</p>"

@@ -172,7 +172,7 @@ class UnifiedConfigurator {
     async checkForBoxNumbers(postcodeValue, streetValue, houseNumber) {
         const busInput = document.getElementById('bus');
         const submitButton = document.querySelector('.address-submit-btn');
-        
+
         if (!postcodeValue || !streetValue || !houseNumber) {
             return;
         }
@@ -185,7 +185,7 @@ class UnifiedConfigurator {
         try {
             const originalApiUrl = `https://api.prd.telenet.be/ocapi/public/api/contact-service/v1/contact/addresses?postalCode=${encodeURIComponent(postalCode)}&municipality=${encodeURIComponent(subMunicipality)}&street=${encodeURIComponent(streetValue)}&houseNumber=${encodeURIComponent(houseNumber)}&boxNumber=&subHouseNumber=&fields=id,houseNumber,subHouseNumber,boxNumber,country`;
             const apiUrl = `https://corsproxy.io/?${encodeURIComponent(originalApiUrl)}`;
-            
+
             const response = await fetch(apiUrl);
             const data = await response.json();
 
@@ -4338,21 +4338,37 @@ class UnifiedConfigurator {
         }
 
         addressResult.className = `address-result ${result.type}`;
-        addressResult.innerHTML = `
-            <div class="result-header">
-                <div class="result-checkmark">✓</div>
-                <div class="result-title">${resultConfig.title}</div>
-            </div>
-            <div class="address-content">
-                <div class="address-line">${fullAddress}</div>
-            </div>
-            <div class="address-change-link" onclick="app.openAddressFormPrefilled()">wijzig adres</div>
-            <div class="result-description">${resultConfig.description}</div>
-            <div class="result-info-link" onclick="app.openInternetSpeedInfo()">
-                Meer info
-                <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
-            </div>
-        `;
+
+        if (result.type === 'full') {
+            addressResult.innerHTML = `
+                <div class="result-header">
+                    <div class="result-checkmark">✓</div>
+                    <div class="result-title">${resultConfig.title}</div>
+                </div>
+                <div class="address-content">
+                    <div class="address-line" onclick="app.openAddressFormPrefilled()"><span>${fullAddress}</span> ✏️</div>
+                </div>
+                <div class="alert-timing">
+                    <img src="final_assets/icons/i-icon-darkblue.svg" alt="info" class="info-icon">
+                    <div class="content">
+                        <div class="result-description">
+                            ${resultConfig.description}
+                            <span class="result-info-link" onclick="app.openInternetSpeedInfo()">Meer info</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            addressResult.innerHTML = `
+                <div class="result-header">
+                    <div class="result-checkmark">✓</div>
+                    <div class="result-title">${resultConfig.title}</div>
+                </div>
+                <div class="address-content">
+                    <div class="address-line" onclick="app.openAddressFormPrefilled()"><span>${fullAddress}</span> ✏️</div>
+                </div>
+            `;
+        }
     }
 
     getServiceIconClass(serviceKey) {

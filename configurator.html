@@ -81,7 +81,7 @@
                 <!-- Pack banner will be populated by JavaScript -->
             </div>
 
-            
+
 
             <!-- Surfen & Bellen Section -->
             <div class="section-group">
@@ -107,12 +107,13 @@
                         <!-- Address Check Section -->
                         <div class="adrescheck-section">
                             <!-- Address Input State (shown when no address entered) -->
-                            <div class="adrescheck-input-state" id="adrescheck-input-state">
+                            <div class="adrescheck-input-state" id="adrescheck-input-state"
+                                onclick="app.openAddressForm()">
                                 <div class="adrescheck-card">
                                     <div class="adrescheck-description">
                                         Kijk welk aanbod we hebben voor jouw adres.
                                     </div>
-                                    <button class="address-input-btn" onclick="app.openAddressForm()">Geef je adres in</button>
+                                    <button class="address-input-btn">Geef je adres in</button>
                                 </div>
                             </div>
 
@@ -710,7 +711,9 @@
                         <div class="form-group">
                             <label for="postcode">Postcode of stad</label>
                             <div class="autocomplete-container">
-                                <input type="text" id="postcode" name="postcode" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
+                                <input type="text" id="postcode" name="postcode" required autocomplete="off"
+                                    autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other"
+                                    readonly onfocus="this.removeAttribute('readonly');">
                                 <div class="clear-input-btn" id="postcode-clear" style="display: none;">×</div>
                                 <div class="autocomplete-list" id="postcode-autocomplete" style="display: none;"></div>
                             </div>
@@ -719,7 +722,10 @@
                         <div class="form-group disabled">
                             <label for="street">Straat</label>
                             <div class="autocomplete-container">
-                                <input type="text" id="street" name="street" required disabled autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
+                                <input type="text" id="street" name="street" required disabled
+                                    autocomplete="new-password" autocapitalize="off" autocorrect="off"
+                                    spellcheck="false" data-form-type="other" readonly
+                                    onfocus="this.removeAttribute('readonly');">
                                 <div class="clear-input-btn" id="street-clear" style="display: none;">×</div>
                             </div>
                         </div>
@@ -728,14 +734,18 @@
                             <div class="form-group disabled">
                                 <label for="house-number">Huisnummer</label>
                                 <div class="autocomplete-container">
-                                    <input type="text" id="house-number" name="house-number" required disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
+                                    <input type="text" id="house-number" name="house-number" required disabled
+                                        autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                                        data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
                                     <div class="clear-input-btn" id="house-number-clear" style="display: none;">×</div>
                                 </div>
                             </div>
                             <div class="form-group disabled">
                                 <label for="bus">Bus</label>
                                 <div class="autocomplete-container">
-                                    <input type="text" id="bus" name="bus" disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other" readonly onfocus="this.removeAttribute('readonly');">
+                                    <input type="text" id="bus" name="bus" disabled autocomplete="off"
+                                        autocapitalize="off" autocorrect="off" spellcheck="false" data-form-type="other"
+                                        readonly onfocus="this.removeAttribute('readonly');">
                                     <div class="clear-input-btn" id="bus-clear" style="display: none;">×</div>
                                 </div>
                             </div>

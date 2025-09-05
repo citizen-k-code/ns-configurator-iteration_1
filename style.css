@@ -4747,10 +4747,11 @@ button.gift-btn:hover {
     margin-bottom: 32px;
 }
 
-adrescheck-input-state {
-    background-color: white;
+.adrescheck-input-state {
+    background-color: #F7F9FC;
     border-radius: 12px;
-    padding: 0px;
+    padding: 8px 12px;
+    border: 1px solid #2D3648;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -4760,25 +4761,24 @@ adrescheck-input-state {
 
 .adrescheck-description {
     font-size: 14px;
-    color: #717D96;
-    margin-bottom: 16px;
+    color: #2D3648;
+    margin-bottom: 0px;
+    font-weight: 600;
 }
 
 .address-input-btn {
-    width: 100%;
-    padding: 12px 16px;
-    background-color: white;
-    border: 1px solid #CBD2E0;
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 15px;
     color: #2D3648;
     cursor: pointer;
     text-align: left;
-    transition: border-color 0.2s ease;
+    text-decoration: underline;
 }
 
 .address-input-btn:hover {
-    border-color: #2D3648;
+    font-weight: 600;
 }
 
 .address-display {
@@ -4791,10 +4791,18 @@ adrescheck-input-state {
 }
 
 .address-line {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #2D3648;
-    margin-bottom: 0;
+    margin-bottom: 12px;
+}
+
+.address-line span {
+    text-decoration: underline;
+}
+
+.address-line span:hover {
+    text-decoration: none;
 }
 
 .address-change-link {
@@ -4816,7 +4824,7 @@ adrescheck-input-state {
 }
 
 .address-result.full {
-    background-color: #F6D1FF;
+    background-color: #FFEDAD;
 }
 
 .address-result.medium {
@@ -4824,8 +4832,10 @@ adrescheck-input-state {
 }
 
 .address-result.light {
-    background-color: #FFEDAD;
+    background-color: #FED7AD;
 }
+
+
 
 .result-header {
     display: flex;
@@ -4857,17 +4867,12 @@ adrescheck-input-state {
     font-size: 14px;
     color: #2D3648;
     line-height: 1.4;
-    margin-bottom: 12px;
+    margin-bottom: 0px;
 }
 
 .result-info-link {
-    font-size: 12px;
-    color: #717D96;
     text-decoration: underline;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
 }
 
 .result-info-link:hover {
@@ -4877,6 +4882,20 @@ adrescheck-input-state {
 .result-info-link .info-icon {
     width: 12px;
     height: 12px;
+}
+
+.alert-timing {
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.alert-timing .info-icon {
+    width: 20px;
+    height: 20px;
+    color: #F134F7;
 }
 
 /* Address Form Styles */
