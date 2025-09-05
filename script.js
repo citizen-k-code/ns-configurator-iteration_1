@@ -169,6 +169,59 @@ class UnifiedConfigurator {
         localStorage.removeItem('address_data');
     }
 
+    async checkForBoxNumbers(postcodeValue, streetValue, houseNumber) {
+        const busInput = document.getElementById('bus');
+        const submitButton = document.querySelector('.address-submit-btn');
+        
+        if (!postcodeValue || !streetValue || !houseNumber) {
+            return;
+        }
+
+        // Parse postcode to extract zipcode and submunicipality
+        const postcodeParts = postcodeValue.split(' - ');
+        const postalCode = postcodeParts[0] || '';
+        const subMunicipality = postcodeParts[1] || '';
+
+        try {
+            const apiUrl = `https://api.prd.telenet.be/ocapi/public/api/contact-service/v1/contact/addresses?postalCode=${encodeURIComponent(postalCode)}&municipality=${encodeURIComponent(subMunicipality)}&street=${encodeURIComponent(streetValue)}&houseNumber=${encodeURIComponent(houseNumber)}&boxNumber=&subHouseNumber=&fields=id,houseNumber,subHouseNumber,boxNumber,country`;
+            
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            // Check if any address has a boxNumber
+            let hasBoxNumbers = false;
+            if (data && data.address && Array.isArray(data.address)) {
+                hasBoxNumbers = data.address.some(addr => addr.boxNumber && addr.boxNumber.trim() !== '');
+            }
+
+            if (hasBoxNumbers) {
+                // Enable box number field and focus on it
+                if (busInput) {
+                    busInput.disabled = false;
+                    busInput.closest('.form-group')?.classList.remove('disabled');
+                    busInput.focus();
+                }
+            } else {
+                // Disable box number field and focus on submit button
+                if (busInput) {
+                    busInput.disabled = true;
+                    busInput.closest('.form-group')?.classList.add('disabled');
+                    busInput.value = ''; // Clear any existing value
+                }
+                if (submitButton) {
+                    submitButton.focus();
+                }
+            }
+        } catch (error) {
+            console.error('Error checking for box numbers:', error);
+            // In case of error, enable the box field as fallback
+            if (busInput) {
+                busInput.disabled = false;
+                busInput.closest('.form-group')?.classList.remove('disabled');
+            }
+        }
+    }
+
     updatePageTitle(packParam) {
         const pageTitle = document.querySelector('.page-header h1');
         if (!pageTitle) return;
@@ -3716,7 +3769,7 @@ class UnifiedConfigurator {
         };
 
         // Store selected house number value
-        this.onHouseNumberSelected = (houseNumber) => {
+        this.onHouseNumberSelected = async (houseNumber) => {
             houseNumberInput.value = houseNumber;
             const houseNumberAutocomplete = document.getElementById('housenumber-autocomplete');
             if (houseNumberAutocomplete) {
@@ -3727,6 +3780,9 @@ class UnifiedConfigurator {
             if (this.addressData.address) {
                 this.addressData.address.houseNumber = houseNumber;
             }
+
+            // Check for available box numbers
+            await this.checkForBoxNumbers(postcodeInput.value, streetInput.value, houseNumber);
 
             // Remove focus from house number input
             houseNumberInput.blur();
