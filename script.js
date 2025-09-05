@@ -172,6 +172,7 @@ class UnifiedConfigurator {
     async checkForBoxNumbers(postcodeValue, streetValue, houseNumber) {
         const busInput = document.getElementById('bus');
         const submitButton = document.querySelector('.address-submit-btn');
+        const houseNumberInput = document.getElementById('house-number');
 
         if (!postcodeValue || !streetValue || !houseNumber) {
             return;
@@ -196,35 +197,63 @@ class UnifiedConfigurator {
             }
 
             if (hasBoxNumbers) {
-                // Enable box number field and focus on it
+                // Enable box number field and transfer focus from house number to box number
                 if (busInput) {
                     busInput.disabled = false;
                     busInput.closest('.form-group')?.classList.remove('disabled');
-                    
-                    // Ensure keyboard shows on mobile by using setTimeout and click event
+                    busInput.removeAttribute('readonly');
+
+                    // Seamlessly transfer focus to maintain keyboard on iOS
                     setTimeout(() => {
+                        // First blur the house number input
+                        if (houseNumberInput) {
+                            houseNumberInput.blur();
+                        }
+
+                        // Then immediately focus on bus input to maintain keyboard
                         busInput.focus();
-                        // Trigger click to ensure mobile keyboard appears
+
+                        // For iOS, also dispatch a touch event to simulate user interaction
+                        const touchEvent = new Event('touchstart', { bubbles: true });
+                        busInput.dispatchEvent(touchEvent);
+
+                        // Additional fallback: trigger click event
                         busInput.click();
-                    }, 100);
+                    }, 50); // Reduced delay for seamless transition
                 }
             } else {
-                // Disable box number field and focus on submit button
+                // No box numbers available - blur house number and focus submit button
                 if (busInput) {
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
                     busInput.value = ''; // Clear any existing value
+                    busInput.setAttribute('readonly', 'readonly');
                 }
-                if (submitButton) {
-                    submitButton.focus();
-                }
+
+                // Remove focus from house number and focus submit button
+                setTimeout(() => {
+                    if (houseNumberInput) {
+                        houseNumberInput.blur();
+                    }
+                    if (submitButton) {
+                        submitButton.focus();
+                    }
+                }, 50);
             }
         } catch (error) {
             console.error('Error checking for box numbers:', error);
-            // In case of error, enable the box field as fallback
+            // In case of error, enable the box field as fallback and transfer focus
             if (busInput) {
                 busInput.disabled = false;
                 busInput.closest('.form-group')?.classList.remove('disabled');
+                busInput.removeAttribute('readonly');
+
+                setTimeout(() => {
+                    if (houseNumberInput) {
+                        houseNumberInput.blur();
+                    }
+                    busInput.focus();
+                }, 50);
             }
         }
     }
@@ -2197,7 +2226,7 @@ class UnifiedConfigurator {
             }
 
             const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
-            if (internetTier.discountValue && internetTier.discountPeriod) {
+            if (internetTier.discountPeriod && internetTier.discountValue) {
                 totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
                 discountsInfo.push({
                     product: 'Internet',
@@ -2211,7 +2240,7 @@ class UnifiedConfigurator {
         if (this.state.mobile.enabled) {
             this.state.mobile.simcards.forEach((simcard, index) => {
                 const mobileTier = this.data.products.mobile.tiers.find(t => t.id === simcard.selectedTier);
-                if (mobileTier.discountValue && mobileTier.discountPeriod) {
+                if (mobileTier.discountPeriod && mobileTier.discountValue) {
                     totalTemporaryDiscount += mobileTier.discountValue * mobileTier.discountPeriod;
                     discountsInfo.push({
                         product: `Simkaart ${simcard.id}`,
@@ -2498,7 +2527,7 @@ class UnifiedConfigurator {
                 const durationText = shortestDuration === 1 ? 'maand' : 'maanden';
                 mobileCostLabel.textContent = `eerste ${shortestDuration} ${durationText}`;
             } else {
-                mobileMonthlyTotalElement.parentElement.style.color = '#2D3648';
+                mobileMonthlyTotalElement.parentElement.style.style = '';
                 mobileCostLabel.textContent = 'per maand';
             }
             mobileMonthlyTotalElement.textContent = total.toFixed(2).replace('.', ',');
@@ -4331,7 +4360,7 @@ class UnifiedConfigurator {
         const fullAddress = this.addressData.address.fullAddress;
 
         addressDisplay.innerHTML = `
-            
+
         `;
 
         // Format result display with new structure using data from data.json
@@ -4892,7 +4921,7 @@ class UnifiedConfigurator {
         body.innerHTML = contentHtml;
 
         overlay.style.display = 'flex';
-        document.body.classList.add('no-scroll');
+        document.body.style.overflow = 'hidden';
     }
 
     closeAdvantageBottomSheet() {
@@ -5033,7 +5062,7 @@ class UnifiedConfigurator {
         this.closeEntertainmentBoxDeselectionDialog();
         // Ensure the toggle and checkbox remain checked
         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
-        const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
+        const tvCheckbox= document.getElementById('tv-entertainment-box-checkbox');
 
         if (entertainmentBoxToggle) {
             entertainmentBoxToggle.checked = true;
@@ -5621,7 +5650,7 @@ class UnifiedConfigurator {
         }
 
         const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
-        contentHtml += `</div><div class="advantage-total">Totale maandelijkse korting: €${(originalTotal - pricingInfo.total).toFixed(2).replace('.', ',')}</div>`;
+        contentHtml += '</div><div class="advantage-total">Totale maandelijkse korting: €'+(originalTotal - pricingInfo.total).toFixed(2).replace('.', ',')+'</div>';
 
         body.innerHTML = contentHtml;
 
