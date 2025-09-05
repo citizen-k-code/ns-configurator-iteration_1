@@ -197,36 +197,30 @@ class UnifiedConfigurator {
             }
 
             if (hasBoxNumbers) {
-                // Enable box number field and transfer focus from house number to box number
+                // Enable box number field and seamlessly transfer focus while maintaining keyboard
                 if (busInput) {
                     busInput.disabled = false;
                     busInput.closest('.form-group')?.classList.remove('disabled');
                     busInput.removeAttribute('readonly');
 
-                    // For iOS keyboard persistence, transfer focus immediately without any delay
-                    // and without blurring the current input first
+                    // Transfer focus immediately to maintain iOS keyboard
                     busInput.focus();
-                    
-                    // Only blur the house number after bus input has gained focus
-                    if (houseNumberInput) {
-                        houseNumberInput.blur();
-                    }
                 }
             } else {
-                // No box numbers available - blur house number and focus submit button
+                // No box numbers available - disable box input
                 if (busInput) {
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
                     busInput.value = ''; // Clear any existing value
                     busInput.setAttribute('readonly', 'readonly');
                 }
-
-                // Focus submit button first, then blur house number
-                if (submitButton) {
-                    submitButton.focus();
-                }
+                
+                // Only blur house number and focus submit button if no box numbers
                 if (houseNumberInput) {
                     houseNumberInput.blur();
+                }
+                if (submitButton) {
+                    submitButton.focus();
                 }
             }
         } catch (error) {
@@ -236,13 +230,7 @@ class UnifiedConfigurator {
                 busInput.disabled = false;
                 busInput.closest('.form-group')?.classList.remove('disabled');
                 busInput.removeAttribute('readonly');
-
-                setTimeout(() => {
-                    if (houseNumberInput) {
-                        houseNumberInput.blur();
-                    }
-                    busInput.focus();
-                }, 50);
+                busInput.focus();
             }
         }
     }
@@ -3650,6 +3638,10 @@ class UnifiedConfigurator {
 
             if (value.length < 1) {
                 houseNumberAutocomplete.style.display = 'none';
+                // Reset bus input when house number is cleared
+                busInput.disabled = true;
+                busInput.closest('.form-group')?.classList.add('disabled');
+                busInput.value = '';
                 return;
             }
 
@@ -3660,8 +3652,27 @@ class UnifiedConfigurator {
                 if (data && data.length > 0) {
                     this.renderHouseNumberAutocomplete(data, houseNumberAutocomplete);
                     houseNumberAutocomplete.style.display = 'block';
+                    
+                    // Check if the current value exactly matches one of the suggestions
+                    const exactMatch = data.find(item => item.houseNumber === value);
+                    if (exactMatch) {
+                        // Hide autocomplete since we have an exact match
+                        houseNumberAutocomplete.style.display = 'none';
+                        
+                        // Update temporary address data
+                        if (this.addressData.address) {
+                            this.addressData.address.houseNumber = value;
+                        }
+                        
+                        // Check for box numbers while maintaining focus
+                        await this.checkForBoxNumbers(postcodeInput.value, streetInput.value, value);
+                    }
                 } else {
                     houseNumberAutocomplete.style.display = 'none';
+                    // Reset bus input when no house number suggestions found
+                    busInput.disabled = true;
+                    busInput.closest('.form-group')?.classList.add('disabled');
+                    busInput.value = '';
                 }
             } catch (error) {
                 console.error('Error fetching house number suggestions:', error);
@@ -3807,11 +3818,8 @@ class UnifiedConfigurator {
                 this.addressData.address.houseNumber = houseNumber;
             }
 
-            // Check for available box numbers
-            await this.checkForBoxNumbers(postcodeInput.value, streetInput.value, houseNumber);
-
-            // Remove focus from house number input
-            houseNumberInput.blur();
+            // DON'T blur the house number input or check for box numbers here
+            // The focus and box number check will be handled by the input event listener
         };
 
         // Box input event listener
