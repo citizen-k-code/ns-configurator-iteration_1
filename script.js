@@ -203,23 +203,14 @@ class UnifiedConfigurator {
                     busInput.closest('.form-group')?.classList.remove('disabled');
                     busInput.removeAttribute('readonly');
 
-                    // Seamlessly transfer focus to maintain keyboard on iOS
-                    setTimeout(() => {
-                        // First blur the house number input
-                        if (houseNumberInput) {
-                            houseNumberInput.blur();
-                        }
-
-                        // Then immediately focus on bus input to maintain keyboard
-                        busInput.focus();
-
-                        // For iOS, also dispatch a touch event to simulate user interaction
-                        const touchEvent = new Event('touchstart', { bubbles: true });
-                        busInput.dispatchEvent(touchEvent);
-
-                        // Additional fallback: trigger click event
-                        busInput.click();
-                    }, 50); // Reduced delay for seamless transition
+                    // For iOS keyboard persistence, transfer focus immediately without any delay
+                    // and without blurring the current input first
+                    busInput.focus();
+                    
+                    // Only blur the house number after bus input has gained focus
+                    if (houseNumberInput) {
+                        houseNumberInput.blur();
+                    }
                 }
             } else {
                 // No box numbers available - blur house number and focus submit button
@@ -230,15 +221,13 @@ class UnifiedConfigurator {
                     busInput.setAttribute('readonly', 'readonly');
                 }
 
-                // Remove focus from house number and focus submit button
-                setTimeout(() => {
-                    if (houseNumberInput) {
-                        houseNumberInput.blur();
-                    }
-                    if (submitButton) {
-                        submitButton.focus();
-                    }
-                }, 50);
+                // Focus submit button first, then blur house number
+                if (submitButton) {
+                    submitButton.focus();
+                }
+                if (houseNumberInput) {
+                    houseNumberInput.blur();
+                }
             }
         } catch (error) {
             console.error('Error checking for box numbers:', error);
