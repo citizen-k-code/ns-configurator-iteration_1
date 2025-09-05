@@ -3761,11 +3761,12 @@ class UnifiedConfigurator {
                 this.addressData.address.bus = '';
             }
 
-            // Enable house number and bus fields, focus on house number
+            // Enable house number field only, keep bus field disabled
             houseNumberInput.disabled = false;
             houseNumberInput.closest('.form-group')?.classList.remove('disabled');
-            busInput.disabled = false;
-            busInput.closest('.form-group')?.classList.remove('disabled');
+            // Keep bus field disabled until house number is selected and API check is done
+            busInput.disabled = true;
+            busInput.closest('.form-group')?.classList.add('disabled');
             houseNumberInput.focus();
         };
 
