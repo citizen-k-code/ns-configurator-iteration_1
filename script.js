@@ -201,18 +201,12 @@ class UnifiedConfigurator {
                     busInput.disabled = false;
                     busInput.closest('.form-group')?.classList.remove('disabled');
                     
-                    // Ensure keyboard shows on iOS by using multiple approaches
+                    // Ensure keyboard shows on mobile by using setTimeout and click event
                     setTimeout(() => {
-                        busInput.removeAttribute('readonly');
                         busInput.focus();
-                        
-                        // For iOS, also dispatch a touch event to simulate user interaction
-                        const touchEvent = new Event('touchstart', { bubbles: true });
-                        busInput.dispatchEvent(touchEvent);
-                        
-                        // Additional fallback: trigger click event
+                        // Trigger click to ensure mobile keyboard appears
                         busInput.click();
-                    }, 150);
+                    }, 100);
                 }
             } else {
                 // Disable box number field and focus on submit button
@@ -3778,7 +3772,6 @@ class UnifiedConfigurator {
             houseNumberInput.closest('.form-group')?.classList.remove('disabled');
             // Keep bus field disabled until house number is selected and API check is done
             busInput.disabled = true;
-            busInput.setAttribute('readonly', 'readonly');
             busInput.closest('.form-group')?.classList.add('disabled');
             houseNumberInput.focus();
         };
