@@ -207,11 +207,13 @@ class UnifiedConfigurator {
                 // Transfer focus directly from house number to bus input
                 // This should maintain keyboard visibility on iOS
                 if (busInput && houseNumberInput) {
+                    // Focus bus input first
                     busInput.focus();
-                    // Small delay to ensure focus has transferred before blurring house number
-                    setTimeout(() => {
+                    
+                    // Use focus event to ensure blur happens only after focus is established
+                    busInput.addEventListener('focus', () => {
                         houseNumberInput.blur();
-                    }, 10);
+                    }, { once: true });
                 }
             } else {
                 // No box numbers available - disable bus field and focus submit button
@@ -225,9 +227,11 @@ class UnifiedConfigurator {
                 // Focus submit button and blur house number
                 if (submitButton && houseNumberInput) {
                     submitButton.focus();
-                    setTimeout(() => {
+                    
+                    // Use focus event to ensure blur happens only after focus is established
+                    submitButton.addEventListener('focus', () => {
                         houseNumberInput.blur();
-                    }, 10);
+                    }, { once: true });
                 }
             }
         } catch (error) {
