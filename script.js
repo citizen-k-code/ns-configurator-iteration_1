@@ -1925,7 +1925,7 @@ class UnifiedConfigurator {
             } else {
                 tiers = this.data.products.internet.tiers;
             }
-            
+
             const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountValue) {
                 total += internetTier.price - internetTier.discountValue;
@@ -2135,7 +2135,7 @@ class UnifiedConfigurator {
             } else {
                 tiers = this.data.products.internet.tiers;
             }
-            
+
             const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountValue && internetTier.discountPeriod) {
                 totalTemporaryDiscount += internetTier.discountValue * internetTier.discountPeriod;
@@ -2320,7 +2320,7 @@ class UnifiedConfigurator {
             } else {
                 tiers = this.data.products.internet.tiers;
             }
-            
+
             const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             console.log("Internet tier:", internetTier);
             if (internetTier && internetTier.discountPeriod && internetTier.discountValue) {
@@ -2618,7 +2618,7 @@ class UnifiedConfigurator {
             } else {
                 tiers = this.data.products.internet.tiers;
             }
-            
+
             const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (internetTier.discountPeriod === period) {
                 expiringDiscounts.push({
@@ -2704,7 +2704,7 @@ class UnifiedConfigurator {
             } else {
                 tiers = this.data.products.internet.tiers;
             }
-            
+
             const internetTier = tiers.find(t => t.id === this.state.internet.selectedTier);
             if (!internetTier) return;
 
@@ -4207,7 +4207,7 @@ class UnifiedConfigurator {
 
         // Update UI
         this.updateAddressDisplay();
-        
+
         // Update internet tiers if internet is enabled (regardless of address result)
         if (this.state.internet.enabled) {
             // If address result is "full", switch to fiber tiers and select tier 2
@@ -4218,7 +4218,7 @@ class UnifiedConfigurator {
             this.renderInternetTiers();
             this.updateInternetInfo();
         }
-        
+
         this.closeAddressForm();
 
         // Scroll to the address card
@@ -4267,10 +4267,7 @@ class UnifiedConfigurator {
         const fullAddress = this.addressData.address.fullAddress;
 
         addressDisplay.innerHTML = `
-            <div class="address-content">
-                <div class="address-line">${fullAddress}</div>
-            </div>
-            <div class="address-change-link" onclick="app.openAddressFormPrefilled()">wijzig adres</div>
+            
         `;
 
         // Format result display with new structure using data from data.json
@@ -4288,6 +4285,10 @@ class UnifiedConfigurator {
                 <div class="result-checkmark">✓</div>
                 <div class="result-title">${resultConfig.title}</div>
             </div>
+            <div class="address-content">
+                <div class="address-line">${fullAddress}</div>
+            </div>
+            <div class="address-change-link" onclick="app.openAddressFormPrefilled()">wijzig adres</div>
             <div class="result-description">${resultConfig.description}</div>
             <div class="result-info-link" onclick="app.openInternetSpeedInfo()">
                 Meer info
@@ -4656,7 +4657,7 @@ class UnifiedConfigurator {
             } else {
                 tiers = this.data.products.internet.tiers;
             }
-            
+
             const lowestTier = tiers?.[0];
             if (!lowestTier) return 0;
             return lowestTier.discountValue ? lowestTier.price - lowestTier.discountValue : lowestTier.price;

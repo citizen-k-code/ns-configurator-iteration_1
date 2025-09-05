@@ -4747,12 +4747,16 @@ button.gift-btn:hover {
     margin-bottom: 32px;
 }
 
-.adrescheck-card {
+adrescheck-input-state {
     background-color: white;
     border-radius: 12px;
-    padding: 20px;
+    padding: 0px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+.adrescheck-result-state {}
+
+.adrescheck-card {}
 
 .adrescheck-description {
     font-size: 14px;
@@ -4778,10 +4782,8 @@ button.gift-btn:hover {
 }
 
 .address-display {
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+
+    display: none;
 }
 
 .address-content {
