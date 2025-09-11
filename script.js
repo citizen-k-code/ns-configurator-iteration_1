@@ -190,11 +190,13 @@ class UnifiedConfigurator {
         try {
             const originalApiUrl = `https://api.prd.telenet.be/ocapi/public/api/contact-service/v1/contact/addresses?postalCode=${encodeURIComponent(postalCode)}&municipality=${encodeURIComponent(subMunicipality)}&street=${encodeURIComponent(streetValue)}&houseNumber=${encodeURIComponent(houseNumber)}&boxNumber=&subHouseNumber=&fields=id,houseNumber,subHouseNumber,boxNumber,country`;
             
-            // Try multiple CORS proxies for better reliability
+            // Try multiple CORS proxies for better reliability (2025 updated list)
             const corsProxies = [
-                `https://api.allorigins.win/get?url=${encodeURIComponent(originalApiUrl)}`,
-                `https://corsproxy.io/?${encodeURIComponent(originalApiUrl)}`,
-                `https://cors-anywhere.herokuapp.com/${originalApiUrl}`
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(originalApiUrl)}`,
+                `https://thingproxy.freeboard.io/fetch/${originalApiUrl}`,
+                `https://proxy.cors.sh/${originalApiUrl}`,
+                `https://corsproxy.io/?url=${encodeURIComponent(originalApiUrl)}`,
+                `https://api.allorigins.win/get?url=${encodeURIComponent(originalApiUrl)}`
             ];
 
             let data = null;
@@ -210,9 +212,11 @@ class UnifiedConfigurator {
                     }
 
                     // Handle different proxy response formats
-                    if (proxyUrl.includes('allorigins.win')) {
+                    if (proxyUrl.includes('allorigins.win/get')) {
                         const proxyData = await response.json();
                         data = JSON.parse(proxyData.contents);
+                    } else if (proxyUrl.includes('allorigins.win/raw')) {
+                        data = await response.json();
                     } else {
                         data = await response.json();
                     }

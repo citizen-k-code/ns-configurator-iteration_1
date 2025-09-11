@@ -4743,7 +4743,7 @@ button.gift-btn:hover {
 }
 
 .boxnumber-group.disabled {
-    /*opacity: 0;*/
+    opacity: 0;
 }
 
 /* Adrescheck Section */
