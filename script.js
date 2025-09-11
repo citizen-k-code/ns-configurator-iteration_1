@@ -174,6 +174,10 @@ class UnifiedConfigurator {
         const submitButton = document.querySelector('.address-submit-btn');
         const houseNumberInput = document.getElementById('house-number');
 
+        busInput.disabled = false;
+        busInput.focus();
+        console.log("Focus on Box number direct");
+
         if (!postcodeValue || !streetValue || !houseNumber) {
             return;
         }
@@ -185,10 +189,46 @@ class UnifiedConfigurator {
 
         try {
             const originalApiUrl = `https://api.prd.telenet.be/ocapi/public/api/contact-service/v1/contact/addresses?postalCode=${encodeURIComponent(postalCode)}&municipality=${encodeURIComponent(subMunicipality)}&street=${encodeURIComponent(streetValue)}&houseNumber=${encodeURIComponent(houseNumber)}&boxNumber=&subHouseNumber=&fields=id,houseNumber,subHouseNumber,boxNumber,country`;
-            const apiUrl = `https://corsproxy.io/?${encodeURIComponent(originalApiUrl)}`;
+            
+            // Try multiple CORS proxies for better reliability
+            const corsProxies = [
+                `https://api.allorigins.win/get?url=${encodeURIComponent(originalApiUrl)}`,
+                `https://corsproxy.io/?${encodeURIComponent(originalApiUrl)}`,
+                `https://cors-anywhere.herokuapp.com/${originalApiUrl}`
+            ];
 
-            const response = await fetch(apiUrl);
-            const data = await response.json();
+            let data = null;
+            let lastError = null;
+
+            for (const proxyUrl of corsProxies) {
+                try {
+                    console.log(`Trying CORS proxy: ${proxyUrl.split('?')[0]}`);
+                    const response = await fetch(proxyUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    // Handle different proxy response formats
+                    if (proxyUrl.includes('allorigins.win')) {
+                        const proxyData = await response.json();
+                        data = JSON.parse(proxyData.contents);
+                    } else {
+                        data = await response.json();
+                    }
+                    
+                    console.log('Successfully fetched address data');
+                    break; // Success - exit loop
+                } catch (error) {
+                    console.warn(`CORS proxy failed: ${error.message}`);
+                    lastError = error;
+                    continue; // Try next proxy
+                }
+            }
+
+            if (!data) {
+                throw new Error(`All CORS proxies failed. Last error: ${lastError?.message || 'Unknown error'}`);
+            }
 
             // Check if any address has a boxNumber
             let hasBoxNumbers = false;
@@ -207,19 +247,22 @@ class UnifiedConfigurator {
                 // Transfer focus directly from house number to bus input
                 // This should maintain keyboard visibility on iOS
                 if (busInput && houseNumberInput) {
+                    console.log("Focus on Box number");
                     // Focus bus input first
                     busInput.focus();
-                    
+                    //busInput.closest('.form-group')?.classList.remove('boxnumber-group');
                     // Use focus event to ensure blur happens only after focus is established
                     busInput.addEventListener('focus', () => {
                         houseNumberInput.blur();
                     }, { once: true });
                 }
             } else {
+                console.log("Go to Submit button");
                 // No box numbers available - disable bus field and focus submit button
                 if (busInput) {
                     busInput.disabled = true;
                     busInput.closest('.form-group')?.classList.add('disabled');
+                    //busInput.closest('.form-group')?.classList.add('boxnumber-group');
                     busInput.value = ''; // Clear any existing value
                     busInput.setAttribute('readonly', 'readonly');
                 }
@@ -227,7 +270,7 @@ class UnifiedConfigurator {
                 // Focus submit button and blur house number
                 if (submitButton && houseNumberInput) {
                     submitButton.focus();
-                    
+
                     // Use focus event to ensure blur happens only after focus is established
                     submitButton.addEventListener('focus', () => {
                         houseNumberInput.blur();
@@ -241,7 +284,7 @@ class UnifiedConfigurator {
                 busInput.disabled = false;
                 busInput.closest('.form-group')?.classList.remove('disabled');
                 busInput.removeAttribute('readonly');
-                
+
                 // Transfer focus with error fallback
                 busInput.focus();
                 setTimeout(() => {
@@ -3813,6 +3856,8 @@ class UnifiedConfigurator {
                 this.addressData.address.houseNumber = houseNumber;
             }
 
+            console.log("Housenumber is selected");
+
             // Check for available box numbers WHILE house number input still has focus
             await this.checkForBoxNumbers(postcodeInput.value, streetInput.value, houseNumber);
         };
@@ -4018,7 +4063,7 @@ class UnifiedConfigurator {
                 const busInput = document.getElementById('bus');
 
                 // Enable all fields first
-                [streetInput, houseNumberInput, busInput].forEach(input => {
+                [streetInput, houseNumberInput].forEach(input => {
                     if (input) {
                         input.disabled = false;
                         input.closest('.form-group')?.classList.remove('disabled');
@@ -4029,7 +4074,13 @@ class UnifiedConfigurator {
                 if (postcodeInput) postcodeInput.value = this.addressData.address.postcode || '';
                 if (streetInput) streetInput.value = this.addressData.address.street || '';
                 if (houseNumberInput) houseNumberInput.value = this.addressData.address.houseNumber || '';
-                if (busInput) busInput.value = this.addressData.address.bus || '';
+
+                const busValue = this.addressData.address.bus;
+                if (busInput && busValue !== '') {
+                    busInput.value = busValue;
+                    busInput.disabled = false;
+                    busInput.closest('.form-group')?.classList.remove('disabled');
+                }
 
                 // Restore the selectedGeoId from stored data - this is crucial for API calls
                 if (this.selectedGeoId) {
@@ -4220,6 +4271,20 @@ class UnifiedConfigurator {
                 // Update temporary address data but don't save to localStorage yet
                 if (this.addressData.address) {
                     this.addressData.address.street = '';
+                    this.addressData.address.houseNumber = '';
+                    this.addressData.address.bus = '';
+                }
+            } else if (inputId === 'house-number') {
+                const busInput = document.getElementById('bus');
+
+                if (busInput) {
+                    busInput.value = '';
+                    busInput.disabled = true;
+                    busInput.closest('.form-group')?.classList.add('disabled');
+                }
+
+                // Update temporary address data but don't save to localStorage yet
+                if (this.addressData.address) {
                     this.addressData.address.houseNumber = '';
                     this.addressData.address.bus = '';
                 }
@@ -5054,7 +5119,7 @@ class UnifiedConfigurator {
         this.closeEntertainmentBoxDeselectionDialog();
         // Ensure the toggle and checkbox remain checked
         const entertainmentBoxToggle = document.getElementById('entertainment-box-toggle');
-        const tvCheckbox= document.getElementById('tv-entertainment-box-checkbox');
+        const tvCheckbox = document.getElementById('tv-entertainment-box-checkbox');
 
         if (entertainmentBoxToggle) {
             entertainmentBoxToggle.checked = true;
@@ -5642,7 +5707,7 @@ class UnifiedConfigurator {
         }
 
         const originalTotal = this.state.datasim.count * pricingInfo.discountInfo.basePrice;
-        contentHtml += '</div><div class="advantage-total">Totale maandelijkse korting: €'+(originalTotal - pricingInfo.total).toFixed(2).replace('.', ',')+'</div>';
+        contentHtml += '</div><div class="advantage-total">Totale maandelijkse korting: €' + (originalTotal - pricingInfo.total).toFixed(2).replace('.', ',') + '</div>';
 
         body.innerHTML = contentHtml;
 

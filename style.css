@@ -4742,6 +4742,10 @@ button.gift-btn:hover {
     display: none !important;
 }
 
+.boxnumber-group.disabled {
+    /*opacity: 0;*/
+}
+
 /* Adrescheck Section */
 .adrescheck-section {
     margin-bottom: 32px;
@@ -4940,9 +4944,6 @@ button.gift-btn:hover {
     flex: 1;
 }
 
-.form-row .form-group:last-child {
-    flex: 0.6;
-}
 
 /* Autocomplete Styles */
 .autocomplete-container {
